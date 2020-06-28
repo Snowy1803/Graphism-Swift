@@ -25,7 +25,8 @@ struct GraphismDocument: FileDocument {
             self.source = ""
         }
         shapes = [GRectangle(positionX: 200, positionY: 100, sizeX: 150, sizeY: 100, paint: .red),
-                  GRectangle(positionX: 0, positionY: 0, sizeX: 50, sizeY: 100, paint: .green)]
+                  GRectangle(positionX: 0, positionY: 0, sizeX: 50, sizeY: 100, paint: .green),
+                  GRectangle(positionX: 250, positionY: 125, sizeX: 50, sizeY: 50, rotation: 45, paint: .yellow)]
         print("Creating file")
     }
 
