@@ -9,13 +9,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 extension UTType {
-    static var grphSource: UTType {
-        UTType(importedAs: "fr.orbisec.grph")
-    }
+    static let grphSource =
+        UTType(exportedAs: "fr.orbisec.grph", conformingTo: .sourceCode)
 }
 
 struct GraphismDocument: FileDocument {
     var source: String
+    
+    var shapes: [GShape]
 
     init(source: String? = nil) {
         if let source = source {
@@ -23,6 +24,8 @@ struct GraphismDocument: FileDocument {
         } else {
             self.source = ""
         }
+        shapes = [GRectangle(positionX: 200, positionY: 100, sizeX: 150, sizeY: 100, color: .red)]
+        print("Creating file")
     }
 
     static var readableContentTypes: [UTType] { [.grphSource] }
@@ -34,9 +37,12 @@ struct GraphismDocument: FileDocument {
             throw CocoaError(.fileReadCorruptFile)
         }
         source = string
+        shapes = [GRectangle(positionX: 200, positionY: 100, sizeX: 150, sizeY: 100, color: .red)]
+        print("Opened \(fileWrapper)")
     }
     
     func write(to fileWrapper: inout FileWrapper, contentType: UTType) throws {
+        print("Saving \(fileWrapper)")
         let data = source.data(using: .utf8)!
         fileWrapper = FileWrapper(regularFileWithContents: data)
     }

@@ -9,9 +9,21 @@ import SwiftUI
 
 struct ContentView: View {
     @Binding var document: GraphismDocument
+    
+    init(document: Binding<GraphismDocument>) {
+        self._document = document
+        print("Created ContentView")
+    }
 
     var body: some View {
-        TextEditor(text: $document.source)
+        NavigationView {
+            // ShapeListSidebar()
+            ZStack(alignment: .topLeading) {
+                ForEach(document.shapes, id: \.uuid) { shape in
+                    shape.graphics
+                }
+            }
+        }
     }
 }
 
