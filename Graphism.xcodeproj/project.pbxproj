@@ -30,6 +30,7 @@
 		2063127E24A8C38D0095911B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2063127F24A8C38D0095911B /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		20740ECC24A8E1AF00150F17 /* GShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GShape.swift; path = Shapes/GShape.swift; sourceTree = "<group>"; };
+		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +54,7 @@
 		2063126624A8C3790095911B = {
 			isa = PBXGroup;
 			children = (
+				20FD1DA524A8E3240027232B /* .gitignore */,
 				2063126B24A8C3790095911B /* Shared */,
 				2063127624A8C38D0095911B /* iOS */,
 				2063127D24A8C38D0095911B /* macOS */,
