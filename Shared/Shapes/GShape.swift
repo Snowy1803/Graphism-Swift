@@ -11,7 +11,17 @@ import SwiftUI
 public protocol GShape {
     var uuid: UUID { get }
     
+    var positionZ: Int { get set }
+    var givenName: String? { get set }
+    var typeKey: String { get }
+    
     var graphics: AnyView { get }
+}
+
+extension GShape {
+    var effectiveName: String {
+        givenName ?? typeKey // TODO LOCALIZE typeKey
+    }
 }
 
 public protocol BasicShape: GShape {
@@ -20,8 +30,10 @@ public protocol BasicShape: GShape {
 }
 
 public protocol SimpleShape: GShape {
-    var color: Color { get set } // change with custom type
+    var paint: Color { get set } // TODO change with custom PAINT type
     // stroke or fill?
+    
+    var rotation: Int { get set }
 }
 
 public protocol RectangularShape: BasicShape {
@@ -45,19 +57,25 @@ extension View {
 }
 
 struct GRectangle: RectangularShape, SimpleShape {
+    var givenName: String?
+    var typeKey: String { "Rectangle" }
+    
     var uuid = UUID()
     
     var positionX: Int
     var positionY: Int
+    var positionZ: Int = 0
     var sizeX: Int
     var sizeY: Int
+    var rotation: Int = 0
     
-    var color: Color
+    var paint: Color
     
     var graphics: AnyView {
         Rectangle()
-            .fill(color)
+            .fill(paint)
             .frame(width: CGFloat(sizeX), height: CGFloat(sizeY))
+            .rotationEffect(.degrees(Double(rotation)), anchor: .center) // TODO support for rotationCenter
             .position(x: CGFloat(centerX), y: CGFloat(centerY))
             .erased
     }
