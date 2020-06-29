@@ -23,10 +23,11 @@ struct GCircle: RectangularShape, SimpleShape, RotableShape {
     var rotation: Int = 0
     
     var paint: Color
+    var strokeStyle: StrokeStyle?
     
     var graphics: AnyView {
         Ellipse()
-            .fill(paint)
+            .applyingFillOrStroke(for: self)
             .frame(width: CGFloat(sizeX), height: CGFloat(sizeY))
             .rotationEffect(.degrees(Double(rotation)), anchor: .center) // TODO support for rotationCenter
             .position(x: CGFloat(centerX), y: CGFloat(centerY))
@@ -34,6 +35,6 @@ struct GCircle: RectangularShape, SimpleShape, RotableShape {
     }
     
     var stateConstructor: String {
-        "Ellipse(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased()))"
+        "Ellipse(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased()))\(strokeStyle?.stateConstructor ?? "")"
     }
 }

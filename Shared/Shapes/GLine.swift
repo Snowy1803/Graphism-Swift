@@ -22,17 +22,18 @@ struct GLine: SimpleShape {
     var positionZ: Int = 0
     
     var paint: Color
+    var strokeStyle: StrokeStyle?
     
     var graphics: AnyView {
         Path { path in
             path.move(to: CGPoint(x: startX, y: startY))
             path.addLine(to: CGPoint(x: endX, y: endY))
         }
-        .stroke(paint, lineWidth: 5)
+        .stroke(paint, style: strokeStyle ?? StrokeStyle(lineWidth: 5))
             .erased
     }
     
     var stateConstructor: String {
-        "Line(\(givenName?.asLiteral ?? "")\(startX),\(startY) \(endX),\(endY) \(positionZ) \(paint.description.uppercased()))"
+        "Line(\(givenName?.asLiteral ?? "")\(startX),\(startY) \(endX),\(endY) \(positionZ) \(paint.description.uppercased()))\(strokeStyle?.stateConstructor ?? "")"
     }
 }

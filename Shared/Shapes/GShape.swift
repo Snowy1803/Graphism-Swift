@@ -34,6 +34,7 @@ public protocol BasicShape: GShape {
 public protocol SimpleShape: GShape {
     var paint: Color { get set } // TODO change with custom PAINT type
     // stroke or fill?
+    var strokeStyle: StrokeStyle? { get set }
 }
 
 public protocol RotableShape: GShape {
@@ -58,6 +59,24 @@ extension RectangularShape {
 extension View {
     var erased: AnyView {
         AnyView(self)
+    }
+}
+
+extension Shape {
+    func applyingFillOrStroke(for def: SimpleShape) -> some View {
+        Group {
+            if let style = def.strokeStyle {
+                self.stroke(def.paint, style: style)
+            } else {
+                self.fill(def.paint)
+            }
+        }
+    }
+}
+
+extension StrokeStyle {
+    var stateConstructor: String {
+        " \(lineWidth)" // TODO joincap & dash array
     }
 }
 
