@@ -18,16 +18,17 @@ struct GraphismDocument: FileDocument {
     
     var shapes: [GShape]
 
-    init(source: String? = nil) {
-        if let source = source {
-            self.source = source
+    init(shapes: [GShape]? = nil) {
+        if let shapes = shapes {
+            self.shapes = shapes
         } else {
-            self.source = ""
+            self.shapes = [GRectangle(positionX: 200, positionY: 100, sizeX: 150, sizeY: 100, paint: .red),
+                           GRectangle(positionX: 0, positionY: 0, sizeX: 50, sizeY: 100, paint: .green),
+                           GRectangle(positionX: 250, positionY: 125, sizeX: 50, sizeY: 50, rotation: 45, paint: .yellow)]
         }
-        shapes = [GRectangle(positionX: 200, positionY: 100, sizeX: 150, sizeY: 100, paint: .red),
-                  GRectangle(positionX: 0, positionY: 0, sizeX: 50, sizeY: 100, paint: .green),
-                  GRectangle(positionX: 250, positionY: 125, sizeX: 50, sizeY: 50, rotation: 45, paint: .yellow)]
+        source = self.shapes.isEmpty ? "" : "validate: \(self.shapes.map(\.stateConstructor).joined(separator: "\nvalidate: "))\n"
         print("Creating file")
+        print(source)
     }
 
     static var readableContentTypes: [UTType] { [.grphSource] }

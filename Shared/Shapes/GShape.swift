@@ -16,6 +16,8 @@ public protocol GShape {
     var typeKey: String { get }
     
     var graphics: AnyView { get }
+    
+    var stateConstructor: String { get }
 }
 
 extension GShape {
@@ -56,6 +58,12 @@ extension View {
     }
 }
 
+extension String {
+    var asLiteral: String {
+        "\"\(self.replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\t", with: "\\t").replacingOccurrences(of: "\n", with: "\\n").replacingOccurrences(of: "\\", with: "\\\\"))\" "
+    }
+}
+
 struct GRectangle: RectangularShape, SimpleShape {
     var givenName: String?
     var typeKey: String { "Rectangle" }
@@ -78,5 +86,9 @@ struct GRectangle: RectangularShape, SimpleShape {
             .rotationEffect(.degrees(Double(rotation)), anchor: .center) // TODO support for rotationCenter
             .position(x: CGFloat(centerX), y: CGFloat(centerY))
             .erased
+    }
+    
+    var stateConstructor: String {
+        "Rectangle(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased()))"
     }
 }
