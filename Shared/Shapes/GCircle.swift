@@ -35,6 +35,6 @@ struct GCircle: RectangularShape, SimpleShape, RotableShape {
     }
     
     var stateConstructor: String {
-        "Ellipse(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased()))\(strokeStyle?.stateConstructor ?? "")"
+        "Ellipse(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
     }
 }
