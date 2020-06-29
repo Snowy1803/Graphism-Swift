@@ -28,9 +28,18 @@ struct GraphismDocument: FileDocument {
                            GCircle(positionX: 260, positionY: 135, sizeX: 30, sizeY: 30, paint: .red),
                            GCircle(positionX: 10, positionY: 200, sizeX: 200, sizeY: 150, paint: .blue),
                            GLine(startX: 275, startY: 150, endX: 110, endY: 275, paint: .black, strokeStyle: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round)),
-                           GPath(givenName: "heart", points: [150, 210, 75, 165, 50, 55, 150, 110, 250, 55, 225, 165, 150, 210], actions: [.moveTo, .cubicTo, .cubicTo], paint: .purple)]
+                           GPath(givenName: "heart", points: [150, 210, 75, 165, 50, 55, 150, 110, 250, 55, 225, 165, 150, 210], actions: [.moveTo, .cubicTo, .cubicTo], paint: .purple),
+                           GClip(shape: GRectangle(positionX: 300, positionY: 300, sizeX: 50, sizeY: 50, paint: .pink),
+                                 clip: GRectangle(positionX: 300, positionY: 300, sizeX: 50, sizeY: 50, rotation: 45, paint: .black))]
         }
-        source = "\(self.shapes.map(\.stateConstructor).joined(separator: "\n"))\n"
+        var source = ""
+        
+        for shape in self.shapes {
+            source += shape.stateDefinitions
+            source += "validate: \(shape.stateConstructor)\n"
+        }
+        
+        self.source = source
         print("Creating file")
         print(source)
     }

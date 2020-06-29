@@ -17,6 +17,7 @@ public protocol GShape {
     
     var graphics: AnyView { get }
     
+    var stateDefinitions: String { get }
     var stateConstructor: String { get }
 }
 

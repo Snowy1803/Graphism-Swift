@@ -22,7 +22,7 @@ struct GPath: SimpleShape { // Add rotation support
     var paint: Color
     var strokeStyle: StrokeStyle?
     
-    var graphics: AnyView {
+    var path: Path {
         Path { path in
             var i = 0
             for action in actions {
@@ -45,11 +45,14 @@ struct GPath: SimpleShape { // Add rotation support
             }
             assert(i == points.count, "Path is not valid")
         }
-        .applyingFillOrStroke(for: self)
+    }
+    
+    var graphics: AnyView {
+        path.applyingFillOrStroke(for: self)
             .erased
     }
     
-    var stateConstructor: String {
+    var stateDefinitions: String {
         let uniqueVarName = String(uuid.hashValue, radix: 36).dropFirst() // first might be a -
         var str = "Path path\(uniqueVarName) = Path(\(givenName?.asLiteral ?? "")\(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))\n"
         var i = 0
@@ -71,7 +74,11 @@ struct GPath: SimpleShape { // Add rotation support
                 str += "closePath path\(uniqueVarName):\n"
             }
         }
-        return "\(str)validate: path\(uniqueVarName)"
+        return str
+    }
+    
+    var stateConstructor: String {
+        "path\(String(uuid.hashValue, radix: 36).dropFirst())"
     }
 }
 

@@ -24,16 +24,20 @@ struct GLine: SimpleShape {
     var paint: Color
     var strokeStyle: StrokeStyle?
     
-    var graphics: AnyView {
+    var path: Path {
         Path { path in
             path.move(to: CGPoint(x: startX, y: startY))
             path.addLine(to: CGPoint(x: endX, y: endY))
         }
-        .stroke(paint, style: strokeStyle ?? StrokeStyle(lineWidth: 5))
+    }
+    
+    var graphics: AnyView {
+        path.stroke(paint, style: strokeStyle ?? StrokeStyle(lineWidth: 5))
             .erased
     }
     
+    var stateDefinitions: String { "" }
     var stateConstructor: String {
-        "validate: Line(\(givenName?.asLiteral ?? "")\(startX),\(startY) \(endX),\(endY) \(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "Line(\(givenName?.asLiteral ?? "")\(startX),\(startY) \(endX),\(endY) \(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
     }
 }
