@@ -12,15 +12,13 @@ import SwiftUI
 struct GRectangle: RectangularShape, SimpleShape, RotableShape {
     
     var givenName: String?
-    var typeKey: String { sizeX == sizeY ? "Square" : "Rectangle" }
+    var typeKey: String { size.square ? "Square" : "Rectangle" }
     
     var uuid = UUID()
     
-    var positionX: Int
-    var positionY: Int
+    var position: Pos
     var positionZ: Int = 0
-    var sizeX: Int
-    var sizeY: Int
+    var size: Pos
     var rotation: Int = 0
     
     var paint: Color
@@ -29,7 +27,7 @@ struct GRectangle: RectangularShape, SimpleShape, RotableShape {
     var graphics: AnyView {
         Rectangle()
             .applyingFillOrStroke(for: self)
-            .frame(width: CGFloat(sizeX), height: CGFloat(sizeY))
+            .frame(width: CGFloat(size.x), height: CGFloat(size.y))
             .rotationEffect(.degrees(Double(rotation)), anchor: .center) // TODO support for rotationCenter
             .position(x: CGFloat(centerX), y: CGFloat(centerY))
             .erased
@@ -37,6 +35,6 @@ struct GRectangle: RectangularShape, SimpleShape, RotableShape {
     
     var stateDefinitions: String { "" }
     var stateConstructor: String {
-        "Rectangle(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)° \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "Rectangle(\(givenName?.asLiteral ?? "")\(position.state) \(positionZ) \(size.state) \(rotation)° \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public protocol GShape {
+public protocol GShape: GRPHType {
     var uuid: UUID { get }
     
     var positionZ: Int { get set }
@@ -28,8 +28,7 @@ extension GShape {
 }
 
 public protocol BasicShape: GShape {
-    var positionX: Int { get set }
-    var positionY: Int { get set }
+    var position: Pos { get set }
 }
 
 public protocol SimpleShape: GShape {
@@ -44,16 +43,15 @@ public protocol RotableShape: GShape {
 }
 
 public protocol RectangularShape: BasicShape {
-    var sizeX: Int { get set }
-    var sizeY: Int { get set }
+    var size: Pos { get set }
 }
 
 extension RectangularShape {
     var centerX: Int {
-        positionX + (sizeX / 2)
+        position.x + (size.x / 2)
     }
     var centerY: Int {
-        positionY + (sizeY / 2)
+        position.y + (size.y / 2)
     }
 }
 
