@@ -30,7 +30,8 @@ struct GraphismDocument: FileDocument {
                            GLine(startX: 275, startY: 150, endX: 110, endY: 275, paint: .black, strokeStyle: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round)),
                            GPath(givenName: "heart", points: [150, 210, 75, 165, 50, 55, 150, 110, 250, 55, 225, 165, 150, 210], actions: [.moveTo, .cubicTo, .cubicTo], paint: .purple),
                            GClip(shape: GRectangle(positionX: 300, positionY: 300, sizeX: 50, sizeY: 50, paint: .pink),
-                                 clip: GRectangle(positionX: 300, positionY: 300, sizeX: 50, sizeY: 50, rotation: 45, paint: .black))]
+                                 clip: GRectangle(positionX: 300, positionY: 300, sizeX: 50, sizeY: 50, rotation: 45, paint: .black)),
+                           GPolygon(points: [200, 0, 300, 0, 275, 30, 300, 60, 200, 60, 225, 30], paint: .orange)]
         }
         var source = ""
         

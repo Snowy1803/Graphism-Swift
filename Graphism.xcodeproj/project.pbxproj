@@ -27,6 +27,8 @@
 		2098B68624AA18B30042D465 /* GPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68424AA18B30042D465 /* GPath.swift */; };
 		2098B68824AA26740042D465 /* GClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68724AA26740042D465 /* GClip.swift */; };
 		2098B68924AA26740042D465 /* GClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68724AA26740042D465 /* GClip.swift */; };
+		2098B68B24AA98070042D465 /* GPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68A24AA98070042D465 /* GPolygon.swift */; };
+		2098B68C24AA98070042D465 /* GPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68A24AA98070042D465 /* GPolygon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +47,7 @@
 		2098B68124A971B10042D465 /* GLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLine.swift; sourceTree = "<group>"; };
 		2098B68424AA18B30042D465 /* GPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPath.swift; sourceTree = "<group>"; };
 		2098B68724AA26740042D465 /* GClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GClip.swift; sourceTree = "<group>"; };
+		2098B68A24AA98070042D465 /* GPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPolygon.swift; sourceTree = "<group>"; };
 		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +126,7 @@
 				2098B67A24A970350042D465 /* GCircle.swift */,
 				2098B68124A971B10042D465 /* GLine.swift */,
 				2098B68424AA18B30042D465 /* GPath.swift */,
+				2098B68A24AA98070042D465 /* GPolygon.swift */,
 				2098B68724AA26740042D465 /* GClip.swift */,
 			);
 			path = Shapes;
@@ -233,6 +237,7 @@
 				2098B68224A971B10042D465 /* GLine.swift in Sources */,
 				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
 				2098B67B24A970350042D465 /* GShape.swift in Sources */,
+				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B67F24A970350042D465 /* GCircle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +254,7 @@
 				2098B68324A971B10042D465 /* GLine.swift in Sources */,
 				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
 				2098B67C24A970350042D465 /* GShape.swift in Sources */,
+				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B68024A970350042D465 /* GCircle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
