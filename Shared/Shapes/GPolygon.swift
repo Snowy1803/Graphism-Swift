@@ -15,7 +15,7 @@ struct GPolygon: SimpleShape { // Add rotation support
     
     var uuid = UUID()
     
-    var points: [Int] = []
+    var points: [Pos] = []
     var positionZ: Int = 0
     
     var paint: Color
@@ -23,14 +23,12 @@ struct GPolygon: SimpleShape { // Add rotation support
     
     var path: Path {
         Path { path in
-            guard points.count >= 4 else {
+            guard points.count >= 2 else {
                 return
             }
-            path.move(to: CGPoint(x: points[0], y: points[1]))
-            var i = 2
-            while i < points.count {
-                path.addLine(to: CGPoint(x: points[i], y: points[i + 1]))
-                i += 2
+            path.move(to: points[0].cg)
+            for point in points {
+                path.addLine(to: point.cg)
             }
             path.closeSubpath()
         }
@@ -45,10 +43,8 @@ struct GPolygon: SimpleShape { // Add rotation support
     
     var stateConstructor: String {
         var state = "Polygon(\(givenName?.asLiteral ?? "")\(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? "")"
-        var i = 0
-        while i < points.count {
-            state += " \(points[i]),\(points[i + 1])"
-            i += 2
+        for point in points {
+            state += " \(point.state)"
         }
         return state + ")"
     }

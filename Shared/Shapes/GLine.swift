@@ -15,10 +15,8 @@ struct GLine: SimpleShape {
     
     var uuid = UUID()
     
-    var startX: Int
-    var startY: Int
-    var endX: Int
-    var endY: Int
+    var start: Pos
+    var end: Pos
     var positionZ: Int = 0
     
     var paint: Color
@@ -26,8 +24,8 @@ struct GLine: SimpleShape {
     
     var path: Path {
         Path { path in
-            path.move(to: CGPoint(x: startX, y: startY))
-            path.addLine(to: CGPoint(x: endX, y: endY))
+            path.move(to: CGPoint(x: start.x, y: start.y))
+            path.addLine(to: CGPoint(x: end.x, y: end.y))
         }
     }
     
@@ -38,6 +36,6 @@ struct GLine: SimpleShape {
     
     var stateDefinitions: String { "" }
     var stateConstructor: String {
-        "Line(\(givenName?.asLiteral ?? "")\(startX),\(startY) \(endX),\(endY) \(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "Line(\(givenName?.asLiteral ?? "")\(start.state) \(end.state) \(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
     }
 }

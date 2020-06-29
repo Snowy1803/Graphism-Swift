@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public struct Pos: GRPHType {
     var x: Int
@@ -17,5 +18,9 @@ public struct Pos: GRPHType {
     
     var square: Bool {
         x == y
+    }
+    
+    var cg: CGPoint {
+        CGPoint(x: x, y: y)
     }
 }

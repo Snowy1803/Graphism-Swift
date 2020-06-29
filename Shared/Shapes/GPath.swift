@@ -15,7 +15,7 @@ struct GPath: SimpleShape { // Add rotation support
     
     var uuid = UUID()
     
-    var points: [Int] = []
+    var points: [Pos] = []
     var actions: [PathActions] = []
     var positionZ: Int = 0
     
@@ -28,17 +28,17 @@ struct GPath: SimpleShape { // Add rotation support
             for action in actions {
                 switch action {
                 case .moveTo:
-                    path.move(to: CGPoint(x: points[i], y: points[i + 1]))
-                    i += 2
+                    path.move(to: points[i].cg)
+                    i += 1
                 case .lineTo:
-                    path.addLine(to: CGPoint(x: points[i], y: points[i + 1]))
-                    i += 2
+                    path.addLine(to: points[i].cg)
+                    i += 1
                 case .quadTo:
-                    path.addQuadCurve(to: CGPoint(x: points[i + 2], y: points[i + 3]), control: CGPoint(x: points[i], y: points[i + 1]))
-                    i += 4
+                    path.addQuadCurve(to: points[i + 1].cg, control: points[i].cg)
+                    i += 2
                 case .cubicTo:
-                    path.addCurve(to: CGPoint(x: points[i + 4], y: points[i + 5]), control1: CGPoint(x: points[i], y: points[i + 1]), control2: CGPoint(x: points[i + 2], y: points[i + 3]))
-                    i += 6
+                    path.addCurve(to: points[i + 2].cg, control1: points[i].cg, control2: points[i + 1].cg)
+                    i += 3
                 case .closePath:
                     path.closeSubpath()
                 }
@@ -59,17 +59,17 @@ struct GPath: SimpleShape { // Add rotation support
         for action in actions {
             switch action {
             case .moveTo:
-                str += "moveTo path\(uniqueVarName): \(points[i]),\(points[i + 1])\n"
-                i += 2
+                str += "moveTo path\(uniqueVarName): \(points[i].state)\n"
+                i += 1
             case .lineTo:
-                str += "lineTo path\(uniqueVarName): \(points[i]),\(points[i + 1])\n"
-                i += 2
+                str += "lineTo path\(uniqueVarName): \(points[i].state)\n"
+                i += 1
             case .quadTo:
-                str += "quadTo path\(uniqueVarName): \(points[i]),\(points[i + 1]) \(points[i + 2]),\(points[i + 3])\n"
-                i += 4
+                str += "quadTo path\(uniqueVarName): \(points[i].state) \(points[i + 1].state)\n"
+                i += 2
             case .cubicTo:
-                str += "cubicTo path\(uniqueVarName): \(points[i]),\(points[i + 1]) \(points[i + 2]),\(points[i + 3]) \(points[i + 4]),\(points[i + 5])\n"
-                i += 6
+                str += "cubicTo path\(uniqueVarName): \(points[i].state) \(points[i + 1].state) \(points[i + 2].state)\n"
+                i += 3
             case .closePath:
                 str += "closePath path\(uniqueVarName):\n"
             }
