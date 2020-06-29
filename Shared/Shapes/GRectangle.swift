@@ -37,6 +37,6 @@ struct GRectangle: RectangularShape, SimpleShape, RotableShape {
     
     var stateDefinitions: String { "" }
     var stateConstructor: String {
-        "Rectangle(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "Rectangle(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)° \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
     }
 }
