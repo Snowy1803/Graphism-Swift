@@ -11,7 +11,7 @@ import SwiftUI
 
 struct GCircle: RectangularShape, SimpleShape, RotableShape {
     var givenName: String?
-    var typeKey: String { "Ellipse" }
+    var typeKey: String { sizeX == sizeY ? "Circle" : "Ellipse" }
     
     var uuid = UUID()
     

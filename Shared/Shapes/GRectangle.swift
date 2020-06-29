@@ -12,7 +12,7 @@ import SwiftUI
 struct GRectangle: RectangularShape, SimpleShape, RotableShape {
     
     var givenName: String?
-    var typeKey: String { "Rectangle" }
+    var typeKey: String { sizeX == sizeY ? "Square" : "Rectangle" }
     
     var uuid = UUID()
     
