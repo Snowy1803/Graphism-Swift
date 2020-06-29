@@ -15,8 +15,12 @@
 		2063128524A8C38D0095911B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126E24A8C3790095911B /* ContentView.swift */; };
 		2063128624A8C38D0095911B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2063126F24A8C38D0095911B /* Assets.xcassets */; };
 		2063128724A8C38D0095911B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2063126F24A8C38D0095911B /* Assets.xcassets */; };
-		20740ECD24A8E1AF00150F17 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20740ECC24A8E1AF00150F17 /* GShape.swift */; };
-		20740ECE24A8E1AF00150F17 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20740ECC24A8E1AF00150F17 /* GShape.swift */; };
+		2098B67B24A970350042D465 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
+		2098B67C24A970350042D465 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
+		2098B67D24A970350042D465 /* GRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67924A970350042D465 /* GRectangle.swift */; };
+		2098B67E24A970350042D465 /* GRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67924A970350042D465 /* GRectangle.swift */; };
+		2098B67F24A970350042D465 /* GCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67A24A970350042D465 /* GCircle.swift */; };
+		2098B68024A970350042D465 /* GCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67A24A970350042D465 /* GCircle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +33,9 @@
 		2063127C24A8C38D0095911B /* Graphism.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphism.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2063127E24A8C38D0095911B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2063127F24A8C38D0095911B /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
-		20740ECC24A8E1AF00150F17 /* GShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GShape.swift; path = Shapes/GShape.swift; sourceTree = "<group>"; };
+		2098B67824A970350042D465 /* GShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GShape.swift; sourceTree = "<group>"; };
+		2098B67924A970350042D465 /* GRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GRectangle.swift; sourceTree = "<group>"; };
+		2098B67A24A970350042D465 /* GCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCircle.swift; sourceTree = "<group>"; };
 		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,7 +71,7 @@
 		2063126B24A8C3790095911B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				20740ECB24A8E09900150F17 /* Shapes */,
+				2098B67724A970350042D465 /* Shapes */,
 				2063126C24A8C3790095911B /* GraphismApp.swift */,
 				2063126D24A8C3790095911B /* GraphismDocument.swift */,
 				2063126E24A8C3790095911B /* ContentView.swift */,
@@ -100,12 +106,14 @@
 			path = macOS;
 			sourceTree = "<group>";
 		};
-		20740ECB24A8E09900150F17 /* Shapes */ = {
+		2098B67724A970350042D465 /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
-				20740ECC24A8E1AF00150F17 /* GShape.swift */,
+				2098B67824A970350042D465 /* GShape.swift */,
+				2098B67924A970350042D465 /* GRectangle.swift */,
+				2098B67A24A970350042D465 /* GCircle.swift */,
 			);
-			name = Shapes;
+			path = Shapes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,8 +215,10 @@
 			files = (
 				2063128024A8C38D0095911B /* GraphismApp.swift in Sources */,
 				2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */,
-				20740ECD24A8E1AF00150F17 /* GShape.swift in Sources */,
 				2063128424A8C38D0095911B /* ContentView.swift in Sources */,
+				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
+				2098B67B24A970350042D465 /* GShape.swift in Sources */,
+				2098B67F24A970350042D465 /* GCircle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,8 +228,10 @@
 			files = (
 				2063128124A8C38D0095911B /* GraphismApp.swift in Sources */,
 				2063128324A8C38D0095911B /* GraphismDocument.swift in Sources */,
-				20740ECE24A8E1AF00150F17 /* GShape.swift in Sources */,
 				2063128524A8C38D0095911B /* ContentView.swift in Sources */,
+				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
+				2098B67C24A970350042D465 /* GShape.swift in Sources */,
+				2098B68024A970350042D465 /* GCircle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

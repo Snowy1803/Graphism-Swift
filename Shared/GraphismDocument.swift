@@ -24,7 +24,9 @@ struct GraphismDocument: FileDocument {
         } else {
             self.shapes = [GRectangle(positionX: 200, positionY: 100, sizeX: 150, sizeY: 100, paint: .red),
                            GRectangle(positionX: 0, positionY: 0, sizeX: 50, sizeY: 100, paint: .green),
-                           GRectangle(positionX: 250, positionY: 125, sizeX: 50, sizeY: 50, rotation: 45, paint: .yellow)]
+                           GRectangle(positionX: 250, positionY: 125, sizeX: 50, sizeY: 50, rotation: 45, paint: .yellow),
+                           GCircle(positionX: 260, positionY: 135, sizeX: 30, sizeY: 30, paint: .red),
+                           GCircle(positionX: 10, positionY: 200, sizeX: 200, sizeY: 150, paint: .blue)]
         }
         source = self.shapes.isEmpty ? "" : "validate: \(self.shapes.map(\.stateConstructor).joined(separator: "\nvalidate: "))\n"
         print("Creating file")
