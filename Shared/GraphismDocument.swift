@@ -27,9 +27,10 @@ struct GraphismDocument: FileDocument {
                            GRectangle(positionX: 250, positionY: 125, sizeX: 50, sizeY: 50, rotation: 45, paint: .yellow),
                            GCircle(positionX: 260, positionY: 135, sizeX: 30, sizeY: 30, paint: .red),
                            GCircle(positionX: 10, positionY: 200, sizeX: 200, sizeY: 150, paint: .blue),
-                           GLine(startX: 275, startY: 150, endX: 110, endY: 275, paint: .black, strokeStyle: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))]
+                           GLine(startX: 275, startY: 150, endX: 110, endY: 275, paint: .black, strokeStyle: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round)),
+                           GPath(givenName: "heart", points: [150, 210, 75, 165, 50, 55, 150, 110, 250, 55, 225, 165, 150, 210], actions: [.moveTo, .cubicTo, .cubicTo], paint: .purple)]
         }
-        source = self.shapes.isEmpty ? "" : "validate: \(self.shapes.map(\.stateConstructor).joined(separator: "\nvalidate: "))\n"
+        source = "\(self.shapes.map(\.stateConstructor).joined(separator: "\n"))\n"
         print("Creating file")
         print(source)
     }

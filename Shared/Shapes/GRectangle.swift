@@ -36,6 +36,6 @@ struct GRectangle: RectangularShape, SimpleShape, RotableShape {
     }
     
     var stateConstructor: String {
-        "Rectangle(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "validate: Rectangle(\(givenName?.asLiteral ?? "")\(positionX),\(positionY) \(positionZ) \(sizeX),\(sizeY) \(rotation)º \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
     }
 }

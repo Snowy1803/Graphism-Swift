@@ -34,6 +34,6 @@ struct GLine: SimpleShape {
     }
     
     var stateConstructor: String {
-        "Line(\(givenName?.asLiteral ?? "")\(startX),\(startY) \(endX),\(endY) \(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "validate: Line(\(givenName?.asLiteral ?? "")\(startX),\(startY) \(endX),\(endY) \(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
     }
 }
