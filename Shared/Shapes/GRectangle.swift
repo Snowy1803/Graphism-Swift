@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct GRectangle: RectangularShape, SimpleShape {
+struct GRectangle: RectangularShape, SimpleShape, RotableShape {
     var givenName: String?
     var typeKey: String { "Rectangle" }
     

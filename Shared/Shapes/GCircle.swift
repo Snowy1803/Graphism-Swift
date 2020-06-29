@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct GCircle: RectangularShape, SimpleShape {
+struct GCircle: RectangularShape, SimpleShape, RotableShape {
     var givenName: String?
     var typeKey: String { "Ellipse" }
     

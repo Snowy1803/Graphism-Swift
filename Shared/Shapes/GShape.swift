@@ -34,8 +34,11 @@ public protocol BasicShape: GShape {
 public protocol SimpleShape: GShape {
     var paint: Color { get set } // TODO change with custom PAINT type
     // stroke or fill?
-    
+}
+
+public protocol RotableShape: GShape {
     var rotation: Int { get set }
+    // rotation center
 }
 
 public protocol RectangularShape: BasicShape {
