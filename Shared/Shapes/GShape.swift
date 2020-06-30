@@ -37,7 +37,7 @@ public protocol SimpleShape: GShape {
     var strokeStyle: StrokeStyle? { get set }
 }
 
-public protocol RotableShape: GShape {
+public protocol RotatableShape: GShape {
     var rotation: Int { get set }
     // rotation center
 }

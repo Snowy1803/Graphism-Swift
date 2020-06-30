@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct GCircle: RectangularShape, SimpleShape, RotableShape {
+class GCircle: RectangularShape, SimpleShape, RotatableShape {
     var givenName: String?
     var typeKey: String { size.square ? "Circle" : "Ellipse" }
     
@@ -22,6 +22,16 @@ struct GCircle: RectangularShape, SimpleShape, RotableShape {
     
     var paint: Color
     var strokeStyle: StrokeStyle?
+    
+    init(givenName: String? = nil, position: Pos, positionZ: Int = 0, size: Pos, rotation: Int = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+        self.givenName = givenName
+        self.position = position
+        self.positionZ = positionZ
+        self.size = size
+        self.rotation = rotation
+        self.paint = paint
+        self.strokeStyle = strokeStyle
+    }
     
     var graphics: AnyView {
         Ellipse()
