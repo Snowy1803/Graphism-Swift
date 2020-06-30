@@ -19,6 +19,25 @@
 		200A5F7424AB82DA0028180B /* GRPHArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7224AB82DA0028180B /* GRPHArray.swift */; };
 		200A5F7624AB85E10028180B /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7524AB85E10028180B /* Stroke.swift */; };
 		200A5F7724AB85E10028180B /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7524AB85E10028180B /* Stroke.swift */; };
+		200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7E24ABA4E60028180B /* GraphismTests.swift */; };
+		200A5F8424ABA5180028180B /* GRPHValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68E24AAB06A0042D465 /* GRPHValue.swift */; };
+		200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7224AB82DA0028180B /* GRPHArray.swift */; };
+		200A5F8624ABA5180028180B /* Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69424AB5EDA0042D465 /* Rotation.swift */; };
+		200A5F8724ABA5180028180B /* RadialPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6C24AB6FB60028180B /* RadialPaint.swift */; };
+		200A5F8824ABA5180028180B /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6924AB6AE60028180B /* Direction.swift */; };
+		200A5F8924ABA5180028180B /* Paint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69724AB61350042D465 /* Paint.swift */; };
+		200A5F8A24ABA5180028180B /* ColorPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69A24AB62B60042D465 /* ColorPaint.swift */; };
+		200A5F8B24ABA5180028180B /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7524AB85E10028180B /* Stroke.swift */; };
+		200A5F8C24ABA5180028180B /* GRPHType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6F24AB76560028180B /* GRPHType.swift */; };
+		200A5F8D24ABA5180028180B /* LinearPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6624AB69DB0028180B /* LinearPaint.swift */; };
+		200A5F8E24ABA5180028180B /* Pos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69124AAB0AC0042D465 /* Pos.swift */; };
+		200A5F8F24ABA51E0028180B /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
+		200A5F9024ABA51E0028180B /* GRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67924A970350042D465 /* GRectangle.swift */; };
+		200A5F9124ABA51E0028180B /* GClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68724AA26740042D465 /* GClip.swift */; };
+		200A5F9224ABA51E0028180B /* GCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67A24A970350042D465 /* GCircle.swift */; };
+		200A5F9324ABA51E0028180B /* GPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68424AA18B30042D465 /* GPath.swift */; };
+		200A5F9424ABA51E0028180B /* GPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68A24AA98070042D465 /* GPolygon.swift */; };
+		200A5F9524ABA51E0028180B /* GLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68124A971B10042D465 /* GLine.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -60,6 +79,9 @@
 		200A5F6F24AB76560028180B /* GRPHType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHType.swift; sourceTree = "<group>"; };
 		200A5F7224AB82DA0028180B /* GRPHArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHArray.swift; sourceTree = "<group>"; };
 		200A5F7524AB85E10028180B /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
+		200A5F7C24ABA4E60028180B /* GraphismTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GraphismTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		200A5F7E24ABA4E60028180B /* GraphismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismTests.swift; sourceTree = "<group>"; };
+		200A5F8024ABA4E60028180B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -85,6 +107,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		200A5F7924ABA4E60028180B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2063127124A8C38D0095911B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -102,6 +131,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		200A5F7D24ABA4E60028180B /* GraphismTests */ = {
+			isa = PBXGroup;
+			children = (
+				200A5F7E24ABA4E60028180B /* GraphismTests.swift */,
+				200A5F8024ABA4E60028180B /* Info.plist */,
+			);
+			path = GraphismTests;
+			sourceTree = "<group>";
+		};
 		2063126624A8C3790095911B = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +147,7 @@
 				2063126B24A8C3790095911B /* Shared */,
 				2063127624A8C38D0095911B /* iOS */,
 				2063127D24A8C38D0095911B /* macOS */,
+				200A5F7D24ABA4E60028180B /* GraphismTests */,
 				2063127524A8C38D0095911B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -131,6 +170,7 @@
 			children = (
 				2063127424A8C38D0095911B /* Graphism.app */,
 				2063127C24A8C38D0095911B /* Graphism.app */,
+				200A5F7C24ABA4E60028180B /* GraphismTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -187,6 +227,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		200A5F7B24ABA4E60028180B /* GraphismTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 200A5F8124ABA4E60028180B /* Build configuration list for PBXNativeTarget "GraphismTests" */;
+			buildPhases = (
+				200A5F7824ABA4E60028180B /* Sources */,
+				200A5F7924ABA4E60028180B /* Frameworks */,
+				200A5F7A24ABA4E60028180B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GraphismTests;
+			productName = GraphismTests;
+			productReference = 200A5F7C24ABA4E60028180B /* GraphismTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		2063127324A8C38D0095911B /* iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2063128A24A8C38D0095911B /* Build configuration list for PBXNativeTarget "iOS" */;
@@ -230,6 +287,9 @@
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
+					200A5F7B24ABA4E60028180B = {
+						CreatedOnToolsVersion = 12.0;
+					};
 					2063127324A8C38D0095911B = {
 						CreatedOnToolsVersion = 12.0;
 					};
@@ -253,11 +313,19 @@
 			targets = (
 				2063127324A8C38D0095911B /* iOS */,
 				2063127B24A8C38D0095911B /* macOS */,
+				200A5F7B24ABA4E60028180B /* GraphismTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		200A5F7A24ABA4E60028180B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2063127224A8C38D0095911B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -277,6 +345,32 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		200A5F7824ABA4E60028180B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				200A5F9424ABA51E0028180B /* GPolygon.swift in Sources */,
+				200A5F9124ABA51E0028180B /* GClip.swift in Sources */,
+				200A5F9224ABA51E0028180B /* GCircle.swift in Sources */,
+				200A5F8724ABA5180028180B /* RadialPaint.swift in Sources */,
+				200A5F8424ABA5180028180B /* GRPHValue.swift in Sources */,
+				200A5F8924ABA5180028180B /* Paint.swift in Sources */,
+				200A5F9024ABA51E0028180B /* GRectangle.swift in Sources */,
+				200A5F8624ABA5180028180B /* Rotation.swift in Sources */,
+				200A5F8D24ABA5180028180B /* LinearPaint.swift in Sources */,
+				200A5F9324ABA51E0028180B /* GPath.swift in Sources */,
+				200A5F8B24ABA5180028180B /* Stroke.swift in Sources */,
+				200A5F8E24ABA5180028180B /* Pos.swift in Sources */,
+				200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */,
+				200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */,
+				200A5F8A24ABA5180028180B /* ColorPaint.swift in Sources */,
+				200A5F8C24ABA5180028180B /* GRPHType.swift in Sources */,
+				200A5F8824ABA5180028180B /* Direction.swift in Sources */,
+				200A5F9524ABA51E0028180B /* GLine.swift in Sources */,
+				200A5F8F24ABA51E0028180B /* GShape.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2063127024A8C38D0095911B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -336,6 +430,46 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		200A5F8224ABA4E60028180B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				INFOPLIST_FILE = GraphismTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.orbisec.GraphismTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		200A5F8324ABA4E60028180B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				INFOPLIST_FILE = GraphismTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.orbisec.GraphismTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		2063128824A8C38D0095911B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -543,6 +677,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		200A5F8124ABA4E60028180B /* Build configuration list for PBXNativeTarget "GraphismTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				200A5F8224ABA4E60028180B /* Debug */,
+				200A5F8324ABA4E60028180B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2063126A24A8C3790095911B /* Build configuration list for PBXProject "Graphism" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

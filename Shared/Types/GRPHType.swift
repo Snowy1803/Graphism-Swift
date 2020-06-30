@@ -26,7 +26,7 @@ extension GRPHType {
         OptionalType(wrapped: self)
     }
     
-    static func parse(literal: String) -> GRPHType? { // needs some GRPHContext
+    public static func parse(literal: String) -> GRPHType? { // needs some GRPHContext
         if literal.isSurrounded(left: "<", right: ">") {
             return parse(literal: "\(literal.dropLast().dropFirst())")
         }
@@ -38,11 +38,13 @@ extension GRPHType {
         }
         if literal.contains("|") {
             let components = literal.split(separator: "|", maxSplits: 1)
-            let left = String(components[0])
-            let right = String(components[1])
-            if let type1 = parse(literal: left),
-               let type2 = parse(literal: right) {
-                return MultiOrType(type1: type1, type2: type2)
+            if components.count == 2 {
+                let left = String(components[0])
+                let right = String(components[1])
+                if let type1 = parse(literal: left),
+                   let type2 = parse(literal: right) {
+                    return MultiOrType(type1: type1, type2: type2)
+                }
             }
         }
         if literal.hasSuffix("?") {
@@ -150,7 +152,10 @@ public struct OptionalType: GRPHType {
     var wrapped: GRPHType
     
     public var string: String {
-        "<\(wrapped.string)>?" // Remove <> unless multi or type
+        if wrapped is MultiOrType {
+            return "<\(wrapped.string)>?"
+        }
+        return "\(wrapped.string)?"
     }
     
     public func isInstance(of other: GRPHType) -> Bool {
