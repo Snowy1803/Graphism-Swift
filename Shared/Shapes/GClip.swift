@@ -33,4 +33,6 @@ struct GClip: GShape {
     var stateConstructor: String {
         "clippedShape[\(shape.stateConstructor) \(clip.stateConstructor)]"
     }
+    
+    public var type: GRPHType { SimpleType.shape }
 }

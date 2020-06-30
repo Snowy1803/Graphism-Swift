@@ -26,4 +26,6 @@ public struct Rotation: GRPHValue, ExpressibleByIntegerLiteral {
     var angle: Angle {
         .degrees(Double(value))
     }
+    
+    public var type: GRPHType { SimpleType.rotation }
 }

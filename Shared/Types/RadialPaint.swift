@@ -22,4 +22,6 @@ public struct RadialPaint: Paint {
     public var state: String {
         "radial(\(centerColor.state) \(center.state) \(externalColor.state) \(radius))"
     }
+    
+    public var type: GRPHType { SimpleType.radial }
 }

@@ -47,4 +47,6 @@ class GRectangle: RectangularShape, SimpleShape, RotatableShape {
     var stateConstructor: String {
         "Rectangle(\(givenName?.asLiteral ?? "")\(position.state) \(positionZ) \(size.state) \(rotation.state) \(paint.state)\(strokeStyle?.stateConstructor ?? ""))"
     }
+    
+    public var type: GRPHType { SimpleType.Rectangle }
 }

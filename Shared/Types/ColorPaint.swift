@@ -30,4 +30,6 @@ public enum ColorPaint: Paint {
             return "color(\(red) \(green) \(blue) \(alpha))"
         }
     }
+    
+    public var type: GRPHType { SimpleType.color }
 }

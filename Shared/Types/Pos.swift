@@ -23,4 +23,6 @@ public struct Pos: GRPHValue {
     var cg: CGPoint {
         CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
+    
+    public var type: GRPHType { SimpleType.pos }
 }

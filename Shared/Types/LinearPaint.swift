@@ -20,4 +20,6 @@ public struct LinearPaint: Paint {
     public var state: String {
         "linear(\(from.state) \(direction.rawValue) \(to.state))"
     }
+    
+    public var type: GRPHType { SimpleType.linear }
 }
