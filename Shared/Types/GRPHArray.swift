@@ -17,18 +17,19 @@ class GRPHArray<Content: GRPHValue>: StatefulValue {
     }
     
     public var state: String {
-        var str = "\(content.string){"
         guard !wrapped.isEmpty else {
-            return "\(str)}"
+            return "{}"
         }
+        
+        var str = "{"
         for value in wrapped {
             if let value = value as? StatefulValue {
-                str += "\(value.state) "
+                str += "\(value.state), "
             } else {
-                str += "stateless "
+                str += "stateless, "
             }
         }
-        return "\(str.dropLast())}"
+        return "\(str.dropLast(2))}"
     }
     
     public var type: GRPHType { ArrayType(content: content) }
