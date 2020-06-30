@@ -47,11 +47,8 @@ public protocol RectangularShape: BasicShape {
 }
 
 extension RectangularShape {
-    var centerX: Int {
-        position.x + (size.x / 2)
-    }
-    var centerY: Int {
-        position.y + (size.y / 2)
+    var center: Pos {
+        Pos(x: position.x + (size.x / 2), y: position.y + (size.y / 2))
     }
 }
 

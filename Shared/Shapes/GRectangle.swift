@@ -29,7 +29,7 @@ struct GRectangle: RectangularShape, SimpleShape, RotableShape {
             .applyingFillOrStroke(for: self)
             .frame(width: CGFloat(size.x), height: CGFloat(size.y))
             .rotationEffect(.degrees(Double(rotation)), anchor: .center) // TODO support for rotationCenter
-            .position(x: CGFloat(centerX), y: CGFloat(centerY))
+            .position(center.cg)
             .erased
     }
     

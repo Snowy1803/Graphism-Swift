@@ -24,8 +24,8 @@ struct GLine: SimpleShape {
     
     var path: Path {
         Path { path in
-            path.move(to: CGPoint(x: start.x, y: start.y))
-            path.addLine(to: CGPoint(x: end.x, y: end.y))
+            path.move(to: start.cg)
+            path.addLine(to: end.cg)
         }
     }
     
