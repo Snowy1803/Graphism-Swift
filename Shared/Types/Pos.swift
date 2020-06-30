@@ -9,8 +9,8 @@ import Foundation
 import CoreGraphics
 
 public struct Pos: GRPHValue {
-    var x: Int
-    var y: Int
+    var x: Float
+    var y: Float
     
     var state: String {
         "\(x),\(y)"
@@ -21,6 +21,6 @@ public struct Pos: GRPHValue {
     }
     
     var cg: CGPoint {
-        CGPoint(x: x, y: y)
+        CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
 }
