@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-public struct Pos: GRPHType {
+public struct Pos: GRPHValue {
     var x: Int
     var y: Int
     

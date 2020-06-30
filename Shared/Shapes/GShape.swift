@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public protocol GShape: GRPHType {
+public protocol GShape: GRPHValue {
     var uuid: UUID { get }
     
     var positionZ: Int { get set }
