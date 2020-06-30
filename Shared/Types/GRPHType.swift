@@ -17,9 +17,69 @@ extension GRPHType {
     var isTheMixed: Bool {
         self as? SimpleType == SimpleType.mixed
     }
+    
+    var inArray: ArrayType {
+        ArrayType(content: self)
+    }
+    
+    var optional: OptionalType {
+        OptionalType(wrapped: self)
+    }
+    
+    static func parse(literal: String) -> GRPHType? { // needs some GRPHContext
+        if literal.isSurrounded(left: "<", right: ">") {
+            return parse(literal: "\(literal.dropLast().dropFirst())")
+        }
+        if literal.isSurrounded(left: "{", right: "}") {
+            return parse(literal: "\(literal.dropLast().dropFirst())")?.inArray
+        }
+        if literal.hasSuffix("?") && String(literal.dropLast()).isSurrounded(left: "<", right: ">") {
+            return parse(literal: String(literal.dropLast(2).dropFirst()))?.optional
+        }
+        if literal.contains("|") {
+            let components = literal.split(separator: "|", maxSplits: 1)
+            let left = String(components[0])
+            let right = String(components[1])
+            if let type1 = parse(literal: left),
+               let type2 = parse(literal: right) {
+                return MultiOrType(type1: type1, type2: type2)
+            }
+        }
+        if literal.hasSuffix("?") {
+            return parse(literal: String(literal.dropLast()))?.optional
+        }
+        if literal == "farray" {
+            return ArrayType(content: SimpleType.float)
+        }
+        // TODO search types in CONTEXT aka IMPORTED
+        return SimpleType.allCases.first(where: { $0.canBeCalled(literal)})
+    }
 }
 
-public enum SimpleType: String, GRPHType {
+extension String {
+    func isSurrounded(left: Character, right: Character) -> Bool {
+        if last == right && first == left {
+            let inner = dropLast().dropFirst()
+            var deepness = 0
+            for char in inner {
+                if char == left {
+                    deepness += 1
+                } else if char == right {
+                    deepness -= 1
+                    if deepness < 0 {
+                        return false
+                    }
+                }
+            }
+            if deepness == 0 {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+public enum SimpleType: String, GRPHType, CaseIterable {
     
     case num, integer, float, rotation, pos, boolean, string, paint, color, linear, radial, shape, direction, stroke, /*file, image,*/ font, mixed
     
@@ -79,6 +139,10 @@ public enum SimpleType: String, GRPHType {
             return isInstance(of: multi.type1) || isInstance(of: multi.type2)
         }
         return other.isTheMixed || other as? SimpleType == self || (extending?.isInstance(of: other) ?? false)
+    }
+    
+    public func canBeCalled(_ name: String) -> Bool {
+        return name == string || aliases.contains(name)
     }
 }
 
