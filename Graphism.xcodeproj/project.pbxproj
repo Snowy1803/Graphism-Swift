@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		200A5F6724AB69DB0028180B /* LinearPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6624AB69DB0028180B /* LinearPaint.swift */; };
+		200A5F6824AB69DB0028180B /* LinearPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6624AB69DB0028180B /* LinearPaint.swift */; };
+		200A5F6A24AB6AE60028180B /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6924AB6AE60028180B /* Direction.swift */; };
+		200A5F6B24AB6AE60028180B /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6924AB6AE60028180B /* Direction.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -42,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		200A5F6624AB69DB0028180B /* LinearPaint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearPaint.swift; sourceTree = "<group>"; };
+		200A5F6924AB6AE60028180B /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -156,6 +162,8 @@
 				2098B69424AB5EDA0042D465 /* Rotation.swift */,
 				2098B69724AB61350042D465 /* Paint.swift */,
 				2098B69A24AB62B60042D465 /* ColorPaint.swift */,
+				200A5F6624AB69DB0028180B /* LinearPaint.swift */,
+				200A5F6924AB6AE60028180B /* Direction.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -260,9 +268,11 @@
 				2063128024A8C38D0095911B /* GraphismApp.swift in Sources */,
 				2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */,
 				2098B69824AB61350042D465 /* Paint.swift in Sources */,
+				200A5F6724AB69DB0028180B /* LinearPaint.swift in Sources */,
 				2098B68524AA18B30042D465 /* GPath.swift in Sources */,
 				2098B68824AA26740042D465 /* GClip.swift in Sources */,
 				2063128424A8C38D0095911B /* ContentView.swift in Sources */,
+				200A5F6A24AB6AE60028180B /* Direction.swift in Sources */,
 				2098B68224A971B10042D465 /* GLine.swift in Sources */,
 				2098B69224AAB0AC0042D465 /* Pos.swift in Sources */,
 				2098B68F24AAB06A0042D465 /* GRPHValue.swift in Sources */,
@@ -282,9 +292,11 @@
 				2063128124A8C38D0095911B /* GraphismApp.swift in Sources */,
 				2063128324A8C38D0095911B /* GraphismDocument.swift in Sources */,
 				2098B69924AB61350042D465 /* Paint.swift in Sources */,
+				200A5F6824AB69DB0028180B /* LinearPaint.swift in Sources */,
 				2098B68624AA18B30042D465 /* GPath.swift in Sources */,
 				2098B68924AA26740042D465 /* GClip.swift in Sources */,
 				2063128524A8C38D0095911B /* ContentView.swift in Sources */,
+				200A5F6B24AB6AE60028180B /* Direction.swift in Sources */,
 				2098B68324A971B10042D465 /* GLine.swift in Sources */,
 				2098B69324AAB0AC0042D465 /* Pos.swift in Sources */,
 				2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */,

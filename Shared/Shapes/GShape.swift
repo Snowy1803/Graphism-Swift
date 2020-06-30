@@ -66,6 +66,8 @@ extension Shape {
                 switch def.paint {
                 case .color(let color):
                     self.fill(color.style)
+                case .linear(let linear):
+                    self.fill(linear.style)
                 }
             }
         }
@@ -76,6 +78,8 @@ extension Shape {
             switch paint {
             case .color(let color):
                 self.stroke(color.style, style: stroke)
+            case .linear(let linear):
+                self.stroke(linear.style, style: stroke)
             }
         }
     }

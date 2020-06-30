@@ -19,11 +19,14 @@ public protocol Paint: GRPHValue {
 
 public enum AnyPaint {
     case color(ColorPaint)
+    case linear(LinearPaint)
     
     var state: String {
         switch self {
         case .color(let color):
             return color.state
+        case .linear(let linear):
+            return linear.state
         }
     }
 }
