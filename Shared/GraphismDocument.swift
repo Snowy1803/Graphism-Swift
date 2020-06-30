@@ -22,16 +22,16 @@ struct GraphismDocument: FileDocument {
         if let shapes = shapes {
             self.shapes = shapes
         } else {
-            self.shapes = [GRectangle(position: Pos(x: 200, y: 100), size: Pos(x: 150, y: 100), paint: .red),
-                           GRectangle(position: Pos(x: 40, y: 0), size: Pos(x: 50, y: 100), paint: .green, strokeStyle: StrokeStyle(lineWidth: 5)),
-                           GRectangle(position: Pos(x: 250, y: 125), size: Pos(x: 50, y: 50), rotation: 45, paint: .yellow),
-                           GCircle(position: Pos(x: 260, y: 135), size: Pos(x: 30, y: 30), paint: .red),
-                           GCircle(position: Pos(x: 10, y: 200), size: Pos(x: 200, y: 150), paint: .blue),
-                           GLine(start: Pos(x: 275, y: 150), end: Pos(x: 110, y: 275), paint: .black, strokeStyle: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round)),
-                           GPath(givenName: "heart", points: [Pos(x: 150, y: 210), Pos(x: 75, y: 165), Pos(x: 50, y: 55), Pos(x: 150, y: 110), Pos(x: 250, y: 55), Pos(x: 225, y: 165), Pos(x: 150, y: 210)], actions: [.moveTo, .cubicTo, .cubicTo], paint: .purple),
-                           GClip(shape: GRectangle(position: Pos(x: 300, y: 300), size: Pos(x: 50, y: 50), paint: .pink),
-                                 clip: GRectangle(position: Pos(x: 300, y: 300), size: Pos(x: 50, y: 50), rotation: 45, paint: .black)),
-                           GPolygon(points: [Pos(x: 200, y: 0), Pos(x: 300, y: 0), Pos(x: 275, y: 30), Pos(x: 300, y: 60), Pos(x: 200, y: 60), Pos(x: 225, y: 30)], paint: .orange)]
+            self.shapes = [GRectangle(position: Pos(x: 200, y: 100), size: Pos(x: 150, y: 100), paint: .color(.wrapping(.red))),
+                           GRectangle(position: Pos(x: 40, y: 0), size: Pos(x: 50, y: 100), paint: .color(.wrapping(.green)), strokeStyle: StrokeStyle(lineWidth: 5)),
+                           GRectangle(position: Pos(x: 250, y: 125), size: Pos(x: 50, y: 50), rotation: 45, paint: .color(.wrapping(.yellow))),
+                           GCircle(position: Pos(x: 260, y: 135), size: Pos(x: 30, y: 30), paint: .color(.wrapping(.red))),
+                           GCircle(position: Pos(x: 10, y: 200), size: Pos(x: 200, y: 150), paint: .color(.wrapping(.blue))),
+                           GLine(start: Pos(x: 275, y: 150), end: Pos(x: 110, y: 275), paint: .color(.wrapping(.black)), strokeStyle: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round)),
+                           GPath(givenName: "heart", points: [Pos(x: 150, y: 210), Pos(x: 75, y: 165), Pos(x: 50, y: 55), Pos(x: 150, y: 110), Pos(x: 250, y: 55), Pos(x: 225, y: 165), Pos(x: 150, y: 210)], actions: [.moveTo, .cubicTo, .cubicTo], paint: .color(.wrapping(.purple))),
+                           GClip(shape: GRectangle(position: Pos(x: 300, y: 300), size: Pos(x: 50, y: 50), paint: .color(.wrapping(.pink))),
+                                 clip: GRectangle(position: Pos(x: 300, y: 300), size: Pos(x: 50, y: 50), rotation: 45, paint: .color(.wrapping(.black)))),
+                           GPolygon(points: [Pos(x: 200, y: 0), Pos(x: 300, y: 0), Pos(x: 275, y: 30), Pos(x: 300, y: 60), Pos(x: 200, y: 60), Pos(x: 225, y: 30)], paint: .color(.wrapping(.orange)))]
         }
         var source = ""
         

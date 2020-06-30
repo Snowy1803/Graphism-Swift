@@ -19,10 +19,10 @@ class GPath: SimpleShape { // Add rotation support
     var actions: [PathActions] = []
     var positionZ: Int = 0
     
-    var paint: Color
+    var paint: AnyPaint
     var strokeStyle: StrokeStyle?
     
-    init(givenName: String? = nil, points: [Pos] = [], actions: [PathActions] = [], positionZ: Int = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+    init(givenName: String? = nil, points: [Pos] = [], actions: [PathActions] = [], positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeStyle? = nil) {
         self.givenName = givenName
         self.points = points
         self.actions = actions
@@ -63,7 +63,7 @@ class GPath: SimpleShape { // Add rotation support
     
     var stateDefinitions: String {
         let uniqueVarName = String(uuid.hashValue, radix: 36).dropFirst() // first might be a -
-        var str = "Path path\(uniqueVarName) = Path(\(givenName?.asLiteral ?? "")\(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))\n"
+        var str = "Path path\(uniqueVarName) = Path(\(givenName?.asLiteral ?? "")\(positionZ) \(paint.state)\(strokeStyle?.stateConstructor ?? ""))\n"
         var i = 0
         for action in actions {
             switch action {

@@ -32,8 +32,7 @@ public protocol BasicShape: GShape {
 }
 
 public protocol SimpleShape: GShape {
-    var paint: Color { get set } // TODO change with custom PAINT type
-    // stroke or fill?
+    var paint: AnyPaint { get set }
     var strokeStyle: StrokeStyle? { get set }
 }
 
@@ -62,9 +61,21 @@ extension Shape {
     func applyingFillOrStroke(for def: SimpleShape) -> some View {
         Group {
             if let style = def.strokeStyle {
-                self.stroke(def.paint, style: style)
+                applyingStroke(style, paint: def.paint)
             } else {
-                self.fill(def.paint)
+                switch def.paint {
+                case .color(let color):
+                    self.fill(color.style)
+                }
+            }
+        }
+    }
+    
+    func applyingStroke(_ stroke: StrokeStyle, paint: AnyPaint) -> some View {
+        Group {
+            switch paint {
+            case .color(let color):
+                self.stroke(color.style, style: stroke)
             }
         }
     }

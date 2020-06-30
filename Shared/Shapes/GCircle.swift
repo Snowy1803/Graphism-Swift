@@ -20,10 +20,10 @@ class GCircle: RectangularShape, SimpleShape, RotatableShape {
     var size: Pos
     var rotation: Rotation = 0
     
-    var paint: Color
+    var paint: AnyPaint
     var strokeStyle: StrokeStyle?
     
-    init(givenName: String? = nil, position: Pos, positionZ: Int = 0, size: Pos, rotation: Rotation = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+    init(givenName: String? = nil, position: Pos, positionZ: Int = 0, size: Pos, rotation: Rotation = 0, paint: AnyPaint, strokeStyle: StrokeStyle? = nil) {
         self.givenName = givenName
         self.position = position
         self.positionZ = positionZ
@@ -44,6 +44,6 @@ class GCircle: RectangularShape, SimpleShape, RotatableShape {
     
     var stateDefinitions: String { "" }
     var stateConstructor: String {
-        "Ellipse(\(givenName?.asLiteral ?? "")\(position.state) \(positionZ) \(size.state) \(rotation.state) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "Ellipse(\(givenName?.asLiteral ?? "")\(position.state) \(positionZ) \(size.state) \(rotation.state) \(paint.state)\(strokeStyle?.stateConstructor ?? ""))"
     }
 }

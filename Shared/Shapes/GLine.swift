@@ -19,10 +19,10 @@ class GLine: SimpleShape {
     var end: Pos
     var positionZ: Int = 0
     
-    var paint: Color
+    var paint: AnyPaint
     var strokeStyle: StrokeStyle?
     
-    init(givenName: String? = nil, start: Pos, end: Pos, positionZ: Int = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+    init(givenName: String? = nil, start: Pos, end: Pos, positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeStyle? = nil) {
         self.givenName = givenName
         self.start = start
         self.end = end
@@ -39,12 +39,12 @@ class GLine: SimpleShape {
     }
     
     var graphics: AnyView {
-        path.stroke(paint, style: strokeStyle ?? StrokeStyle(lineWidth: 5))
+        path.applyingStroke(strokeStyle ?? StrokeStyle(lineWidth: 5), paint: paint)
             .erased
     }
     
     var stateDefinitions: String { "" }
     var stateConstructor: String {
-        "Line(\(givenName?.asLiteral ?? "")\(start.state) \(end.state) \(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? ""))"
+        "Line(\(givenName?.asLiteral ?? "")\(start.state) \(end.state) \(positionZ) \(paint.state)\(strokeStyle?.stateConstructor ?? ""))"
     }
 }

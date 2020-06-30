@@ -18,10 +18,10 @@ class GPolygon: SimpleShape { // Add rotation support
     var points: [Pos] = []
     var positionZ: Int = 0
     
-    var paint: Color
+    var paint: AnyPaint
     var strokeStyle: StrokeStyle?
     
-    init(givenName: String? = nil, points: [Pos] = [], positionZ: Int = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+    init(givenName: String? = nil, points: [Pos] = [], positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeStyle? = nil) {
         self.givenName = givenName
         self.points = points
         self.positionZ = positionZ
@@ -50,7 +50,7 @@ class GPolygon: SimpleShape { // Add rotation support
     var stateDefinitions: String { "" }
     
     var stateConstructor: String {
-        var state = "Polygon(\(givenName?.asLiteral ?? "")\(positionZ) \(paint.description.uppercased())\(strokeStyle?.stateConstructor ?? "")"
+        var state = "Polygon(\(givenName?.asLiteral ?? "")\(positionZ) \(paint.state)\(strokeStyle?.stateConstructor ?? "")"
         for point in points {
             state += " \(point.state)"
         }
