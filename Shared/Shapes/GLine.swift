@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct GLine: SimpleShape {
+class GLine: SimpleShape {
     var givenName: String?
     var typeKey: String { "Line" }
     
@@ -21,6 +21,15 @@ struct GLine: SimpleShape {
     
     var paint: Color
     var strokeStyle: StrokeStyle?
+    
+    init(givenName: String? = nil, start: Pos, end: Pos, positionZ: Int = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+        self.givenName = givenName
+        self.start = start
+        self.end = end
+        self.positionZ = positionZ
+        self.paint = paint
+        self.strokeStyle = strokeStyle
+    }
     
     var path: Path {
         Path { path in

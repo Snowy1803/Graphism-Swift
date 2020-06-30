@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct GPath: SimpleShape { // Add rotation support
+class GPath: SimpleShape { // Add rotation support
     var givenName: String?
     var typeKey: String { "Path" }
     
@@ -21,6 +21,15 @@ struct GPath: SimpleShape { // Add rotation support
     
     var paint: Color
     var strokeStyle: StrokeStyle?
+    
+    init(givenName: String? = nil, points: [Pos] = [], actions: [PathActions] = [], positionZ: Int = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+        self.givenName = givenName
+        self.points = points
+        self.actions = actions
+        self.positionZ = positionZ
+        self.paint = paint
+        self.strokeStyle = strokeStyle
+    }
     
     var path: Path {
         Path { path in

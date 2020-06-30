@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct GPolygon: SimpleShape { // Add rotation support
+class GPolygon: SimpleShape { // Add rotation support
     var givenName: String?
     var typeKey: String { "Polygon" }
     
@@ -20,6 +20,14 @@ struct GPolygon: SimpleShape { // Add rotation support
     
     var paint: Color
     var strokeStyle: StrokeStyle?
+    
+    init(givenName: String? = nil, points: [Pos] = [], positionZ: Int = 0, paint: Color, strokeStyle: StrokeStyle? = nil) {
+        self.givenName = givenName
+        self.points = points
+        self.positionZ = positionZ
+        self.paint = paint
+        self.strokeStyle = strokeStyle
+    }
     
     var path: Path {
         Path { path in
