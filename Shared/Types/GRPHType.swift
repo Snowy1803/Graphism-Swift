@@ -56,6 +56,35 @@ extension GRPHType {
         // TODO search types in CONTEXT aka IMPORTED
         return SimpleType.allCases.first(where: { $0.canBeCalled(literal)})
     }
+    
+    /// Type of a value is calculated HERE
+    /// It uses GRPHValue.type but takes into account AUTOBOXING and AUTOUNBOXING, based on expected.
+    /// Also, type of null is inferred here
+    public static func type(of value: GRPHValue, expected: GRPHType) -> GRPHType {
+        return autoboxed(type: realType(of: value, expected: expected), expected: expected)
+    }
+    
+    public static func autoboxed(type: GRPHType, expected: GRPHType) -> GRPHType {
+        if !(type is OptionalType),
+           let expected = expected as? OptionalType { // Boxing
+            return OptionalType(wrapped: autoboxed(type: type, expected: expected.wrapped))
+        } else if let type = type as? OptionalType,
+                  let expected = expected as? OptionalType { // Recursive, multi? optional
+            return OptionalType(wrapped: autoboxed(type: type.wrapped, expected: expected.wrapped))
+        } else if let type = type as? OptionalType { // Unboxing
+            return autoboxed(type: type.wrapped, expected: expected)
+        }
+        return type
+    }
+    
+    public static func realType(of value: GRPHValue, expected: GRPHType) -> GRPHType {
+        if let value = value as? OptionalProtocol,
+           value.isEmpty,
+           expected is OptionalType {
+            return expected
+        }
+        return value.type
+    }
 }
 
 extension String {

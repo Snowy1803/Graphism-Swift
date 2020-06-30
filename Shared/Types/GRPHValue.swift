@@ -109,7 +109,7 @@ extension Optional: GRPHValue where Wrapped: GRPHValue {
     public var type: GRPHType {
         switch self {
         case .none:
-            return OptionalType(wrapped: SimpleType.mixed) // Type inference is done here in Java
+            return OptionalType(wrapped: SimpleType.mixed) // Type inference is done in GRPHType.realType(of:expected:)
         case .some(let value):
             return OptionalType(wrapped: value.type)
         }
