@@ -69,3 +69,15 @@ public enum SimpleType: String, GRPHType {
         return other as? SimpleType == SimpleType.mixed || other as? SimpleType == self || (extending?.isInstance(of: other) ?? false)
     }
 }
+
+public struct OptionalType: GRPHType {
+    var wrapped: GRPHType
+    
+    public var string: String {
+        "<\(wrapped.string)>?" // Remove <> unless multi or type
+    }
+    
+    public func isInstance(of other: GRPHType) -> Bool {
+        return other is OptionalType && wrapped.isInstance(of: (other as! OptionalType).wrapped)
+    }
+}

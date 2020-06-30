@@ -27,3 +27,14 @@ extension Float: GRPHValue {
 extension Bool: GRPHValue {
     public var type: GRPHType { SimpleType.boolean }
 }
+
+extension Optional: GRPHValue where Wrapped: GRPHValue {
+    public var type: GRPHType {
+        switch self {
+        case .none:
+            return OptionalType(wrapped: SimpleType.mixed) // Type inference is done here in Java
+        case .some(let value):
+            return OptionalType(wrapped: value.type)
+        }
+    }
+}
