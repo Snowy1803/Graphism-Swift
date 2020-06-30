@@ -7,13 +7,23 @@
 
 import Foundation
 
-class GRPHArray<Content: GRPHValue>: StatefulValue {
+class GRPHArray<Content: GRPHValue>: StatefulValue, GRPHArrayProtocol {
+    
     var wrapped: [Content]
     var content: GRPHType
     
     init(_ wrapped: [Content] = [], of content: GRPHType) {
         self.wrapped = wrapped
         self.content = content
+    }
+    
+    init?(byCasting value: GRPHValue) {
+        if let val = value as? GRPHArray {
+            self.wrapped = val.wrapped // Cast will effectively copy ≠ Java
+            self.content = val.content
+        } else {
+            return nil
+        }
     }
     
     public var state: String {
@@ -32,5 +42,11 @@ class GRPHArray<Content: GRPHValue>: StatefulValue {
         return "\(str.dropLast(2))}"
     }
     
+    var count: Int { wrapped.count }
+    
     public var type: GRPHType { ArrayType(content: content) }
+}
+
+protocol GRPHArrayProtocol {
+    var count: Int { get }
 }
