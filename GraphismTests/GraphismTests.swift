@@ -40,6 +40,27 @@ class GraphismTests: XCTestCase {
     func parseType(_ literal: String, expected: String? = nil) {
         XCTAssertEqual(expected ?? literal, SimpleType.parse(literal: literal)?.string)
     }
+    
+    func testTypeBoxing() throws {
+        checkType(of: 12345 as Int, expected: SimpleType.integer)
+        checkType(of: 12.345 as Float, expected: SimpleType.float)
+        checkType(of: 12.345 as Float, expected: OptionalType(wrapped: SimpleType.float))
+        checkType(of: "Nothing", expected: OptionalType(wrapped: OptionalType(wrapped: SimpleType.string)))
+        checkWrongType(of: "Bad boi", expected: OptionalType(wrapped: OptionalType(wrapped: SimpleType.float)))
+        checkType(of: Optional<Float>.none, expected: OptionalType(wrapped: SimpleType.float))
+        checkType(of: Optional<Float>.none, expected: OptionalType(wrapped: SimpleType.string))
+        checkWrongType(of: Optional<Float>.some(12.345), expected: OptionalType(wrapped: SimpleType.string))
+        checkType(of: Optional<Float>.some(12.345), expected: SimpleType.float)
+        checkWrongType(of: Optional<Float>.none, expected: SimpleType.float)
+    }
+    
+    func checkType(of value: GRPHValue, expected: GRPHType) {
+        XCTAssertEqual(SimpleType.type(of: value, expected: expected).string, expected.string)
+    }
+    
+    func checkWrongType(of value: GRPHValue, expected: GRPHType) {
+        XCTAssertNotEqual(SimpleType.type(of: value, expected: expected).string, expected.string)
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
