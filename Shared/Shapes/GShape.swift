@@ -1,5 +1,5 @@
 //
-//  Shape.swift
+//  GShape.swift
 //  Graphism
 //
 //  Created by Emil Pedersen on 28/06/2020.
@@ -38,7 +38,7 @@ public protocol SimpleShape: GShape {
 }
 
 public protocol RotatableShape: GShape {
-    var rotation: Int { get set }
+    var rotation: Rotation { get set }
     // rotation center
 }
 

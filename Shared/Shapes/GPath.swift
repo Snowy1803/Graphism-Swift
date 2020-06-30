@@ -1,5 +1,5 @@
 //
-//  Shape.swift
+//  GPath.swift
 //  Graphism
 //
 //  Created by Emil Pedersen on 28/06/2020.

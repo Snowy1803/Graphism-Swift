@@ -33,6 +33,8 @@
 		2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68E24AAB06A0042D465 /* GRPHValue.swift */; };
 		2098B69224AAB0AC0042D465 /* Pos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69124AAB0AC0042D465 /* Pos.swift */; };
 		2098B69324AAB0AC0042D465 /* Pos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69124AAB0AC0042D465 /* Pos.swift */; };
+		2098B69524AB5EDA0042D465 /* Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69424AB5EDA0042D465 /* Rotation.swift */; };
+		2098B69624AB5EDA0042D465 /* Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69424AB5EDA0042D465 /* Rotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,7 @@
 		2098B68A24AA98070042D465 /* GPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPolygon.swift; sourceTree = "<group>"; };
 		2098B68E24AAB06A0042D465 /* GRPHValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHValue.swift; sourceTree = "<group>"; };
 		2098B69124AAB0AC0042D465 /* Pos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pos.swift; sourceTree = "<group>"; };
+		2098B69424AB5EDA0042D465 /* Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rotation.swift; sourceTree = "<group>"; };
 		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,6 +147,7 @@
 			children = (
 				2098B68E24AAB06A0042D465 /* GRPHValue.swift */,
 				2098B69124AAB0AC0042D465 /* Pos.swift */,
+				2098B69424AB5EDA0042D465 /* Rotation.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -253,6 +257,7 @@
 				2098B68224A971B10042D465 /* GLine.swift in Sources */,
 				2098B69224AAB0AC0042D465 /* Pos.swift in Sources */,
 				2098B68F24AAB06A0042D465 /* GRPHValue.swift in Sources */,
+				2098B69524AB5EDA0042D465 /* Rotation.swift in Sources */,
 				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
 				2098B67B24A970350042D465 /* GShape.swift in Sources */,
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
@@ -272,6 +277,7 @@
 				2098B68324A971B10042D465 /* GLine.swift in Sources */,
 				2098B69324AAB0AC0042D465 /* Pos.swift in Sources */,
 				2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */,
+				2098B69624AB5EDA0042D465 /* Rotation.swift in Sources */,
 				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
 				2098B67C24A970350042D465 /* GShape.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
