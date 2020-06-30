@@ -13,6 +13,12 @@ public protocol GRPHType {
     func isInstance(of other: GRPHType) -> Bool
 }
 
+extension GRPHType {
+    var isTheMixed: Bool {
+        self as? SimpleType == SimpleType.mixed
+    }
+}
+
 public enum SimpleType: String, GRPHType {
     
     case num, integer, float, rotation, pos, boolean, string, paint, color, linear, radial, shape, direction, stroke, /*file, image,*/ font, mixed
@@ -66,7 +72,13 @@ public enum SimpleType: String, GRPHType {
     }
     
     public func isInstance(of other: GRPHType) -> Bool {
-        return other as? SimpleType == SimpleType.mixed || other as? SimpleType == self || (extending?.isInstance(of: other) ?? false)
+        if let option = other as? OptionalType {
+            return isInstance(of: option.wrapped)
+        }
+        if let multi = other as? MultiOrType {
+            return isInstance(of: multi.type1) || isInstance(of: multi.type2)
+        }
+        return other.isTheMixed || other as? SimpleType == self || (extending?.isInstance(of: other) ?? false)
     }
 }
 
@@ -79,5 +91,20 @@ public struct OptionalType: GRPHType {
     
     public func isInstance(of other: GRPHType) -> Bool {
         return other is OptionalType && wrapped.isInstance(of: (other as! OptionalType).wrapped)
+    }
+}
+
+public struct MultiOrType: GRPHType {
+    var type1, type2: GRPHType
+    
+    public var string: String {
+        "\(type1.string)|\(type2.string)"
+    }
+    
+    public func isInstance(of other: GRPHType) -> Bool {
+        if let option = other as? OptionalType {
+            return isInstance(of: option.wrapped)
+        }
+        return other.isTheMixed || (type1.isInstance(of: other) && type2.isInstance(of: other))
     }
 }
