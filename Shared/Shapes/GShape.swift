@@ -68,6 +68,8 @@ extension Shape {
                     self.fill(color.style)
                 case .linear(let linear):
                     self.fill(linear.style)
+                case .radial(let radial):
+                    self.fill(radial.style)
                 }
             }
         }
@@ -80,6 +82,8 @@ extension Shape {
                 self.stroke(color.style, style: stroke)
             case .linear(let linear):
                 self.stroke(linear.style, style: stroke)
+            case .radial(let radial):
+                self.stroke(radial.style, style: stroke)
             }
         }
     }

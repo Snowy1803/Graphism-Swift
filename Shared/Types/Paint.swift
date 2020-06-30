@@ -20,6 +20,7 @@ public protocol Paint: GRPHValue {
 public enum AnyPaint {
     case color(ColorPaint)
     case linear(LinearPaint)
+    case radial(RadialPaint)
     
     var state: String {
         switch self {
@@ -27,6 +28,8 @@ public enum AnyPaint {
             return color.state
         case .linear(let linear):
             return linear.state
+        case .radial(let radial):
+            return radial.state
         }
     }
 }
