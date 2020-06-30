@@ -108,3 +108,21 @@ public struct MultiOrType: GRPHType {
         return other.isTheMixed || (type1.isInstance(of: other) && type2.isInstance(of: other))
     }
 }
+
+public struct ArrayType: GRPHType {
+    var content: GRPHType
+    
+    public var string: String {
+        "{\(content.string)}"
+    }
+    
+    public func isInstance(of other: GRPHType) -> Bool {
+        if let option = other as? OptionalType {
+            return isInstance(of: option.wrapped)
+        }
+        if let array = other as? ArrayType {
+            return content.isInstance(of: array.content)
+        }
+        return other.isTheMixed
+    }
+}
