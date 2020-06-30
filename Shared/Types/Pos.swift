@@ -8,11 +8,11 @@
 import Foundation
 import CoreGraphics
 
-public struct Pos: GRPHValue {
+public struct Pos: StatefulValue {
     var x: Float
     var y: Float
     
-    var state: String {
+    public var state: String {
         "\(x),\(y)"
     }
     

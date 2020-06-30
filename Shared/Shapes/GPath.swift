@@ -20,9 +20,9 @@ class GPath: SimpleShape { // Add rotation support
     var positionZ: Int = 0
     
     var paint: AnyPaint
-    var strokeStyle: StrokeStyle?
+    var strokeStyle: StrokeWrapper?
     
-    init(givenName: String? = nil, points: [Pos] = [], actions: [PathActions] = [], positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeStyle? = nil) {
+    init(givenName: String? = nil, points: [Pos] = [], actions: [PathActions] = [], positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeWrapper? = nil) {
         self.givenName = givenName
         self.points = points
         self.actions = actions

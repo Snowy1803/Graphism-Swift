@@ -20,9 +20,9 @@ class GLine: SimpleShape {
     var positionZ: Int = 0
     
     var paint: AnyPaint
-    var strokeStyle: StrokeStyle?
+    var strokeStyle: StrokeWrapper?
     
-    init(givenName: String? = nil, start: Pos, end: Pos, positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeStyle? = nil) {
+    init(givenName: String? = nil, start: Pos, end: Pos, positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeWrapper? = nil) {
         self.givenName = givenName
         self.start = start
         self.end = end
@@ -39,7 +39,7 @@ class GLine: SimpleShape {
     }
     
     var graphics: AnyView {
-        path.applyingStroke(strokeStyle ?? StrokeStyle(lineWidth: 5), paint: paint)
+        path.applyingStroke(strokeStyle?.cg ?? StrokeStyle(lineWidth: 5), paint: paint)
             .erased
     }
     

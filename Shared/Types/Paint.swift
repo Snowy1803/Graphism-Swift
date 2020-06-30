@@ -8,13 +8,11 @@
 import Foundation
 import SwiftUI
 
-public protocol Paint: GRPHValue {
+public protocol Paint: StatefulValue {
     
     associatedtype Style: ShapeStyle
     
     var style: Style { get }
-    
-    var state: String { get }
 }
 
 public enum AnyPaint {

@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 
-public struct Rotation: GRPHValue, ExpressibleByIntegerLiteral {
+public struct Rotation: StatefulValue, ExpressibleByIntegerLiteral {
     var value: Int
     
-    var state: String {
+    public var state: String {
         "\(value)°"
     }
     

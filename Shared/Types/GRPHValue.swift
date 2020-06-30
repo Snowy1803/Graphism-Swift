@@ -12,20 +12,28 @@ public protocol GRPHValue {
     var type: GRPHType { get }
 }
 
-extension Int: GRPHValue {
+public protocol StatefulValue: GRPHValue {
+    var state: String { get }
+}
+
+extension Int: StatefulValue {
     public var type: GRPHType { SimpleType.integer }
+    public var state: String { String(self) }
 }
 
-extension String: GRPHValue {
+extension String: StatefulValue {
     public var type: GRPHType { SimpleType.string }
+    public var state: String { self.asLiteral }
 }
 
-extension Float: GRPHValue {
+extension Float: StatefulValue {
     public var type: GRPHType { SimpleType.float }
+    public var state: String { "\(self)F" }
 }
 
-extension Bool: GRPHValue {
+extension Bool: StatefulValue {
     public var type: GRPHType { SimpleType.boolean }
+    public var state: String { self ? "true" : "false" }
 }
 
 extension Optional: GRPHValue where Wrapped: GRPHValue {
@@ -35,6 +43,17 @@ extension Optional: GRPHValue where Wrapped: GRPHValue {
             return OptionalType(wrapped: SimpleType.mixed) // Type inference is done here in Java
         case .some(let value):
             return OptionalType(wrapped: value.type)
+        }
+    }
+}
+
+extension Optional: StatefulValue where Wrapped: StatefulValue {
+    public var state: String {
+        switch self {
+        case .none:
+            return "null"
+        case .some(let value):
+            return value.state
         }
     }
 }

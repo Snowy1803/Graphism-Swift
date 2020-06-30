@@ -33,7 +33,7 @@ public protocol BasicShape: GShape {
 
 public protocol SimpleShape: GShape {
     var paint: AnyPaint { get set }
-    var strokeStyle: StrokeStyle? { get set }
+    var strokeStyle: StrokeWrapper? { get set }
 }
 
 public protocol RotatableShape: GShape {
@@ -61,7 +61,7 @@ extension Shape {
     func applyingFillOrStroke(for def: SimpleShape) -> some View {
         Group {
             if let style = def.strokeStyle {
-                applyingStroke(style, paint: def.paint)
+                applyingStroke(style.cg, paint: def.paint)
             } else {
                 switch def.paint {
                 case .color(let color):
@@ -86,12 +86,6 @@ extension Shape {
                 self.stroke(radial.style, style: stroke)
             }
         }
-    }
-}
-
-extension StrokeStyle {
-    var stateConstructor: String {
-        " \(lineWidth)" // TODO joincap & dash array
     }
 }
 
