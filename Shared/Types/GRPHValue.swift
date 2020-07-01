@@ -92,7 +92,7 @@ extension Bool: StatefulValue {
         } else if let opt = value as? OptionalProtocol {
             self.init(!opt.isEmpty)
         } else {
-            return nil
+            self.init(true)
         }
     }
     

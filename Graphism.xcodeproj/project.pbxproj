@@ -38,6 +38,9 @@
 		200A5F9324ABA51E0028180B /* GPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68424AA18B30042D465 /* GPath.swift */; };
 		200A5F9424ABA51E0028180B /* GPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68A24AA98070042D465 /* GPolygon.swift */; };
 		200A5F9524ABA51E0028180B /* GLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68124A971B10042D465 /* GLine.swift */; };
+		200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F9724ABF6020028180B /* GRPHCompiler.swift */; };
+		200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F9724ABF6020028180B /* GRPHCompiler.swift */; };
+		200A5F9A24ABF6020028180B /* GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F9724ABF6020028180B /* GRPHCompiler.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -82,6 +85,7 @@
 		200A5F7C24ABA4E60028180B /* GraphismTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GraphismTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		200A5F7E24ABA4E60028180B /* GraphismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismTests.swift; sourceTree = "<group>"; };
 		200A5F8024ABA4E60028180B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		200A5F9724ABF6020028180B /* GRPHCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHCompiler.swift; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -140,6 +144,14 @@
 			path = GraphismTests;
 			sourceTree = "<group>";
 		};
+		200A5F9624ABF5E30028180B /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				200A5F9724ABF6020028180B /* GRPHCompiler.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
 		2063126624A8C3790095911B = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +167,7 @@
 		2063126B24A8C3790095911B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				200A5F9624ABF5E30028180B /* Parser */,
 				2098B68D24AAB0490042D465 /* Types */,
 				2098B67724A970350042D465 /* Shapes */,
 				2063126C24A8C3790095911B /* GraphismApp.swift */,
@@ -354,6 +367,7 @@
 				200A5F9224ABA51E0028180B /* GCircle.swift in Sources */,
 				200A5F8724ABA5180028180B /* RadialPaint.swift in Sources */,
 				200A5F8424ABA5180028180B /* GRPHValue.swift in Sources */,
+				200A5F9A24ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				200A5F8924ABA5180028180B /* Paint.swift in Sources */,
 				200A5F9024ABA51E0028180B /* GRectangle.swift in Sources */,
 				200A5F8624ABA5180028180B /* Rotation.swift in Sources */,
@@ -388,6 +402,7 @@
 				2098B68224A971B10042D465 /* GLine.swift in Sources */,
 				2098B69224AAB0AC0042D465 /* Pos.swift in Sources */,
 				2098B68F24AAB06A0042D465 /* GRPHValue.swift in Sources */,
+				200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				200A5F7624AB85E10028180B /* Stroke.swift in Sources */,
 				2098B69B24AB62B60042D465 /* ColorPaint.swift in Sources */,
 				2098B69524AB5EDA0042D465 /* Rotation.swift in Sources */,
@@ -416,6 +431,7 @@
 				2098B68324A971B10042D465 /* GLine.swift in Sources */,
 				2098B69324AAB0AC0042D465 /* Pos.swift in Sources */,
 				2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */,
+				200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				200A5F7724AB85E10028180B /* Stroke.swift in Sources */,
 				2098B69C24AB62B60042D465 /* ColorPaint.swift in Sources */,
 				2098B69624AB5EDA0042D465 /* Rotation.swift in Sources */,
