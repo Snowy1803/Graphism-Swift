@@ -76,6 +76,7 @@ struct GRPHCompiler {
             }
             return "$_str\(index!)$"
         }
+        // should also replace files
     }
     
     private func parseStringLiteral(in literal: String, delimiter: Character) -> String {
