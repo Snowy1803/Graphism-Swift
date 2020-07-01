@@ -61,6 +61,19 @@ class GraphismTests: XCTestCase {
     func checkWrongType(of value: GRPHValue, expected: GRPHType) {
         XCTAssertNotEqual(SimpleType.type(of: value, expected: expected).string, expected.string)
     }
+    
+    func testInternation() throws {
+        var compiler = GRPHCompiler(entireContent: "") // unused
+        XCTAssertEqual(compiler.internStringLiterals(line: "nothing to see here..."), "nothing to see here...")
+        XCTAssertEqual(compiler.internStringLiterals(line: #"string str = "hello world""#), "string str = $_str0$")
+        XCTAssertEqual(compiler.internStringLiterals(line: #"string sam = "hello world""#), "string sam = $_str0$")
+        XCTAssertEqual(compiler.internStringLiterals(line: #"string oth = "another str""#), "string oth = $_str1$")
+        XCTAssertEqual(compiler.internStringLiterals(line: #"string lol = "hello world""#), "string lol = $_str0$")
+        XCTAssertEqual(compiler.internStringLiterals(line: #"string now = "he\"llo\" w\"o\"rld""#), "string now = $_str2$")
+        XCTAssertEqual(compiler.internStringLiterals(line: #"string mul = "first " + "second""#), "string mul = $_str3$ + $_str4$")
+        
+        XCTAssertEqual(compiler.internStrings.debugDescription, #"["\"hello world", "\"another str", "\"he\"llo\" w\"o\"rld", "\"first ", "\"second"]"#)
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
