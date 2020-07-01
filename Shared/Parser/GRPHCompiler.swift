@@ -66,33 +66,16 @@ struct GRPHCompiler {
     }
     
     mutating func internStringLiterals(line: String) -> String {
-        var interned = ""
-        var last: String.Index?
-        internStringPattern.enumerateMatches(in: line, options: [], range: NSRange(line.startIndex..., in: line)) { result, _, _ in
-            if let result = result,
-               let range = Range(result.range, in: line) {
-                interned += last == nil ? line[..<range.lowerBound] : line[last!..<range.lowerBound]
-                
-                // actual action
-                let str = parseStringLiteral(in: String(line[range]), delimiter: "\"")
-                var index = internStrings.firstIndex(of: "\"\(str)")
-                if index == nil {
-                    index = internStrings.count
-                    internStrings.append("\"\(str)")
-                    // ADD variables.add(Constant(name: "$_str\(index!)$", type: SimpleType.string, value: str))
-                }
-                // Replacement
-                interned += "$_str\(index!)$"
-                
-                last = range.upperBound
+        internStringPattern.replaceMatches(in: line) { match in
+            let str = parseStringLiteral(in: match, delimiter: "\"")
+            var index = internStrings.firstIndex(of: "\"\(str)")
+            if index == nil {
+                index = internStrings.count
+                internStrings.append("\"\(str)")
+                // ADD variables.add(Constant(name: "$_str\(index!)$", type: SimpleType.string, value: str))
             }
+            return "$_str\(index!)$"
         }
-        guard let end = last else {
-            return line // No matches
-        }
-        interned += line[end...]
-        // Should do the same for files 'file.txt' here
-        return interned
     }
     
     private func parseStringLiteral(in literal: String, delimiter: Character) -> String {
@@ -107,4 +90,27 @@ struct GRPHCompiler {
     }
 }
 
+extension NSRegularExpression {
+    func replaceMatches(in string: String, using block: (_ match: String) -> String) -> String {
+        var builder = ""
+        var last: String.Index?
+        self.enumerateMatches(in: string, range: NSRange(string.startIndex..., in: string)) { result, _, _ in
+            if let result = result,
+               let range = Range(result.range, in: string) {
+                
+                builder += last == nil ? string[..<range.lowerBound] : string[last!..<range.lowerBound]
+                
+                // Replacement
+                builder += block(String(string[range]))
+                
+                last = range.upperBound
+            }
+        }
+        guard let end = last else {
+            return string // No matches
+        }
+        builder += string[end...]
+        return builder
+    }
+}
 
