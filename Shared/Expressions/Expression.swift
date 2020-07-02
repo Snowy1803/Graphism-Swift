@@ -11,11 +11,11 @@ protocol Expression {
     
     func eval(context: GRPHContext) throws -> GRPHValue
     
+    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType
+    
     var string: String { get }
     
     var needsBrackets: Bool { get }
-    
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType
 }
 
 struct Expressions {
@@ -40,7 +40,9 @@ struct Expressions {
         // float
         // int
         // array value
-        // variable
+        if VariableExpression.pattern.firstMatch(string: str) != nil {
+            return VariableExpression(name: str)
+        }
         // array declaration
         // cast
         if let result = ConstantExpression.posPattern.firstMatch(string: str) {
