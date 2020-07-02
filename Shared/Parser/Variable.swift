@@ -7,6 +7,30 @@
 
 import Foundation
 
-protocol Variable {
-    var name: String { get }
+class Variable {
+    let name: String
+    
+    let type: GRPHType
+    
+    private(set) var content: GRPHValue?
+    
+    let compileTime: Bool
+    
+    let final: Bool
+    
+    init(name: String, type: GRPHType, content: GRPHValue? = nil, final: Bool, compileTime: Bool = false) {
+        self.name = name
+        self.type = type
+        self.content = content
+        self.final = final
+        self.compileTime = compileTime
+    }
+    
+    func setContent(_ content: GRPHValue) throws {
+        if final {
+            // ADD throw GRPHRuntimeError()
+            return
+        }
+        self.content = content
+    }
 }

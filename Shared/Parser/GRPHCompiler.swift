@@ -17,7 +17,7 @@ struct GRPHCompiler: GRPHParser {
     var lineNumber: Int = 0
     
     var internStrings: [String] = []
-    var variables: [Variable] = [] // Add this, back and colors
+    var globalVariables: [Variable] = [] // Add this, back and colors
     // ADD var imports: [Importable] = [NameSpace.STANDARD]
     var instructions: [Instruction] = []
     
@@ -53,14 +53,14 @@ struct GRPHCompiler: GRPHParser {
                 }
                 
                 // Close blocks
-                // ADD if !blocks.isEmpty {
-                // ADD let tabs = line.count - line.drop(while: { $0 == "\t" }).count
-                // ADD while tabs < blocks.count {
-                // ADD blocks.removeLast()
-                // ADD context.closeBlock()
+                if !blocks.isEmpty {
+                    let tabs = line.count - line.drop(while: { $0 == "\t" }).count
+                    while tabs < blocks.count {
+                        blocks.removeLast()
+                        context.closeBlock()
                         // TODO change context if going out of function
-                // ADD }
-                // ADD }
+                    }
+                }
                 
                 do {
                     
