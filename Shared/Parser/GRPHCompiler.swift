@@ -7,24 +7,29 @@
 
 import Foundation
 
-struct GRPHCompiler {
+struct GRPHCompiler: GRPHParser {
     static let grphVersion = "1.11"
     let internStringPattern = try! NSRegularExpression(pattern: #"(?<!\\)".*?(?<!\\)""#)
     // static let internFilePattern = try! NSRegularExpression(pattern: "(?<!\\\\)'.*?(?<!\\\\)'")
     
     var line0: String = ""
-    // ADD var blocks: [BlockInstruction] = []
+    var blocks: [BlockInstruction] = []
     var lineNumber: Int = 0
     
     var internStrings: [String] = []
-    // ADD var variables: [Variable] = [] // Add this, back and colors
+    var variables: [Variable] = [] // Add this, back and colors
     // ADD var imports: [Importable] = [NameSpace.STANDARD]
-    // ADD var instructions: [Instruction] = []
+    var instructions: [Instruction] = []
     
     var entireContent: String
     var lines: [String] = []
     var timestamp = Date()
-    // ADD var context: GRPHContext!
+    var context: GRPHContext!
+    
+    // Debugging
+    var debugging: Bool = false
+    var debugStep: TimeInterval = 0
+    
     
     /// Please execute on a secondary thread, as the program
     mutating func compile() -> Bool {
@@ -33,14 +38,17 @@ struct GRPHCompiler {
             // ADD context = GRPHContext(self) // a copy of self
             lineNumber = 0
             while lineNumber < lines.count {
+                // Real line
                 line0 = lines[lineNumber]
                 var line, tline: String
                 if line0.isEmpty || line0.hasPrefix("//") {
                     line = ""
                     tline = ""
                 } else {
+                    // Interned & stripped from comments
                     line = internStringLiterals(line: line0)
                     line = line.components(separatedBy: "//")[0]
+                    // Stripped from tabs
                     tline = line.trimmingCharacters(in: .whitespaces)
                 }
                 
@@ -54,7 +62,72 @@ struct GRPHCompiler {
                 // ADD }
                 // ADD }
                 
-                // #blocksss
+                do {
+                    
+                    if tline.hasPrefix("#") {
+                        // MARK: COMMANDS
+                        let block = tline.components(separatedBy: " ")[0]
+                        
+                        switch block {
+                        case "#import", "#using":
+                            let imp = tline.dropFirst(block.count).trimmingCharacters(in: .whitespaces)
+                            
+                            if imp.contains(">") {
+                                // ADD let p = namespacedMemberFromString(imp)
+                                // TODO
+                            }
+                            
+                        case "#if":
+                            break
+                        case "#elseif", "#elif":
+                            break
+                        case "#else":
+                            break
+                        case "#while":
+                            break
+                        case "#foreach":
+                            break
+                        case "#try":
+                            break
+                        case "#catch":
+                            break
+                        case "#throw":
+                            break
+                        case "#function":
+                            break
+                        case "#return":
+                            break
+                        case "#break":
+                            break
+                        case "#continue":
+                            break
+                        case "#goto":
+                            throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
+                        case "#block":
+                            break
+                        case "#requires":
+                            break
+                        case "#type":
+                            throw GRPHCompileError(type: .unsupported, message: "#type is not available yet")
+                        default:
+                            print("Warning: Unknown command `\(tline)`; line \(lineNumber + 1). This will get ignored")
+                        }
+                    } else if tline.hasPrefix("::") {
+                        throw GRPHCompileError(type: .unsupported, message: "labels have been removed")
+                    } else {
+                        // MARK: INSTRUCTIONS
+                        
+                    }
+                    
+                    
+                    
+                } catch let error as GRPHCompileError {
+                    print("Compile Error: \(error.type.rawValue)Error: \(error.message); line \(lineNumber + 1)")
+                    return false
+                } catch {
+                    print("NativeError; line \(lineNumber + 1)")
+                    print(error.localizedDescription)
+                }
                 
                 lineNumber += 1
             }
@@ -115,3 +188,15 @@ extension NSRegularExpression {
     }
 }
 
+public struct GRPHCompileError: Error {
+    var type: CompileErrorType
+    var message: String
+    
+    public enum CompileErrorType: String {
+        case parse = "Parse"
+        case typeMismatch = "Type"
+        case undeclared = "Undeclared"
+        case invalidArguments = "InvalidArguments"
+        case unsupported = "Unsupported"
+    }
+}
