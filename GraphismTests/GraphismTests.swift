@@ -52,11 +52,11 @@ class GraphismTests: XCTestCase {
         checkType(of: 12.345 as Float, expected: OptionalType(wrapped: SimpleType.float))
         checkType(of: "Nothing", expected: OptionalType(wrapped: OptionalType(wrapped: SimpleType.string)))
         checkWrongType(of: "Bad boi", expected: OptionalType(wrapped: OptionalType(wrapped: SimpleType.float)))
-        checkType(of: Optional<Float>.none, expected: OptionalType(wrapped: SimpleType.float))
-        checkType(of: Optional<Float>.none, expected: OptionalType(wrapped: SimpleType.string))
-        checkWrongType(of: Optional<Float>.some(12.345), expected: OptionalType(wrapped: SimpleType.string))
-        checkType(of: Optional<Float>.some(12.345), expected: SimpleType.float)
-        checkWrongType(of: Optional<Float>.none, expected: SimpleType.float)
+        checkType(of: GRPHOptional.null, expected: OptionalType(wrapped: SimpleType.float))
+        checkType(of: GRPHOptional.null, expected: OptionalType(wrapped: SimpleType.string))
+        checkWrongType(of: GRPHOptional.some(12.345 as Float), expected: OptionalType(wrapped: SimpleType.string))
+        checkType(of: GRPHOptional.some(12.345 as Float), expected: SimpleType.float)
+        checkWrongType(of: GRPHOptional.null, expected: SimpleType.float)
     }
     
     func checkType(of value: GRPHValue, expected: GRPHType) {

@@ -89,7 +89,7 @@ extension Bool: StatefulValue {
             self.init(pos.x != 0 || pos.y != 0)
         } else if let arr = value as? GRPHArrayProtocol {
             self.init(arr.count != 0)
-        } else if let opt = value as? OptionalProtocol {
+        } else if let opt = value as? GRPHOptional {
             self.init(!opt.isEmpty)
         } else {
             self.init(true)
@@ -98,46 +98,4 @@ extension Bool: StatefulValue {
     
     public var type: GRPHType { SimpleType.boolean }
     public var state: String { self ? "true" : "false" }
-}
-
-extension Optional: GRPHValue where Wrapped: GRPHValue {
-    
-    public init?(byCasting value: GRPHValue) {
-        return nil // Autoboxing/Unboxing
-    }
-    
-    public var type: GRPHType {
-        switch self {
-        case .none:
-            return OptionalType(wrapped: SimpleType.mixed) // Type inference is done in GRPHType.realType(of:expected:)
-        case .some(let value):
-            return OptionalType(wrapped: value.type)
-        }
-    }
-}
-
-extension Optional: StatefulValue where Wrapped: StatefulValue {
-    public var state: String {
-        switch self {
-        case .none:
-            return "null"
-        case .some(let value):
-            return value.state
-        }
-    }
-}
-
-protocol OptionalProtocol {
-    var isEmpty: Bool { get }
-}
-
-extension Optional: OptionalProtocol {
-    var isEmpty: Bool {
-        switch self {
-        case .none:
-            return true
-        default:
-            return false
-        }
-    }
 }

@@ -87,7 +87,7 @@ struct GRPHTypes {
     }
     
     public static func realType(of value: GRPHValue, expected: GRPHType) -> GRPHType {
-        if let value = value as? OptionalProtocol,
+        if let value = value as? GRPHOptional,
            value.isEmpty,
            expected is OptionalType {
             return expected

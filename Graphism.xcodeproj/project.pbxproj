@@ -106,6 +106,12 @@
 		20DE0BC924AE976800ABFB6E /* UnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC824AE976800ABFB6E /* UnaryExpression.swift */; };
 		20DE0BCA24AE976800ABFB6E /* UnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC824AE976800ABFB6E /* UnaryExpression.swift */; };
 		20DE0BCB24AE976800ABFB6E /* UnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC824AE976800ABFB6E /* UnaryExpression.swift */; };
+		20DE0BCD24AEA48B00ABFB6E /* NullExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BCC24AEA48B00ABFB6E /* NullExpression.swift */; };
+		20DE0BCE24AEA48B00ABFB6E /* NullExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BCC24AEA48B00ABFB6E /* NullExpression.swift */; };
+		20DE0BCF24AEA48B00ABFB6E /* NullExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BCC24AEA48B00ABFB6E /* NullExpression.swift */; };
+		20DE0BD124AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BD024AEA5AE00ABFB6E /* GRPHOptional.swift */; };
+		20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BD024AEA5AE00ABFB6E /* GRPHOptional.swift */; };
+		20DE0BD324AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BD024AEA5AE00ABFB6E /* GRPHOptional.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -151,6 +157,8 @@
 		20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayValueExpression.swift; sourceTree = "<group>"; };
 		20DE0BC424AE783400ABFB6E /* BinaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryExpression.swift; sourceTree = "<group>"; };
 		20DE0BC824AE976800ABFB6E /* UnaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryExpression.swift; sourceTree = "<group>"; };
+		20DE0BCC24AEA48B00ABFB6E /* NullExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullExpression.swift; sourceTree = "<group>"; };
+		20DE0BD024AEA5AE00ABFB6E /* GRPHOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHOptional.swift; sourceTree = "<group>"; };
 		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -273,6 +281,7 @@
 				200A5F6F24AB76560028180B /* GRPHType.swift */,
 				2098B68E24AAB06A0042D465 /* GRPHValue.swift */,
 				200A5F7224AB82DA0028180B /* GRPHArray.swift */,
+				20DE0BD024AEA5AE00ABFB6E /* GRPHOptional.swift */,
 				2098B69124AAB0AC0042D465 /* Pos.swift */,
 				2098B69424AB5EDA0042D465 /* Rotation.swift */,
 				2098B69724AB61350042D465 /* Paint.swift */,
@@ -300,6 +309,7 @@
 			children = (
 				20DE0BB424AE0F7A00ABFB6E /* Expression.swift */,
 				20DE0BB824AE2FC100ABFB6E /* ConstantExpression.swift */,
+				20DE0BCC24AEA48B00ABFB6E /* NullExpression.swift */,
 				20DE0BBC24AE3C6200ABFB6E /* VariableExpression.swift */,
 				20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */,
 				20DE0BC424AE783400ABFB6E /* BinaryExpression.swift */,
@@ -438,6 +448,7 @@
 				20DE0BAB24AD46D600ABFB6E /* GRPHContext.swift in Sources */,
 				200A5F9124ABA51E0028180B /* GClip.swift in Sources */,
 				200A5F9224ABA51E0028180B /* GCircle.swift in Sources */,
+				20DE0BD324AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				20DE0BBF24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				20DE0BA724AD449A00ABFB6E /* Instruction.swift in Sources */,
 				20DE0BBB24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
@@ -459,6 +470,7 @@
 				200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */,
 				200A5F8A24ABA5180028180B /* ColorPaint.swift in Sources */,
 				200A5F8C24ABA5180028180B /* GRPHType.swift in Sources */,
+				20DE0BCF24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
 				200A5F8824ABA5180028180B /* Direction.swift in Sources */,
 				200A5F9524ABA51E0028180B /* GLine.swift in Sources */,
 				200A5F8F24ABA51E0028180B /* GShape.swift in Sources */,
@@ -485,6 +497,7 @@
 				20DE0BBD24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				20DE0BB924AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				200A5F7324AB82DA0028180B /* GRPHArray.swift in Sources */,
+				20DE0BCD24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
 				2098B68824AA26740042D465 /* GClip.swift in Sources */,
 				2063128424A8C38D0095911B /* ContentView.swift in Sources */,
 				200A5F6A24AB6AE60028180B /* Direction.swift in Sources */,
@@ -502,6 +515,7 @@
 				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
 				200A5F7024AB76560028180B /* GRPHType.swift in Sources */,
 				2098B67B24A970350042D465 /* GShape.swift in Sources */,
+				20DE0BD124AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B67F24A970350042D465 /* GCircle.swift in Sources */,
 			);
@@ -525,6 +539,7 @@
 				20DE0BBE24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				20DE0BBA24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				200A5F7424AB82DA0028180B /* GRPHArray.swift in Sources */,
+				20DE0BCE24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
 				2098B68924AA26740042D465 /* GClip.swift in Sources */,
 				2063128524A8C38D0095911B /* ContentView.swift in Sources */,
 				200A5F6B24AB6AE60028180B /* Direction.swift in Sources */,
@@ -542,6 +557,7 @@
 				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
 				200A5F7124AB76560028180B /* GRPHType.swift in Sources */,
 				2098B67C24A970350042D465 /* GShape.swift in Sources */,
+				20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B68024A970350042D465 /* GCircle.swift in Sources */,
 			);

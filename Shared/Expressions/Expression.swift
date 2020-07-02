@@ -40,8 +40,9 @@ struct Expressions {
             return ConstantExpression(stroke: stroke)
         } else if str == "true" || str == "false" {
             return ConstantExpression(boolean: str == "true")
+        } else if str == "null" {
+            return NullExpression()
         }
-        // null
         if str.hasSuffix("°") || str.hasSuffix("º"), // degree sign, but also allow ordinal indicator, more accessible on Apple keyboards
            let result = ConstantExpression.intPattern.firstMatch(string: String(str.dropLast())),
            let int = Int(result[0]!) {
