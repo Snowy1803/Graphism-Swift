@@ -83,7 +83,10 @@ struct Expressions {
                       ?? findBinary(context: context, str: str, regex: BinaryExpression.signs6) {
             return exp
         }
-        // unaries
+        if let chr = str.first,
+           chr == "~" || chr == "-" || chr == "!" {
+            return try UnaryExpression(context: context, op: String(chr), exp: parse(context: context, infer: infer, literal: String(str.dropFirst())))
+        }
         // fields
         throw GRPHCompileError(type: .parse, message: "Could not parse expression '\(str)'")
     }
@@ -108,6 +111,9 @@ struct Expressions {
     }
     
     private static func checkBalance<S: StringProtocol>(literal str: S) -> Bool {
+        if str.isEmpty {
+            return false // Fix error from Java; unary - matches empty substraction instead of unary
+        }
         var brackets = 0, parenthesis = 0, curlies = 0
         for c in str {
             if c == "[" {

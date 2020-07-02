@@ -115,6 +115,12 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32F / 8 * 7 + 42 - 69 % 3").string,
                        "[[[32.0F / 8] * 7] + 42] - [69 % 3]")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32 == 42 || 67 == 69 || [96 != 420 && 2 > 1]").string, "[[32 == 42] || [67 == 69]] || [[96 != 420] && [2 > 1]]")
+        
+        compiler.globalVariables.append(Variable(name: "var", type: SimpleType.integer, final: false, compileTime: true))
+        
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-var + 5").string, "-var + 5")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-5 + var").string, "-5 + var")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-[5 + var]").string, "-[5 + var]")
     }
 
 //    func testPerformanceExample() throws {

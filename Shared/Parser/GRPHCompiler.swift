@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GRPHCompiler: GRPHParser {
+class GRPHCompiler: GRPHParser {
     static let grphVersion = "1.11"
     let internStringPattern = try! NSRegularExpression(pattern: #"(?<!\\)".*?(?<!\\)""#)
     // static let internFilePattern = try! NSRegularExpression(pattern: "(?<!\\\\)'.*?(?<!\\\\)'")
@@ -30,9 +30,13 @@ struct GRPHCompiler: GRPHParser {
     var debugging: Bool = false
     var debugStep: TimeInterval = 0
     
+    init(entireContent: String) {
+        self.entireContent = entireContent
+    }
+    
     
     /// Please execute on a secondary thread, as the program
-    mutating func compile() -> Bool {
+    func compile() -> Bool {
         do {
             lines = entireContent.components(separatedBy: "\n")
             // ADD context = GRPHContext(self) // a copy of self
@@ -138,7 +142,7 @@ struct GRPHCompiler: GRPHParser {
         return true
     }
     
-    mutating func internStringLiterals(line: String) -> String {
+    func internStringLiterals(line: String) -> String {
         internStringPattern.replaceMatches(in: line) { match in
             let str = parseStringLiteral(in: match, delimiter: "\"")
             var index = internStrings.firstIndex(of: "\"\(str)")
