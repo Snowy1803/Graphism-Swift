@@ -49,7 +49,9 @@ struct Expressions {
            let int = Int(str) {
             return ConstantExpression(int: int)
         }
-        // array value
+        if let result = ArrayValueExpression.pattern.firstMatch(string: str) {
+            return ArrayValueExpression(varName: result[1]!, index: try parse(context: context, infer: SimpleType.integer, literal: result[2]!))
+        }
         if VariableExpression.pattern.firstMatch(string: str) != nil {
             return VariableExpression(name: str)
         }

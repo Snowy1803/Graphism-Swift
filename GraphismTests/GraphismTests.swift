@@ -78,15 +78,24 @@ class GraphismTests: XCTestCase {
     func testExpressionParsing() throws {
         let compiler = GRPHCompiler(entireContent: "") // unused
         let context = GRPHContext(parser: compiler)
+        
+        // ENUMS
+        
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "true").string, "true")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "false").string, "false")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "[true]").string, "true")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.stroke, literal: "elongated").string, "elongated")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.stroke, literal: "[cut]").string, "cut")
+        
+        // POS
+        
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "5,0").string, "5.0,0.0")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "3,-6.5").string, "3.0,-6.5")
         XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "3.0.0,4"))
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "-5,-42").string, "-5.0,-42.0")
+        
+        // NUMERICS
+        
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.rotation, literal: "-5°").string, "-5°")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.rotation, literal: "175º").string, "175°")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "42").string, "42")
@@ -94,6 +103,11 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "-2.5").string, "-2.5F")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "2.5f").string, "2.5F")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "2F").string, "2.0F")
+        
+        // ARRAY VALUE
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{5}").string, "arr{5}")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{var}").string, "arr{var}")
+        
     }
 
 //    func testPerformanceExample() throws {

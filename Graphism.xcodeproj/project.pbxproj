@@ -97,6 +97,9 @@
 		20DE0BBD24AE3C6200ABFB6E /* VariableExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BBC24AE3C6200ABFB6E /* VariableExpression.swift */; };
 		20DE0BBE24AE3C6200ABFB6E /* VariableExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BBC24AE3C6200ABFB6E /* VariableExpression.swift */; };
 		20DE0BBF24AE3C6200ABFB6E /* VariableExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BBC24AE3C6200ABFB6E /* VariableExpression.swift */; };
+		20DE0BC124AE478300ABFB6E /* ArrayValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */; };
+		20DE0BC224AE478300ABFB6E /* ArrayValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */; };
+		20DE0BC324AE478300ABFB6E /* ArrayValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,6 +142,7 @@
 		20DE0BB424AE0F7A00ABFB6E /* Expression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
 		20DE0BB824AE2FC100ABFB6E /* ConstantExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantExpression.swift; sourceTree = "<group>"; };
 		20DE0BBC24AE3C6200ABFB6E /* VariableExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableExpression.swift; sourceTree = "<group>"; };
+		20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayValueExpression.swift; sourceTree = "<group>"; };
 		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -289,6 +293,7 @@
 				20DE0BB424AE0F7A00ABFB6E /* Expression.swift */,
 				20DE0BB824AE2FC100ABFB6E /* ConstantExpression.swift */,
 				20DE0BBC24AE3C6200ABFB6E /* VariableExpression.swift */,
+				20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */,
 			);
 			path = Expressions;
 			sourceTree = "<group>";
@@ -429,6 +434,7 @@
 				200A5F8724ABA5180028180B /* RadialPaint.swift in Sources */,
 				200A5F8424ABA5180028180B /* GRPHValue.swift in Sources */,
 				200A5F9A24ABF6020028180B /* GRPHCompiler.swift in Sources */,
+				20DE0BC324AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				200A5F8924ABA5180028180B /* Paint.swift in Sources */,
 				200A5F9024ABA51E0028180B /* GRectangle.swift in Sources */,
 				200A5F8624ABA5180028180B /* Rotation.swift in Sources */,
@@ -470,6 +476,7 @@
 				200A5F6A24AB6AE60028180B /* Direction.swift in Sources */,
 				2098B68224A971B10042D465 /* GLine.swift in Sources */,
 				2098B69224AAB0AC0042D465 /* Pos.swift in Sources */,
+				20DE0BC124AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				2098B68F24AAB06A0042D465 /* GRPHValue.swift in Sources */,
 				200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				200A5F7624AB85E10028180B /* Stroke.swift in Sources */,
@@ -507,6 +514,7 @@
 				200A5F6B24AB6AE60028180B /* Direction.swift in Sources */,
 				2098B68324A971B10042D465 /* GLine.swift in Sources */,
 				2098B69324AAB0AC0042D465 /* Pos.swift in Sources */,
+				20DE0BC224AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */,
 				200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				200A5F7724AB85E10028180B /* Stroke.swift in Sources */,
