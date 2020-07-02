@@ -26,29 +26,38 @@ extension GRPHType {
         OptionalType(wrapped: self)
     }
     
-    public static func parse(literal: String) -> GRPHType? { // needs some GRPHContext
+    func isInstance(context: GRPHContext, expression: Expression) throws -> Bool {
+        return GRPHTypes.autoboxed(type: try expression.getType(context: context, infer: self), expected: self).isInstance(of: self)
+    }
+}
+
+struct GRPHTypes {
+    
+    private init() {}
+    
+    public static func parse(context: GRPHContext, literal: String) -> GRPHType? { // needs some GRPHContext
         if literal.isSurrounded(left: "<", right: ">") {
-            return parse(literal: "\(literal.dropLast().dropFirst())")
+            return parse(context: context, literal: "\(literal.dropLast().dropFirst())")
         }
         if literal.isSurrounded(left: "{", right: "}") {
-            return parse(literal: "\(literal.dropLast().dropFirst())")?.inArray
+            return parse(context: context, literal: "\(literal.dropLast().dropFirst())")?.inArray
         }
         if literal.hasSuffix("?") && String(literal.dropLast()).isSurrounded(left: "<", right: ">") {
-            return parse(literal: String(literal.dropLast(2).dropFirst()))?.optional
+            return parse(context: context, literal: String(literal.dropLast(2).dropFirst()))?.optional
         }
         if literal.contains("|") {
             let components = literal.split(separator: "|", maxSplits: 1)
             if components.count == 2 {
                 let left = String(components[0])
                 let right = String(components[1])
-                if let type1 = parse(literal: left),
-                   let type2 = parse(literal: right) {
+                if let type1 = parse(context: context, literal: left),
+                   let type2 = parse(context: context, literal: right) {
                     return MultiOrType(type1: type1, type2: type2)
                 }
             }
         }
         if literal.hasSuffix("?") {
-            return parse(literal: String(literal.dropLast()))?.optional
+            return parse(context: context, literal: String(literal.dropLast()))?.optional
         }
         if literal == "farray" {
             return ArrayType(content: SimpleType.float)

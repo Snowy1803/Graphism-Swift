@@ -165,6 +165,15 @@ struct GRPHCompiler: GRPHParser {
 }
 
 extension NSRegularExpression {
+    func allMatches(in string: String, using block: (_ match: Range<String.Index>) -> Void) {
+        self.enumerateMatches(in: string, range: NSRange(string.startIndex..., in: string)) { result, _, _ in
+            if let result = result,
+               let range = Range(result.range, in: string) {
+                block(range)
+            }
+        }
+    }
+    
     func replaceMatches(in string: String, using block: (_ match: String) -> String) -> String {
         var builder = ""
         var last: String.Index?

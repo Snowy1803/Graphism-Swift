@@ -18,12 +18,18 @@ protocol Expression {
     var needsBrackets: Bool { get }
 }
 
+extension Expression {
+    var bracketized: String {
+        needsBrackets ? "[\(string)]" : string
+    }
+}
+
 struct Expressions {
     static let typePattern = try! NSRegularExpression(pattern: "[A-Za-z|<>{}?]+")
     
     private init() {}
     
-    static func parse(context: GRPHContext, infer: GRPHType, literal str: String) throws -> Expression {
+    static func parse(context: GRPHContext, infer: GRPHType?, literal str: String) throws -> Expression {
         if str.hasPrefix("[") && str.hasSuffix("]") {
             return try parse(context: context, infer: infer, literal: "\(str.dropFirst().dropLast())")
         }
@@ -66,11 +72,67 @@ struct Expressions {
             }
         }
         // function call
-        // comparison (* 4 priorities)
+        if let exp = try findBinary(context: context, str: str, regex: BinaryExpression.signs1)
+                      ?? findBinary(context: context, str: str, regex: BinaryExpression.signs2)
+                      ?? findBinary(context: context, str: str, regex: BinaryExpression.signs3)
+                      ?? findBinary(context: context, str: str, regex: BinaryExpression.signs4) {
+            return exp
+        }
         // constructor
-        // math (* 2 priorities)
+        if let exp = try findBinary(context: context, str: str, regex: BinaryExpression.signs5)
+                      ?? findBinary(context: context, str: str, regex: BinaryExpression.signs6) {
+            return exp
+        }
         // unaries
         // fields
         throw GRPHCompileError(type: .parse, message: "Could not parse expression '\(str)'")
+    }
+    
+    private static func findBinary(context: GRPHContext, str: String, regex: NSRegularExpression) throws -> BinaryExpression? {
+        var exp1 = "",
+            exp2 = "",
+            op = ""
+        regex.allMatches(in: str) { range in
+            let left = str[..<range.lowerBound]
+            let right = str[range.upperBound...]
+            if checkBalance(literal: left) && checkBalance(literal: right) {
+                exp1 = left.trimmingCharacters(in: .whitespaces)
+                exp2 = right.trimmingCharacters(in: .whitespaces)
+                op = String(str[range])
+            }
+        }
+        if !op.isEmpty {
+            return BinaryExpression(context: context, left: try parse(context: context, infer: nil, literal: exp1), op: op, right: try parse(context: context, infer: nil, literal: exp2))
+        }
+        return nil
+    }
+    
+    private static func checkBalance<S: StringProtocol>(literal str: S) -> Bool {
+        var brackets = 0, parenthesis = 0, curlies = 0
+        for c in str {
+            if c == "[" {
+                brackets += 1
+            } else if c == "(" {
+                parenthesis += 1
+            } else if c == "{" {
+                curlies += 1
+            } else if c == "]" {
+                brackets -= 1
+                if brackets < 0 {
+                    return false
+                }
+            } else if c == ")" {
+                parenthesis -= 1
+                if parenthesis < 0 {
+                    return false
+                }
+            } else if c == "}" {
+                curlies -= 1
+                if curlies < 0 {
+                    return false
+                }
+            }
+        }
+        return brackets == 0 && parenthesis == 0 && curlies == 0
     }
 }
