@@ -186,6 +186,22 @@ extension NSRegularExpression {
         builder += string[end...]
         return builder
     }
+    
+    /// Returns the capture groups of the first match as strings
+    func firstMatch(string: String) -> [String?]? {
+        guard let result = self.firstMatch(in: string, range: NSRange(string.startIndex..., in: string)) else {
+            return nil
+        }
+        var matches = [String?]()
+        for i in 0...numberOfCaptureGroups {
+            if let range = Range(result.range(at: i), in: string) {
+                matches.append(String(string[range]))
+            } else {
+                matches.append(nil)
+            }
+        }
+        return matches
+    }
 }
 
 public struct GRPHCompileError: Error {

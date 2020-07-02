@@ -74,12 +74,26 @@ class GraphismTests: XCTestCase {
         
         XCTAssertEqual(compiler.internStrings.debugDescription, #"["\"hello world", "\"another str", "\"he\"llo\" w\"o\"rld", "\"first ", "\"second"]"#)
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testExpressionParsing() throws {
+        let compiler = GRPHCompiler(entireContent: "") // unused
+        let context = GRPHContext(parser: compiler)
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "true").string, "true")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "false").string, "false")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "[true]").string, "true")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.stroke, literal: "elongated").string, "elongated")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.stroke, literal: "[cut]").string, "cut")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "5,0").string, "5.0,0.0")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "3,-6.5").string, "3.0,-6.5")
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "3.0.0,4"))
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "-5,-42").string, "-5.0,-42.0")
     }
+
+//    func testPerformanceExample() throws {
+//        // This is an example of a performance test case.
+//        measure {
+//            // Put the code you want to measure the time of here.
+//        }
+//    }
 
 }

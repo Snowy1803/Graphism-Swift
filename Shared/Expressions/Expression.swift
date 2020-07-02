@@ -24,7 +24,39 @@ struct Expressions {
     private init() {}
     
     static func parse(context: GRPHContext, infer: GRPHType, literal str: String) throws -> Expression {
-        // TODO
+        if str.hasPrefix("[") && str.hasSuffix("]") {
+            return try parse(context: context, infer: infer, literal: "\(str.dropFirst().dropLast())")
+        }
+        
+        if let direction = Direction(rawValue: str) {
+            return ConstantExpression(direction: direction)
+        } else if let stroke = Stroke(rawValue: str) {
+            return ConstantExpression(stroke: stroke)
+        } else if str == "true" || str == "false" {
+            return ConstantExpression(boolean: str == "true")
+        }
+        // null
+        // rotation
+        // float
+        // int
+        // array value
+        // variable
+        // array declaration
+        // cast
+        if let result = ConstantExpression.posPattern.firstMatch(string: str) {
+            if let x = Float(result[1]!),
+               let y = Float(result[2]!) {
+                return ConstantExpression(pos: Pos(x: x, y: y))
+            } else {
+                throw GRPHCompileError(type: .parse, message: "Could not parse position '\(str)'")
+            }
+        }
+        // function call
+        // comparison (* 4 priorities)
+        // constructor
+        // math (* 2 priorities)
+        // unaries
+        // fields
         throw GRPHCompileError(type: .parse, message: "Could not parse expression '\(str)'")
     }
 }
