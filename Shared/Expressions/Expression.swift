@@ -36,9 +36,19 @@ struct Expressions {
             return ConstantExpression(boolean: str == "true")
         }
         // null
-        // rotation
-        // float
-        // int
+        if str.hasSuffix("°") || str.hasSuffix("º"), // degree sign, but also allow ordinal indicator, more accessible on Apple keyboards
+           let result = ConstantExpression.intPattern.firstMatch(string: String(str.dropLast())),
+           let int = Int(result[0]!) {
+            return ConstantExpression(rot: Rotation(value: int))
+        }
+        if ConstantExpression.floatPattern.firstMatch(string: str) != nil,
+           let float = Float(str.hasSuffix("f") || str.hasSuffix("F") ? "\(str.dropLast())" : str) {
+            return ConstantExpression(float: float)
+        }
+        if ConstantExpression.intPattern.firstMatch(string: str) != nil,
+           let int = Int(str) {
+            return ConstantExpression(int: int)
+        }
         // array value
         if VariableExpression.pattern.firstMatch(string: str) != nil {
             return VariableExpression(name: str)

@@ -9,6 +9,8 @@ import Foundation
 
 struct ConstantExpression: Expression {
     static let posPattern = try! NSRegularExpression(pattern: "^(-?[0-9.]+),(-?[0-9.]+)$")
+    static let intPattern = try! NSRegularExpression(pattern: "^-?[0-9]+$")
+    static let floatPattern = try! NSRegularExpression(pattern: "^-?[0-9]+(?:\\.[0-9]+[Ff]?|[Ff])$")
     
     var value: StatefulValue
     
@@ -26,6 +28,18 @@ struct ConstantExpression: Expression {
     
     init(pos: Pos) {
         self.value = pos
+    }
+    
+    init(int: Int) {
+        self.value = int
+    }
+    
+    init(float: Float) {
+        self.value = float
+    }
+    
+    init(rot: Rotation) {
+        self.value = rot
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {

@@ -87,6 +87,13 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "3,-6.5").string, "3.0,-6.5")
         XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "3.0.0,4"))
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.pos, literal: "-5,-42").string, "-5.0,-42.0")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.rotation, literal: "-5°").string, "-5°")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.rotation, literal: "175º").string, "175°")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "42").string, "42")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-2").string, "-2")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "-2.5").string, "-2.5F")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "2.5f").string, "2.5F")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "2F").string, "2.0F")
     }
 
 //    func testPerformanceExample() throws {
