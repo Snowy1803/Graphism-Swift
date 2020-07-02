@@ -28,7 +28,7 @@ class VariableDeclarationInstruction: Instruction {
     }
     
     convenience init(lineNumber: Int, groups: [String?], context: GRPHContext) throws {
-        guard let type = SimpleType.parse(literal: groups[3]!.trimmingCharacters(in: .whitespaces)) else {
+        guard let type = GRPHTypes.parse(context: context, literal: groups[3]!.trimmingCharacters(in: .whitespaces)) else {
             throw GRPHCompileError(type: .parse, message: "Unknown type '\(groups[3]!)'")
         }
         guard groups[5] != nil else {

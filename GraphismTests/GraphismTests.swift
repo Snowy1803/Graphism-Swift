@@ -8,9 +8,14 @@
 import XCTest
 
 class GraphismTests: XCTestCase {
+    
+    var context: GRPHContext!
+    var compiler: GRPHCompiler!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        compiler = GRPHCompiler(entireContent: "")
+        context = GRPHContext(parser: compiler)
     }
 
     override func tearDownWithError() throws {
@@ -28,17 +33,17 @@ class GraphismTests: XCTestCase {
         parseType("{{{farray}}}", expected: "{{{{float}}}}")
         parseType("{string|paint|float}")
         parseType("{string|{paint}|{float}}")
-        XCTAssertNil(SimpleType.parse(literal: "intreger"))
-        XCTAssertNil(SimpleType.parse(literal: "<>float"))
-        XCTAssertNil(SimpleType.parse(literal: "float{}"))
-        XCTAssertNil(SimpleType.parse(literal: "<float><>"))
-        XCTAssertNil(SimpleType.parse(literal: "{num}|"))
-        XCTAssertNil(SimpleType.parse(literal: "|<boolean>"))
-        XCTAssertNil(SimpleType.parse(literal: "<>|<boolean>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "intreger"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "<>float"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "float{}"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "<float><>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "{num}|"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "|<boolean>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "<>|<boolean>"))
     }
     
     func parseType(_ literal: String, expected: String? = nil) {
-        XCTAssertEqual(expected ?? literal, SimpleType.parse(literal: literal)?.string)
+        XCTAssertEqual(expected ?? literal, GRPHTypes.parse(context: context, literal: literal)?.string)
     }
     
     func testTypeBoxing() throws {
@@ -55,15 +60,14 @@ class GraphismTests: XCTestCase {
     }
     
     func checkType(of value: GRPHValue, expected: GRPHType) {
-        XCTAssertEqual(SimpleType.type(of: value, expected: expected).string, expected.string)
+        XCTAssertEqual(GRPHTypes.type(of: value, expected: expected).string, expected.string)
     }
     
     func checkWrongType(of value: GRPHValue, expected: GRPHType) {
-        XCTAssertNotEqual(SimpleType.type(of: value, expected: expected).string, expected.string)
+        XCTAssertNotEqual(GRPHTypes.type(of: value, expected: expected).string, expected.string)
     }
     
     func testInternation() throws {
-        var compiler = GRPHCompiler(entireContent: "") // unused
         XCTAssertEqual(compiler.internStringLiterals(line: "nothing to see here..."), "nothing to see here...")
         XCTAssertEqual(compiler.internStringLiterals(line: #"string str = "hello world""#), "string str = $_str0$")
         XCTAssertEqual(compiler.internStringLiterals(line: #"string sam = "hello world" + str"#), "string sam = $_str0$ + str")
@@ -76,9 +80,6 @@ class GraphismTests: XCTestCase {
     }
     
     func testExpressionParsing() throws {
-        let compiler = GRPHCompiler(entireContent: "") // unused
-        let context = GRPHContext(parser: compiler)
-        
         // ENUMS
         
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "true").string, "true")
@@ -108,6 +109,12 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{5}").string, "arr{5}")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{var}").string, "arr{var}")
         
+        // Binary operators
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "5.2 + 2.8").string, "5.2F + 2.8F")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32.0/8").string, "32.0F / 8")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32F / 8 * 7 + 42 - 69 % 3").string,
+                       "[[[32.0F / 8] * 7] + 42] - [69 % 3]")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32 == 42 || 67 == 69 || [96 != 420 && 2 > 1]").string, "[[32 == 42] || [67 == 69]] || [[96 != 420] && [2 > 1]]")
     }
 
 //    func testPerformanceExample() throws {

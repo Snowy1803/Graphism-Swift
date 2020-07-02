@@ -102,7 +102,7 @@ struct Expressions {
             }
         }
         if !op.isEmpty {
-            return BinaryExpression(context: context, left: try parse(context: context, infer: nil, literal: exp1), op: op, right: try parse(context: context, infer: nil, literal: exp2))
+            return try BinaryExpression(context: context, left: try parse(context: context, infer: nil, literal: exp1), op: op, right: try parse(context: context, infer: nil, literal: exp2))
         }
         return nil
     }
