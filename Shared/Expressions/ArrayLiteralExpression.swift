@@ -24,7 +24,7 @@ struct ArrayLiteralExpression: Expression {
             } else {
                 // TODO throw runtime error : "'" + res + "' (" + Type.getType(res, cmp) + ") is not a valid value in a {" + cmp + "}"
             }
-            // ADD array.wrapped.append(GRPHTypes.autobox(res, exprected: wrapped))
+            array.wrapped.append(try GRPHTypes.autobox(value: res, expected: wrapped))
         }
         return array
     }

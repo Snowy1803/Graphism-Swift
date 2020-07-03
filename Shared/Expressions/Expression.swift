@@ -64,7 +64,7 @@ struct Expressions {
             return VariableExpression(name: str)
         }
         if let result = ArrayLiteralExpression.pattern.firstMatch(string: str) {
-            // TODO deprecate
+            // TODO deprecate in favor of Constructors (which would have the more consistant space separator)
             var type: GRPHType
             if let typestr = result[1] {
                 if let parsed = GRPHTypes.parse(context: context, literal: typestr) {
@@ -112,7 +112,6 @@ struct Expressions {
            chr == "~" || chr == "-" || chr == "!" {
             return try UnaryExpression(context: context, op: String(chr), exp: parse(context: context, infer: infer, literal: String(str.dropFirst())))
         }
-        // fields
         if let result = FieldExpression.pattern.firstMatch(string: str) {
             let field = result[2]!
             if field.first!.isUppercase { // constants

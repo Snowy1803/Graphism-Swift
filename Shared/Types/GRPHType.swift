@@ -96,6 +96,30 @@ struct GRPHTypes {
         return type
     }
     
+    public static func autobox(value: GRPHValue, expected: GRPHType) throws -> GRPHValue {
+        if let value = value as? GRPHOptional {
+            if let expected = expected as? OptionalType { // recursive
+                switch value {
+                case .null:
+                    return value
+                case .some(let wrapped):
+                    return GRPHOptional.some(try autobox(value: wrapped, expected: expected.wrapped))
+                }
+            } else { // Unboxing
+                switch value {
+                case .null:
+                    throw GRPHCompileError(type: .typeMismatch, message: "Tried to auto-unbox a 'null' value") // TODO RUNTIME ERROR
+                case .some(let wrapped):
+                    return try autobox(value: wrapped, expected: expected) // Unboxing
+                }
+            }
+        } else if let expected = expected as? OptionalType { // Boxing
+            return GRPHOptional.some(try autobox(value: value, expected: expected.wrapped))
+        } else {
+            return value
+        }
+    }
+    
     public static func realType(of value: GRPHValue, expected: GRPHType?) -> GRPHType {
         if let value = value as? GRPHOptional,
            value.isEmpty,
@@ -299,7 +323,7 @@ public enum SimpleType: String, GRPHType, CaseIterable {
                 } else {
                     // throw runtime error
                 }
-            }),] // etc
+            }),] // TODO etc
         default:
             return []
         }
