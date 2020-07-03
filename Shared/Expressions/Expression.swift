@@ -25,7 +25,7 @@ extension Expression {
 }
 
 struct Expressions {
-    static let typePattern = try! NSRegularExpression(pattern: "[A-Za-z|<>{}?]+")
+    static let typePattern = "[A-Za-z|<>{}?]+"
     
     private init() {}
     
@@ -63,7 +63,13 @@ struct Expressions {
             return VariableExpression(name: str)
         }
         // array declaration
-        // cast
+        if let result = CastExpression.pattern.firstMatch(string: str) {
+            if let type = GRPHTypes.parse(context: context, literal: result[3]!) {
+                return CastExpression(from: try parse(context: context, infer: nil, literal: result[1]!), cast: result[2]! == "as", to: type)
+            } else {
+                throw GRPHCompileError(type: .parse, message: "Unknown type '\(result[3]!)' in cast")
+            }
+        }
         if let result = ConstantExpression.posPattern.firstMatch(string: str) {
             if let x = Float(result[1]!),
                let y = Float(result[2]!) {

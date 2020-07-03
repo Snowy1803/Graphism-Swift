@@ -80,6 +80,8 @@ class GraphismTests: XCTestCase {
     }
     
     func testExpressionParsing() throws {
+        compiler.globalVariables.append(Variable(name: "var", type: SimpleType.integer, final: false, compileTime: true))
+        
         // ENUMS
         
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "true").string, "true")
@@ -109,14 +111,17 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{5}").string, "arr{5}")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{var}").string, "arr{var}")
         
+        // CASTS
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "var as boolean").string, "var as boolean")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "var is <integer|paint>").string, "var is integer|paint")
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "var as invalidtype"))
+        
         // Binary operators
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "5.2 + 2.8").string, "5.2F + 2.8F")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32.0/8").string, "32.0F / 8")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32F / 8 * 7 + 42 - 69 % 3").string,
                        "[[[32.0F / 8] * 7] + 42] - [69 % 3]")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32 == 42 || 67 == 69 || [96 != 420 && 2 > 1]").string, "[[32 == 42] || [67 == 69]] || [[96 != 420] && [2 > 1]]")
-        
-        compiler.globalVariables.append(Variable(name: "var", type: SimpleType.integer, final: false, compileTime: true))
         
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-var + 5").string, "-var + 5")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-5 + var").string, "-5 + var")
