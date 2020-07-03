@@ -151,6 +151,10 @@ public enum SimpleType: String, GRPHType, CaseIterable {
         rawValue
     }
     
+    public var supertype: GRPHType {
+        return extending ?? SimpleType.mixed
+    }
+    
     var extending: SimpleType? {
         switch self {
         case .integer, .float:

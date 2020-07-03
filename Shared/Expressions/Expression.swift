@@ -120,14 +120,14 @@ struct Expressions {
                     throw GRPHCompileError(type: .parse, message: "Unknown type \(result[1]!)")
                 }
                 guard let const = type.staticConstants.first(where: { $0.name == field }) else {
-                    throw GRPHCompileError(type: .undeclared, message: "Constant \(field) was not found in type \(type.string)")
+                    throw GRPHCompileError(type: .undeclared, message: "Constant '\(field)' was not found in type \(type.string)")
                 }
                 return ConstantPropertyExpression(property: const, inType: type)
             } else {
                 let exp = try parse(context: context, infer: nil, literal: result[1]!)
                 let type = try exp.getType(context: context, infer: SimpleType.mixed)
                 guard let property = GRPHTypes.field(named: field, in: type) else {
-                    throw GRPHCompileError(type: .undeclared, message: "Field \(field) was not found in value of type \(type.string)")
+                    throw GRPHCompileError(type: .undeclared, message: "Field '\(field)' was not found in value of type \(type.string)")
                 }
                 return FieldExpression(on: exp, field: property)
             }

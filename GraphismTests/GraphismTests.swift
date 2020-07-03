@@ -139,8 +139,10 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "[var as rotation].value").string, "[var as rotation].value")
         XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.float, literal: "[var as rotation].doesntexist"))
         XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.float, literal: "doesntexist.doesntexist"))
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.string, literal: "[var as Background].name").string, "[var as Background].name")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "[var as {string}].length").string, "[var as {string}].length")
     }
-
+    
 //    func testPerformanceExample() throws {
 //        // This is an example of a performance test case.
 //        measure {
