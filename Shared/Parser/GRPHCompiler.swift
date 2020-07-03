@@ -169,12 +169,22 @@ class GRPHCompiler: GRPHParser {
 }
 
 extension NSRegularExpression {
-    func allMatches(in string: String, using block: (_ match: Range<String.Index>) -> Void) {
-        self.enumerateMatches(in: string, range: NSRange(string.startIndex..., in: string)) { result, _, _ in
+    // Only throws if block throws, but can't use rethrows because NSRegularExpression.enumerateMatches doesn't rethrow
+    func allMatches(in string: String, using block: (_ match: Range<String.Index>) throws -> Void) throws {
+        var err: Error?
+        self.enumerateMatches(in: string, range: NSRange(string.startIndex..., in: string)) { result, _, stop in
             if let result = result,
                let range = Range(result.range, in: string) {
-                block(range)
+                do {
+                    try block(range)
+                } catch let error {
+                    err = error
+                    stop.pointee = true
+                }
             }
+        }
+        if let err = err {
+            throw err
         }
     }
     

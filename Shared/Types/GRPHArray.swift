@@ -7,12 +7,12 @@
 
 import Foundation
 
-class GRPHArray<Content: GRPHValue>: StatefulValue, GRPHArrayProtocol {
+class GRPHArray: StatefulValue, GRPHArrayProtocol {
     
-    var wrapped: [Content]
+    var wrapped: [GRPHValue]
     var content: GRPHType
     
-    init(_ wrapped: [Content] = [], of content: GRPHType) {
+    init(_ wrapped: [GRPHValue] = [], of content: GRPHType) {
         self.wrapped = wrapped
         self.content = content
     }

@@ -111,6 +111,10 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{5}").string, "arr{5}")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "arr{var}").string, "arr{var}")
         
+        XCTAssertEqual(try Expressions.parse(context: context, infer: ArrayType(content: SimpleType.float), literal: "<float>{5, 3, 2 ,6}").string, "<float>{5, 3, 2, 6}")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: ArrayType(content: SimpleType.integer), literal: "{5,3,2, 6}").string, "<integer>{5, 3, 2, 6}")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: ArrayType(content: SimpleType.string), literal: "{}").string, "<string>{}")
+        
         // CASTS
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "var as boolean").string, "var as boolean")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.boolean, literal: "var is <integer|paint>").string, "var is integer|paint")

@@ -26,6 +26,7 @@ extension Expression {
 
 struct Expressions {
     static let typePattern = "[A-Za-z|<>{}?]+"
+    private static let comma = try! NSRegularExpression(pattern: ",")
     
     private init() {}
     
@@ -62,7 +63,24 @@ struct Expressions {
         if VariableExpression.pattern.firstMatch(string: str) != nil {
             return VariableExpression(name: str)
         }
-        // array declaration
+        if let result = ArrayLiteralExpression.pattern.firstMatch(string: str) {
+            // TODO deprecate
+            var type: GRPHType
+            if let typestr = result[1] {
+                if let parsed = GRPHTypes.parse(context: context, literal: typestr) {
+                    type = parsed
+                } else {
+                    throw GRPHCompileError(type: .parse, message: "Array component type '\(typestr)' couldn't be parsed")
+                }
+            } else if let infer = infer,
+                      let array = infer as? ArrayType {
+                type = array.content
+            } else {
+                print("Warning: Component type of array literal couldn't be inferred. Using float.")
+                type = SimpleType.float
+            }
+            return ArrayLiteralExpression(wrapped: type, values: try splitParameters(context: context, in: result[2]!, delimiter: comma, infer: type))
+        }
         if let result = CastExpression.pattern.firstMatch(string: str) {
             if let type = GRPHTypes.parse(context: context, literal: result[3]!) {
                 return CastExpression(from: try parse(context: context, infer: nil, literal: result[1]!), cast: result[2]! == "as", to: type)
@@ -98,11 +116,29 @@ struct Expressions {
         throw GRPHCompileError(type: .parse, message: "Could not parse expression '\(str)'")
     }
     
+    static func splitParameters(context: GRPHContext, in string: String, delimiter: NSRegularExpression, infer: GRPHType? = nil) throws -> [Expression] {
+        var result = [Expression]()
+        let trimmed = string.trimmingCharacters(in: .whitespaces)
+        var last = trimmed.startIndex
+        try delimiter.allMatches(in: trimmed) { range in
+            let exp = trimmed[last..<range.lowerBound].trimmingCharacters(in: .whitespaces)
+            if checkBalance(literal: exp) {
+                result.append(try parse(context: context, infer: infer, literal: exp))
+                last = range.upperBound
+            }
+        }
+        let exp = trimmed[last...].trimmingCharacters(in: .whitespaces)
+        if checkBalance(literal: exp) {
+            result.append(try parse(context: context, infer: infer, literal: exp))
+        }
+        return result
+    }
+    
     private static func findBinary(context: GRPHContext, str: String, regex: NSRegularExpression) throws -> BinaryExpression? {
         var exp1 = "",
             exp2 = "",
             op = ""
-        regex.allMatches(in: str) { range in
+        try! regex.allMatches(in: str) { range in
             let left = str[..<range.lowerBound]
             let right = str[range.upperBound...]
             if checkBalance(literal: left) && checkBalance(literal: right) {
