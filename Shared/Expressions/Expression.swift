@@ -113,6 +113,22 @@ struct Expressions {
             return try UnaryExpression(context: context, op: String(chr), exp: parse(context: context, infer: infer, literal: String(str.dropFirst())))
         }
         // fields
+        if let result = FieldExpression.pattern.firstMatch(string: str) {
+            let field = result[2]!
+            if field.first!.isUppercase { // constants
+                guard let type = GRPHTypes.parse(context: context, literal: result[1]!) else {
+                    throw GRPHCompileError(type: .parse, message: "Unknown type \(result[1]!)")
+                }
+                guard let const = type.staticConstants.first(where: { $0.name == field }) else {
+                    throw GRPHCompileError(type: .undeclared, message: "Constant \(field) was not found in type \(type.string)")
+                }
+                return ConstantPropertyExpression(property: const, inType: type)
+            } else {
+                // ADD let exp = try parse(context: context, infer: nil, literal: result[1]!)
+                // ADD return FieldExpression(on: exp, field: property)
+                fatalError("TODO")
+            }
+        }
         throw GRPHCompileError(type: .parse, message: "Could not parse expression '\(str)'")
     }
     

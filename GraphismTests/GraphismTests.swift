@@ -130,6 +130,10 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-var + 5").string, "-var + 5")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-5 + var").string, "-5 + var")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-[5 + var]").string, "-[5 + var]")
+        
+        // FIELDS
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "color.BLACK").string, "color.BLACK")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "float.NOT_A_NUMBER").string, "float.NOT_A_NUMBER")
     }
 
 //    func testPerformanceExample() throws {

@@ -11,6 +11,8 @@ public protocol GRPHType {
     var string: String { get }
     
     func isInstance(of other: GRPHType) -> Bool
+    
+    var staticConstants: [TypeConstant] { get }
 }
 
 extension GRPHType {
@@ -29,6 +31,9 @@ extension GRPHType {
     func isInstance(context: GRPHContext, expression: Expression) throws -> Bool {
         return GRPHTypes.autoboxed(type: try expression.getType(context: context, infer: self), expected: self).isInstance(of: self)
     }
+    
+    // default: None
+    public var staticConstants: [TypeConstant] {[]}
 }
 
 struct GRPHTypes {
@@ -125,7 +130,7 @@ public enum SimpleType: String, GRPHType, CaseIterable {
     
     case Rectangle, Circle, Line, Polygon, /*Image,*/ Text, Path, Group, Background
     
-    // MISSING = stroke, font, Text, Group, Background
+    // MISSING = font, Text, Group, Background
     
     public var string: String {
         rawValue
@@ -183,6 +188,54 @@ public enum SimpleType: String, GRPHType, CaseIterable {
     
     public func canBeCalled(_ name: String) -> Bool {
         return name == string || aliases.contains(name)
+    }
+    
+    public var staticConstants: [TypeConstant] {
+        switch self {
+        case .color:
+            return [TypeConstant(name: "WHITE", type: self, value: ColorPaint.white),
+                    TypeConstant(name: "LIGHT_GRAY", type: self, value: ColorPaint.components(red: 0.75, green: 0.75, blue: 0.75)),
+                    TypeConstant(name: "GRAY", type: self, value: ColorPaint.components(red: 0.5, green: 0.5, blue: 0.5)),
+                    TypeConstant(name: "DARK_GRAY", type: self, value: ColorPaint.components(red: 0.25, green: 0.25, blue: 0.25)),
+                    TypeConstant(name: "BLACK", type: self, value: ColorPaint.black),
+                    TypeConstant(name: "RED", type: self, value: ColorPaint.red),
+                    TypeConstant(name: "GREEN", type: self, value: ColorPaint.green),
+                    TypeConstant(name: "BLUE", type: self, value: ColorPaint.blue),
+                    TypeConstant(name: "CYAN", type: self, value: ColorPaint.components(red: 0, green: 1, blue: 1)),
+                    TypeConstant(name: "MAGENTA", type: self, value: ColorPaint.components(red: 1, green: 0, blue: 1)),
+                    TypeConstant(name: "YELLOW", type: self, value: ColorPaint.components(red: 1, green: 1, blue: 0)),
+                    TypeConstant(name: "ORANGE", type: self, value: ColorPaint.orange),
+                    TypeConstant(name: "BROWN", type: self, value: ColorPaint.components(red: 0.6, green: 0.2, blue: 0)),
+                    TypeConstant(name: "PURPLE", type: self, value: ColorPaint.purple), // Not in Java?
+                    TypeConstant(name: "PINK", type: self, value: ColorPaint.pink),
+                    TypeConstant(name: "ALPHA", type: self, value: ColorPaint.alpha)]
+        case .float:
+            return [TypeConstant(name: "POSITIVE_INFINITY", type: self, value: Float.infinity),
+                    TypeConstant(name: "NEGATIVE_INFINITY", type: self, value: -Float.infinity),
+                    TypeConstant(name: "NOT_A_NUMBER", type: self, value: Float.nan)]
+        case .integer:
+            return [TypeConstant(name: "MAX", type: self, value: Int.max),
+                    TypeConstant(name: "MIN", type: self, value: Int.min)]
+        case .font:
+            return [] // TODO
+        case .pos:
+            return [TypeConstant(name: "ORIGIN", type: self, value: Pos(x: 0, y: 0))]
+        case .stroke:
+            return [TypeConstant(name: "ELONGATED", type: self, value: Stroke.elongated),
+                    TypeConstant(name: "CUT", type: self, value: Stroke.cut),
+                    TypeConstant(name: "ROUNDED", type: self, value: Stroke.rounded)]
+        case .direction:
+            return [TypeConstant(name: "RIGHT", type: self, value: Direction.right),
+                    TypeConstant(name: "DOWN_RIGHT", type: self, value: Direction.downRight),
+                    TypeConstant(name: "DOWN", type: self, value: Direction.down),
+                    TypeConstant(name: "DOWN_LEFT", type: self, value: Direction.downLeft),
+                    TypeConstant(name: "LEFT", type: self, value: Direction.left),
+                    TypeConstant(name: "UP_LEFT", type: self, value: Direction.upLeft),
+                    TypeConstant(name: "UP", type: self, value: Direction.up),
+                    TypeConstant(name: "UP_RIGHT", type: self, value: Direction.upRight)]
+        default:
+            return []
+        }
     }
 }
 
