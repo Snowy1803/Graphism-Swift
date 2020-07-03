@@ -12,15 +12,18 @@ protocol Instruction {
     
     func run(context: GRPHContext) throws
     
-    var name: String { get }
+    var instructionName: String { get }
     
     func toString(indent: String) -> String
 }
 
 extension Instruction {
     func safeRun(context: GRPHContext) throws {
-        // TODO MANAGE ERRORS HERE
-        try self.run(context: context)
+        do {
+            try self.run(context: context)
+        } catch var exception as GRPHRuntimeError {
+            exception.stack.append("\tat \(type(of: self)); line \(line)")
+        }
     }
     
     var line: Int {

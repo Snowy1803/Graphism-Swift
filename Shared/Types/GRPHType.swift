@@ -108,7 +108,7 @@ struct GRPHTypes {
             } else { // Unboxing
                 switch value {
                 case .null:
-                    throw GRPHCompileError(type: .typeMismatch, message: "Tried to auto-unbox a 'null' value") // TODO RUNTIME ERROR
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Tried to auto-unbox a 'null' value")
                 case .some(let wrapped):
                     return try autobox(value: wrapped, expected: expected) // Unboxing
                 }
@@ -321,7 +321,7 @@ public enum SimpleType: String, GRPHType, CaseIterable {
                 if var shape = ($0 as? BasicShape) {
                     shape.position = $1 as! Pos
                 } else {
-                    // throw runtime error
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "A \(($0 as! GShape).type) has no position")
                 }
             }),] // TODO etc
         default:

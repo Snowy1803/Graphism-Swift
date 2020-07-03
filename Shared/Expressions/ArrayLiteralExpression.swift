@@ -22,7 +22,7 @@ struct ArrayLiteralExpression: Expression {
             } else if let int = res as? Int, wrapped as? SimpleType == SimpleType.float { // Backwards compatibility
                 res = Float(int)
             } else {
-                // TODO throw runtime error : "'" + res + "' (" + Type.getType(res, cmp) + ") is not a valid value in a {" + cmp + "}"
+                throw GRPHRuntimeError(type: .invalidArgument, message: "'\(res)' (\(GRPHTypes.type(of: res, expected: wrapped))) is not a valid value in a {\(wrapped)}")
             }
             array.wrapped.append(try GRPHTypes.autobox(value: res, expected: wrapped))
         }

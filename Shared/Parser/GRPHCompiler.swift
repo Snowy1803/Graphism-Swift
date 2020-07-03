@@ -239,3 +239,19 @@ public struct GRPHCompileError: Error {
         case unsupported = "Unsupported"
     }
 }
+
+public struct GRPHRuntimeError: Error {
+    var type: RuntimeExceptionType
+    var message: String
+    var stack: [String] = []
+    
+    public enum RuntimeExceptionType: String {
+        case typeMismatch = "InvalidType"
+        case cast = "Cast"
+        case inputOutput = "IO"
+        case unexpected = "Unexpected"
+        case reflection = "Reflection"
+        case invalidArgument = "InvalidArgument"
+        case permission = "NoPermission"
+    }
+}

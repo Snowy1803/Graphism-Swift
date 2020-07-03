@@ -12,13 +12,11 @@ struct VariableExpression: Expression {
     
     var name: String
     
-    
     func eval(context: GRPHContext) throws -> GRPHValue {
         if let v = context.findVariable(named: name) {
             return v.content!
         }
-        // TODO throw runtime
-        throw GRPHCompileError(type: .undeclared, message: "Unknown variable '\(name)'")
+        throw GRPHRuntimeError(type: .invalidArgument, message: "Undeclared variable '\(name)'")
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {

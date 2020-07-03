@@ -15,13 +15,13 @@ struct ArrayValueExpression: Expression {
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         guard let val = context.findVariable(named: varName)?.content as? GRPHArray else {
-            throw GRPHCompileError(type: .invalidArguments, message: "Array expression with non-array") // runtime
+            throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression with non-array")
         }
         guard let i = try GRPHTypes.autobox(value: try index.eval(context: context), expected: SimpleType.integer) as? Int else {
-            throw GRPHCompileError(type: .invalidArguments, message: "Array expression index couldn't be resolved as an integer") // runtime
+            throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression index couldn't be resolved as an integer")
         }
         guard i < val.count else {
-            throw GRPHCompileError(type: .invalidArguments, message: "Array out of bounds; index \(i) not found in array of length \(val.count))") // runtime
+            throw GRPHRuntimeError(type: .invalidArgument, message: "Array out of bounds; index \(i) not found in array of length \(val.count))")
         }
         return val.wrapped[i]
     }
