@@ -132,8 +132,13 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-[5 + var]").string, "-[5 + var]")
         
         // FIELDS
-        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "color.BLACK").string, "color.BLACK")
-        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "float.NOT_A_NUMBER").string, "float.NOT_A_NUMBER")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.color, literal: "color.BLACK").string, "color.BLACK")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "float.NOT_A_NUMBER").string, "float.NOT_A_NUMBER")
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.float, literal: "float.DOESNTEXIST"))
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.float, literal: "doesntexist.CONST"))
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "[var as rotation].value").string, "[var as rotation].value")
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.float, literal: "[var as rotation].doesntexist"))
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.float, literal: "doesntexist.doesntexist"))
     }
 
 //    func testPerformanceExample() throws {

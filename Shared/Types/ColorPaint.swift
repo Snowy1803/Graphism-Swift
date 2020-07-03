@@ -71,5 +71,14 @@ public enum ColorPaint: Paint {
         }
     }
     
+    var rgba: (red: Float, green: Float, blue: Float, alpha: Float)? {
+        switch self {
+        case let .components(red: r, green: g, blue: b, alpha: a):
+            return (red: r, green: g, blue: b, alpha: a)
+        default:
+            return nil
+        }
+    }
+    
     public var type: GRPHType { SimpleType.color }
 }

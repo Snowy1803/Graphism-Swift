@@ -124,9 +124,12 @@ struct Expressions {
                 }
                 return ConstantPropertyExpression(property: const, inType: type)
             } else {
-                // ADD let exp = try parse(context: context, infer: nil, literal: result[1]!)
-                // ADD return FieldExpression(on: exp, field: property)
-                fatalError("TODO")
+                let exp = try parse(context: context, infer: nil, literal: result[1]!)
+                let type = try exp.getType(context: context, infer: SimpleType.mixed)
+                guard let property = GRPHTypes.field(named: field, in: type) else {
+                    throw GRPHCompileError(type: .undeclared, message: "Field \(field) was not found in value of type \(type.string)")
+                }
+                return FieldExpression(on: exp, field: property)
             }
         }
         throw GRPHCompileError(type: .parse, message: "Could not parse expression '\(str)'")

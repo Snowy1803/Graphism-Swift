@@ -26,6 +26,8 @@ struct FieldExpression: Expression {
     }
     
     var needsBrackets: Bool { false }
+    
+    // should check field.writeable at compile time in a check when implementing AssignableExpression
 }
 
 struct ConstantPropertyExpression: Expression {

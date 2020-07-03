@@ -23,7 +23,12 @@ public protocol GShape: GRPHValue {
 
 extension GShape {
     var effectiveName: String {
-        givenName ?? typeKey // TODO LOCALIZE typeKey
+        get {
+            givenName ?? typeKey // TODO LOCALIZE typeKey
+        }
+        set {
+            givenName = newValue
+        }
     }
 }
 

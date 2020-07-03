@@ -13,6 +13,9 @@ public protocol GRPHType {
     func isInstance(of other: GRPHType) -> Bool
     
     var staticConstants: [TypeConstant] { get }
+    var fields: [Field] { get }
+    
+    var supertype: GRPHType { get }
 }
 
 extension GRPHType {
@@ -34,6 +37,8 @@ extension GRPHType {
     
     // default: None
     public var staticConstants: [TypeConstant] {[]}
+    public var fields: [Field] {[]}
+    public var supertype: GRPHType { SimpleType.mixed }
 }
 
 struct GRPHTypes {
@@ -98,6 +103,16 @@ struct GRPHTypes {
             return expected ?? OptionalType(wrapped: SimpleType.mixed)
         }
         return value.type
+    }
+    
+    public static func field(named name: String, in type: GRPHType) -> Field? {
+        if let property = type.fields.first(where: { $0.name == name }) {
+            return property
+        }
+        if type.isTheMixed {
+            return nil
+        }
+        return field(named: name, in: type.supertype)
     }
 }
 
@@ -237,6 +252,54 @@ public enum SimpleType: String, GRPHType, CaseIterable {
             return []
         }
     }
+    
+    public var fields: [Field] {
+        switch self {
+        case .pos:
+            return [KeyPathField(name: "x", type: SimpleType.float, keyPath: \Pos.x),
+                    KeyPathField(name: "y", type: SimpleType.float, keyPath: \Pos.y)]
+        case .color:
+            return [VirtualField<ColorPaint>(name: "red", type: SimpleType.integer, getter: { Int(($0.rgba?.red ?? -1) * 255) }),
+                    VirtualField<ColorPaint>(name: "green", type: SimpleType.integer, getter: { Int(($0.rgba?.green ?? -1) * 255) }),
+                    VirtualField<ColorPaint>(name: "blue", type: SimpleType.integer, getter: { Int(($0.rgba?.blue ?? -1) * 255) }),
+                    VirtualField<ColorPaint>(name: "alpha", type: SimpleType.integer, getter: { Int(($0.rgba?.alpha ?? -1) * 255) }),
+                    VirtualField<ColorPaint>(name: "fred", type: SimpleType.integer, getter: { $0.rgba?.red ?? -1 }),
+                    VirtualField<ColorPaint>(name: "fgreen", type: SimpleType.integer, getter: { $0.rgba?.green ?? -1 }),
+                    VirtualField<ColorPaint>(name: "fblue", type: SimpleType.integer, getter: { $0.rgba?.blue ?? -1 }),
+                    VirtualField<ColorPaint>(name: "falpha", type: SimpleType.integer, getter: { $0.rgba?.alpha ?? -1 })]
+        case .linear:
+            return [KeyPathField(name: "fromColor", type: SimpleType.color, keyPath: \LinearPaint.from),
+                    KeyPathField(name: "toColor", type: SimpleType.color, keyPath: \LinearPaint.to),
+                    KeyPathField(name: "direction", type: SimpleType.direction, keyPath: \LinearPaint.direction)]
+            // uhm they are structs, not writeable on java edition, here they are writeable, but they would be value types? Depends on assignment implementation
+        case .radial:
+            return [KeyPathField(name: "fromColor", type: SimpleType.color, keyPath: \RadialPaint.centerColor),
+                    KeyPathField(name: "toColor", type: SimpleType.color, keyPath: \RadialPaint.externalColor),
+                    KeyPathField(name: "center", type: SimpleType.pos, keyPath: \RadialPaint.center),
+                    KeyPathField(name: "radius", type: SimpleType.float, keyPath: \RadialPaint.radius)]
+            // same as above
+        // fonts & images
+        case .rotation:
+            return [KeyPathField(name: "value", type: SimpleType.integer, keyPath: \Rotation.value)]
+            // same as above
+        case .string:
+            return [VirtualField<String>(name: "length", type: SimpleType.integer, getter: { $0.count })]
+        case .shape:
+            return [ErasedField(name: "name", type: SimpleType.string, getter: { ($0 as! GShape).effectiveName }, setter: {
+                var shape = ($0 as! GShape)
+                shape.effectiveName = $1 as! String // shapes are always reference types
+            }),
+            ErasedField(name: "location", type: SimpleType.pos, getter: { ($0 as? BasicShape)?.position ?? Pos(x: 0, y: 0) }, setter: {
+                if var shape = ($0 as? BasicShape) {
+                    shape.position = $1 as! Pos
+                } else {
+                    // throw runtime error
+                }
+            }),] // etc
+        default:
+            return []
+        }
+    }
 }
 
 public struct OptionalType: GRPHType {
@@ -284,5 +347,9 @@ public struct ArrayType: GRPHType {
             return content.isInstance(of: array.content)
         }
         return other.isTheMixed
+    }
+    
+    public var fields: [Field] {
+        return [VirtualField<GRPHArray>(name: "length", type: SimpleType.integer, getter: { $0.count })]
     }
 }
