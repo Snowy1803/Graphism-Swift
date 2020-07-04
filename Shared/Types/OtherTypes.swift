@@ -57,4 +57,10 @@ struct ArrayType: GRPHType {
     var fields: [Field] {
         return [VirtualField<GRPHArray>(name: "length", type: SimpleType.integer, getter: { $0.count })]
     }
+    
+    var constructor: Constructor? {
+        Constructor(parameters: [Parameter(name: "element", type: content, optional: true)], type: self, varargs: true) { ctx, values in
+            GRPHArray(values.compactMap { $0 }, of: content)
+        }
+    }
 }
