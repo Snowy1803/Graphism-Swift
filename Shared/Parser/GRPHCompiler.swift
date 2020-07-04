@@ -71,22 +71,24 @@ class GRPHCompiler: GRPHParser {
                     if tline.hasPrefix("#") {
                         // MARK: COMMANDS
                         let block = tline.components(separatedBy: " ")[0]
+                        let params = tline.dropFirst(block.count).trimmingCharacters(in: .whitespaces)
                         
                         switch block {
                         case "#import", "#using":
-                            let imp = tline.dropFirst(block.count).trimmingCharacters(in: .whitespaces)
-                            
-                            if imp.contains(">") {
+                            if params.contains(">") {
                                 // ADD let p = namespacedMemberFromString(imp)
                                 // TODO
                             }
                             
                         case "#if":
-                            break
+                            try addInstruction(try IfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                         case "#elseif", "#elif":
-                            break
+                            try addInstruction(try ElseIfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                         case "#else":
-                            break
+                            guard params.isEmpty else {
+                                throw GRPHCompileError(type: .parse, message: "#else doesn't expect arguments")
+                            }
+                            try addInstruction(ElseBlock(lineNumber: lineNumber))
                         case "#while":
                             break
                         case "#foreach":
@@ -140,6 +142,25 @@ class GRPHCompiler: GRPHParser {
 //            return false
         }
         return true
+    }
+    
+    func addNonBlockInstruction(_ instruction: Instruction) {
+        if let block = blocks.last {
+            block.children.append(instruction)
+        } else {
+            instructions.append(instruction)
+        }
+    }
+    
+    func addInstruction(_ instruction: Instruction) throws {
+        addNonBlockInstruction(instruction)
+        // context.accepts(instruction) // for types ig
+        /* ADD if let function = instruction as? FunctionDeclarationBlock {
+            blocks.append(instruction)
+        } else */if let block = instruction as? BlockInstruction {
+            blocks.append(block)
+            context.inBlock(block: block)
+        }
     }
     
     func internStringLiterals(line: String) -> String {
