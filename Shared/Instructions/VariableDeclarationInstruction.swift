@@ -8,7 +8,7 @@
 import Foundation
 
 class VariableDeclarationInstruction: Instruction {
-    static let pattern = try! NSRegularExpression(pattern: "(global +)?(final +)?(\(Expressions.typePattern)) +([$A-Za-z_][A-Za-z0-9_]*)(?: *= *(.*))?")
+    static let pattern = try! NSRegularExpression(pattern: "^(global +)?(final +)?(\(Expressions.typePattern)) +([$A-Za-z_][A-Za-z0-9_]*)(?: *= *(.*))?$")
     
     var global, constant: Bool
     

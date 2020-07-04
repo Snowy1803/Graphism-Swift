@@ -14,7 +14,6 @@ class GRPHCompiler: GRPHParser {
     
     var line0: String = ""
     var blocks: [BlockInstruction] = []
-    var lineNumber: Int = 0
     
     var internStrings: [String] = []
     var globalVariables: [Variable] = [] // Add this, back and colors
@@ -40,15 +39,13 @@ class GRPHCompiler: GRPHParser {
         do {
             lines = entireContent.components(separatedBy: "\n")
             context = GRPHContext(parser: self)
-            lineNumber = 0
-            while lineNumber < lines.count {
+            for lineNumber in 0..<lines.count {
                 // Real line
                 line0 = lines[lineNumber]
                 var line, tline: String
                 if line0.isEmpty || line0.hasPrefix("//") {
                     line = ""
                     tline = ""
-                    lineNumber += 1
                     continue
                 } else {
                     // Interned & stripped from comments
@@ -150,11 +147,17 @@ class GRPHCompiler: GRPHParser {
                         throw GRPHCompileError(type: .unsupported, message: "labels have been removed")
                     } else {
                         // MARK: INSTRUCTIONS
-                        
+                        // array modification: arr{4} = var
+                        // inline func declaration: color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
+                        // var declaration
+                        if let result = VariableDeclarationInstruction.pattern.firstMatch(string: tline) {
+                            try addInstruction(try VariableDeclarationInstruction(lineNumber: lineNumber, groups: result, context: context))
+                        }
+                        // var assign
+                        // method call: validate: shape1
+                        // function call: log["test"]
+                        // ADD throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
                     }
-                    
-                    
-                    
                 } catch let error as GRPHCompileError {
                     print("Compile Error: \(error.type.rawValue)Error: \(error.message); line \(lineNumber + 1)")
                     return false
@@ -162,8 +165,6 @@ class GRPHCompiler: GRPHParser {
                     print("NativeError; line \(lineNumber + 1)")
                     print(error.localizedDescription)
                 }
-                
-                lineNumber += 1
             }
 //        } catch {
 //            print("Failed")
