@@ -76,6 +76,12 @@
 		20D1EF2D24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2E24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2F24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
+		20D1EF3224B12AA500EB4BEE /* OtherTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */; };
+		20D1EF3324B12AA500EB4BEE /* OtherTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */; };
+		20D1EF3424B12AA500EB4BEE /* OtherTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */; };
+		20D1EF3624B12AEE00EB4BEE /* SimpleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */; };
+		20D1EF3724B12AEE00EB4BEE /* SimpleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */; };
+		20D1EF3824B12AEE00EB4BEE /* SimpleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */; };
 		20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
@@ -177,6 +183,8 @@
 		2098B69724AB61350042D465 /* Paint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paint.swift; sourceTree = "<group>"; };
 		2098B69A24AB62B60042D465 /* ColorPaint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPaint.swift; sourceTree = "<group>"; };
 		20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakInstruction.swift; sourceTree = "<group>"; };
+		20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherTypes.swift; sourceTree = "<group>"; };
+		20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleType.swift; sourceTree = "<group>"; };
 		20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableDeclarationInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA424AD449A00ABFB6E /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContext.swift; sourceTree = "<group>"; };
@@ -266,6 +274,7 @@
 				20DE0B9E24AD43AC00ABFB6E /* Instructions */,
 				20DE0B9F24AD43B400ABFB6E /* Expressions */,
 				2098B68D24AAB0490042D465 /* Types */,
+				20D1EF3024B12A2A00EB4BEE /* Values */,
 				2098B67724A970350042D465 /* Shapes */,
 				2063126C24A8C3790095911B /* GraphismApp.swift */,
 				2063126D24A8C3790095911B /* GraphismDocument.swift */,
@@ -320,6 +329,15 @@
 			isa = PBXGroup;
 			children = (
 				200A5F6F24AB76560028180B /* GRPHType.swift */,
+				20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */,
+				20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
+		20D1EF3024B12A2A00EB4BEE /* Values */ = {
+			isa = PBXGroup;
+			children = (
 				2098B68E24AAB06A0042D465 /* GRPHValue.swift */,
 				200A5F7224AB82DA0028180B /* GRPHArray.swift */,
 				20DE0BD024AEA5AE00ABFB6E /* GRPHOptional.swift */,
@@ -332,7 +350,7 @@
 				200A5F6924AB6AE60028180B /* Direction.swift */,
 				200A5F7524AB85E10028180B /* Stroke.swift */,
 			);
-			path = Types;
+			path = Values;
 			sourceTree = "<group>";
 		};
 		20DE0B9E24AD43AC00ABFB6E /* Instructions */ = {
@@ -494,6 +512,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */,
+				20D1EF3424B12AA500EB4BEE /* OtherTypes.swift in Sources */,
 				200A5F9424ABA51E0028180B /* GPolygon.swift in Sources */,
 				20DE0BAB24AD46D600ABFB6E /* GRPHContext.swift in Sources */,
 				20DE0BEF24B0AD5100ABFB6E /* ForBlock.swift in Sources */,
@@ -522,6 +541,7 @@
 				20DE0BF324B0B35600ABFB6E /* TryBlock.swift in Sources */,
 				20DE0BAF24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				200A5F8B24ABA5180028180B /* Stroke.swift in Sources */,
+				20D1EF3824B12AEE00EB4BEE /* SimpleType.swift in Sources */,
 				200A5F8E24ABA5180028180B /* Pos.swift in Sources */,
 				200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */,
 				20DE0BE724AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
@@ -547,11 +567,13 @@
 				20DE0BB124AD503F00ABFB6E /* Variable.swift in Sources */,
 				20DE0BDD24AF80C200ABFB6E /* Property.swift in Sources */,
 				200A5F6D24AB6FB60028180B /* RadialPaint.swift in Sources */,
+				20D1EF3624B12AEE00EB4BEE /* SimpleType.swift in Sources */,
 				2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */,
 				2098B69824AB61350042D465 /* Paint.swift in Sources */,
 				200A5F6724AB69DB0028180B /* LinearPaint.swift in Sources */,
 				20DE0BC524AE783400ABFB6E /* BinaryExpression.swift in Sources */,
 				20DE0BC924AE976800ABFB6E /* UnaryExpression.swift in Sources */,
+				20D1EF3224B12AA500EB4BEE /* OtherTypes.swift in Sources */,
 				20DE0BA924AD46D600ABFB6E /* GRPHContext.swift in Sources */,
 				2098B68524AA18B30042D465 /* GPath.swift in Sources */,
 				20DE0BE124AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
@@ -599,11 +621,13 @@
 				20DE0BB224AD503F00ABFB6E /* Variable.swift in Sources */,
 				20DE0BDE24AF80C200ABFB6E /* Property.swift in Sources */,
 				200A5F6E24AB6FB60028180B /* RadialPaint.swift in Sources */,
+				20D1EF3724B12AEE00EB4BEE /* SimpleType.swift in Sources */,
 				2063128324A8C38D0095911B /* GraphismDocument.swift in Sources */,
 				2098B69924AB61350042D465 /* Paint.swift in Sources */,
 				200A5F6824AB69DB0028180B /* LinearPaint.swift in Sources */,
 				20DE0BC624AE783400ABFB6E /* BinaryExpression.swift in Sources */,
 				20DE0BCA24AE976800ABFB6E /* UnaryExpression.swift in Sources */,
+				20D1EF3324B12AA500EB4BEE /* OtherTypes.swift in Sources */,
 				20DE0BAA24AD46D600ABFB6E /* GRPHContext.swift in Sources */,
 				2098B68624AA18B30042D465 /* GPath.swift in Sources */,
 				20DE0BE224AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
