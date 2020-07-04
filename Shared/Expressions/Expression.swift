@@ -27,6 +27,7 @@ extension Expression {
 struct Expressions {
     static let typePattern = "[A-Za-z|<>{}?]+"
     private static let comma = try! NSRegularExpression(pattern: ",")
+    private static let space = try! NSRegularExpression(pattern: " ")
     
     private init() {}
     
@@ -103,7 +104,21 @@ struct Expressions {
                       ?? findBinary(context: context, str: str, regex: BinaryExpression.signs4) {
             return exp
         }
-        // constructor
+        if let result = ConstructorExpression.pattern.firstMatch(string: str) {
+            var type: GRPHType
+            if let typestr = result[1] {
+                if let t = GRPHTypes.parse(context: context, literal: typestr) {
+                    type = t
+                } else {
+                    throw GRPHCompileError(type: .undeclared, message: "Type '\(typestr)' not found")
+                }
+            } else if let infer = infer {
+                type = GRPHTypes.autoboxed(type: infer, expected: SimpleType.mixed) // unbox
+            } else {
+                throw GRPHCompileError(type: .undeclared, message: "Constructor type could not be inferred")
+            }
+            return try ConstructorExpression(ctx: context, type: type, values: splitParameters(context: context, in: result[2]!, delimiter: space))
+        }
         if let exp = try findBinary(context: context, str: str, regex: BinaryExpression.signs5)
                       ?? findBinary(context: context, str: str, regex: BinaryExpression.signs6) {
             return exp
