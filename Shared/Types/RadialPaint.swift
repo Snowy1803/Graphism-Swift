@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public struct RadialPaint: Paint {
+public struct RadialPaint: Paint, Equatable {
     var centerColor: ColorPaint
     var center: Pos = Pos(x: 0.5, y: 0.5)// Unit coordinates (0-1)
     var externalColor: ColorPaint

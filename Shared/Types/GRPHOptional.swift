@@ -30,4 +30,17 @@ enum GRPHOptional: GRPHValue {
             return false
         }
     }
+    
+    func isEqualTo(_ other: GRPHValue) -> Bool {
+        if let other = other as? GRPHOptional {
+            if case .some(let value) = other {
+                if case .some(let mine) = self {
+                    return value.isEqualTo(mine)
+                }
+            } else if case .null = self {
+                return true
+            }
+        }
+        return false
+    }
 }

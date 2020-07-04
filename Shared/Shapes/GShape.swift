@@ -30,6 +30,13 @@ extension GShape {
             givenName = newValue
         }
     }
+    
+    public func isEqualTo(_ other: GRPHValue) -> Bool {
+        if let shape = other as? GShape {
+            return self.uuid == shape.uuid
+        }
+        return false
+    }
 }
 
 public protocol BasicShape: GShape {

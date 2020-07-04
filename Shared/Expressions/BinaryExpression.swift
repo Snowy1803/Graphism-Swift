@@ -66,7 +66,105 @@ struct BinaryExpression: Expression {
     }
     
     func eval(context: GRPHContext) throws -> GRPHValue {
-        fatalError("TODO")
+        let left = try self.left.eval(context: context)
+        switch op {
+        case .logicalAnd:
+            return try GRPHTypes.autobox(value: left, expected: SimpleType.boolean) as! Bool
+                ? GRPHTypes.autobox(value: try self.right.eval(context: context), expected: SimpleType.boolean) as! Bool
+                : false
+        case .logicalOr:
+            return try GRPHTypes.autobox(value: left, expected: SimpleType.boolean) as! Bool
+                ? true
+                : GRPHTypes.autobox(value: try self.right.eval(context: context), expected: SimpleType.boolean) as! Bool
+        default:
+            break
+        }
+        let right = try self.right.eval(context: context)
+        switch op {
+        case .greaterOrEqualTo, .lessOrEqualTo, .greaterThan, .lessThan, .plus, .minus, .multiply, .divide, .modulo:
+            // num: int or float
+            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.num) as! GRPHNumber
+            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.num) as! GRPHNumber
+            if aleft is Int && aright is Int {
+                return run(Float(grph: aleft), Float(grph: aright), castTo: Int.self)
+            } else {
+                return run(Float(grph: aleft), Float(grph: aright), castTo: Float.self)
+            }
+        case .bitwiseAnd, .bitwiseOr, .bitwiseXor:
+            // bool or int
+            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.boolean)
+            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.boolean)
+            if let aleft = aleft as? Bool {
+                switch op {
+                case .bitwiseAnd:
+                    return aleft && aright as! Bool
+                case .bitwiseOr:
+                    return aleft || aright as! Bool
+                case .bitwiseXor:
+                    return aleft != (aright as! Bool)
+                default:
+                    fatalError()
+                }
+            }
+            //  numbers
+            fallthrough
+        case .bitshiftLeft, .bitshiftRight, .bitrotation:
+            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.integer) as! Int
+            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.integer) as! Int
+            return run(aleft, aright)
+        case .equal, .notEqual:
+            return left.isEqualTo(right) == (op == .equal)
+        case .concat:
+            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.string) as! String
+            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.string) as! String
+            return aleft + aright
+        case .logicalAnd, .logicalOr:
+            fatalError()
+        }
+    }
+    
+    func run<T: GRPHNumber>(_ first: Float, _ second: Float, castTo: T.Type) -> GRPHValue {
+        switch op {
+        case .greaterOrEqualTo:
+            return first >= second
+        case .lessOrEqualTo:
+            return first <= second
+        case .greaterThan:
+            return first > second
+        case .lessThan:
+            return first < second
+        case .plus:
+            return T(grph: first + second)
+        case .minus:
+            return T(grph: first - second)
+        case .multiply:
+            return T(grph: first * second)
+        case .divide:
+            return T(grph: first / second)
+        case .modulo:
+            return T(grph: fmodf(first, second))
+        default:
+            fatalError("Operator \(op.rawValue) doesn't take floats")
+        }
+    }
+    
+    func run(_ first: Int, _ second: Int) -> GRPHValue {
+        switch op {
+        case .bitwiseAnd:
+            return first & second
+        case .bitwiseOr:
+            return first | second
+        case .bitwiseXor:
+            return first ^ second
+        case .bitshiftLeft:
+            return first << second
+        case .bitshiftRight:
+            return first >> second
+        case .bitrotation:
+            return Int(bitPattern: UInt(bitPattern: first) >> UInt(second))
+        default:
+            fatalError("Operator \(op.rawValue) doesn't take integers")
+        }
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {

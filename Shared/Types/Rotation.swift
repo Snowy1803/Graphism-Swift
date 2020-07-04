@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public struct Rotation: StatefulValue, ExpressibleByIntegerLiteral {
+public struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
     var value: Int
     
     public var state: String {

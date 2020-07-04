@@ -32,7 +32,18 @@ struct UnaryExpression: Expression {
     }
     
     func eval(context: GRPHContext) throws -> GRPHValue {
-        fatalError("TODO")
+        switch op {
+        case .bitwiseComplement:
+            return ~(try GRPHTypes.autobox(value: exp.eval(context: context), expected: SimpleType.integer) as! Int)
+        case .opposite:
+            let value = try GRPHTypes.autobox(value: exp.eval(context: context), expected: SimpleType.num)
+            if let value = value as? Int {
+                return -value
+            }
+            return -(value as! Float)
+        case .not:
+            return !(try GRPHTypes.autobox(value: exp.eval(context: context), expected: SimpleType.boolean) as! Bool)
+        }
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {

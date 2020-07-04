@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-public struct Pos: StatefulValue {
+public struct Pos: StatefulValue, Equatable {
     var x: Float
     var y: Float
     

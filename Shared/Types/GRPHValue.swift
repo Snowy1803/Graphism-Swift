@@ -10,13 +10,28 @@ import Foundation
 /* Immutable types should be structs, mutable types should be classes */
 public protocol GRPHValue {
     var type: GRPHType { get }
+    func isEqualTo(_ other: GRPHValue) -> Bool
 }
 
 public protocol StatefulValue: GRPHValue {
     var state: String { get }
 }
 
-extension Int: StatefulValue {
+public protocol GRPHNumber: GRPHValue {
+    init(grph: GRPHNumber)
+}
+
+extension GRPHValue where Self: Equatable {
+    /// Note that this default implementation doesn't work with multi-inheritence (subclasses) !!!
+    public func isEqualTo(_ other: GRPHValue) -> Bool {
+        if let value = other as? Self {
+            return value == self
+        }
+        return false
+    }
+}
+
+extension Int: StatefulValue, GRPHNumber {
     
     public init?(byCasting value: GRPHValue) {
         if let int = value as? Int {
@@ -29,6 +44,16 @@ extension Int: StatefulValue {
             self.init(str) // May return nil
         } else {
             return nil
+        }
+    }
+    
+    public init(grph: GRPHNumber) {
+        if let int = grph as? Int {
+            self.init(int)
+        } else if let num = grph as? Float {
+            self.init(num)
+        } else {
+            fatalError()
         }
     }
     
@@ -52,7 +77,7 @@ extension String: StatefulValue {
     public var state: String { self.asLiteral }
 }
 
-extension Float: StatefulValue {
+extension Float: StatefulValue, GRPHNumber {
     
     public init?(byCasting value: GRPHValue) {
         if let int = value as? Int {
@@ -65,6 +90,16 @@ extension Float: StatefulValue {
             self.init(str) // May return nil
         } else {
             return nil
+        }
+    }
+    
+    public init(grph: GRPHNumber) {
+        if let int = grph as? Int {
+            self.init(int)
+        } else if let num = grph as? Float {
+            self.init(num)
+        } else {
+            fatalError()
         }
     }
     

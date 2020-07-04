@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public struct LinearPaint: Paint {
+public struct LinearPaint: Paint, Equatable {
     var from: ColorPaint
     var direction: Direction
     var to: ColorPaint

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public enum ColorPaint: Paint {
+public enum ColorPaint: Paint, Equatable {
     case white, black, red, green, blue, orange, yellow, pink, purple, aqua, alpha
     
     case components(red: Float, green: Float, blue: Float, alpha: Float = 1)
