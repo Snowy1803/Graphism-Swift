@@ -39,7 +39,7 @@ class GRPHCompiler: GRPHParser {
     func compile() -> Bool {
         do {
             lines = entireContent.components(separatedBy: "\n")
-            // ADD context = GRPHContext(self) // a copy of self
+            context = GRPHContext(parser: self)
             lineNumber = 0
             while lineNumber < lines.count {
                 // Real line
@@ -230,7 +230,15 @@ class GRPHCompiler: GRPHParser {
             .replacingOccurrences(of: "\\r", with: "\r")
             //.replacingOccurrences(of: "\\b", with: "\b")
             //.replacingOccurrences(of: "\\f", with: "\f")
-            .replacingOccurrences(of: "\\\\", with: "\\")
+            .replacingOccurrences(of: "\\\\", with: "\\") // TODO "\\n" will get parsed as `\(newline)` instead of `\n`
+    }
+    
+    var wdiuInstructions: String {
+        var builder = ""
+        for line in instructions {
+            builder += line.toString(indent: "\t")
+        }
+        return builder
     }
 }
 
