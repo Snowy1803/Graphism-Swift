@@ -98,9 +98,31 @@ class GRPHCompiler: GRPHParser {
                             }
                             try addInstruction(try ForBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
                         case "#try":
-                            break
+                            try addInstruction(TryBlock(lineNumber: lineNumber))
                         case "#catch":
-                            break
+                            let split = params.split(separator: ":", maxSplits: 1)
+                            guard split.count == 2 else {
+                                throw GRPHCompileError(type: .parse, message: "'#catch varName : errortype' syntax expected; error types missing")
+                            }
+                            let block = try CatchBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces))
+                            let exs = split[1].components(separatedBy: "|")
+                            let tr: TryBlock = try findTryBlock()
+                            for rawErr in exs {
+                                let error = rawErr.trimmingCharacters(in: .whitespaces)
+                                if error == "Exception" {
+                                    tr.catches[nil] = block
+                                    block.addError(type: "Exception")
+                                } else if error.hasSuffix("Exception"),
+                                          let err = GRPHRuntimeError.RuntimeExceptionType(rawValue: String(error.dropLast(9))) {
+                                    guard tr.catches[err] == nil else {
+                                        continue
+                                    }
+                                    tr.catches[err] = block
+                                    block.addError(type: "\(err.rawValue)Exception")
+                                } else {
+                                    throw GRPHCompileError(type: .undeclared, message: "Error '\(error)' not found")
+                                }
+                            }
                         case "#throw":
                             break
                         case "#function":
@@ -165,6 +187,25 @@ class GRPHCompiler: GRPHParser {
             blocks.append(block)
             context.inBlock(block: block)
         }
+    }
+    
+    func findTryBlock(minus: Int = 1) throws -> TryBlock {
+        var last: Instruction? = nil
+        if let block = blocks.last {
+            if block.children.count >= minus {
+                last = block.children[block.children.count - minus]
+            }
+        } else {
+            if instructions.count >= minus {
+                last = instructions[instructions.count - minus]
+            }
+        }
+        if let last = last as? TryBlock {
+            return last
+        } else if last is CatchBlock {
+            return try findTryBlock(minus: minus + 1)
+        }
+        throw GRPHCompileError(type: .parse, message: "#catch requires a #try block before")
     }
     
     func internStringLiterals(line: String) -> String {

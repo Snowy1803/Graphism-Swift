@@ -12,8 +12,6 @@ protocol Instruction {
     
     func run(context: GRPHContext) throws
     
-    var instructionName: String { get }
-    
     func toString(indent: String) -> String
 }
 
@@ -23,6 +21,7 @@ extension Instruction {
             try self.run(context: context)
         } catch var exception as GRPHRuntimeError {
             exception.stack.append("\tat \(type(of: self)); line \(line)")
+            throw exception
         }
     }
     
