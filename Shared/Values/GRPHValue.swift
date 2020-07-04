@@ -8,22 +8,22 @@
 import Foundation
 
 /* Immutable types should be structs, mutable types should be classes */
-public protocol GRPHValue {
+protocol GRPHValue {
     var type: GRPHType { get }
     func isEqualTo(_ other: GRPHValue) -> Bool
 }
 
-public protocol StatefulValue: GRPHValue {
+protocol StatefulValue: GRPHValue {
     var state: String { get }
 }
 
-public protocol GRPHNumber: GRPHValue {
+protocol GRPHNumber: GRPHValue {
     init(grph: GRPHNumber)
 }
 
 extension GRPHValue where Self: Equatable {
     /// Note that this default implementation doesn't work with multi-inheritence (subclasses) !!!
-    public func isEqualTo(_ other: GRPHValue) -> Bool {
+    func isEqualTo(_ other: GRPHValue) -> Bool {
         if let value = other as? Self {
             return value == self
         }
@@ -33,7 +33,7 @@ extension GRPHValue where Self: Equatable {
 
 extension Int: StatefulValue, GRPHNumber {
     
-    public init?(byCasting value: GRPHValue) {
+    init?(byCasting value: GRPHValue) {
         if let int = value as? Int {
             self.init(int)
         } else if let num = value as? Float {
@@ -47,7 +47,7 @@ extension Int: StatefulValue, GRPHNumber {
         }
     }
     
-    public init(grph: GRPHNumber) {
+    init(grph: GRPHNumber) {
         if let int = grph as? Int {
             self.init(int)
         } else if let num = grph as? Float {
@@ -57,13 +57,13 @@ extension Int: StatefulValue, GRPHNumber {
         }
     }
     
-    public var type: GRPHType { SimpleType.integer }
-    public var state: String { String(self) }
+    var type: GRPHType { SimpleType.integer }
+    var state: String { String(self) }
 }
 
 extension String: StatefulValue {
     
-    public init?(byCasting value: GRPHValue) {
+    init?(byCasting value: GRPHValue) {
         if let str = value as? String {
             self.init(str) // Not a literal
         } else if let val = value as? StatefulValue {
@@ -73,13 +73,13 @@ extension String: StatefulValue {
         }
     }
     
-    public var type: GRPHType { SimpleType.string }
-    public var state: String { self.asLiteral }
+    var type: GRPHType { SimpleType.string }
+    var state: String { self.asLiteral }
 }
 
 extension Float: StatefulValue, GRPHNumber {
     
-    public init?(byCasting value: GRPHValue) {
+    init?(byCasting value: GRPHValue) {
         if let int = value as? Int {
             self.init(int)
         } else if let num = value as? Float {
@@ -93,7 +93,7 @@ extension Float: StatefulValue, GRPHNumber {
         }
     }
     
-    public init(grph: GRPHNumber) {
+    init(grph: GRPHNumber) {
         if let int = grph as? Int {
             self.init(int)
         } else if let num = grph as? Float {
@@ -103,13 +103,13 @@ extension Float: StatefulValue, GRPHNumber {
         }
     }
     
-    public var type: GRPHType { SimpleType.float }
-    public var state: String { "\(self)F" }
+    var type: GRPHType { SimpleType.float }
+    var state: String { "\(self)F" }
 }
 
 extension Bool: StatefulValue {
     
-    public init?(byCasting value: GRPHValue) {
+    init?(byCasting value: GRPHValue) {
         if let bool = value as? Bool {
             self.init(bool)
         } else if let int = value as? Int {
@@ -131,6 +131,6 @@ extension Bool: StatefulValue {
         }
     }
     
-    public var type: GRPHType { SimpleType.boolean }
-    public var state: String { self ? "true" : "false" }
+    var type: GRPHType { SimpleType.boolean }
+    var state: String { self ? "true" : "false" }
 }

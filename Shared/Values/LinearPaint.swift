@@ -8,18 +8,18 @@
 import Foundation
 import SwiftUI
 
-public struct LinearPaint: Paint, Equatable {
+struct LinearPaint: Paint, Equatable {
     var from: ColorPaint
     var direction: Direction
     var to: ColorPaint
     
-    public var style: LinearGradient {
+    var style: LinearGradient {
         LinearGradient(gradient: Gradient(colors: [from.style, to.style]), startPoint: direction.fromPoint, endPoint: direction.toPoint)
     }
     
-    public var state: String {
+    var state: String {
         "linear(\(from.state) \(direction.rawValue) \(to.state))"
     }
     
-    public var type: GRPHType { SimpleType.linear }
+    var type: GRPHType { SimpleType.linear }
 }

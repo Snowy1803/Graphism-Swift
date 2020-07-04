@@ -7,29 +7,29 @@
 
 import Foundation
 
-public struct OptionalType: GRPHType {
+struct OptionalType: GRPHType {
     var wrapped: GRPHType
     
-    public var string: String {
+    var string: String {
         if wrapped is MultiOrType {
             return "<\(wrapped.string)>?"
         }
         return "\(wrapped.string)?"
     }
     
-    public func isInstance(of other: GRPHType) -> Bool {
+    func isInstance(of other: GRPHType) -> Bool {
         return other is OptionalType && wrapped.isInstance(of: (other as! OptionalType).wrapped)
     }
 }
 
-public struct MultiOrType: GRPHType {
+struct MultiOrType: GRPHType {
     var type1, type2: GRPHType
     
-    public var string: String {
+    var string: String {
         "\(type1.string)|\(type2.string)"
     }
     
-    public func isInstance(of other: GRPHType) -> Bool {
+    func isInstance(of other: GRPHType) -> Bool {
         if let option = other as? OptionalType {
             return isInstance(of: option.wrapped)
         }
@@ -37,14 +37,14 @@ public struct MultiOrType: GRPHType {
     }
 }
 
-public struct ArrayType: GRPHType {
+struct ArrayType: GRPHType {
     var content: GRPHType
     
-    public var string: String {
+    var string: String {
         "{\(content.string)}"
     }
     
-    public func isInstance(of other: GRPHType) -> Bool {
+    func isInstance(of other: GRPHType) -> Bool {
         if let option = other as? OptionalType {
             return isInstance(of: option.wrapped)
         }
@@ -54,7 +54,7 @@ public struct ArrayType: GRPHType {
         return other.isTheMixed
     }
     
-    public var fields: [Field] {
+    var fields: [Field] {
         return [VirtualField<GRPHArray>(name: "length", type: SimpleType.integer, getter: { $0.count })]
     }
 }

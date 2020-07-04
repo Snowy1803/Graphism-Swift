@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public enum Stroke: String, StatefulValue {
+enum Stroke: String, StatefulValue {
     case elongated, cut, rounded
     
     var lineCap: CGLineCap {
@@ -33,13 +33,13 @@ public enum Stroke: String, StatefulValue {
         }
     }
     
-    public var state: String { rawValue }
+    var state: String { rawValue }
     
-    public var type: GRPHType { SimpleType.stroke }
+    var type: GRPHType { SimpleType.stroke }
 }
 
 
-public struct StrokeWrapper {
+struct StrokeWrapper {
     var strokeWidth: Float = 5
     var strokeType: Stroke = .cut
     var strokeDashArray: GRPHArray = GRPHArray(of: SimpleType.float)

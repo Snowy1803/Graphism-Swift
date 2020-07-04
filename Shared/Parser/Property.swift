@@ -7,36 +7,36 @@
 
 import Foundation
 
-public protocol Property {
+protocol Property {
     var name: String { get }
     var type: GRPHType { get }
 }
 
-public struct TypeConstant: Property {
-    public var name: String
-    public var type: GRPHType
-    public var value: GRPHValue
+struct TypeConstant: Property {
+    var name: String
+    var type: GRPHType
+    var value: GRPHValue
 }
 
-public protocol Field: Property {
+protocol Field: Property {
     func getValue(on: GRPHValue) -> GRPHValue
     func setValue(on: inout GRPHValue, value: GRPHValue) throws
     
     var writeable: Bool { get }
 }
 
-public struct VirtualField<On: GRPHValue>: Field {
-    public var name: String
-    public var type: GRPHType
+struct VirtualField<On: GRPHValue>: Field {
+    var name: String
+    var type: GRPHType
     
     var getter: (_ on: On) -> GRPHValue
     var setter: ((_ on: inout On, _ newValue: GRPHValue) throws -> Void)?
     
-    public func getValue(on: GRPHValue) -> GRPHValue {
+    func getValue(on: GRPHValue) -> GRPHValue {
         getter(on as! On)
     }
     
-    public func setValue(on: inout GRPHValue, value: GRPHValue) throws {
+    func setValue(on: inout GRPHValue, value: GRPHValue) throws {
         guard let setter = setter else {
             // ADD throw
             fatalError("TODO")
@@ -49,21 +49,21 @@ public struct VirtualField<On: GRPHValue>: Field {
         }
     }
     
-    public var writeable: Bool { setter != nil }
+    var writeable: Bool { setter != nil }
 }
 
-public struct ErasedField: Field {
-    public var name: String
-    public var type: GRPHType
+struct ErasedField: Field {
+    var name: String
+    var type: GRPHType
     
     var getter: (_ on: GRPHValue) -> GRPHValue
     var setter: ((_ on: inout GRPHValue, _ newValue: GRPHValue) throws -> Void)?
     
-    public func getValue(on: GRPHValue) -> GRPHValue {
+    func getValue(on: GRPHValue) -> GRPHValue {
         getter(on)
     }
     
-    public func setValue(on: inout GRPHValue, value: GRPHValue) throws {
+    func setValue(on: inout GRPHValue, value: GRPHValue) throws {
         guard let setter = setter else {
             // ADD throw
             fatalError("TODO")
@@ -71,16 +71,16 @@ public struct ErasedField: Field {
         try setter(&on, value)
     }
     
-    public var writeable: Bool { setter != nil }
+    var writeable: Bool { setter != nil }
 }
 
-public struct KeyPathField<On: GRPHValue, Value: GRPHValue>: Field {
-    public var name: String
-    public var type: GRPHType
+struct KeyPathField<On: GRPHValue, Value: GRPHValue>: Field {
+    var name: String
+    var type: GRPHType
     
     var keyPath: WritableKeyPath<On, Value>
     
-    public func getValue(on: GRPHValue) -> GRPHValue {
+    func getValue(on: GRPHValue) -> GRPHValue {
         if let on = on as? On {
             return on[keyPath: keyPath]
         } else {
@@ -88,7 +88,7 @@ public struct KeyPathField<On: GRPHValue, Value: GRPHValue>: Field {
         }
     }
     
-    public func setValue(on: inout GRPHValue, value: GRPHValue) {
+    func setValue(on: inout GRPHValue, value: GRPHValue) {
         if var copy = on as? On {
             copy[keyPath: keyPath] = value as! Value
             on = copy
@@ -97,5 +97,5 @@ public struct KeyPathField<On: GRPHValue, Value: GRPHValue>: Field {
         }
     }
     
-    public var writeable: Bool { true }
+    var writeable: Bool { true }
 }

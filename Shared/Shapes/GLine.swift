@@ -48,5 +48,5 @@ class GLine: SimpleShape {
         "Line(\(givenName?.asLiteral ?? "")\(start.state) \(end.state) \(positionZ) \(paint.state)\(strokeStyle?.stateConstructor ?? ""))"
     }
     
-    public var type: GRPHType { SimpleType.Line }
+    var type: GRPHType { SimpleType.Line }
 }

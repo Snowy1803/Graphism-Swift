@@ -91,6 +91,9 @@
 		20D1EF4324B1401700EB4BEE /* Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4224B1401700EB4BEE /* Constructor.swift */; };
 		20D1EF4424B1401700EB4BEE /* Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4224B1401700EB4BEE /* Constructor.swift */; };
 		20D1EF4524B1401700EB4BEE /* Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4224B1401700EB4BEE /* Constructor.swift */; };
+		20D1EF4724B141E300EB4BEE /* ConstructorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */; };
+		20D1EF4824B141E300EB4BEE /* ConstructorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */; };
+		20D1EF4924B141E300EB4BEE /* ConstructorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */; };
 		20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
@@ -197,6 +200,7 @@
 		20D1EF3A24B12BB600EB4BEE /* Parametrable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parametrable.swift; sourceTree = "<group>"; };
 		20D1EF3E24B1393E00EB4BEE /* Parameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameter.swift; sourceTree = "<group>"; };
 		20D1EF4224B1401700EB4BEE /* Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constructor.swift; sourceTree = "<group>"; };
+		20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructorExpression.swift; sourceTree = "<group>"; };
 		20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableDeclarationInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA424AD449A00ABFB6E /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContext.swift; sourceTree = "<group>"; };
@@ -405,6 +409,7 @@
 				20DE0BD424AEA88100ABFB6E /* CastExpression.swift */,
 				20DE0BD824AF677500ABFB6E /* ArrayLiteralExpression.swift */,
 				20DE0BE024AF8EAA00ABFB6E /* FieldExpression.swift */,
+				20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */,
 			);
 			path = Expressions;
 			sourceTree = "<group>";
@@ -562,6 +567,7 @@
 				20DE0BDF24AF80C200ABFB6E /* Property.swift in Sources */,
 				200A5F8D24ABA5180028180B /* LinearPaint.swift in Sources */,
 				20DE0BC724AE783400ABFB6E /* BinaryExpression.swift in Sources */,
+				20D1EF4924B141E300EB4BEE /* ConstructorExpression.swift in Sources */,
 				20DE0BB724AE0F7A00ABFB6E /* Expression.swift in Sources */,
 				200A5F9324ABA51E0028180B /* GPath.swift in Sources */,
 				20DE0BF324B0B35600ABFB6E /* TryBlock.swift in Sources */,
@@ -608,6 +614,7 @@
 				20DE0BD924AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20DE0BA524AD449A00ABFB6E /* Instruction.swift in Sources */,
 				20DE0BBD24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
+				20D1EF4724B141E300EB4BEE /* ConstructorExpression.swift in Sources */,
 				20DE0BE924B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BF124B0B35600ABFB6E /* TryBlock.swift in Sources */,
 				20DE0BB924AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
@@ -665,6 +672,7 @@
 				20DE0BDA24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20DE0BA624AD449A00ABFB6E /* Instruction.swift in Sources */,
 				20DE0BBE24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
+				20D1EF4824B141E300EB4BEE /* ConstructorExpression.swift in Sources */,
 				20DE0BEA24B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BF224B0B35600ABFB6E /* TryBlock.swift in Sources */,
 				20DE0BBA24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,

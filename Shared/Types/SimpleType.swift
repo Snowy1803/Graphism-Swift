@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SimpleType: String, GRPHType, CaseIterable {
+enum SimpleType: String, GRPHType, CaseIterable {
     
     case num, integer, float, rotation, pos, boolean, string, paint, color, linear, radial, shape, direction, stroke, /*file, image,*/ font, mixed
     
@@ -15,11 +15,11 @@ public enum SimpleType: String, GRPHType, CaseIterable {
     
     // MISSING = font, Text, Group, Background
     
-    public var string: String {
+    var string: String {
         rawValue
     }
     
-    public var supertype: GRPHType {
+    var supertype: GRPHType {
         return extending ?? SimpleType.mixed
     }
     
@@ -63,7 +63,7 @@ public enum SimpleType: String, GRPHType, CaseIterable {
         }
     }
     
-    public func isInstance(of other: GRPHType) -> Bool {
+    func isInstance(of other: GRPHType) -> Bool {
         if let option = other as? OptionalType {
             return isInstance(of: option.wrapped)
         }
@@ -73,11 +73,11 @@ public enum SimpleType: String, GRPHType, CaseIterable {
         return other.isTheMixed || other as? SimpleType == self || (extending?.isInstance(of: other) ?? false)
     }
     
-    public func canBeCalled(_ name: String) -> Bool {
+    func canBeCalled(_ name: String) -> Bool {
         return name == string || aliases.contains(name)
     }
     
-    public var staticConstants: [TypeConstant] {
+    var staticConstants: [TypeConstant] {
         switch self {
         case .color:
             return [TypeConstant(name: "WHITE", type: self, value: ColorPaint.white),
@@ -125,7 +125,7 @@ public enum SimpleType: String, GRPHType, CaseIterable {
         }
     }
     
-    public var fields: [Field] {
+    var fields: [Field] {
         switch self {
         case .pos:
             return [KeyPathField(name: "x", type: SimpleType.float, keyPath: \Pos.x),

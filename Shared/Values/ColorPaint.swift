@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 
-public enum ColorPaint: Paint, Equatable {
+enum ColorPaint: Paint, Equatable {
     case white, black, red, green, blue, orange, yellow, pink, purple, aqua, alpha
     
     case components(red: Float, green: Float, blue: Float, alpha: Float = 1)
     
-    public var style: Color {
+    var style: Color {
         switch self {
         case .components(red: let red, green: let green, blue: let blue, alpha: let alpha):
             return Color(red: Double(red), green: Double(green), blue: Double(blue), opacity: Double(alpha))
@@ -42,7 +42,7 @@ public enum ColorPaint: Paint, Equatable {
         }
     }
     
-    public var state: String {
+    var state: String {
         switch self {
         case .components(red: let red, green: let green, blue: let blue, alpha: let alpha):
             return "color(\(red) \(green) \(blue) \(alpha))"
@@ -80,5 +80,5 @@ public enum ColorPaint: Paint, Equatable {
         }
     }
     
-    public var type: GRPHType { SimpleType.color }
+    var type: GRPHType { SimpleType.color }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public protocol GShape: GRPHValue {
+protocol GShape: GRPHValue {
     var uuid: UUID { get }
     
     var positionZ: Int { get set }
@@ -31,7 +31,7 @@ extension GShape {
         }
     }
     
-    public func isEqualTo(_ other: GRPHValue) -> Bool {
+    func isEqualTo(_ other: GRPHValue) -> Bool {
         if let shape = other as? GShape {
             return self.uuid == shape.uuid
         }
@@ -39,21 +39,21 @@ extension GShape {
     }
 }
 
-public protocol BasicShape: GShape {
+protocol BasicShape: GShape {
     var position: Pos { get set }
 }
 
-public protocol SimpleShape: GShape {
+protocol SimpleShape: GShape {
     var paint: AnyPaint { get set }
     var strokeStyle: StrokeWrapper? { get set }
 }
 
-public protocol RotatableShape: GShape {
+protocol RotatableShape: GShape {
     var rotation: Rotation { get set }
     // rotation center
 }
 
-public protocol RectangularShape: BasicShape {
+protocol RectangularShape: BasicShape {
     var size: Pos { get set }
 }
 

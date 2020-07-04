@@ -50,4 +50,8 @@ extension Parametrable {
     var maximumParameterCount: Int {
         varargs ? Int.max : parameters.count
     }
+    
+    func formattedParameterList(values: [Expression]) -> String {
+        values.map { $0.bracketized }.joined(separator: " ")
+    }
 }

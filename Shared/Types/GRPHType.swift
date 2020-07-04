@@ -7,13 +7,14 @@
 
 import Foundation
 
-public protocol GRPHType {
+protocol GRPHType {
     var string: String { get }
     
     func isInstance(of other: GRPHType) -> Bool
     
     var staticConstants: [TypeConstant] { get }
     var fields: [Field] { get }
+    var constructor: Constructor? { get }
     
     var supertype: GRPHType { get }
 }
@@ -36,16 +37,17 @@ extension GRPHType {
     }
     
     // default: None
-    public var staticConstants: [TypeConstant] {[]}
-    public var fields: [Field] {[]}
-    public var supertype: GRPHType { SimpleType.mixed }
+    var staticConstants: [TypeConstant] {[]}
+    var fields: [Field] {[]}
+    var supertype: GRPHType { SimpleType.mixed }
+    var constructor: Constructor? { nil }
 }
 
 struct GRPHTypes {
     
     private init() {}
     
-    public static func parse(context: GRPHContext, literal: String) -> GRPHType? { // needs some GRPHContext
+    static func parse(context: GRPHContext, literal: String) -> GRPHType? { // needs some GRPHContext
         if literal.isSurrounded(left: "<", right: ">") {
             return parse(context: context, literal: "\(literal.dropLast().dropFirst())")
         }
@@ -79,11 +81,11 @@ struct GRPHTypes {
     /// Type of a value is calculated HERE
     /// It uses GRPHValue.type but takes into account AUTOBOXING and AUTOUNBOXING, based on expected.
     /// Also, type of null is inferred here
-    public static func type(of value: GRPHValue, expected: GRPHType? = nil) -> GRPHType {
+    static func type(of value: GRPHValue, expected: GRPHType? = nil) -> GRPHType {
         return autoboxed(type: realType(of: value, expected: expected), expected: expected)
     }
     
-    public static func autoboxed(type: GRPHType, expected: GRPHType?) -> GRPHType {
+    static func autoboxed(type: GRPHType, expected: GRPHType?) -> GRPHType {
         if !(type is OptionalType),
            let expected = expected as? OptionalType { // Boxing
             return OptionalType(wrapped: autoboxed(type: type, expected: expected.wrapped))
@@ -96,7 +98,7 @@ struct GRPHTypes {
         return type
     }
     
-    public static func autobox(value: GRPHValue, expected: GRPHType) throws -> GRPHValue {
+    static func autobox(value: GRPHValue, expected: GRPHType) throws -> GRPHValue {
         if let value = value as? GRPHOptional {
             if let expected = expected as? OptionalType { // recursive
                 switch value {
@@ -120,7 +122,7 @@ struct GRPHTypes {
         }
     }
     
-    public static func realType(of value: GRPHValue, expected: GRPHType?) -> GRPHType {
+    static func realType(of value: GRPHValue, expected: GRPHType?) -> GRPHType {
         if let value = value as? GRPHOptional,
            value.isEmpty,
            expected is OptionalType {
@@ -129,7 +131,7 @@ struct GRPHTypes {
         return value.type
     }
     
-    public static func field(named name: String, in type: GRPHType) -> Field? {
+    static func field(named name: String, in type: GRPHType) -> Field? {
         if let property = type.fields.first(where: { $0.name == name }) {
             return property
         }

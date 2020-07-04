@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-public struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
+struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
     var value: Int
     
-    public var state: String {
+    var state: String {
         "\(value)°"
     }
     
-    public init(integerLiteral value: Int) {
+    init(integerLiteral value: Int) {
         self.value = value
     }
     
@@ -27,5 +27,5 @@ public struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
         .degrees(Double(value))
     }
     
-    public var type: GRPHType { SimpleType.rotation }
+    var type: GRPHType { SimpleType.rotation }
 }

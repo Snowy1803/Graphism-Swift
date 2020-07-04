@@ -26,7 +26,7 @@ class GRPHArray: StatefulValue, GRPHArrayProtocol {
         }
     }
     
-    public var state: String {
+    var state: String {
         guard !wrapped.isEmpty else {
             return "{}"
         }
@@ -44,7 +44,7 @@ class GRPHArray: StatefulValue, GRPHArrayProtocol {
     
     var count: Int { wrapped.count }
     
-    public var type: GRPHType { ArrayType(content: content) }
+    var type: GRPHType { ArrayType(content: content) }
     
     func isEqualTo(_ other: GRPHValue) -> Bool {
         if let other = other as? GRPHArray,

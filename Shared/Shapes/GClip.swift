@@ -34,5 +34,5 @@ struct GClip: GShape {
         "clippedShape[\(shape.stateConstructor) \(clip.stateConstructor)]"
     }
     
-    public var type: GRPHType { SimpleType.shape }
+    var type: GRPHType { SimpleType.shape }
 }

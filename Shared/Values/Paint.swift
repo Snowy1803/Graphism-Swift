@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-public protocol Paint: StatefulValue {
+protocol Paint: StatefulValue {
     
     associatedtype Style: ShapeStyle
     
     var style: Style { get }
 }
 
-public enum AnyPaint {
+enum AnyPaint {
     case color(ColorPaint)
     case linear(LinearPaint)
     case radial(RadialPaint)

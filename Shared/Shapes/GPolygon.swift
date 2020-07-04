@@ -57,5 +57,5 @@ class GPolygon: SimpleShape { // Add rotation support
         return state + ")"
     }
     
-    public var type: GRPHType { SimpleType.Polygon }
+    var type: GRPHType { SimpleType.Polygon }
 }

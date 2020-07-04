@@ -8,11 +8,11 @@
 import Foundation
 import CoreGraphics
 
-public struct Pos: StatefulValue, Equatable {
+struct Pos: StatefulValue, Equatable {
     var x: Float
     var y: Float
     
-    public var state: String {
+    var state: String {
         "\(x),\(y)"
     }
     
@@ -24,5 +24,5 @@ public struct Pos: StatefulValue, Equatable {
         CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
     
-    public var type: GRPHType { SimpleType.pos }
+    var type: GRPHType { SimpleType.pos }
 }

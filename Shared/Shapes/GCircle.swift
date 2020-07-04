@@ -47,5 +47,5 @@ class GCircle: RectangularShape, SimpleShape, RotatableShape {
         "Ellipse(\(givenName?.asLiteral ?? "")\(position.state) \(positionZ) \(size.state) \(rotation.state) \(paint.state)\(strokeStyle?.stateConstructor ?? ""))"
     }
     
-    public var type: GRPHType { SimpleType.Circle }
+    var type: GRPHType { SimpleType.Circle }
 }

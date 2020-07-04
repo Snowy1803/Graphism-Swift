@@ -90,7 +90,7 @@ class GPath: SimpleShape { // Add rotation support
         "path\(String(uuid.hashValue, radix: 36).dropFirst())"
     }
     
-    public var type: GRPHType { SimpleType.Path }
+    var type: GRPHType { SimpleType.Path }
 }
 
 enum PathActions {

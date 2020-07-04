@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public enum Direction: String, StatefulValue {
+enum Direction: String, StatefulValue {
     case right, downRight, down, downLeft, left, upLeft, up, upRight
     
     var reverse: Direction {
@@ -57,7 +57,7 @@ public enum Direction: String, StatefulValue {
         reverse.toPoint
     }
     
-    public var state: String { rawValue }
+    var state: String { rawValue }
     
-    public var type: GRPHType { SimpleType.direction }
+    var type: GRPHType { SimpleType.direction }
 }
