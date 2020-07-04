@@ -62,7 +62,7 @@ class BlockInstruction: Instruction {
     func toString(indent: String) -> String {
         var builder = "\(line):\(indent)#\(name)\n"
         for child in children {
-            builder += "\(child.toString(indent: "\(indent)\t"))\n"
+            builder += child.toString(indent: "\(indent)\t")
         }
         return builder
     }

@@ -12,6 +12,7 @@ protocol Instruction {
     
     func run(context: GRPHContext) throws
     
+    /// Must end with a newline
     func toString(indent: String) -> String
 }
 

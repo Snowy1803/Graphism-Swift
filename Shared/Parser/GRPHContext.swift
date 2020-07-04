@@ -70,6 +70,24 @@ class GRPHContext {
             blocks.last!.variables.append(variable)
         }
     }
+    
+    func breakBlock() throws {
+        _ = try breakNearestBlock(BlockInstruction.self)
+    }
+    
+    func continueBlock() throws {
+        try breakNearestBlock(BlockInstruction.self).continueBlock()
+    }
+    
+    private func breakNearestBlock<T: BlockInstruction>(_ type: T.Type) throws -> T {
+        for block in blocks.reversed() {
+            block.breakBlock()
+            if let block = block as? T {
+                return block
+            }
+        }
+        throw GRPHRuntimeError(type: .unexpected, message: "Couldn't break out")
+    }
 }
 
 protocol GRPHParser {

@@ -48,6 +48,8 @@ class GRPHCompiler: GRPHParser {
                 if line0.isEmpty || line0.hasPrefix("//") {
                     line = ""
                     tline = ""
+                    lineNumber += 1
+                    continue
                 } else {
                     // Interned & stripped from comments
                     line = internStringLiterals(line: line0)
@@ -130,13 +132,13 @@ class GRPHCompiler: GRPHParser {
                         case "#return":
                             break
                         case "#break":
-                            break
+                            try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break))
                         case "#continue":
-                            break
+                            try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .continue))
                         case "#goto":
                             throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
                         case "#block":
-                            break
+                            try addInstruction(BlockInstruction(lineNumber: lineNumber))
                         case "#requires":
                             break
                         case "#type":

@@ -143,6 +143,23 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "[var as {string}].length").string, "[var as {string}].length")
     }
     
+    func testSampleProgram() {
+        compiler = GRPHCompiler(entireContent: """
+#if 0 == 0
+\t// ok
+\t#break
+#else
+\t// problem
+\t#break
+#try
+\t{integer} arr = <integer>{0 1 2 3 4 5 6 7 8 9}
+\t#foreach &i : arr
+\t\t#break
+""")
+        _ = compiler.compile()
+        print(compiler.wdiuInstructions)
+    }
+    
 //    func testPerformanceExample() throws {
 //        // This is an example of a performance test case.
 //        measure {

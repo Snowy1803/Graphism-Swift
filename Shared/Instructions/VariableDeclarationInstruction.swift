@@ -44,6 +44,6 @@ class VariableDeclarationInstruction: Instruction {
     }
     
     func toString(indent: String) -> String {
-        "\(line):\(indent)\(global ? "global " : "")\(constant ? "final " : "")\(type.string) \(name)\(value == nil ? "" : " = \(value!.string)")"
+        "\(line):\(indent)\(global ? "global " : "")\(constant ? "final " : "")\(type.string) \(name)\(value == nil ? "" : " = \(value!.string)")\n"
     }
 }
