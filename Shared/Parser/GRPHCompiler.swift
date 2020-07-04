@@ -90,9 +90,13 @@ class GRPHCompiler: GRPHParser {
                             }
                             try addInstruction(ElseBlock(lineNumber: lineNumber))
                         case "#while":
-                            break
+                            try addInstruction(try WhileBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                         case "#foreach":
-                            break
+                            let split = params.split(separator: ":", maxSplits: 1)
+                            guard split.count == 2 else {
+                                throw GRPHCompileError(type: .parse, message: "'#foreach varName : array' syntax expected; array missing")
+                            }
+                            try addInstruction(try ForBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
                         case "#try":
                             break
                         case "#catch":

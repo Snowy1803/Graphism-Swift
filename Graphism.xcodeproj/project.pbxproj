@@ -127,6 +127,12 @@
 		20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE424AFDEBA00ABFB6E /* IfBlock.swift */; };
 		20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE424AFDEBA00ABFB6E /* IfBlock.swift */; };
 		20DE0BE724AFDEBA00ABFB6E /* IfBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE424AFDEBA00ABFB6E /* IfBlock.swift */; };
+		20DE0BE924B0AC0600ABFB6E /* WhileBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE824B0AC0600ABFB6E /* WhileBlock.swift */; };
+		20DE0BEA24B0AC0600ABFB6E /* WhileBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE824B0AC0600ABFB6E /* WhileBlock.swift */; };
+		20DE0BEB24B0AC0600ABFB6E /* WhileBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE824B0AC0600ABFB6E /* WhileBlock.swift */; };
+		20DE0BED24B0AD5100ABFB6E /* ForBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BEC24B0AD5100ABFB6E /* ForBlock.swift */; };
+		20DE0BEE24B0AD5100ABFB6E /* ForBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BEC24B0AD5100ABFB6E /* ForBlock.swift */; };
+		20DE0BEF24B0AD5100ABFB6E /* ForBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BEC24B0AD5100ABFB6E /* ForBlock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -179,6 +185,8 @@
 		20DE0BDC24AF80C200ABFB6E /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		20DE0BE024AF8EAA00ABFB6E /* FieldExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldExpression.swift; sourceTree = "<group>"; };
 		20DE0BE424AFDEBA00ABFB6E /* IfBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IfBlock.swift; sourceTree = "<group>"; };
+		20DE0BE824B0AC0600ABFB6E /* WhileBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhileBlock.swift; sourceTree = "<group>"; };
+		20DE0BEC24B0AD5100ABFB6E /* ForBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForBlock.swift; sourceTree = "<group>"; };
 		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -322,6 +330,8 @@
 				20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */,
 				20DE0BAC24AD4C2400ABFB6E /* BlockInstruction.swift */,
 				20DE0BE424AFDEBA00ABFB6E /* IfBlock.swift */,
+				20DE0BE824B0AC0600ABFB6E /* WhileBlock.swift */,
+				20DE0BEC24B0AD5100ABFB6E /* ForBlock.swift */,
 			);
 			path = Instructions;
 			sourceTree = "<group>";
@@ -471,12 +481,14 @@
 				20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */,
 				200A5F9424ABA51E0028180B /* GPolygon.swift in Sources */,
 				20DE0BAB24AD46D600ABFB6E /* GRPHContext.swift in Sources */,
+				20DE0BEF24B0AD5100ABFB6E /* ForBlock.swift in Sources */,
 				200A5F9124ABA51E0028180B /* GClip.swift in Sources */,
 				20DE0BD724AEA88100ABFB6E /* CastExpression.swift in Sources */,
 				200A5F9224ABA51E0028180B /* GCircle.swift in Sources */,
 				20DE0BD324AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				20DE0BBF24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				20DE0BA724AD449A00ABFB6E /* Instruction.swift in Sources */,
+				20DE0BEB24B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BBB24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				20DE0BDB24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20DE0BE324AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
@@ -528,6 +540,7 @@
 				20DE0BD924AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20DE0BA524AD449A00ABFB6E /* Instruction.swift in Sources */,
 				20DE0BBD24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
+				20DE0BE924B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BB924AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				200A5F7324AB82DA0028180B /* GRPHArray.swift in Sources */,
 				20DE0BCD24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
@@ -545,6 +558,7 @@
 				20DE0BAD24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				2098B69B24AB62B60042D465 /* ColorPaint.swift in Sources */,
 				2098B69524AB5EDA0042D465 /* Rotation.swift in Sources */,
+				20DE0BED24B0AD5100ABFB6E /* ForBlock.swift in Sources */,
 				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
 				20DE0BD524AEA88100ABFB6E /* CastExpression.swift in Sources */,
 				20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
@@ -575,6 +589,7 @@
 				20DE0BDA24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20DE0BA624AD449A00ABFB6E /* Instruction.swift in Sources */,
 				20DE0BBE24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
+				20DE0BEA24B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BBA24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				200A5F7424AB82DA0028180B /* GRPHArray.swift in Sources */,
 				20DE0BCE24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
@@ -592,6 +607,7 @@
 				20DE0BAE24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				2098B69C24AB62B60042D465 /* ColorPaint.swift in Sources */,
 				2098B69624AB5EDA0042D465 /* Rotation.swift in Sources */,
+				20DE0BEE24B0AD5100ABFB6E /* ForBlock.swift in Sources */,
 				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
 				20DE0BD624AEA88100ABFB6E /* CastExpression.swift in Sources */,
 				20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
