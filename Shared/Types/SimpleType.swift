@@ -207,7 +207,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                   size: values[3] as! Pos,
                                   rotation: values[4] as? Rotation ?? Rotation(value: 0),
                                   paint: AnyPaint.auto(values[5]!),
-                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[7] as? Stroke ?? .elongated, strokeDashArray: values[8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[safe: 7] as? Stroke ?? .elongated, strokeDashArray: values[safe: 8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
         case .Circle:
             return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
@@ -217,16 +217,34 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                   size: values[3] as! Pos,
                                   rotation: values[4] as? Rotation ?? Rotation(value: 0),
                                   paint: AnyPaint.auto(values[5]!),
-                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[7] as? Stroke ?? .elongated, strokeDashArray: values[8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[safe: 7] as? Stroke ?? .elongated, strokeDashArray: values[safe: 8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
         case .Line:
-            return nil // TODO !!
+            return Constructor(parameters: [.shapeName, .pos1, .pos2, .zpos, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
+                return GLine(givenName: values[0] as? String,
+                                  start: values[1] as! Pos,
+                                  end: values[2] as! Pos,
+                                  positionZ: values[3] as? Int ?? 0,
+                                  paint: AnyPaint.auto(values[4]!),
+                                  strokeStyle: StrokeWrapper(strokeWidth: values[safe: 5] as? Float ?? 5, strokeType: values[safe: 6] as? Stroke ?? .elongated, strokeDashArray: values[safe: 7] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+            }
         case .Polygon:
-            return nil // TODO !!
+            return Constructor(parameters: [.shapeName, .zpos, .paint, .strokeWidth, .strokeType, .strokeDashArray, Parameter(name: "points...", type: SimpleType.pos, optional: true)], type: self, varargs: true) { context, values in
+                return GPolygon(givenName: values[0] as? String,
+                                points: values.count > 6 ? values[6...].map { $0 as! Pos } : [],
+                                  positionZ: values[1] as? Int ?? 0,
+                                  paint: AnyPaint.auto(values[2]!),
+                                  strokeStyle: StrokeWrapper(strokeWidth: values[safe: 3] as? Float ?? 5, strokeType: values[safe: 4] as? Stroke ?? .elongated, strokeDashArray: values[safe: 5] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+            }
         case .Text:
             return nil // TODO
         case .Path:
-            return nil // TODO !!
+            return Constructor(parameters: [.shapeName, .zpos, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
+                return GPath(givenName: values[0] as? String,
+                                  positionZ: values[1] as? Int ?? 0, // TODO use rotation
+                                  paint: AnyPaint.auto(values[3]!),
+                                  strokeStyle: values.count == 4 ? nil : StrokeWrapper(strokeWidth: values[4] as? Float ?? 5, strokeType: values[safe: 5] as? Stroke ?? .elongated, strokeDashArray: values[safe: 6] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+            }
         case .Group:
             return nil // TODO
         case .Background:
