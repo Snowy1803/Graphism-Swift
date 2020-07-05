@@ -32,4 +32,21 @@ struct StandardNameSpace: NameSpace {
             TypeAlias(name: "Back", type: SimpleType.Background)
         ]
     }
+    
+    var exportedFunctions: [Function] {
+        [
+            Function(ns: self, name: "log", parameters: [Parameter(name: "text...", type: SimpleType.mixed)], type: SimpleType.string, varargs: true) { context, params in
+                let result = params.map { $0 ?? "null" }.map { val -> String in
+                    if let val = val as? CustomStringConvertible {
+                        return val.description
+                    } else if let val = val as? StatefulValue {
+                        return val.state
+                    }
+                    return "<@\(val.type.string)>"
+                }.joined(separator: " ")
+                print("Log: \(result)")
+                return result
+            }
+        ]
+    }
 }

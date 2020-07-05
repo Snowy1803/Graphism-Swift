@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Importable {
-    // var exportedFunctions: [Function] { get }
+    var exportedFunctions: [Function] { get }
     // var exportedMethods: [Method] { get }
     
     /// Types should be SimpleTypes or custom types, **never** OptionalType, ArrayType, or MultiOrType
@@ -18,6 +18,7 @@ protocol Importable {
 }
 
 extension Importable {
+    var exportedFunctions: [Function] { [] }
     var exportedTypes: [GRPHType] { [] }
     var exportedTypeAliases: [TypeAlias] { [] }
 }

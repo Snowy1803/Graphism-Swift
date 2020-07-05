@@ -75,17 +75,18 @@ class GRPHCompiler: GRPHParser {
                         switch block {
                         case "#import", "#using":
                             let p = NameSpaces.namespacedMember(from: params)
-                            if p.namespace.isEqual(to: NameSpaces.none) {
+                            guard let ns = p.namespace else {
+                                throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
+                            }
+                            if ns.isEqual(to: NameSpaces.none) {
                                 if let ns = NameSpaces.namespace(named: p.member) {
                                     imports.append(ns)
                                 } else {
                                     throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
-                                    // namespace is none if it doesn't exist
-                                    // This way, '#import doesntexistlol>stdio' works...
-                                    // But '#import doesntexistlol>randomInt' fails with "Undeclared namespace"
                                 }
+                            } else if let f = Function(imports: [], namespace: ns, name: p.member) {
+                                imports.append(f)
                             }
-                            // find function
                             // or find method
                             // or find type
                         

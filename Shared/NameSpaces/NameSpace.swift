@@ -32,11 +32,11 @@ struct NameSpaces {
         return instances.first { $0.name == name.lowercased() }
     }
     
-    static func namespacedMember(from literal: String) -> (namespace: NameSpace, member: String) {
+    static func namespacedMember(from literal: String) -> (namespace: NameSpace?, member: String) {
         if literal.contains(">") {
             let split = literal.split(separator: ">", maxSplits: 1)
             if split.count == 2 {
-                return (namespace: namespace(named: String(split[0])) ?? none, member: String(split[1]))
+                return (namespace: namespace(named: String(split[0])), member: String(split[1]))
             }
         }
         return (namespace: none, member: literal)

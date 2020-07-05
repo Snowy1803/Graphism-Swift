@@ -102,6 +102,18 @@ struct Expressions {
             }
         }
         // function call
+        if let result = FunctionExpression.pattern.firstMatch(string: str) {
+            if checkBalance(literal: result[2]!) {
+                let member = NameSpaces.namespacedMember(from: result[1]!)
+                guard let ns = member.namespace else {
+                    throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
+                }
+                guard let function = Function(imports: context.parser.imports, namespace: ns, name: member.member) else {
+                    throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
+                }
+                return FunctionExpression(function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
+            }
+        }
         if let exp = try findBinary(context: context, str: str, regex: BinaryExpression.signs1)
                       ?? findBinary(context: context, str: str, regex: BinaryExpression.signs2)
                       ?? findBinary(context: context, str: str, regex: BinaryExpression.signs3)
