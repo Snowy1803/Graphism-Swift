@@ -13,8 +13,11 @@ protocol Importable {
     
     /// Types should be SimpleTypes or custom types, **never** OptionalType, ArrayType, or MultiOrType
     var exportedTypes: [GRPHType] { get }
+    
+    var exportedTypeAliases: [TypeAlias] { get }
 }
 
 extension Importable {
     var exportedTypes: [GRPHType] { [] }
+    var exportedTypeAliases: [TypeAlias] { [] }
 }

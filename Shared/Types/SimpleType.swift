@@ -38,31 +38,6 @@ enum SimpleType: String, GRPHType, CaseIterable {
         }
     }
     
-    var aliases: [String] {
-        switch self {
-        case .integer:
-            return ["int"]
-        // image --> "texture"
-        case .Rectangle:
-            return ["Square", "Rect", "R"]
-        case .Circle:
-            return ["Ellipse", "E", "C"]
-        case .Line:
-            return ["L"]
-        case .Polygon:
-            return ["Poly", "P"]
-        // Image --> "Img", "I", "Sprite"
-        case .Text:
-            return ["T"]
-        case .Group:
-            return ["G"]
-        case .Background:
-            return ["Back"]
-        default:
-            return []
-        }
-    }
-    
     func isInstance(of other: GRPHType) -> Bool {
         if let option = other as? OptionalType {
             return isInstance(of: option.wrapped)
@@ -71,10 +46,6 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return isInstance(of: multi.type1) || isInstance(of: multi.type2)
         }
         return other.isTheMixed || other as? SimpleType == self || (extending?.isInstance(of: other) ?? false)
-    }
-    
-    func canBeCalled(_ name: String) -> Bool {
-        return name == string || aliases.contains(name)
     }
     
     var staticConstants: [TypeConstant] {

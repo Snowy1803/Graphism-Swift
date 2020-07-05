@@ -17,7 +17,7 @@ class GRPHCompiler: GRPHParser {
     
     var internStrings: [String] = []
     var globalVariables: [Variable] = [] // Add this, back and colors
-    var imports: [Importable] = [] // NameSpaces.namespace(named: "standard")!]
+    var imports: [Importable] = [NameSpaces.namespace(named: "standard")!]
     var instructions: [Instruction] = []
     
     var entireContent: String

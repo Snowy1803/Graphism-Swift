@@ -75,11 +75,10 @@ struct GRPHTypes {
         if literal.hasSuffix("?") {
             return parse(context: context, literal: String(literal.dropLast()))?.optional
         }
-        if literal == "farray" {
-            return ArrayType(content: SimpleType.float)
+        if let found = context.parser.imports.flatMap({ $0.exportedTypes }).first(where: { $0.string == literal }) {
+            return found
         }
-        // TODO search types in CONTEXT aka IMPORTED
-        return SimpleType.allCases.first(where: { $0.canBeCalled(literal)})
+        return context.parser.imports.flatMap({ $0.exportedTypeAliases }).first(where: { $0.name == literal })?.type
     }
     
     /// Type of a value is calculated HERE

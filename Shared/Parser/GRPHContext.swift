@@ -106,4 +106,5 @@ protocol GRPHParser {
     var debugging: Bool { get }
     var debugStep: TimeInterval { get }
     var globalVariables: [Variable] { get set }
+    var imports: [Importable] { get }
 }

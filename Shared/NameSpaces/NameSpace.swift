@@ -23,7 +23,7 @@ struct NameSpaces {
     private init() {}
     
     static let instances: [NameSpace] = {
-        return []
+        return [StandardNameSpace()]
     }()
     
     static let none: NameSpace = NoNameSpace()
@@ -44,5 +44,5 @@ struct NameSpaces {
 }
 
 private struct NoNameSpace: NameSpace {
-    let name = "none"
+    var name: String { "none" }
 }
