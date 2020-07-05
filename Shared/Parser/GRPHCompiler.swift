@@ -145,7 +145,20 @@ class GRPHCompiler: GRPHParser {
                                 }
                             }
                         case "#throw":
-                            break
+                            guard let index = params.firstIndex(of: "("),
+                                  params.hasSuffix(")") else {
+                                throw GRPHCompileError(type: .parse, message: "Expected syntax '#throw error(message)'")
+                            }
+                            let err = params[..<index]
+                            guard err.hasSuffix("Exception"),
+                                  let error = GRPHRuntimeError.RuntimeExceptionType(rawValue: String(err.dropLast(9))) else {
+                                throw GRPHCompileError(type: .undeclared, message: "Error type '\(err)' not found")
+                            }
+                            let exp = try Expressions.parse(context: context, infer: SimpleType.string, literal: String(params[index...].dropLast().dropFirst()))
+                            guard try SimpleType.string.isInstance(context: context, expression: exp) else {
+                                throw GRPHCompileError(type: .undeclared, message: "Expected message string in #throw")
+                            }
+                            try addInstruction(ThrowInstruction(lineNumber: lineNumber, type: error, message: exp))
                         case "#function":
                             break
                         case "#return":

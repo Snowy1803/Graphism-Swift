@@ -106,6 +106,9 @@
 		20D1EF5824B21AF800EB4BEE /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5724B21AF800EB4BEE /* TypeAlias.swift */; };
 		20D1EF5924B21AF800EB4BEE /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5724B21AF800EB4BEE /* TypeAlias.swift */; };
 		20D1EF5A24B21AF800EB4BEE /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5724B21AF800EB4BEE /* TypeAlias.swift */; };
+		20D1EF5C24B224F000EB4BEE /* ThrowInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5B24B224F000EB4BEE /* ThrowInstruction.swift */; };
+		20D1EF5D24B224F000EB4BEE /* ThrowInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5B24B224F000EB4BEE /* ThrowInstruction.swift */; };
+		20D1EF5E24B224F000EB4BEE /* ThrowInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5B24B224F000EB4BEE /* ThrowInstruction.swift */; };
 		20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
@@ -217,6 +220,7 @@
 		20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameSpace.swift; sourceTree = "<group>"; };
 		20D1EF5324B217FB00EB4BEE /* StandardNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardNameSpace.swift; sourceTree = "<group>"; };
 		20D1EF5724B21AF800EB4BEE /* TypeAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAlias.swift; sourceTree = "<group>"; };
+		20D1EF5B24B224F000EB4BEE /* ThrowInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrowInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableDeclarationInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA424AD449A00ABFB6E /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContext.swift; sourceTree = "<group>"; };
@@ -420,6 +424,7 @@
 				20DE0BF024B0B35600ABFB6E /* TryBlock.swift */,
 				20DE0BF424B0B48500ABFB6E /* CatchBlock.swift */,
 				20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */,
+				20D1EF5B24B224F000EB4BEE /* ThrowInstruction.swift */,
 			);
 			path = Instructions;
 			sourceTree = "<group>";
@@ -600,6 +605,7 @@
 				20DE0BB724AE0F7A00ABFB6E /* Expression.swift in Sources */,
 				200A5F9324ABA51E0028180B /* GPath.swift in Sources */,
 				20DE0BF324B0B35600ABFB6E /* TryBlock.swift in Sources */,
+				20D1EF5E24B224F000EB4BEE /* ThrowInstruction.swift in Sources */,
 				20D1EF5224B20ED600EB4BEE /* NameSpace.swift in Sources */,
 				20DE0BAF24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				200A5F8B24ABA5180028180B /* Stroke.swift in Sources */,
@@ -666,6 +672,7 @@
 				2098B68F24AAB06A0042D465 /* GRPHValue.swift in Sources */,
 				200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				200A5F7624AB85E10028180B /* Stroke.swift in Sources */,
+				20D1EF5C24B224F000EB4BEE /* ThrowInstruction.swift in Sources */,
 				20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */,
 				20DE0BB524AE0F7A00ABFB6E /* Expression.swift in Sources */,
 				20DE0BAD24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
@@ -728,6 +735,7 @@
 				2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */,
 				200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				200A5F7724AB85E10028180B /* Stroke.swift in Sources */,
+				20D1EF5D24B224F000EB4BEE /* ThrowInstruction.swift in Sources */,
 				20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */,
 				20DE0BB624AE0F7A00ABFB6E /* Expression.swift in Sources */,
 				20DE0BAE24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,

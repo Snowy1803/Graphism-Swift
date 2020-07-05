@@ -151,9 +151,9 @@ class GraphismTests: XCTestCase {
 \t#break
 #else
 \t// problem
-\t#break
+\t#throw UnexpectedException("Something is wrong, I can feel it")
 #try
-\tColors colors = (color.RED color.GREEN color.BLUE color.YELLOW color.MAGENTA color.CYAN (127 127 127 0.5))
+\tColors colors = (color.RED color.GREEN color.BLUE color.YELLOW color.MAGENTA color.CYAN color(127 127 127 0.5))
 \t// {integer} arr = <integer>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 \t{integer} arr = (0 1 2 3 4 5 6 7 8 9)
 \t#foreach &i : arr
