@@ -102,14 +102,14 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return [KeyPathField(name: "x", type: SimpleType.float, keyPath: \Pos.x),
                     KeyPathField(name: "y", type: SimpleType.float, keyPath: \Pos.y)]
         case .color:
-            return [VirtualField<ColorPaint>(name: "red", type: SimpleType.integer, getter: { Int(($0.rgba?.red ?? -1) * 255) }),
-                    VirtualField<ColorPaint>(name: "green", type: SimpleType.integer, getter: { Int(($0.rgba?.green ?? -1) * 255) }),
-                    VirtualField<ColorPaint>(name: "blue", type: SimpleType.integer, getter: { Int(($0.rgba?.blue ?? -1) * 255) }),
-                    VirtualField<ColorPaint>(name: "alpha", type: SimpleType.integer, getter: { Int(($0.rgba?.alpha ?? -1) * 255) }),
-                    VirtualField<ColorPaint>(name: "fred", type: SimpleType.integer, getter: { $0.rgba?.red ?? -1 }),
-                    VirtualField<ColorPaint>(name: "fgreen", type: SimpleType.integer, getter: { $0.rgba?.green ?? -1 }),
-                    VirtualField<ColorPaint>(name: "fblue", type: SimpleType.integer, getter: { $0.rgba?.blue ?? -1 }),
-                    VirtualField<ColorPaint>(name: "falpha", type: SimpleType.integer, getter: { $0.rgba?.alpha ?? -1 })]
+            return [KeyPathField(name: "red", type: SimpleType.integer, keyPath: \ColorPaint.grphRed),
+                    KeyPathField(name: "green", type: SimpleType.integer, keyPath: \ColorPaint.grphGreen),
+                    KeyPathField(name: "blue", type: SimpleType.integer, keyPath: \ColorPaint.grphBlue),
+                    KeyPathField(name: "alpha", type: SimpleType.integer, keyPath: \ColorPaint.grphAlpha),
+                    KeyPathField(name: "fred", type: SimpleType.float, keyPath: \ColorPaint.grphFRed),
+                    KeyPathField(name: "fgreen", type: SimpleType.float, keyPath: \ColorPaint.grphFGreen),
+                    KeyPathField(name: "fblue", type: SimpleType.float, keyPath: \ColorPaint.grphFBlue),
+                    KeyPathField(name: "falpha", type: SimpleType.float, keyPath: \ColorPaint.grphFAlpha)]
         case .linear:
             return [KeyPathField(name: "fromColor", type: SimpleType.color, keyPath: \LinearPaint.from),
                     KeyPathField(name: "toColor", type: SimpleType.color, keyPath: \LinearPaint.to),

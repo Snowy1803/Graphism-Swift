@@ -82,3 +82,86 @@ enum ColorPaint: Paint, Equatable {
     
     var type: GRPHType { SimpleType.color }
 }
+
+extension ColorPaint {
+    var grphRed: Int {
+        get {
+            Int((rgba?.red ?? -1) * 255)
+        }
+        set {
+            if case let .components(_, green, blue, alpha) = self {
+                self = .components(red: Float(newValue) / 255, green: green, blue: blue, alpha: alpha)
+            }
+        }
+    }
+    var grphGreen: Int {
+        get {
+            Int((rgba?.green ?? -1) * 255)
+        }
+        set {
+            if case let .components(red, _, blue, alpha) = self {
+                self = .components(red: red, green: Float(newValue) / 255, blue: blue, alpha: alpha)
+            }
+        }
+    }
+    var grphBlue: Int {
+        get {
+            Int((rgba?.blue ?? -1) * 255)
+        }
+        set {
+            if case let .components(red, green, _, alpha) = self {
+                self = .components(red: red, green: green, blue: Float(newValue) / 255, alpha: alpha)
+            }
+        }
+    }
+    var grphAlpha: Int {
+        get {
+            Int((rgba?.alpha ?? -1) * 255)
+        }
+        set {
+            if case let .components(red, green, blue, _) = self {
+                self = .components(red: red, green: green, blue: blue, alpha: Float(newValue) / 255)
+            }
+        }
+    }
+    var grphFRed: Float {
+        get {
+            rgba?.red ?? -1
+        }
+        set {
+            if case let .components(_, green, blue, alpha) = self {
+                self = .components(red: newValue, green: green, blue: blue, alpha: alpha)
+            }
+        }
+    }
+    var grphFGreen: Float {
+        get {
+            rgba?.green ?? -1
+        }
+        set {
+            if case let .components(red, _, blue, alpha) = self {
+                self = .components(red: red, green: newValue, blue: blue, alpha: alpha)
+            }
+        }
+    }
+    var grphFBlue: Float {
+        get {
+            rgba?.blue ?? -1
+        }
+        set {
+            if case let .components(red, green, _, alpha) = self {
+                self = .components(red: red, green: green, blue: newValue, alpha: alpha)
+            }
+        }
+    }
+    var grphFAlpha: Float {
+        get {
+            rgba?.alpha ?? -1
+        }
+        set {
+            if case let .components(red, green, blue, _) = self {
+                self = .components(red: red, green: green, blue: blue, alpha: newValue)
+            }
+        }
+    }
+}
