@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct TypeAlias {
+struct TypeAlias: Importable {
     var name: String
     var type: GRPHType
+    
+    var exportedTypeAliases: [TypeAlias] { [self] }
 }

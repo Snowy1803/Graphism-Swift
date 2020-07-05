@@ -88,7 +88,19 @@ class GRPHCompiler: GRPHParser {
                             // find function
                             // or find method
                             // or find type
-                            
+                        
+                        case "#typealias":
+                            let split = params.split(separator: " ", maxSplits: 1)
+                            guard split.count == 2 else {
+                                throw GRPHCompileError(type: .parse, message: "Syntax '#typealias newname existing' expected")
+                            }
+                            guard let type = GRPHTypes.parse(context: context, literal: String(split[1])) else {
+                                throw GRPHCompileError(type: .parse, message: "Type '\(split[1])' not found")
+                            }
+                            guard GRPHTypes.parse(context: context, literal: String(split[0])) == nil else {
+                                throw GRPHCompileError(type: .parse, message: "Existing type '\(split[0])' cannot be overridden with a typealias")
+                            }
+                            imports.append(TypeAlias(name: String(split[0]), type: type))
                         case "#if":
                             try addInstruction(try IfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                         case "#elseif", "#elif":
