@@ -17,7 +17,7 @@ class GRPHCompiler: GRPHParser {
     
     var internStrings: [String] = []
     var globalVariables: [Variable] = [] // Add this, back and colors
-    // ADD var imports: [Importable] = [NameSpace.STANDARD]
+    var imports: [Importable] = [] // NameSpaces.namespace(named: "standard")!]
     var instructions: [Instruction] = []
     
     var entireContent: String
@@ -74,10 +74,20 @@ class GRPHCompiler: GRPHParser {
                         
                         switch block {
                         case "#import", "#using":
-                            if params.contains(">") {
-                                // ADD let p = namespacedMemberFromString(imp)
-                                // TODO
+                            let p = NameSpaces.namespacedMember(from: params)
+                            if p.namespace.isEqual(to: NameSpaces.none) {
+                                if let ns = NameSpaces.namespace(named: p.member) {
+                                    imports.append(ns)
+                                } else {
+                                    throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
+                                    // namespace is none if it doesn't exist
+                                    // This way, '#import doesntexistlol>stdio' works...
+                                    // But '#import doesntexistlol>randomInt' fails with "Undeclared namespace"
+                                }
                             }
+                            // find function
+                            // or find method
+                            // or find type
                             
                         case "#if":
                             try addInstruction(try IfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))

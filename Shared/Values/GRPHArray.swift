@@ -46,14 +46,14 @@ class GRPHArray: StatefulValue, GRPHArrayProtocol {
     
     var type: GRPHType { ArrayType(content: content) }
     
-    func isEqualTo(_ other: GRPHValue) -> Bool {
+    func isEqual(to other: GRPHValue) -> Bool {
         if let other = other as? GRPHArray,
            other.count == self.count {
             if self === other {
                 return true
             }
             for i in 0..<self.count {
-                if self.wrapped[i].isEqualTo(other.wrapped[i]) {
+                if self.wrapped[i].isEqual(to: other.wrapped[i]) {
                     return false
                 }
             }

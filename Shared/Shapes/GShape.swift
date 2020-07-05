@@ -31,7 +31,7 @@ extension GShape {
         }
     }
     
-    func isEqualTo(_ other: GRPHValue) -> Bool {
+    func isEqual(to other: GRPHValue) -> Bool {
         if let shape = other as? GShape {
             return self.uuid == shape.uuid
         }

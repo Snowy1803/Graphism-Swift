@@ -94,6 +94,12 @@
 		20D1EF4724B141E300EB4BEE /* ConstructorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */; };
 		20D1EF4824B141E300EB4BEE /* ConstructorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */; };
 		20D1EF4924B141E300EB4BEE /* ConstructorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */; };
+		20D1EF4B24B20DA700EB4BEE /* Importable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4A24B20DA700EB4BEE /* Importable.swift */; };
+		20D1EF4C24B20DA700EB4BEE /* Importable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4A24B20DA700EB4BEE /* Importable.swift */; };
+		20D1EF4D24B20DA700EB4BEE /* Importable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4A24B20DA700EB4BEE /* Importable.swift */; };
+		20D1EF5024B20ED600EB4BEE /* NameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */; };
+		20D1EF5124B20ED600EB4BEE /* NameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */; };
+		20D1EF5224B20ED600EB4BEE /* NameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */; };
 		20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
@@ -201,6 +207,8 @@
 		20D1EF3E24B1393E00EB4BEE /* Parameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameter.swift; sourceTree = "<group>"; };
 		20D1EF4224B1401700EB4BEE /* Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constructor.swift; sourceTree = "<group>"; };
 		20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructorExpression.swift; sourceTree = "<group>"; };
+		20D1EF4A24B20DA700EB4BEE /* Importable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importable.swift; sourceTree = "<group>"; };
+		20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameSpace.swift; sourceTree = "<group>"; };
 		20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableDeclarationInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA424AD449A00ABFB6E /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContext.swift; sourceTree = "<group>"; };
@@ -290,6 +298,7 @@
 				20DE0B9E24AD43AC00ABFB6E /* Instructions */,
 				20DE0B9F24AD43B400ABFB6E /* Expressions */,
 				20D1EF3924B12B9E00EB4BEE /* Parametrables */,
+				20D1EF4E24B20EB400EB4BEE /* NameSpaces */,
 				2098B68D24AAB0490042D465 /* Types */,
 				20D1EF3024B12A2A00EB4BEE /* Values */,
 				2098B67724A970350042D465 /* Shapes */,
@@ -378,6 +387,15 @@
 				20D1EF4224B1401700EB4BEE /* Constructor.swift */,
 			);
 			path = Parametrables;
+			sourceTree = "<group>";
+		};
+		20D1EF4E24B20EB400EB4BEE /* NameSpaces */ = {
+			isa = PBXGroup;
+			children = (
+				20D1EF4A24B20DA700EB4BEE /* Importable.swift */,
+				20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */,
+			);
+			path = NameSpaces;
 			sourceTree = "<group>";
 		};
 		20DE0B9E24AD43AC00ABFB6E /* Instructions */ = {
@@ -549,6 +567,7 @@
 				20DE0BD724AEA88100ABFB6E /* CastExpression.swift in Sources */,
 				200A5F9224ABA51E0028180B /* GCircle.swift in Sources */,
 				20DE0BD324AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
+				20D1EF4D24B20DA700EB4BEE /* Importable.swift in Sources */,
 				20DE0BBF24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				20DE0BA724AD449A00ABFB6E /* Instruction.swift in Sources */,
 				20DE0BEB24B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
@@ -571,6 +590,7 @@
 				20DE0BB724AE0F7A00ABFB6E /* Expression.swift in Sources */,
 				200A5F9324ABA51E0028180B /* GPath.swift in Sources */,
 				20DE0BF324B0B35600ABFB6E /* TryBlock.swift in Sources */,
+				20D1EF5224B20ED600EB4BEE /* NameSpace.swift in Sources */,
 				20DE0BAF24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				200A5F8B24ABA5180028180B /* Stroke.swift in Sources */,
 				20D1EF3824B12AEE00EB4BEE /* SimpleType.swift in Sources */,
@@ -606,9 +626,11 @@
 				200A5F6724AB69DB0028180B /* LinearPaint.swift in Sources */,
 				20DE0BC524AE783400ABFB6E /* BinaryExpression.swift in Sources */,
 				20D1EF4324B1401700EB4BEE /* Constructor.swift in Sources */,
+				20D1EF5024B20ED600EB4BEE /* NameSpace.swift in Sources */,
 				20DE0BC924AE976800ABFB6E /* UnaryExpression.swift in Sources */,
 				20D1EF3224B12AA500EB4BEE /* OtherTypes.swift in Sources */,
 				20DE0BA924AD46D600ABFB6E /* GRPHContext.swift in Sources */,
+				20D1EF4B24B20DA700EB4BEE /* Importable.swift in Sources */,
 				2098B68524AA18B30042D465 /* GPath.swift in Sources */,
 				20DE0BE124AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
 				20DE0BD924AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
@@ -664,9 +686,11 @@
 				200A5F6824AB69DB0028180B /* LinearPaint.swift in Sources */,
 				20DE0BC624AE783400ABFB6E /* BinaryExpression.swift in Sources */,
 				20D1EF4424B1401700EB4BEE /* Constructor.swift in Sources */,
+				20D1EF5124B20ED600EB4BEE /* NameSpace.swift in Sources */,
 				20DE0BCA24AE976800ABFB6E /* UnaryExpression.swift in Sources */,
 				20D1EF3324B12AA500EB4BEE /* OtherTypes.swift in Sources */,
 				20DE0BAA24AD46D600ABFB6E /* GRPHContext.swift in Sources */,
+				20D1EF4C24B20DA700EB4BEE /* Importable.swift in Sources */,
 				2098B68624AA18B30042D465 /* GPath.swift in Sources */,
 				20DE0BE224AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
 				20DE0BDA24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,

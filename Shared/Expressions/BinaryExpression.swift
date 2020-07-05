@@ -113,7 +113,7 @@ struct BinaryExpression: Expression {
             let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.integer) as! Int
             return run(aleft, aright)
         case .equal, .notEqual:
-            return left.isEqualTo(right) == (op == .equal)
+            return left.isEqual(to: right) == (op == .equal)
         case .concat:
             let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.string) as! String
             let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.string) as! String

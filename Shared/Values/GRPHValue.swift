@@ -10,7 +10,7 @@ import Foundation
 /* Immutable types should be structs, mutable types should be classes */
 protocol GRPHValue {
     var type: GRPHType { get }
-    func isEqualTo(_ other: GRPHValue) -> Bool
+    func isEqual(to other: GRPHValue) -> Bool
 }
 
 protocol StatefulValue: GRPHValue {
@@ -23,7 +23,7 @@ protocol GRPHNumber: GRPHValue {
 
 extension GRPHValue where Self: Equatable {
     /// Note that this default implementation doesn't work with multi-inheritence (subclasses) !!!
-    func isEqualTo(_ other: GRPHValue) -> Bool {
+    func isEqual(to other: GRPHValue) -> Bool {
         if let value = other as? Self {
             return value == self
         }
