@@ -30,4 +30,15 @@ enum AnyPaint {
             return radial.state
         }
     }
+    
+    static func auto(_ value: GRPHValue) -> AnyPaint {
+        if let value = value as? ColorPaint {
+            return .color(value)
+        } else if let value = value as? LinearPaint {
+            return .linear(value)
+        } else if let value = value as? RadialPaint {
+            return .radial(value)
+        }
+        fatalError()
+    }
 }

@@ -172,4 +172,65 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return []
         }
     }
+    
+    var constructor: Constructor? {
+        switch self {
+        case .mixed, .num, .integer, .float, .boolean, .string, .paint, .shape, .direction, .stroke:
+            return nil
+        case .rotation:
+            return Constructor(parameters: [Parameter(name: "degrees", type: SimpleType.integer)], type: self) { context, values in
+                return Rotation(value: values[0] as! Int)
+            }
+        case .pos:
+            return Constructor(parameters: [Parameter(name: "x", type: SimpleType.float), Parameter(name: "y", type: SimpleType.float)], type: self) { context, values in
+                return Pos(x: values[0] as! Float, y: values[0] as! Float)
+            }
+        case .color:
+            return Constructor(parameters: [Parameter(name: "red", type: SimpleType.integer), Parameter(name: "green", type: SimpleType.integer), Parameter(name: "blue", type: SimpleType.integer), Parameter(name: "alpha", type: SimpleType.float, optional: true)], type: self) { context, values in
+                return ColorPaint.components(red: Float(values[0] as! Int) / 255, green: Float(values[1] as! Int) / 255, blue: Float(values[2] as! Int) / 255, alpha: values.count == 4 ? values[3] as! Float : 1)
+            }
+        case .linear:
+            return Constructor(parameters: [Parameter(name: "from", type: SimpleType.color), Parameter(name: "direction", type: SimpleType.direction), Parameter(name: "to", type: SimpleType.color)], type: self) { context, values in
+                return LinearPaint(from: values[0] as! ColorPaint, direction: values[1] as! Direction, to: values[2] as! ColorPaint)
+            }
+        case .radial:
+            return Constructor(parameters: [Parameter(name: "centerColor", type: SimpleType.color), Parameter(name: "center", type: SimpleType.pos, optional: true), Parameter(name: "externalColor", type: SimpleType.color), Parameter(name: "radius", type: SimpleType.float)], type: self) { context, values in
+                return RadialPaint(centerColor: values[0] as! ColorPaint, center: values[1] as? Pos ?? Pos(x: 0.5, y: 0.5), externalColor: values[2] as! ColorPaint, radius: values[3] as! Float)
+            }
+        case .font:
+            return nil // TODO
+        case .Rectangle:
+            return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
+                return GRectangle(givenName: values[0] as? String,
+                                  position: values[1] as! Pos,
+                                  positionZ: values[2] as? Int ?? 0,
+                                  size: values[3] as! Pos,
+                                  rotation: values[4] as? Rotation ?? Rotation(value: 0),
+                                  paint: AnyPaint.auto(values[5]!),
+                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[7] as? Stroke ?? .elongated, strokeDashArray: values[8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+            }
+        case .Circle:
+            return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
+                return GCircle(givenName: values[0] as? String,
+                                  position: values[1] as! Pos,
+                                  positionZ: values[2] as? Int ?? 0,
+                                  size: values[3] as! Pos,
+                                  rotation: values[4] as? Rotation ?? Rotation(value: 0),
+                                  paint: AnyPaint.auto(values[5]!),
+                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[7] as? Stroke ?? .elongated, strokeDashArray: values[8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+            }
+        case .Line:
+            return nil // TODO !!
+        case .Polygon:
+            return nil // TODO !!
+        case .Text:
+            return nil // TODO
+        case .Path:
+            return nil // TODO !!
+        case .Group:
+            return nil // TODO
+        case .Background:
+            return nil // TODO
+        }
+    }
 }

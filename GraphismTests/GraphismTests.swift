@@ -155,7 +155,7 @@ class GraphismTests: XCTestCase {
 \t// {integer} arr = <integer>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 \t {integer} arr = (0 1 2 3 4 5 6 7 8 9)
 \t#foreach &i : arr
-\t\t#break
+\t\tCircle c = (50,50 100,100 color.RED)
 """)
         _ = compiler.compile()
         print(compiler.wdiuInstructions)
