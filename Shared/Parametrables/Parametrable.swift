@@ -37,6 +37,8 @@ extension Parametrable {
                 return (param: curr, add: param - index + 1) // Backwards compatibility
             } else if !curr.optional {
                 return nil // missing
+            } else if param >= parameters.count - 1 {
+                return nil // this was the last, varargs always have the same type (avoid infinite loop)
             }
             param += 1
         }

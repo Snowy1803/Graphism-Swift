@@ -218,7 +218,7 @@ class GRPHCompiler: GRPHParser {
             if index == nil {
                 index = internStrings.count
                 internStrings.append("\"\(str)")
-                // ADD variables.add(Constant(name: "$_str\(index!)$", type: SimpleType.string, value: str))
+                globalVariables.append(Variable(name: "$_str\(index!)$", type: SimpleType.string, content: str, final: true))
             }
             return "$_str\(index!)$"
         }
