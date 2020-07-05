@@ -35,7 +35,7 @@ class AssignmentInstruction: Instruction {
     
     func run(context: GRPHContext) throws {
         try assigned.checkCanAssign(context: context)
-        var cache: GRPHValue? = nil
+        var cache = [GRPHValue]()
         virtualValue = try assigned.eval(context: context, cache: &cache)
         let varType = try assigned.getType(context: context, infer: SimpleType.mixed)
         let val = try GRPHTypes.autobox(value: value.eval(context: context), expected: varType)
@@ -75,6 +75,6 @@ class AssignmentInstruction: Instruction {
 
 protocol AssignableExpression: Expression {
     func checkCanAssign(context: GRPHContext) throws
-    func eval(context: GRPHContext, cache: inout GRPHValue?) throws -> GRPHValue
-    func assign(context: GRPHContext, value: GRPHValue, cache: inout GRPHValue?) throws
+    func eval(context: GRPHContext, cache: inout [GRPHValue]) throws -> GRPHValue
+    func assign(context: GRPHContext, value: GRPHValue, cache: inout [GRPHValue]) throws
 }

@@ -39,11 +39,11 @@ extension VariableExpression: AssignableExpression {
         }
     }
     
-    func eval(context: GRPHContext, cache: inout GRPHValue?) throws -> GRPHValue {
+    func eval(context: GRPHContext, cache: inout [GRPHValue]) throws -> GRPHValue {
         try eval(context: context)
     }
     
-    func assign(context: GRPHContext, value: GRPHValue, cache: inout GRPHValue?) throws {
+    func assign(context: GRPHContext, value: GRPHValue, cache: inout [GRPHValue]) throws {
         if let v = context.findVariable(named: name) {
             try v.setContent(value)
         }

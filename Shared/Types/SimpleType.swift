@@ -114,17 +114,15 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return [KeyPathField(name: "fromColor", type: SimpleType.color, keyPath: \LinearPaint.from),
                     KeyPathField(name: "toColor", type: SimpleType.color, keyPath: \LinearPaint.to),
                     KeyPathField(name: "direction", type: SimpleType.direction, keyPath: \LinearPaint.direction)]
-            // uhm they are structs, not writeable on java edition, here they are writeable, but they would be value types? Depends on assignment implementation
+            // TODO Test assignment implementation
         case .radial:
             return [KeyPathField(name: "fromColor", type: SimpleType.color, keyPath: \RadialPaint.centerColor),
                     KeyPathField(name: "toColor", type: SimpleType.color, keyPath: \RadialPaint.externalColor),
                     KeyPathField(name: "center", type: SimpleType.pos, keyPath: \RadialPaint.center),
                     KeyPathField(name: "radius", type: SimpleType.float, keyPath: \RadialPaint.radius)]
-            // same as above
         // fonts & images
         case .rotation:
             return [KeyPathField(name: "value", type: SimpleType.integer, keyPath: \Rotation.value)]
-            // same as above
         case .string:
             return [VirtualField<String>(name: "length", type: SimpleType.integer, getter: { $0.count })]
         case .shape:

@@ -35,13 +35,28 @@ extension FieldExpression: AssignableExpression {
         }
     }
     
-    func eval(context: GRPHContext, cache: inout GRPHValue?) throws -> GRPHValue {
-        cache = try on.eval(context: context)
-        return field.getValue(on: cache!)
+    func eval(context: GRPHContext, cache: inout [GRPHValue]) throws -> GRPHValue {
+        if let on = on as? AssignableExpression {
+            cache.append(try on.eval(context: context, cache: &cache))
+        } else {
+            cache.append(try on.eval(context: context))
+        }
+        return field.getValue(on: cache.last!)
     }
     
-    func assign(context: GRPHContext, value: GRPHValue, cache: inout GRPHValue?) throws {
-        try field.setValue(on: &cache!, value: value)
+    func assign(context: GRPHContext, value: GRPHValue, cache: inout [GRPHValue]) throws {
+        var modified = cache.last!
+        try field.setValue(on: &modified, value: value)
+        // if 'modified' is a reference type, it is already updated
+        if type(of: modified) is AnyClass {
+            return
+        }
+        cache.removeLast()
+        if let on = on as? AssignableExpression {
+            try on.assign(context: context, value: modified, cache: &cache)
+        } else {
+            throw GRPHRuntimeError(type: .unexpected, message: "Value type couldn't be modified back")
+        }
     }
 }
 
