@@ -118,6 +118,9 @@
 		20D1EF6824B292ED00EB4BEE /* FunctionExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6724B292ED00EB4BEE /* FunctionExpression.swift */; };
 		20D1EF6924B292ED00EB4BEE /* FunctionExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6724B292ED00EB4BEE /* FunctionExpression.swift */; };
 		20D1EF6A24B292ED00EB4BEE /* FunctionExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6724B292ED00EB4BEE /* FunctionExpression.swift */; };
+		20D1EF6C24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */; };
+		20D1EF6D24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */; };
+		20D1EF6E24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */; };
 		20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
@@ -233,6 +236,7 @@
 		20D1EF5F24B22B5300EB4BEE /* AssignmentInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentInstruction.swift; sourceTree = "<group>"; };
 		20D1EF6324B28DDF00EB4BEE /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		20D1EF6724B292ED00EB4BEE /* FunctionExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionExpression.swift; sourceTree = "<group>"; };
+		20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableDeclarationInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA424AD449A00ABFB6E /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContext.swift; sourceTree = "<group>"; };
@@ -439,6 +443,7 @@
 				20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */,
 				20D1EF5B24B224F000EB4BEE /* ThrowInstruction.swift */,
 				20D1EF5F24B22B5300EB4BEE /* AssignmentInstruction.swift */,
+				20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */,
 			);
 			path = Instructions;
 			sourceTree = "<group>";
@@ -635,6 +640,7 @@
 				200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */,
 				200A5F8A24ABA5180028180B /* ColorPaint.swift in Sources */,
 				200A5F8C24ABA5180028180B /* GRPHType.swift in Sources */,
+				20D1EF6E24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20D1EF2F24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */,
 				20DE0BF724B0B48500ABFB6E /* CatchBlock.swift in Sources */,
 				20DE0BCF24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
@@ -703,6 +709,7 @@
 				20DE0BED24B0AD5100ABFB6E /* ForBlock.swift in Sources */,
 				20D1EF6424B28DDF00EB4BEE /* Function.swift in Sources */,
 				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
+				20D1EF6C24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20DE0BD524AEA88100ABFB6E /* CastExpression.swift in Sources */,
 				20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				200A5F7024AB76560028180B /* GRPHType.swift in Sources */,
@@ -769,6 +776,7 @@
 				20DE0BEE24B0AD5100ABFB6E /* ForBlock.swift in Sources */,
 				20D1EF6524B28DDF00EB4BEE /* Function.swift in Sources */,
 				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
+				20D1EF6D24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20DE0BD624AEA88100ABFB6E /* CastExpression.swift in Sources */,
 				20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				200A5F7124AB76560028180B /* GRPHType.swift in Sources */,

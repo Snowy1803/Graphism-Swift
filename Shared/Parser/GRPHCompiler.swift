@@ -207,6 +207,11 @@ class GRPHCompiler: GRPHParser {
                         }
                         // method call: validate: shape1
                         // function call: log["test"]
+                        if FunctionExpression.pattern.firstMatch(string: tline) != nil {
+                            if let exp = try Expressions.parse(context: context, infer: SimpleType.mixed, literal: tline) as? FunctionExpression {
+                                try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: exp))
+                            }
+                        }
                         // ADD throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
                     }
                 } catch let error as GRPHCompileError {

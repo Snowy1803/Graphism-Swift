@@ -159,7 +159,7 @@ class GraphismTests: XCTestCase {
 \t\tCircle c = (50,50 100,100 color.RED)
 \t\tc.paint = colors{i}
 \t\ti += 1
-\t\tstring unused = log["i =" i "color =" colors{i}]
+\t\tlog["i =" i "color =" colors{i}]
 """)
         XCTAssertTrue(compiler.compile())
         print(compiler.wdiuInstructions)
