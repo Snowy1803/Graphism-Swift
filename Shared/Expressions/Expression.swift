@@ -121,7 +121,15 @@ struct Expressions {
             } else {
                 throw GRPHCompileError(type: .undeclared, message: "Constructor type could not be inferred")
             }
-            return try ConstructorExpression(ctx: context, type: type, values: splitParameters(context: context, in: result[2]!, delimiter: space))
+            let infer: GRPHType?
+            if let params = type.constructor?.parameters,
+               params.count == 1,
+               let param = params.first {
+                infer = param.type
+            } else {
+                infer = nil
+            }
+            return try ConstructorExpression(ctx: context, type: type, values: splitParameters(context: context, in: result[2]!, delimiter: space, infer: infer))
         }
         if let exp = try findBinary(context: context, str: str, regex: BinaryExpression.signs5)
                       ?? findBinary(context: context, str: str, regex: BinaryExpression.signs6) {
