@@ -140,6 +140,18 @@ class GRPHCompiler: GRPHParser {
                             break
                         case "#type":
                             throw GRPHCompileError(type: .unsupported, message: "#type is not available yet")
+                        case "#setting":
+                            // #setting key value
+                            // - selection *true*/false
+                            // - generated true/*false* <-- flag "generated automatically; you can save the state over the file with no loss"
+                            // - sidebar *true*/false
+                            // - propertybar *true*/false
+                            // - toolbar *true*/false
+                            // - movable *true*/false
+                            // - editable *true*/false
+                            // - readonly true/*false* -- sets movable, editable
+                            // - fullscreen true/*false* -- sets sidebar, propertybar, toolbar
+                            break
                         default:
                             print("Warning: Unknown command `\(tline)`; line \(lineNumber + 1). This will get ignored")
                         }
@@ -149,8 +161,8 @@ class GRPHCompiler: GRPHParser {
                         // MARK: INSTRUCTIONS
                         // array modification: arr{4} = var
                         // inline func declaration: color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
-                        // var declaration
                         if let result = VariableDeclarationInstruction.pattern.firstMatch(string: tline) {
+                            // {integer} arr = (0 1 2 3)
                             try addInstruction(try VariableDeclarationInstruction(lineNumber: lineNumber, groups: result, context: context))
                         }
                         // var assign
