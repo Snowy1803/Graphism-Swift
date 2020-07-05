@@ -63,6 +63,18 @@ class GRPHContext {
         return parser.globalVariables.first(where: { $0.name == name })
     }
     
+    /// Used in Variable Declaration Instruction to know if defining the variable is allowed
+    func findVariableInScope(named name: String) -> Variable? {
+        if let scope = blocks.last {
+            if let found = scope.variables.first(where: { $0.name == name }) {
+                return found
+            }
+        } else {
+            return parser.globalVariables.first(where: { $0.name == name })
+        }
+        return nil
+    }
+    
     func addVariable(_ variable: Variable, global: Bool) {
         if global || blocks.isEmpty { // Note that blocks is never empty in function scope
             parser.globalVariables.append(variable)

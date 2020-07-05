@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol GRPHType {
+protocol GRPHType: CustomStringConvertible {
     var string: String { get }
     
     func isInstance(of other: GRPHType) -> Bool
@@ -41,6 +41,10 @@ extension GRPHType {
     var fields: [Field] {[]}
     var supertype: GRPHType { SimpleType.mixed }
     var constructor: Constructor? { nil }
+    
+    var description: String {
+        string
+    }
 }
 
 struct GRPHTypes {

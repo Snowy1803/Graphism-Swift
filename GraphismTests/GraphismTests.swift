@@ -152,7 +152,7 @@ class GraphismTests: XCTestCase {
 \t// problem
 \t#break
 #try
-\t{color} arr = (color.RED color.GREEN color.BLUE color.YELLOW color.MAGENTA color.CYAN color(127 127 127 0.5))
+\t{color}? colors = (color.RED color.GREEN color.BLUE color.YELLOW color.MAGENTA color.CYAN color(127 127 127 0.5))
 \t// {integer} arr = <integer>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 \t{integer} arr = (0 1 2 3 4 5 6 7 8 9)
 \t#foreach &i : arr

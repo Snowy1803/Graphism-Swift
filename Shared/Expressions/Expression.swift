@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Expression {
+protocol Expression: CustomStringConvertible {
     
     func eval(context: GRPHContext) throws -> GRPHValue
     
@@ -21,6 +21,10 @@ protocol Expression {
 extension Expression {
     var bracketized: String {
         needsBrackets ? "[\(string)]" : string
+    }
+    
+    var description: String {
+        string
     }
 }
 
