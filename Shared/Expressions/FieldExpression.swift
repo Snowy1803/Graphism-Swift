@@ -26,8 +26,23 @@ struct FieldExpression: Expression {
     }
     
     var needsBrackets: Bool { false }
+}
+
+extension FieldExpression: AssignableExpression {
+    func checkCanAssign(context: GRPHContext) throws {
+        guard field.writeable else {
+            throw GRPHCompileError(type: .typeMismatch, message: "Cannot assign to final field '\(field.type).\(field.name)'")
+        }
+    }
     
-    // should check field.writeable at compile time in a check when implementing AssignableExpression
+    func eval(context: GRPHContext, cache: inout GRPHValue?) throws -> GRPHValue {
+        cache = try on.eval(context: context)
+        return field.getValue(on: cache!)
+    }
+    
+    func assign(context: GRPHContext, value: GRPHValue, cache: inout GRPHValue?) throws {
+        try field.setValue(on: &cache!, value: value)
+    }
 }
 
 struct ConstantPropertyExpression: Expression {

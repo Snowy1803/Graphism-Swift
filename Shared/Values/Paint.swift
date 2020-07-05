@@ -41,4 +41,15 @@ enum AnyPaint {
         }
         fatalError()
     }
+    
+    var unwrapped: GRPHValue {
+        switch self {
+        case .color(let color):
+            return color
+        case .linear(let linear):
+            return linear
+        case .radial(let radial):
+            return radial
+        }
+    }
 }

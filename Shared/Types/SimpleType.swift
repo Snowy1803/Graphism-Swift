@@ -138,6 +138,13 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \(($0 as! GShape).type) has no position")
                 }
+            }),
+            ErasedField(name: "paint", type: SimpleType.paint, getter: { ($0 as? SimpleShape)?.paint.unwrapped ?? ColorPaint.black }, setter: {
+                if var shape = ($0 as? SimpleShape) {
+                    shape.paint = AnyPaint.auto($1)
+                } else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "A \(($0 as! GShape).type) has no paint")
+                }
             }),] // TODO etc
         default:
             return []

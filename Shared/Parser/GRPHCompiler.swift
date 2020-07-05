@@ -200,7 +200,10 @@ class GRPHCompiler: GRPHParser {
                             // {integer} arr = (0 1 2 3)
                             try addInstruction(try VariableDeclarationInstruction(lineNumber: lineNumber, groups: result, context: context))
                         }
-                        // var assign
+                        if let result = AssignmentInstruction.pattern.firstMatch(string: tline) {
+                            // assignments (=, +=, /= etc)
+                            try addInstruction(try AssignmentInstruction(lineNumber: lineNumber, context: context, groups: result))
+                        }
                         // method call: validate: shape1
                         // function call: log["test"]
                         // ADD throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")

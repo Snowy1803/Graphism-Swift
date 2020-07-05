@@ -29,7 +29,7 @@ class ForBlock: BlockInstruction {
         guard ForBlock.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
-        variables.append(Variable(name: varName, type: arrtype.content, final: !inOut, compileTime: true))
+        variables.append(Variable(name: self.varName, type: arrtype.content, final: !inOut, compileTime: true))
     }
     
     override func run(context: GRPHContext) throws {

@@ -30,3 +30,22 @@ struct VariableExpression: Expression {
     
     var needsBrackets: Bool { false }
 }
+
+extension VariableExpression: AssignableExpression {
+    func checkCanAssign(context: GRPHContext) throws {
+        guard let v = context.findVariable(named: name),
+              !v.final else {
+            throw GRPHCompileError(type: .typeMismatch, message: "Cannot assign to final variable '\(name)'")
+        }
+    }
+    
+    func eval(context: GRPHContext, cache: inout GRPHValue?) throws -> GRPHValue {
+        try eval(context: context)
+    }
+    
+    func assign(context: GRPHContext, value: GRPHValue, cache: inout GRPHValue?) throws {
+        if let v = context.findVariable(named: name) {
+            try v.setContent(value)
+        }
+    }
+}
