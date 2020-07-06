@@ -124,6 +124,65 @@
 		20D1EF7024B29F8500EB4BEE /* GRPHRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */; };
 		20D1EF7124B29F8500EB4BEE /* GRPHRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */; };
 		20D1EF7224B29F8500EB4BEE /* GRPHRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */; };
+		20D1EF7A24B2AF8200EB4BEE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF7924B2AF8200EB4BEE /* main.swift */; };
+		20D1EF7E24B2AFF600EB4BEE /* ConstantExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BB824AE2FC100ABFB6E /* ConstantExpression.swift */; };
+		20D1EF7F24B2AFF600EB4BEE /* GClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68724AA26740042D465 /* GClip.swift */; };
+		20D1EF8024B2AFF600EB4BEE /* ExpressionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */; };
+		20D1EF8124B2AFF600EB4BEE /* StandardNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5324B217FB00EB4BEE /* StandardNameSpace.swift */; };
+		20D1EF8224B2AFF600EB4BEE /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BB024AD503F00ABFB6E /* Variable.swift */; };
+		20D1EF8324B2AFF600EB4BEE /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BDC24AF80C200ABFB6E /* Property.swift */; };
+		20D1EF8424B2AFF600EB4BEE /* BlockInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BAC24AD4C2400ABFB6E /* BlockInstruction.swift */; };
+		20D1EF8524B2AFF600EB4BEE /* RadialPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6C24AB6FB60028180B /* RadialPaint.swift */; };
+		20D1EF8624B2AFF600EB4BEE /* Pos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69124AAB0AC0042D465 /* Pos.swift */; };
+		20D1EF8724B2AFF600EB4BEE /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA424AD449A00ABFB6E /* Instruction.swift */; };
+		20D1EF8824B2AFF600EB4BEE /* NameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */; };
+		20D1EF8924B2AFF600EB4BEE /* GRPHValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68E24AAB06A0042D465 /* GRPHValue.swift */; };
+		20D1EF8A24B2AFF600EB4BEE /* GCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67A24A970350042D465 /* GCircle.swift */; };
+		20D1EF8B24B2AFF600EB4BEE /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
+		20D1EF8C24B2AFF600EB4BEE /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BB424AE0F7A00ABFB6E /* Expression.swift */; };
+		20D1EF8D24B2AFF600EB4BEE /* ArrayValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC024AE478300ABFB6E /* ArrayValueExpression.swift */; };
+		20D1EF8E24B2AFF600EB4BEE /* IfBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE424AFDEBA00ABFB6E /* IfBlock.swift */; };
+		20D1EF8F24B2AFF600EB4BEE /* WhileBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE824B0AC0600ABFB6E /* WhileBlock.swift */; };
+		20D1EF9024B2AFF600EB4BEE /* GRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67924A970350042D465 /* GRectangle.swift */; };
+		20D1EF9124B2AFF600EB4BEE /* Importable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4A24B20DA700EB4BEE /* Importable.swift */; };
+		20D1EF9224B2AFF600EB4BEE /* FunctionExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6724B292ED00EB4BEE /* FunctionExpression.swift */; };
+		20D1EF9324B2AFF600EB4BEE /* BinaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC424AE783400ABFB6E /* BinaryExpression.swift */; };
+		20D1EF9424B2AFF600EB4BEE /* ConstructorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4624B141E300EB4BEE /* ConstructorExpression.swift */; };
+		20D1EF9524B2AFF600EB4BEE /* Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69424AB5EDA0042D465 /* Rotation.swift */; };
+		20D1EF9624B2AFF600EB4BEE /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7524AB85E10028180B /* Stroke.swift */; };
+		20D1EF9724B2AFF600EB4BEE /* GLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68124A971B10042D465 /* GLine.swift */; };
+		20D1EF9824B2AFF600EB4BEE /* ThrowInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5B24B224F000EB4BEE /* ThrowInstruction.swift */; };
+		20D1EF9924B2AFF600EB4BEE /* Parametrable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3A24B12BB600EB4BEE /* Parametrable.swift */; };
+		20D1EF9A24B2AFF600EB4BEE /* GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F9724ABF6020028180B /* GRPHCompiler.swift */; };
+		20D1EF9B24B2AFF600EB4BEE /* AssignmentInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5F24B22B5300EB4BEE /* AssignmentInstruction.swift */; };
+		20D1EF9C24B2AFF600EB4BEE /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3E24B1393E00EB4BEE /* Parameter.swift */; };
+		20D1EF9D24B2AFF600EB4BEE /* OtherTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */; };
+		20D1EF9E24B2AFF600EB4BEE /* ArrayLiteralExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BD824AF677500ABFB6E /* ArrayLiteralExpression.swift */; };
+		20D1EF9F24B2AFF600EB4BEE /* TryBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BF024B0B35600ABFB6E /* TryBlock.swift */; };
+		20D1EFA024B2AFF600EB4BEE /* VariableExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BBC24AE3C6200ABFB6E /* VariableExpression.swift */; };
+		20D1EFA124B2AFF600EB4BEE /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF5724B21AF800EB4BEE /* TypeAlias.swift */; };
+		20D1EFA224B2AFF600EB4BEE /* GRPHContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */; };
+		20D1EFA324B2AFF600EB4BEE /* SimpleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */; };
+		20D1EFA424B2AFF600EB4BEE /* UnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BC824AE976800ABFB6E /* UnaryExpression.swift */; };
+		20D1EFA524B2AFF600EB4BEE /* Paint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69724AB61350042D465 /* Paint.swift */; };
+		20D1EFA624B2AFF600EB4BEE /* ColorPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69A24AB62B60042D465 /* ColorPaint.swift */; };
+		20D1EFA724B2AFF600EB4BEE /* NullExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BCC24AEA48B00ABFB6E /* NullExpression.swift */; };
+		20D1EFA824B2AFF600EB4BEE /* GRPHRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */; };
+		20D1EFA924B2AFF600EB4BEE /* ForBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BEC24B0AD5100ABFB6E /* ForBlock.swift */; };
+		20D1EFAA24B2AFF600EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
+		20D1EFAB24B2AFF600EB4BEE /* CastExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BD424AEA88100ABFB6E /* CastExpression.swift */; };
+		20D1EFAC24B2AFF600EB4BEE /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6324B28DDF00EB4BEE /* Function.swift */; };
+		20D1EFAD24B2AFF600EB4BEE /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
+		20D1EFAE24B2AFF600EB4BEE /* GPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68424AA18B30042D465 /* GPath.swift */; };
+		20D1EFAF24B2AFF600EB4BEE /* GRPHOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BD024AEA5AE00ABFB6E /* GRPHOptional.swift */; };
+		20D1EFB024B2AFF600EB4BEE /* GRPHType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6F24AB76560028180B /* GRPHType.swift */; };
+		20D1EFB124B2AFF600EB4BEE /* GRPHArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F7224AB82DA0028180B /* GRPHArray.swift */; };
+		20D1EFB224B2AFF600EB4BEE /* CatchBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BF424B0B48500ABFB6E /* CatchBlock.swift */; };
+		20D1EFB324B2AFF600EB4BEE /* Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF4224B1401700EB4BEE /* Constructor.swift */; };
+		20D1EFB424B2AFF600EB4BEE /* LinearPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6624AB69DB0028180B /* LinearPaint.swift */; };
+		20D1EFB524B2AFF600EB4BEE /* FieldExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BE024AF8EAA00ABFB6E /* FieldExpression.swift */; };
+		20D1EFB624B2AFF600EB4BEE /* GPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B68A24AA98070042D465 /* GPolygon.swift */; };
+		20D1EFB724B2AFF600EB4BEE /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200A5F6924AB6AE60028180B /* Direction.swift */; };
 		20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
@@ -192,6 +251,18 @@
 		20DE0BF724B0B48500ABFB6E /* CatchBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BF424B0B48500ABFB6E /* CatchBlock.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		20D1EF7524B2AF8200EB4BEE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		200A5F6624AB69DB0028180B /* LinearPaint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearPaint.swift; sourceTree = "<group>"; };
 		200A5F6924AB6AE60028180B /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
@@ -241,6 +312,8 @@
 		20D1EF6724B292ED00EB4BEE /* FunctionExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionExpression.swift; sourceTree = "<group>"; };
 		20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionInstruction.swift; sourceTree = "<group>"; };
 		20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHRuntime.swift; sourceTree = "<group>"; };
+		20D1EF7724B2AF8200EB4BEE /* Graphism CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Graphism CLI"; sourceTree = BUILT_PRODUCTS_DIR; };
+		20D1EF7924B2AF8200EB4BEE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableDeclarationInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA424AD449A00ABFB6E /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContext.swift; sourceTree = "<group>"; };
@@ -288,6 +361,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		20D1EF7424B2AF8200EB4BEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -320,6 +400,7 @@
 				2063127624A8C38D0095911B /* iOS */,
 				2063127D24A8C38D0095911B /* macOS */,
 				200A5F7D24ABA4E60028180B /* GraphismTests */,
+				20D1EF7824B2AF8200EB4BEE /* Graphism CLI */,
 				2063127524A8C38D0095911B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -349,6 +430,7 @@
 				2063127424A8C38D0095911B /* Graphism.app */,
 				2063127C24A8C38D0095911B /* Graphism.app */,
 				200A5F7C24ABA4E60028180B /* GraphismTests.xctest */,
+				20D1EF7724B2AF8200EB4BEE /* Graphism CLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -432,6 +514,14 @@
 				20D1EF5324B217FB00EB4BEE /* StandardNameSpace.swift */,
 			);
 			path = NameSpaces;
+			sourceTree = "<group>";
+		};
+		20D1EF7824B2AF8200EB4BEE /* Graphism CLI */ = {
+			isa = PBXGroup;
+			children = (
+				20D1EF7924B2AF8200EB4BEE /* main.swift */,
+			);
+			path = "Graphism CLI";
 			sourceTree = "<group>";
 		};
 		20DE0B9E24AD43AC00ABFB6E /* Instructions */ = {
@@ -526,6 +616,23 @@
 			productReference = 2063127C24A8C38D0095911B /* Graphism.app */;
 			productType = "com.apple.product-type.application";
 		};
+		20D1EF7624B2AF8200EB4BEE /* Graphism CLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20D1EF7B24B2AF8200EB4BEE /* Build configuration list for PBXNativeTarget "Graphism CLI" */;
+			buildPhases = (
+				20D1EF7324B2AF8200EB4BEE /* Sources */,
+				20D1EF7424B2AF8200EB4BEE /* Frameworks */,
+				20D1EF7524B2AF8200EB4BEE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Graphism CLI";
+			productName = "Graphism CLI";
+			productReference = 20D1EF7724B2AF8200EB4BEE /* Graphism CLI */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -542,6 +649,9 @@
 						CreatedOnToolsVersion = 12.0;
 					};
 					2063127B24A8C38D0095911B = {
+						CreatedOnToolsVersion = 12.0;
+					};
+					20D1EF7624B2AF8200EB4BEE = {
 						CreatedOnToolsVersion = 12.0;
 					};
 				};
@@ -562,6 +672,7 @@
 				2063127324A8C38D0095911B /* iOS */,
 				2063127B24A8C38D0095911B /* macOS */,
 				200A5F7B24ABA4E60028180B /* GraphismTests */,
+				20D1EF7624B2AF8200EB4BEE /* Graphism CLI */,
 			);
 		};
 /* End PBXProject section */
@@ -792,6 +903,72 @@
 				20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B68024A970350042D465 /* GCircle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20D1EF7324B2AF8200EB4BEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20D1EF9524B2AFF600EB4BEE /* Rotation.swift in Sources */,
+				20D1EF8D24B2AFF600EB4BEE /* ArrayValueExpression.swift in Sources */,
+				20D1EFAE24B2AFF600EB4BEE /* GPath.swift in Sources */,
+				20D1EFB424B2AFF600EB4BEE /* LinearPaint.swift in Sources */,
+				20D1EFB124B2AFF600EB4BEE /* GRPHArray.swift in Sources */,
+				20D1EF8624B2AFF600EB4BEE /* Pos.swift in Sources */,
+				20D1EFA924B2AFF600EB4BEE /* ForBlock.swift in Sources */,
+				20D1EF8E24B2AFF600EB4BEE /* IfBlock.swift in Sources */,
+				20D1EF9B24B2AFF600EB4BEE /* AssignmentInstruction.swift in Sources */,
+				20D1EF9024B2AFF600EB4BEE /* GRectangle.swift in Sources */,
+				20D1EFB024B2AFF600EB4BEE /* GRPHType.swift in Sources */,
+				20D1EFAB24B2AFF600EB4BEE /* CastExpression.swift in Sources */,
+				20D1EFA124B2AFF600EB4BEE /* TypeAlias.swift in Sources */,
+				20D1EF9424B2AFF600EB4BEE /* ConstructorExpression.swift in Sources */,
+				20D1EF9F24B2AFF600EB4BEE /* TryBlock.swift in Sources */,
+				20D1EF8324B2AFF600EB4BEE /* Property.swift in Sources */,
+				20D1EFB324B2AFF600EB4BEE /* Constructor.swift in Sources */,
+				20D1EF8924B2AFF600EB4BEE /* GRPHValue.swift in Sources */,
+				20D1EFB624B2AFF600EB4BEE /* GPolygon.swift in Sources */,
+				20D1EFA524B2AFF600EB4BEE /* Paint.swift in Sources */,
+				20D1EF8524B2AFF600EB4BEE /* RadialPaint.swift in Sources */,
+				20D1EFB524B2AFF600EB4BEE /* FieldExpression.swift in Sources */,
+				20D1EFAC24B2AFF600EB4BEE /* Function.swift in Sources */,
+				20D1EF8824B2AFF600EB4BEE /* NameSpace.swift in Sources */,
+				20D1EF9C24B2AFF600EB4BEE /* Parameter.swift in Sources */,
+				20D1EF9724B2AFF600EB4BEE /* GLine.swift in Sources */,
+				20D1EFA724B2AFF600EB4BEE /* NullExpression.swift in Sources */,
+				20D1EFA424B2AFF600EB4BEE /* UnaryExpression.swift in Sources */,
+				20D1EF9824B2AFF600EB4BEE /* ThrowInstruction.swift in Sources */,
+				20D1EF8A24B2AFF600EB4BEE /* GCircle.swift in Sources */,
+				20D1EF8124B2AFF600EB4BEE /* StandardNameSpace.swift in Sources */,
+				20D1EFA324B2AFF600EB4BEE /* SimpleType.swift in Sources */,
+				20D1EF8724B2AFF600EB4BEE /* Instruction.swift in Sources */,
+				20D1EFAA24B2AFF600EB4BEE /* BreakInstruction.swift in Sources */,
+				20D1EF9624B2AFF600EB4BEE /* Stroke.swift in Sources */,
+				20D1EF9124B2AFF600EB4BEE /* Importable.swift in Sources */,
+				20D1EF8224B2AFF600EB4BEE /* Variable.swift in Sources */,
+				20D1EFA024B2AFF600EB4BEE /* VariableExpression.swift in Sources */,
+				20D1EFAF24B2AFF600EB4BEE /* GRPHOptional.swift in Sources */,
+				20D1EF8024B2AFF600EB4BEE /* ExpressionInstruction.swift in Sources */,
+				20D1EF8F24B2AFF600EB4BEE /* WhileBlock.swift in Sources */,
+				20D1EFA824B2AFF600EB4BEE /* GRPHRuntime.swift in Sources */,
+				20D1EF7F24B2AFF600EB4BEE /* GClip.swift in Sources */,
+				20D1EFB724B2AFF600EB4BEE /* Direction.swift in Sources */,
+				20D1EFAD24B2AFF600EB4BEE /* VariableDeclarationInstruction.swift in Sources */,
+				20D1EF9E24B2AFF600EB4BEE /* ArrayLiteralExpression.swift in Sources */,
+				20D1EFB224B2AFF600EB4BEE /* CatchBlock.swift in Sources */,
+				20D1EFA624B2AFF600EB4BEE /* ColorPaint.swift in Sources */,
+				20D1EF8C24B2AFF600EB4BEE /* Expression.swift in Sources */,
+				20D1EF7A24B2AF8200EB4BEE /* main.swift in Sources */,
+				20D1EF8B24B2AFF600EB4BEE /* GShape.swift in Sources */,
+				20D1EFA224B2AFF600EB4BEE /* GRPHContext.swift in Sources */,
+				20D1EF9D24B2AFF600EB4BEE /* OtherTypes.swift in Sources */,
+				20D1EF9224B2AFF600EB4BEE /* FunctionExpression.swift in Sources */,
+				20D1EF9A24B2AFF600EB4BEE /* GRPHCompiler.swift in Sources */,
+				20D1EF9324B2AFF600EB4BEE /* BinaryExpression.swift in Sources */,
+				20D1EF9924B2AFF600EB4BEE /* Parametrable.swift in Sources */,
+				20D1EF8424B2AFF600EB4BEE /* BlockInstruction.swift in Sources */,
+				20D1EF7E24B2AFF600EB4BEE /* ConstantExpression.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1042,6 +1219,32 @@
 			};
 			name = Release;
 		};
+		20D1EF7C24B2AF8200EB4BEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		20D1EF7D24B2AF8200EB4BEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PKKP3P6RGM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1077,6 +1280,15 @@
 			buildConfigurations = (
 				2063128E24A8C38D0095911B /* Debug */,
 				2063128F24A8C38D0095911B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20D1EF7B24B2AF8200EB4BEE /* Build configuration list for PBXNativeTarget "Graphism CLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20D1EF7C24B2AF8200EB4BEE /* Debug */,
+				20D1EF7D24B2AF8200EB4BEE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
