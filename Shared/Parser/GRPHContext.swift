@@ -8,8 +8,8 @@
 import Foundation
 
 class GRPHContext {
-    var parent: GRPHContext?
-    var parser: GRPHParser
+    let parent: GRPHContext?
+    let parser: GRPHParser
     var last: Instruction?
     var blocks: [BlockInstruction] = []
     
@@ -23,6 +23,7 @@ class GRPHContext {
     
     init(parser: GRPHParser) {
         self.parser = parser
+        self.parent = nil
     }
     
     init(parent: GRPHContext) {
@@ -110,6 +111,6 @@ class GRPHContext {
     }
 }
 
-protocol GRPHParser {
+protocol GRPHParser: AnyObject {
     var globalVariables: [Variable] { get set }
 }
