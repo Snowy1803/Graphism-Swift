@@ -17,7 +17,7 @@ struct ArrayValueExpression: Expression {
         guard let val = context.findVariable(named: varName)?.content as? GRPHArray else {
             throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression with non-array")
         }
-        guard let i = try GRPHTypes.autobox(value: try index.eval(context: context), expected: SimpleType.integer) as? Int else {
+        guard let i = try GRPHTypes.unbox(value: try index.eval(context: context)) as? Int else {
             throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression index couldn't be resolved as an integer")
         }
         guard i < val.count else {

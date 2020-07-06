@@ -91,40 +91,38 @@ struct BinaryExpression: Expression {
     }
     
     func eval(context: GRPHContext) throws -> GRPHValue {
-        let left = unbox ? try GRPHTypes.autobox(value: try self.left.eval(context: context), expected: operands) : try self.left.eval(context: context)
+        let left = unbox ? try GRPHTypes.unbox(value: try self.left.eval(context: context)) : try self.left.eval(context: context)
         switch op {
         case .logicalAnd:
             return left as! Bool
-                ? (unbox ? try GRPHTypes.autobox(value: try self.right.eval(context: context), expected: operands) : try self.right.eval(context: context)) as! Bool
+                ? (unbox ? try GRPHTypes.unbox(value: try self.right.eval(context: context)) : try self.right.eval(context: context)) as! Bool
                 : false
         case .logicalOr:
             return left as! Bool
                 ? true
-                : (unbox ? try GRPHTypes.autobox(value: try self.right.eval(context: context), expected: operands) : try self.right.eval(context: context)) as! Bool
+                : (unbox ? try GRPHTypes.unbox(value: try self.right.eval(context: context)) : try self.right.eval(context: context)) as! Bool
         default:
             break
         }
-        let right = unbox ? try GRPHTypes.autobox(value: try self.right.eval(context: context), expected: operands) : try self.right.eval(context: context)
+        let right = unbox ? try GRPHTypes.unbox(value: try self.right.eval(context: context)) : try self.right.eval(context: context)
         switch op {
         case .greaterOrEqualTo, .lessOrEqualTo, .greaterThan, .lessThan, .plus, .minus, .multiply, .divide, .modulo:
             // num: int or float
-            let aleft = left as! GRPHNumber
-            let aright = right as! GRPHNumber
             if operands == .integer {
-                return run(aleft as! Int, aright as! Int)
+                return run(left as! Int, right as! Int)
             } else {
-                return run(Float(grph: aleft), Float(grph: aright))
+                return run(left as? Float ?? Float(left as! Int), right as? Float ?? Float(right as! Int))
             }
         case .bitwiseAnd, .bitwiseOr, .bitwiseXor:
             // bool or int
-            if let aleft = left as? Bool {
+            if operands == .boolean {
                 switch op {
                 case .bitwiseAnd:
-                    return aleft && right as! Bool
+                    return left as! Bool && right as! Bool
                 case .bitwiseOr:
-                    return aleft || right as! Bool
+                    return left as! Bool || right as! Bool
                 case .bitwiseXor:
-                    return aleft != (right as! Bool)
+                    return left as! Bool != (right as! Bool)
                 default:
                     fatalError()
                 }

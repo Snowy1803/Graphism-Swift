@@ -15,13 +15,21 @@ class AssignmentInstruction: Instruction {
     var value: Expression
     
     private var virtualValue: GRPHValue?
+    var virtualized = false
     
     init(lineNumber: Int, context: GRPHContext, assigned: AssignableExpression, op: String?, value: Expression) throws {
         self.lineNumber = lineNumber
         self.assigned = assigned
         self.value = value
+        
+        let varType = try assigned.getType(context: context, infer: SimpleType.mixed)
+        guard try varType.isInstance(context: context, expression: value) else {
+            throw GRPHRuntimeError(type: .typeMismatch, message: "Incompatible types '\(try value.getType(context: context, infer: SimpleType.mixed))' and '\(varType)' in assignment")
+        }
+        
         if let op = op {
             self.value = try BinaryExpression(context: context, left: VirtualExpression(parent: self), op: op, right: value)
+            self.virtualized = true
         }
         try assigned.checkCanAssign(context: context)
     }
@@ -34,22 +42,18 @@ class AssignmentInstruction: Instruction {
     }
     
     func run(context: GRPHContext) throws {
-        try assigned.checkCanAssign(context: context)
         var cache = [GRPHValue]()
-        virtualValue = try assigned.eval(context: context, cache: &cache)
-        let varType = try assigned.getType(context: context, infer: SimpleType.mixed)
-        let val = try GRPHTypes.autobox(value: value.eval(context: context), expected: varType)
-        guard GRPHTypes.type(of: val, expected: varType).isInstance(of: varType) else {
-            throw GRPHRuntimeError(type: .typeMismatch, message: "Incompatible types '\(GRPHTypes.type(of: val, expected: varType))' and '\(varType)' in assignment")
+        if virtualized {
+            virtualValue = try assigned.eval(context: context, cache: &cache)
         }
+        let val = virtualized ? try value.eval(context: context) : try GRPHTypes.autobox(value: value.eval(context: context), expected: assigned.getType(context: context, infer: SimpleType.mixed))
         try assigned.assign(context: context, value: val, cache: &cache)
     }
     
     func toString(indent: String) -> String {
         var op = ""
         var right = value
-        if let infix = value as? BinaryExpression,
-           infix.left is VirtualExpression {
+        if virtualized, let infix = value as? BinaryExpression {
             op = infix.op.string
             right = infix.right
         }

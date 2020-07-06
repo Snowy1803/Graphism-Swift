@@ -125,6 +125,20 @@ struct GRPHTypes {
         }
     }
     
+    /// Use this instead of autobox if you always expect an unwrapped value, as it's faster
+    static func unbox(value: GRPHValue) throws -> GRPHValue {
+        if let value = value as? GRPHOptional {
+            switch value {
+            case .null:
+                throw GRPHRuntimeError(type: .typeMismatch, message: "Tried to auto-unbox a 'null' value")
+            case .some(let wrapped):
+                return try unbox(value: wrapped) // Unboxing
+            }
+        } else {
+            return value
+        }
+    }
+    
     static func realType(of value: GRPHValue, expected: GRPHType?) -> GRPHType {
         if let value = value as? GRPHOptional,
            value.isEmpty,
