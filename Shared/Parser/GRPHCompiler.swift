@@ -28,6 +28,16 @@ class GRPHCompiler: GRPHParser {
         self.entireContent = entireContent
     }
     
+    func dumWDIU() {
+        print("[WDIU INTERN]")
+        for i in 0..<internStrings.count {
+            let s = internStrings[i]
+            print("$_str\(i)$ = \(s.replacingOccurrences(of: "&", with: "&&").replacingOccurrences(of: "\n", with: "&n").replacingOccurrences(of: "\r", with: "&r"))\(s.first!)")
+        }
+        print("[WDIU START]")
+        print(wdiuInstructions, terminator: "")
+        print("[WDIU END]")
+    }
     
     /// Please execute on a secondary thread, as the program
     func compile() -> Bool {
