@@ -6,23 +6,40 @@
 //
 
 import Foundation
+import ArgumentParser
 
-func main() {
-    let compiler = GRPHCompiler(entireContent: """
-int i = 0
-#while i < 2000000
-\tCircle c = Circle(50,50 pos([10f * i] [10f * i]) color.RED)
-\t#if i % 10000 == 0
-\t\tlog["Iteration" i c]
-\ti += 1
-""")
-    guard compiler.compile() else {
-        return
+struct GraphismCLI: ParsableCommand {
+    
+    @Flag(name: [.long, .customShort("c")],
+          help: "Only compiles the code and checks for compile errors, without running it")
+    var onlyCheck: Bool = false
+    
+    @Flag(help: "Enables WDIU debugging")
+    var wdiu = false
+    
+    @Option(help: "Step time between instructions, in seconds")
+    var step: TimeInterval = 0
+    
+    @Argument(help: "The input file to read, as a utf8 encoded grph file")
+    var input: String
+    
+    func run() throws {
+        let compiler = GRPHCompiler(entireContent: try String(contentsOfFile: input, encoding: .utf8))
+        guard compiler.compile() else {
+            throw ExitCode.failure
+        }
+        if onlyCheck {
+            print("Code compiled successfully")
+            throw ExitCode.success
+        }
+        //print(compiler.wdiuInstructions)
+        let runtime = GRPHRuntime(compiler: compiler)
+        runtime.debugging = wdiu
+        runtime.debugStep = step
+        guard runtime.run() else {
+            throw ExitCode.failure
+        }
     }
-    print(compiler.wdiuInstructions)
-    let runtime = GRPHRuntime(compiler: compiler)
-    _ = runtime.run()
-    print("Took \(-runtime.timestamp.timeIntervalSinceNow) s")
 }
 
-main()
+GraphismCLI.main()

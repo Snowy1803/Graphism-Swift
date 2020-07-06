@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -49,6 +49,7 @@
 		2063128524A8C38D0095911B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126E24A8C3790095911B /* ContentView.swift */; };
 		2063128624A8C38D0095911B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2063126F24A8C38D0095911B /* Assets.xcassets */; };
 		2063128724A8C38D0095911B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2063126F24A8C38D0095911B /* Assets.xcassets */; };
+		208D2FB424B3D6EB00CE66D7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 208D2FB324B3D6EB00CE66D7 /* ArgumentParser */; };
 		2098B67B24A970350042D465 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
 		2098B67C24A970350042D465 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
 		2098B67D24A970350042D465 /* GRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67924A970350042D465 /* GRectangle.swift */; };
@@ -365,6 +366,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208D2FB424B3D6EB00CE66D7 /* ArgumentParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +631,9 @@
 			dependencies = (
 			);
 			name = "Graphism CLI";
+			packageProductDependencies = (
+				208D2FB324B3D6EB00CE66D7 /* ArgumentParser */,
+			);
 			productName = "Graphism CLI";
 			productReference = 20D1EF7724B2AF8200EB4BEE /* Graphism CLI */;
 			productType = "com.apple.product-type.tool";
@@ -665,6 +670,9 @@
 				Base,
 			);
 			mainGroup = 2063126624A8C3790095911B;
+			packageReferences = (
+				208D2FB224B3D6EB00CE66D7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+			);
 			productRefGroup = 2063127524A8C38D0095911B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1294,6 +1302,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		208D2FB224B3D6EB00CE66D7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		208D2FB324B3D6EB00CE66D7 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 208D2FB224B3D6EB00CE66D7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2063126724A8C3790095911B /* Project object */;
 }
