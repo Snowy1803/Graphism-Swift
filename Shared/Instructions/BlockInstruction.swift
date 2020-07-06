@@ -39,13 +39,13 @@ class BlockInstruction: Instruction {
             context.closeBlock()
         }
         var i = 0
-        while i < children.count && !broken {
+        while i < children.count && !broken && !Thread.current.isCancelled {
             let child = children[i]
             context.last = last
-            if context.parser.debugging {
+            if context.runtime?.debugging ?? false {
                 print("[DEBUG LOC \(child.line)]")
             }
-            Thread.sleep(forTimeInterval: context.parser.debugStep) // should be cancellable? idk
+            Thread.sleep(forTimeInterval: context.runtime?.debugStep ?? 0) // should be cancellable? idk
             try child.safeRun(context: context)
             last = child
             i += 1

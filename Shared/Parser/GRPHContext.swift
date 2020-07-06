@@ -13,6 +13,14 @@ class GRPHContext {
     var last: Instruction?
     var blocks: [BlockInstruction] = []
     
+    var compiler: GRPHCompiler? {
+        parser as? GRPHCompiler
+    }
+    
+    var runtime: GRPHRuntime? {
+        parser as? GRPHRuntime
+    }
+    
     init(parser: GRPHParser) {
         self.parser = parser
     }
@@ -28,7 +36,7 @@ class GRPHContext {
     
     func closeBlock() {
         let closed = blocks.removeLast()
-        if parser.debugging {
+        if runtime?.debugging ?? false {
             for variable in closed.variables {
                 print("[DEBUG -VAR \(variable.name)]")
             }
@@ -103,8 +111,5 @@ class GRPHContext {
 }
 
 protocol GRPHParser {
-    var debugging: Bool { get }
-    var debugStep: TimeInterval { get }
     var globalVariables: [Variable] { get set }
-    var imports: [Importable] { get }
 }

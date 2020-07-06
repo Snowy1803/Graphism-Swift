@@ -75,10 +75,10 @@ struct GRPHTypes {
         if literal.hasSuffix("?") {
             return parse(context: context, literal: String(literal.dropLast()))?.optional
         }
-        if let found = context.parser.imports.flatMap({ $0.exportedTypes }).first(where: { $0.string == literal }) {
+        if let found = (context.compiler?.imports ?? NameSpaces.instances).flatMap({ $0.exportedTypes }).first(where: { $0.string == literal }) {
             return found
         }
-        return context.parser.imports.flatMap({ $0.exportedTypeAliases }).first(where: { $0.name == literal })?.type
+        return (context.compiler?.imports ?? NameSpaces.instances).flatMap({ $0.exportedTypeAliases }).first(where: { $0.name == literal })?.type
     }
     
     /// Type of a value is calculated HERE

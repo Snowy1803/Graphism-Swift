@@ -42,8 +42,7 @@ class VariableDeclarationInstruction: Instruction {
     }
     
     func run(context: GRPHContext) throws {
-        // TODO
-        
+        context.addVariable(Variable(name: name, type: type, content: try value?.eval(context: context), final: constant), global: global)
     }
     
     func toString(indent: String) -> String {

@@ -30,7 +30,7 @@ struct ArrayValueExpression: Expression {
         guard let v = context.findVariable(named: varName) else {
             throw GRPHCompileError(type: .undeclared, message: "Unknown variable '\(varName)'")
         }
-        guard let type = v.type as? ArrayType else {
+        guard let type = GRPHTypes.autoboxed(type: v.type, expected: ArrayType(content: SimpleType.mixed)) as? ArrayType else {
             throw GRPHCompileError(type: .invalidArguments, message: "Array expression with non-array variable")
         }
         return type.content

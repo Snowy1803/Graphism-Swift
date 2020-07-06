@@ -22,12 +22,7 @@ class GRPHCompiler: GRPHParser {
     
     var entireContent: String
     var lines: [String] = []
-    var timestamp = Date()
     var context: GRPHContext!
-    
-    // Debugging
-    var debugging: Bool = false
-    var debugStep: TimeInterval = 0
     
     init(entireContent: String) {
         self.entireContent = entireContent

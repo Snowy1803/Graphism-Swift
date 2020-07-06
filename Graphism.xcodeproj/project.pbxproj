@@ -121,6 +121,9 @@
 		20D1EF6C24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */; };
 		20D1EF6D24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */; };
 		20D1EF6E24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */; };
+		20D1EF7024B29F8500EB4BEE /* GRPHRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */; };
+		20D1EF7124B29F8500EB4BEE /* GRPHRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */; };
+		20D1EF7224B29F8500EB4BEE /* GRPHRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */; };
 		20DE0BA124AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA224AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
 		20DE0BA324AD446800ABFB6E /* VariableDeclarationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */; };
@@ -237,6 +240,7 @@
 		20D1EF6324B28DDF00EB4BEE /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		20D1EF6724B292ED00EB4BEE /* FunctionExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionExpression.swift; sourceTree = "<group>"; };
 		20D1EF6B24B29D8A00EB4BEE /* ExpressionInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionInstruction.swift; sourceTree = "<group>"; };
+		20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHRuntime.swift; sourceTree = "<group>"; };
 		20DE0BA024AD446800ABFB6E /* VariableDeclarationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableDeclarationInstruction.swift; sourceTree = "<group>"; };
 		20DE0BA424AD449A00ABFB6E /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContext.swift; sourceTree = "<group>"; };
@@ -300,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				200A5F9724ABF6020028180B /* GRPHCompiler.swift */,
+				20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */,
 				20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */,
 				20DE0BB024AD503F00ABFB6E /* Variable.swift */,
 				20DE0BDC24AF80C200ABFB6E /* Property.swift */,
@@ -609,6 +614,7 @@
 				20DE0BBB24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				20D1EF3D24B12BB600EB4BEE /* Parametrable.swift in Sources */,
 				20D1EF4124B1393E00EB4BEE /* Parameter.swift in Sources */,
+				20D1EF7224B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				20DE0BDB24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20D1EF6A24B292ED00EB4BEE /* FunctionExpression.swift in Sources */,
 				20DE0BE324AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
@@ -714,6 +720,7 @@
 				20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				200A5F7024AB76560028180B /* GRPHType.swift in Sources */,
 				2098B67B24A970350042D465 /* GShape.swift in Sources */,
+				20D1EF7024B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				20DE0BD124AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B67F24A970350042D465 /* GCircle.swift in Sources */,
@@ -781,6 +788,7 @@
 				20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				200A5F7124AB76560028180B /* GRPHType.swift in Sources */,
 				2098B67C24A970350042D465 /* GShape.swift in Sources */,
+				20D1EF7124B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B68024A970350042D465 /* GCircle.swift in Sources */,

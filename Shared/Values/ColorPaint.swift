@@ -44,8 +44,8 @@ enum ColorPaint: Paint, Equatable {
     
     var state: String {
         switch self {
-        case .components(red: let red, green: let green, blue: let blue, alpha: let alpha):
-            return "color(\(red) \(green) \(blue) \(alpha))"
+        case .components(red: _, green: _, blue: _, alpha: let alpha):
+            return "color(\(grphRed) \(grphGreen) \(grphBlue) \(alpha))"
         case .white:
             return "WHITE"
         case .black:
