@@ -17,6 +17,8 @@ struct BinaryExpression: Expression {
     
     var left, right: Expression
     var op: BinaryOperator
+    var operands: SimpleType
+    var unbox: Bool
     
     init(context: GRPHContext, left: Expression, op: String, right: Expression) throws {
         self.left = left
@@ -28,6 +30,7 @@ struct BinaryExpression: Expression {
             if try SimpleType.string.isInstance(context: context, expression: left),
                try SimpleType.string.isInstance(context: context, expression: right) {
                 self.op = .concat
+                self.operands = .string
             } else {
                 fallthrough
             }
@@ -36,23 +39,41 @@ struct BinaryExpression: Expression {
                   try SimpleType.num.isInstance(context: context, expression: right) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Operator '\(op)' needs two numbers")
             }
+            if try SimpleType.integer.isInstance(context: context, expression: left),
+               try SimpleType.integer.isInstance(context: context, expression: right) {
+                operands = .integer
+            } else {
+                operands = .float
+            }
         case .logicalAnd, .logicalOr:
             guard try SimpleType.boolean.isInstance(context: context, expression: left),
                   try SimpleType.boolean.isInstance(context: context, expression: right) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Operator '\(op)' needs two booleans")
             }
+            operands = .boolean
         case .greaterThan, .greaterOrEqualTo, .lessThan, .lessOrEqualTo:
-            guard try (SimpleType.num.isInstance(context: context, expression: left) &&
-                SimpleType.num.isInstance(context: context, expression: right)) ||
-                  (SimpleType.pos.isInstance(context: context, expression: left) &&
-                   SimpleType.pos.isInstance(context: context, expression: right)) else {
+            if try SimpleType.num.isInstance(context: context, expression: left),
+               try SimpleType.num.isInstance(context: context, expression: right) {
+                if try SimpleType.integer.isInstance(context: context, expression: left),
+                   try SimpleType.integer.isInstance(context: context, expression: right) {
+                    operands = .integer
+                } else {
+                    operands = .float
+                }
+            } else if try SimpleType.pos.isInstance(context: context, expression: left),
+                      try SimpleType.pos.isInstance(context: context, expression: right) {
+                operands = .pos
+            } else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Operator '\(op)' needs two 'num' or two 'pos'")
             }
         case .bitwiseAnd, .bitwiseOr, .bitwiseXor:
-            guard try (SimpleType.integer.isInstance(context: context, expression: left) &&
-                SimpleType.integer.isInstance(context: context, expression: right)) ||
-                  (SimpleType.boolean.isInstance(context: context, expression: left) &&
-                   SimpleType.boolean.isInstance(context: context, expression: right)) else {
+            if try SimpleType.integer.isInstance(context: context, expression: left),
+               try SimpleType.integer.isInstance(context: context, expression: right) {
+                operands = .integer
+            } else if try SimpleType.boolean.isInstance(context: context, expression: left),
+                      try SimpleType.boolean.isInstance(context: context, expression: right) {
+                operands = .boolean
+            } else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Operator '\(op)' needs two integers or two booleans")
             }
         case .bitshiftLeft, .bitshiftRight, .bitrotation:
@@ -60,48 +81,50 @@ struct BinaryExpression: Expression {
                   try SimpleType.integer.isInstance(context: context, expression: right) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Operator '\(op)' needs two integers")
             }
+            operands = .integer
         case .equal, .notEqual:
-            break // No type checks
+            operands = .mixed
+            self.unbox = false
+            return
         }
+        self.unbox = try left.getType(context: context, infer: operands) is OptionalType ? true : right.getType(context: context, infer: operands) is OptionalType
     }
     
     func eval(context: GRPHContext) throws -> GRPHValue {
-        let left = try self.left.eval(context: context)
+        let left = unbox ? try GRPHTypes.autobox(value: try self.left.eval(context: context), expected: operands) : try self.left.eval(context: context)
         switch op {
         case .logicalAnd:
-            return try GRPHTypes.autobox(value: left, expected: SimpleType.boolean) as! Bool
-                ? GRPHTypes.autobox(value: try self.right.eval(context: context), expected: SimpleType.boolean) as! Bool
+            return left as! Bool
+                ? (unbox ? try GRPHTypes.autobox(value: try self.right.eval(context: context), expected: operands) : try self.right.eval(context: context)) as! Bool
                 : false
         case .logicalOr:
-            return try GRPHTypes.autobox(value: left, expected: SimpleType.boolean) as! Bool
+            return left as! Bool
                 ? true
-                : GRPHTypes.autobox(value: try self.right.eval(context: context), expected: SimpleType.boolean) as! Bool
+                : (unbox ? try GRPHTypes.autobox(value: try self.right.eval(context: context), expected: operands) : try self.right.eval(context: context)) as! Bool
         default:
             break
         }
-        let right = try self.right.eval(context: context)
+        let right = unbox ? try GRPHTypes.autobox(value: try self.right.eval(context: context), expected: operands) : try self.right.eval(context: context)
         switch op {
         case .greaterOrEqualTo, .lessOrEqualTo, .greaterThan, .lessThan, .plus, .minus, .multiply, .divide, .modulo:
             // num: int or float
-            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.num) as! GRPHNumber
-            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.num) as! GRPHNumber
-            if aleft is Int && aright is Int {
-                return run(Float(grph: aleft), Float(grph: aright), castTo: Int.self)
+            let aleft = left as! GRPHNumber
+            let aright = right as! GRPHNumber
+            if operands == .integer {
+                return run(aleft as! Int, aright as! Int)
             } else {
-                return run(Float(grph: aleft), Float(grph: aright), castTo: Float.self)
+                return run(Float(grph: aleft), Float(grph: aright))
             }
         case .bitwiseAnd, .bitwiseOr, .bitwiseXor:
             // bool or int
-            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.boolean)
-            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.boolean)
-            if let aleft = aleft as? Bool {
+            if let aleft = left as? Bool {
                 switch op {
                 case .bitwiseAnd:
-                    return aleft && aright as! Bool
+                    return aleft && right as! Bool
                 case .bitwiseOr:
-                    return aleft || aright as! Bool
+                    return aleft || right as! Bool
                 case .bitwiseXor:
-                    return aleft != (aright as! Bool)
+                    return aleft != (right as! Bool)
                 default:
                     fatalError()
                 }
@@ -109,21 +132,19 @@ struct BinaryExpression: Expression {
             //  numbers
             fallthrough
         case .bitshiftLeft, .bitshiftRight, .bitrotation:
-            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.integer) as! Int
-            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.integer) as! Int
-            return run(aleft, aright)
+            return run(left as! Int, right as! Int)
         case .equal, .notEqual:
             return left.isEqual(to: right) == (op == .equal)
         case .concat:
-            let aleft = try GRPHTypes.autobox(value: left, expected: SimpleType.string) as! String
-            let aright = try GRPHTypes.autobox(value: right, expected: SimpleType.string) as! String
+            let aleft = left as! String
+            let aright = right as! String
             return aleft + aright
         case .logicalAnd, .logicalOr:
             fatalError()
         }
     }
     
-    func run<T: GRPHNumber>(_ first: Float, _ second: Float, castTo: T.Type) -> GRPHValue {
+    func run(_ first: Float, _ second: Float) -> GRPHValue {
         switch op {
         case .greaterOrEqualTo:
             return first >= second
@@ -134,15 +155,15 @@ struct BinaryExpression: Expression {
         case .lessThan:
             return first < second
         case .plus:
-            return T(grph: first + second)
+            return first + second
         case .minus:
-            return T(grph: first - second)
+            return first - second
         case .multiply:
-            return T(grph: first * second)
+            return first * second
         case .divide:
-            return T(grph: first / second)
+            return first / second
         case .modulo:
-            return T(grph: fmodf(first, second))
+            return fmodf(first, second)
         default:
             fatalError("Operator \(op.rawValue) doesn't take floats")
         }
@@ -162,6 +183,24 @@ struct BinaryExpression: Expression {
             return first >> second
         case .bitrotation:
             return Int(bitPattern: UInt(bitPattern: first) >> UInt(second))
+        case .greaterOrEqualTo:
+            return first >= second
+        case .lessOrEqualTo:
+            return first <= second
+        case .greaterThan:
+            return first > second
+        case .lessThan:
+            return first < second
+        case .plus:
+            return first + second
+        case .minus:
+            return first - second
+        case .multiply:
+            return first * second
+        case .divide:
+            return first / second
+        case .modulo:
+            return first % second
         default:
             fatalError("Operator \(op.rawValue) doesn't take integers")
         }
@@ -171,16 +210,8 @@ struct BinaryExpression: Expression {
         switch op {
         case .logicalAnd, .logicalOr, .greaterThan, .greaterOrEqualTo, .lessThan, .lessOrEqualTo, .equal, .notEqual:
             return SimpleType.boolean
-        case .bitshiftLeft, .bitshiftRight, .bitrotation:
-            return SimpleType.integer
-        case .bitwiseAnd, .bitwiseOr, .bitwiseXor:
-            return try SimpleType.integer.isInstance(context: context, expression: left) ? SimpleType.integer : SimpleType.boolean
-        case .plus, .minus, .multiply, .divide, .modulo: // modulo is objc 'fmodf'
-            return try SimpleType.integer.isInstance(context: context, expression: left)
-                    && SimpleType.integer.isInstance(context: context, expression: right)
-                     ? SimpleType.integer : SimpleType.float
-        case .concat:
-            return SimpleType.string
+        case .bitshiftLeft, .bitshiftRight, .bitrotation, .bitwiseAnd, .bitwiseOr, .bitwiseXor, .plus, .minus, .multiply, .divide, .modulo, .concat:
+            return operands
         }
     }
     
