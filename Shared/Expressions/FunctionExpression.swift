@@ -11,24 +11,27 @@ struct FunctionExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^([A-Za-z>]+)\\[(.*)\\]$")
     
     var function: Function
-    var values: [Expression]
+    var values: [Expression?]
+    
+    init(ctx: GRPHContext, function: Function, values: [Expression]) throws {
+        var nextParam = 0
+        self.function = function
+        self.values = []
+        for param in values {
+            guard let par = try function.parameter(index: nextParam, context: ctx, exp: param) else {
+                throw GRPHCompileError(type: .typeMismatch, message: "Unexpected '\(param.string)' of type '\(try param.getType(context: ctx, infer: function.parameter(index: nextParam).type))' in function '\(function.name)'")
+            }
+            nextParam += par.add
+            while self.values.count < nextParam - 1 {
+                self.values.append(nil)
+            }
+            self.values.append(param) // at pars[nextParam - 1] aka current param
+        }
+    }
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         do {
-            var pars = [GRPHValue?]()
-            var nextParam = 0
-            for param in values {
-                let val = try param.eval(context: context)
-                guard let par = try function.parameter(index: nextParam, context: context, exp: param) else {
-                    throw GRPHRuntimeError(type: .unexpected, message: "Unknown parameter '\(param.string)' in function call \(function.name)")
-                }
-                nextParam += par.add
-                while pars.count < nextParam - 1 {
-                    pars.append(nil)
-                }
-                pars.append(val) // at pars[nextParam - 1] aka current param
-            }
-            return try function.executable(context, pars)
+            return try function.executable(context, try values.map { try $0?.eval(context: context) })
         } catch var e as GRPHRuntimeError {
             e.stack.append("\tat \(fullyQualified)")
             throw e
@@ -44,7 +47,7 @@ struct FunctionExpression: Expression {
     }
     
     var string: String {
-        "\(fullyQualified)[\(function.formattedParameterList(values: values))]"
+        "\(fullyQualified)[\(function.formattedParameterList(values: values.compactMap {$0}))]"
     }
     
     var needsBrackets: Bool { false }

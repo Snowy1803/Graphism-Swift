@@ -111,7 +111,7 @@ struct Expressions {
                 guard let function = Function(imports: context.compiler?.imports ?? [], namespace: ns, name: member.member) else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                 }
-                return FunctionExpression(function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
+                return try FunctionExpression(ctx: context, function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
             }
         }
         if let exp = try findBinary(context: context, str: str, regex: BinaryExpression.signs1)

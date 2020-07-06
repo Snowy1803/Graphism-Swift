@@ -43,9 +43,7 @@ class AssignmentInstruction: Instruction {
     
     func run(context: GRPHContext) throws {
         var cache = [GRPHValue]()
-        if virtualized {
-            virtualValue = try assigned.eval(context: context, cache: &cache)
-        }
+        virtualValue = try assigned.eval(context: context, cache: &cache)
         let val = virtualized ? try value.eval(context: context) : try GRPHTypes.autobox(value: value.eval(context: context), expected: assigned.getType(context: context, infer: SimpleType.mixed))
         try assigned.assign(context: context, value: val, cache: &cache)
     }

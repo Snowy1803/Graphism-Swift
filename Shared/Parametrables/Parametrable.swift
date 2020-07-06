@@ -30,7 +30,7 @@ extension Parametrable {
         var param = index
         while param < maximumParameterCount {
             let curr = parameter(index: param)
-            let type = try exp.getType(context: context, infer: curr.type)
+            let type = GRPHTypes.autoboxed(type: try exp.getType(context: context, infer: curr.type), expected: curr.type)
             if type.isInstance(of: curr.type) {
                 return (param: curr, add: param - index + 1)
             } else if curr.type.isInstance(of: SimpleType.shape) && type as? SimpleType == SimpleType.shape {
