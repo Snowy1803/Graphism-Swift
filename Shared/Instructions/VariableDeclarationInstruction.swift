@@ -42,7 +42,11 @@ class VariableDeclarationInstruction: Instruction {
     }
     
     func run(context: GRPHContext) throws {
-        context.addVariable(Variable(name: name, type: type, content: try value?.eval(context: context), final: constant), global: global)
+        let v = Variable(name: name, type: type, content: try value?.eval(context: context), final: constant)
+        context.addVariable(v, global: global)
+        if context.runtime?.debugging ?? false {
+            print("[DEBUG VAR \(v.name)=\(v.content ?? "<@#no content#>")]")
+        }
     }
     
     func toString(indent: String) -> String {

@@ -39,7 +39,11 @@ class ForBlock: BlockInstruction {
         let arr = try GRPHTypes.autobox(value: array.eval(context: context), expected: ArrayType(content: SimpleType.mixed)) as! GRPHArray
         while !broken && i < arr.count {
             variables.removeAll()
-            variables.append(Variable(name: varName, type: arr.content, content: arr.wrapped[i], final: !inOut))
+            let v = Variable(name: varName, type: arr.content, content: arr.wrapped[i], final: !inOut)
+            variables.append(v)
+            if context.runtime?.debugging ?? false {
+                print("[DEBUG VAR \(v.name)=\(v.content!)]")
+            }
             try runChildren(context: context)
             if inOut {
                 arr.wrapped[i] = variables.first(where: { $0.name == varName })!.content!

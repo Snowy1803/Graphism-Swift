@@ -10,7 +10,15 @@ import Foundation
 class GRPHRuntime: GRPHParser {
     
     // Debugging
-    var debugging: Bool = false
+    var debugging: Bool = false {
+        didSet {
+            if debugging && context != nil {
+                for v in context.allVariables {
+                    print("[DEBUG VAR \(v.name)=\(v.content ?? "<@#invalid#@>")]")
+                }
+            }
+        }
+    }
     var debugStep: TimeInterval = 0
     var debugSemaphore = DispatchSemaphore(value: 0)
     
