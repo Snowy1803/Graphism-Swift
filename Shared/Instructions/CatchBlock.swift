@@ -26,7 +26,11 @@ class CatchBlock: BlockInstruction {
         do {
             variables.removeAll()
             broken = false
-            variables.append(Variable(name: varName, type: SimpleType.string, content: exception.message, final: true))
+            let v = Variable(name: varName, type: SimpleType.string, content: exception.message, final: true)
+            variables.append(v)
+            if context.runtime?.debugging ?? false {
+                print("[DEBUG VAR \(v.name)=\(v.content!)]")
+            }
             try self.runChildren(context: context)
         } catch var exception as GRPHRuntimeError {
             exception.stack.append("\tat \(type(of: self)); line \(line)")

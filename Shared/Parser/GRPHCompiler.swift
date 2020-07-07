@@ -73,6 +73,9 @@ class GRPHCompiler: GRPHParser {
                 do {
                     
                     if tline.hasPrefix("#") {
+                        if tline.hasPrefix("#!") {
+                            continue // shebang
+                        }
                         // MARK: COMMANDS
                         let block = tline.components(separatedBy: " ")[0]
                         let params = tline.dropFirst(block.count).trimmingCharacters(in: .whitespaces)
@@ -150,6 +153,7 @@ class GRPHCompiler: GRPHParser {
                                     throw GRPHCompileError(type: .undeclared, message: "Error '\(error)' not found")
                                 }
                             }
+                            try addInstruction(block)
                         case "#throw":
                             guard let index = params.firstIndex(of: "("),
                                   params.hasSuffix(")") else {
@@ -192,6 +196,12 @@ class GRPHCompiler: GRPHParser {
                             // - editable *true*/false
                             // - readonly true/*false* -- sets movable, editable
                             // - fullscreen true/*false* -- sets sidebar, propertybar, toolbar
+                            break
+                        case "#compiler":
+                            // #compiler key value
+                            // - tabsize <number> (4 for spaces, 1 for tabs by default)
+                            // - indent *tabs*/spaces
+                            // - maybe disable autounboxing and use postfix "!"
                             break
                         default:
                             print("Warning: Unknown command `\(tline)`; line \(lineNumber + 1). This will get ignored")
