@@ -48,7 +48,7 @@ extension VariableExpression: AssignableExpression {
             try v.setContent(value)
             // + TODO autoupdate image
             if context.runtime?.debugging ?? false {
-                print("[DEBUG VAR \(v.name)=\(v.content!)]")
+                printout("[DEBUG VAR \(v.name)=\(v.content!)]")
             }
         }
     }

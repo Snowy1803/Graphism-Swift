@@ -45,7 +45,7 @@ class VariableDeclarationInstruction: Instruction {
         let v = Variable(name: name, type: type, content: try value?.eval(context: context), final: constant)
         context.addVariable(v, global: global)
         if context.runtime?.debugging ?? false {
-            print("[DEBUG VAR \(v.name)=\(v.content ?? "<@#no content#>")]")
+            printout("[DEBUG VAR \(v.name)=\(v.content ?? "<@#no content#>")]")
         }
     }
     

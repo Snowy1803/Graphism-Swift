@@ -39,7 +39,7 @@ class GRPHContext {
         let closed = blocks.removeLast()
         if runtime?.debugging ?? false {
             for variable in closed.variables {
-                print("[DEBUG -VAR \(variable.name)]")
+                printout("[DEBUG -VAR \(variable.name)]")
             }
         }
     }

@@ -29,217 +29,212 @@ class GRPHCompiler: GRPHParser {
     }
     
     func dumpWDIU() {
-        print("[WDIU INTERN]")
+        printout("[WDIU INTERN]")
         for i in 0..<internStrings.count {
             let s = internStrings[i]
-            print("$_str\(i)$ = \(s.replacingOccurrences(of: "&", with: "&&").replacingOccurrences(of: "\n", with: "&n").replacingOccurrences(of: "\r", with: "&r"))\(s.first!)")
+            printout("$_str\(i)$ = \(s.replacingOccurrences(of: "&", with: "&&").replacingOccurrences(of: "\n", with: "&n").replacingOccurrences(of: "\r", with: "&r"))\(s.first!)")
         }
-        print("[WDIU START]")
-        print(wdiuInstructions, terminator: "")
-        print("[WDIU END]")
+        printout("[WDIU START]")
+        printout(wdiuInstructions, terminator: "")
+        printout("[WDIU END]")
     }
     
     /// Please execute on a secondary thread, as the program
     func compile() -> Bool {
-        do {
-            lines = entireContent.components(separatedBy: "\n")
-            context = GRPHContext(parser: self)
-            for lineNumber in 0..<lines.count {
-                // Real line
-                line0 = lines[lineNumber]
-                var line, tline: String
-                if line0.isEmpty || line0.hasPrefix("//") {
-                    line = ""
-                    tline = ""
-                    continue
-                } else {
-                    // Interned & stripped from comments
-                    line = internStringLiterals(line: line0)
-                    line = line.components(separatedBy: "//")[0]
-                    // Stripped from tabs
-                    tline = line.trimmingCharacters(in: .whitespaces)
-                }
-                
-                // Close blocks
-                if !blocks.isEmpty {
-                    let tabs = line.count - line.drop(while: { $0 == "\t" }).count
-                    while tabs < blocks.count {
-                        blocks.removeLast()
-                        context.closeBlock()
-                        // TODO change context if going out of function
-                    }
-                }
-                
-                do {
-                    
-                    if tline.hasPrefix("#") {
-                        if tline.hasPrefix("#!") {
-                            continue // shebang
-                        }
-                        // MARK: COMMANDS
-                        let block = tline.components(separatedBy: " ")[0]
-                        let params = tline.dropFirst(block.count).trimmingCharacters(in: .whitespaces)
-                        
-                        switch block {
-                        case "#import", "#using":
-                            let p = NameSpaces.namespacedMember(from: params)
-                            guard let ns = p.namespace else {
-                                throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
-                            }
-                            if ns.isEqual(to: NameSpaces.none) {
-                                if let ns = NameSpaces.namespace(named: p.member) {
-                                    imports.append(ns)
-                                } else {
-                                    throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
-                                }
-                            } else if let f = Function(imports: [], namespace: ns, name: p.member) {
-                                imports.append(f)
-                            }
-                            // or find method
-                            // or find type
-                        
-                        case "#typealias":
-                            let split = params.split(separator: " ", maxSplits: 1)
-                            guard split.count == 2 else {
-                                throw GRPHCompileError(type: .parse, message: "Syntax '#typealias newname existing' expected")
-                            }
-                            guard let type = GRPHTypes.parse(context: context, literal: String(split[1])) else {
-                                throw GRPHCompileError(type: .parse, message: "Type '\(split[1])' not found")
-                            }
-                            guard GRPHTypes.parse(context: context, literal: String(split[0])) == nil else {
-                                throw GRPHCompileError(type: .parse, message: "Existing type '\(split[0])' cannot be overridden with a typealias")
-                            }
-                            imports.append(TypeAlias(name: String(split[0]), type: type))
-                        case "#if":
-                            try addInstruction(try IfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
-                        case "#elseif", "#elif":
-                            try addInstruction(try ElseIfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
-                        case "#else":
-                            guard params.isEmpty else {
-                                throw GRPHCompileError(type: .parse, message: "#else doesn't expect arguments")
-                            }
-                            try addInstruction(ElseBlock(lineNumber: lineNumber))
-                        case "#while":
-                            try addInstruction(try WhileBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
-                        case "#foreach":
-                            let split = params.split(separator: ":", maxSplits: 1)
-                            guard split.count == 2 else {
-                                throw GRPHCompileError(type: .parse, message: "'#foreach varName : array' syntax expected; array missing")
-                            }
-                            try addInstruction(try ForBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
-                        case "#try":
-                            try addInstruction(TryBlock(lineNumber: lineNumber))
-                        case "#catch":
-                            let split = params.split(separator: ":", maxSplits: 1)
-                            guard split.count == 2 else {
-                                throw GRPHCompileError(type: .parse, message: "'#catch varName : errortype' syntax expected; error types missing")
-                            }
-                            let block = try CatchBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces))
-                            let exs = split[1].components(separatedBy: "|")
-                            let tr: TryBlock = try findTryBlock()
-                            for rawErr in exs {
-                                let error = rawErr.trimmingCharacters(in: .whitespaces)
-                                if error == "Exception" {
-                                    tr.catches[nil] = block
-                                    block.addError(type: "Exception")
-                                } else if error.hasSuffix("Exception"),
-                                          let err = GRPHRuntimeError.RuntimeExceptionType(rawValue: String(error.dropLast(9))) {
-                                    guard tr.catches[err] == nil else {
-                                        continue
-                                    }
-                                    tr.catches[err] = block
-                                    block.addError(type: "\(err.rawValue)Exception")
-                                } else {
-                                    throw GRPHCompileError(type: .undeclared, message: "Error '\(error)' not found")
-                                }
-                            }
-                            try addInstruction(block)
-                        case "#throw":
-                            guard let index = params.firstIndex(of: "("),
-                                  params.hasSuffix(")") else {
-                                throw GRPHCompileError(type: .parse, message: "Expected syntax '#throw error(message)'")
-                            }
-                            let err = params[..<index]
-                            guard err.hasSuffix("Exception"),
-                                  let error = GRPHRuntimeError.RuntimeExceptionType(rawValue: String(err.dropLast(9))) else {
-                                throw GRPHCompileError(type: .undeclared, message: "Error type '\(err)' not found")
-                            }
-                            let exp = try Expressions.parse(context: context, infer: SimpleType.string, literal: String(params[index...].dropLast().dropFirst()))
-                            guard try SimpleType.string.isInstance(context: context, expression: exp) else {
-                                throw GRPHCompileError(type: .undeclared, message: "Expected message string in #throw")
-                            }
-                            try addInstruction(ThrowInstruction(lineNumber: lineNumber, type: error, message: exp))
-                        case "#function":
-                            break
-                        case "#return":
-                            break
-                        case "#break":
-                            try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break))
-                        case "#continue":
-                            try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .continue))
-                        case "#goto":
-                            throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
-                        case "#block":
-                            try addInstruction(BlockInstruction(lineNumber: lineNumber))
-                        case "#requires":
-                            break
-                        case "#type":
-                            throw GRPHCompileError(type: .unsupported, message: "#type is not available yet")
-                        case "#setting":
-                            // #setting key value
-                            // - selection *true*/false
-                            // - generated true/*false* <-- flag "generated automatically; you can save the state over the file with no loss"
-                            // - sidebar *true*/false
-                            // - propertybar *true*/false
-                            // - toolbar *true*/false
-                            // - movable *true*/false
-                            // - editable *true*/false
-                            // - readonly true/*false* -- sets movable, editable
-                            // - fullscreen true/*false* -- sets sidebar, propertybar, toolbar
-                            break
-                        case "#compiler":
-                            // #compiler key value
-                            // - tabsize <number> (4 for spaces, 1 for tabs by default)
-                            // - indent *tabs*/spaces
-                            // - maybe disable autounboxing and use postfix "!"
-                            break
-                        default:
-                            print("Warning: Unknown command `\(tline)`; line \(lineNumber + 1). This will get ignored")
-                        }
-                    } else if tline.hasPrefix("::") {
-                        throw GRPHCompileError(type: .unsupported, message: "labels have been removed")
-                    } else {
-                        // MARK: INSTRUCTIONS
-                        // array modification: arr{4} = var
-                        // inline func declaration: color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
-                        if let result = VariableDeclarationInstruction.pattern.firstMatch(string: tline) {
-                            // {integer} arr = (0 1 2 3)
-                            try addInstruction(try VariableDeclarationInstruction(lineNumber: lineNumber, groups: result, context: context))
-                        }
-                        if let result = AssignmentInstruction.pattern.firstMatch(string: tline) {
-                            // assignments (=, +=, /= etc)
-                            try addInstruction(try AssignmentInstruction(lineNumber: lineNumber, context: context, groups: result))
-                        }
-                        // method call: validate: shape1
-                        // function call: log["test"]
-                        if FunctionExpression.pattern.firstMatch(string: tline) != nil {
-                            if let exp = try Expressions.parse(context: context, infer: SimpleType.mixed, literal: tline) as? FunctionExpression {
-                                try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: exp))
-                            }
-                        }
-                        // ADD throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
-                    }
-                } catch let error as GRPHCompileError {
-                    print("Compile Error: \(error.type.rawValue)Error: \(error.message); line \(lineNumber + 1)")
-                    return false
-                } catch {
-                    print("NativeError; line \(lineNumber + 1)")
-                    print(error.localizedDescription)
+        lines = entireContent.components(separatedBy: "\n")
+        context = GRPHContext(parser: self)
+        for lineNumber in 0..<lines.count {
+            // Real line
+            line0 = lines[lineNumber]
+            var line, tline: String
+            if line0.isEmpty || line0.hasPrefix("//") {
+                line = ""
+                tline = ""
+                continue
+            } else {
+                // Interned & stripped from comments
+                line = internStringLiterals(line: line0)
+                line = line.components(separatedBy: "//")[0]
+                // Stripped from tabs
+                tline = line.trimmingCharacters(in: .whitespaces)
+            }
+            
+            // Close blocks
+            if !blocks.isEmpty {
+                let tabs = line.count - line.drop(while: { $0 == "\t" }).count
+                while tabs < blocks.count {
+                    blocks.removeLast()
+                    context.closeBlock()
+                    // TODO change context if going out of function
                 }
             }
-//        } catch {
-//            print("Failed")
-//            return false
+            
+            do {
+                
+                if tline.hasPrefix("#") {
+                    if tline.hasPrefix("#!") {
+                        continue // shebang
+                    }
+                    // MARK: COMMANDS
+                    let block = tline.components(separatedBy: " ")[0]
+                    let params = tline.dropFirst(block.count).trimmingCharacters(in: .whitespaces)
+                    
+                    switch block {
+                    case "#import", "#using":
+                        let p = NameSpaces.namespacedMember(from: params)
+                        guard let ns = p.namespace else {
+                            throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
+                        }
+                        if ns.isEqual(to: NameSpaces.none) {
+                            if let ns = NameSpaces.namespace(named: p.member) {
+                                imports.append(ns)
+                            } else {
+                                throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
+                            }
+                        } else if let f = Function(imports: [], namespace: ns, name: p.member) {
+                            imports.append(f)
+                        }
+                    // or find method
+                    // or find type
+                    
+                    case "#typealias":
+                        let split = params.split(separator: " ", maxSplits: 1)
+                        guard split.count == 2 else {
+                            throw GRPHCompileError(type: .parse, message: "Syntax '#typealias newname existing' expected")
+                        }
+                        guard let type = GRPHTypes.parse(context: context, literal: String(split[1])) else {
+                            throw GRPHCompileError(type: .parse, message: "Type '\(split[1])' not found")
+                        }
+                        guard GRPHTypes.parse(context: context, literal: String(split[0])) == nil else {
+                            throw GRPHCompileError(type: .parse, message: "Existing type '\(split[0])' cannot be overridden with a typealias")
+                        }
+                        imports.append(TypeAlias(name: String(split[0]), type: type))
+                    case "#if":
+                        try addInstruction(try IfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
+                    case "#elseif", "#elif":
+                        try addInstruction(try ElseIfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
+                    case "#else":
+                        guard params.isEmpty else {
+                            throw GRPHCompileError(type: .parse, message: "#else doesn't expect arguments")
+                        }
+                        try addInstruction(ElseBlock(lineNumber: lineNumber))
+                    case "#while":
+                        try addInstruction(try WhileBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
+                    case "#foreach":
+                        let split = params.split(separator: ":", maxSplits: 1)
+                        guard split.count == 2 else {
+                            throw GRPHCompileError(type: .parse, message: "'#foreach varName : array' syntax expected; array missing")
+                        }
+                        try addInstruction(try ForBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
+                    case "#try":
+                        try addInstruction(TryBlock(lineNumber: lineNumber))
+                    case "#catch":
+                        let split = params.split(separator: ":", maxSplits: 1)
+                        guard split.count == 2 else {
+                            throw GRPHCompileError(type: .parse, message: "'#catch varName : errortype' syntax expected; error types missing")
+                        }
+                        let block = try CatchBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces))
+                        let exs = split[1].components(separatedBy: "|")
+                        let tr: TryBlock = try findTryBlock()
+                        for rawErr in exs {
+                            let error = rawErr.trimmingCharacters(in: .whitespaces)
+                            if error == "Exception" {
+                                tr.catches[nil] = block
+                                block.addError(type: "Exception")
+                            } else if error.hasSuffix("Exception"),
+                                      let err = GRPHRuntimeError.RuntimeExceptionType(rawValue: String(error.dropLast(9))) {
+                                guard tr.catches[err] == nil else {
+                                    continue
+                                }
+                                tr.catches[err] = block
+                                block.addError(type: "\(err.rawValue)Exception")
+                            } else {
+                                throw GRPHCompileError(type: .undeclared, message: "Error '\(error)' not found")
+                            }
+                        }
+                        try addInstruction(block)
+                    case "#throw":
+                        guard let index = params.firstIndex(of: "("),
+                              params.hasSuffix(")") else {
+                            throw GRPHCompileError(type: .parse, message: "Expected syntax '#throw error(message)'")
+                        }
+                        let err = params[..<index]
+                        guard err.hasSuffix("Exception"),
+                              let error = GRPHRuntimeError.RuntimeExceptionType(rawValue: String(err.dropLast(9))) else {
+                            throw GRPHCompileError(type: .undeclared, message: "Error type '\(err)' not found")
+                        }
+                        let exp = try Expressions.parse(context: context, infer: SimpleType.string, literal: String(params[index...].dropLast().dropFirst()))
+                        guard try SimpleType.string.isInstance(context: context, expression: exp) else {
+                            throw GRPHCompileError(type: .undeclared, message: "Expected message string in #throw")
+                        }
+                        try addInstruction(ThrowInstruction(lineNumber: lineNumber, type: error, message: exp))
+                    case "#function":
+                        break
+                    case "#return":
+                        break
+                    case "#break":
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break))
+                    case "#continue":
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .continue))
+                    case "#goto":
+                        throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
+                    case "#block":
+                        try addInstruction(BlockInstruction(lineNumber: lineNumber))
+                    case "#requires":
+                        break
+                    case "#type":
+                        throw GRPHCompileError(type: .unsupported, message: "#type is not available yet")
+                    case "#setting":
+                        // #setting key value
+                        // - selection *true*/false
+                        // - generated true/*false* <-- flag "generated automatically; you can save the state over the file with no loss"
+                        // - sidebar *true*/false
+                        // - propertybar *true*/false
+                        // - toolbar *true*/false
+                        // - movable *true*/false
+                        // - editable *true*/false
+                        // - readonly true/*false* -- sets movable, editable
+                        // - fullscreen true/*false* -- sets sidebar, propertybar, toolbar
+                        break
+                    case "#compiler":
+                        // #compiler key value
+                        // - tabsize <number> (4 for spaces, 1 for tabs by default)
+                        // - indent *tabs*/spaces
+                        // - maybe disable autounboxing and use postfix "!"
+                        break
+                    default:
+                        printout("Warning: Unknown command `\(tline)`; line \(lineNumber + 1). This will get ignored")
+                    }
+                } else if tline.hasPrefix("::") {
+                    throw GRPHCompileError(type: .unsupported, message: "labels have been removed")
+                } else {
+                    // MARK: INSTRUCTIONS
+                    // array modification: arr{4} = var
+                    // inline func declaration: color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
+                    if let result = VariableDeclarationInstruction.pattern.firstMatch(string: tline) {
+                        // {integer} arr = (0 1 2 3)
+                        try addInstruction(try VariableDeclarationInstruction(lineNumber: lineNumber, groups: result, context: context))
+                    }
+                    if let result = AssignmentInstruction.pattern.firstMatch(string: tline) {
+                        // assignments (=, +=, /= etc)
+                        try addInstruction(try AssignmentInstruction(lineNumber: lineNumber, context: context, groups: result))
+                    }
+                    // method call: validate: shape1
+                    // function call: log["test"]
+                    if FunctionExpression.pattern.firstMatch(string: tline) != nil {
+                        if let exp = try Expressions.parse(context: context, infer: SimpleType.mixed, literal: tline) as? FunctionExpression {
+                            try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: exp))
+                        }
+                    }
+                    // ADD throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
+                }
+            } catch let error as GRPHCompileError {
+                printerr("Compile Error: \(error.type.rawValue)Error: \(error.message); line \(lineNumber + 1)")
+                return false
+            } catch {
+                printerr("NativeError; line \(lineNumber + 1)")
+                printerr(error.localizedDescription)
+            }
         }
         return true
     }

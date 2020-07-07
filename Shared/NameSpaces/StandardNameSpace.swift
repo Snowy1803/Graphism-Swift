@@ -44,7 +44,7 @@ struct StandardNameSpace: NameSpace {
                     }
                     return "<@\(val.type.string)>"
                 }.joined(separator: " ")
-                print("Log: \(result)")
+                printout("Log: \(result)")
                 return result
             }
         ]

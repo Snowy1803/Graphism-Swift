@@ -35,7 +35,7 @@ struct GraphismCLI: ParsableCommand {
             compiler.dumpWDIU()
         }
         if onlyCheck {
-            print("Code compiled successfully")
+            printout("Code compiled successfully")
             throw ExitCode.success
         }
         let runtime = GRPHRuntime(compiler: compiler)
@@ -71,17 +71,17 @@ struct GraphismCLI: ParsableCommand {
             case "eval":
                 do {
                     guard let context = runtime.context else {
-                        print("[EVAL ERR No context]")
+                        printout("[EVAL ERR No context]")
                         break
                     }
                     let e = try Expressions.parse(context: context, infer: nil, literal: String(line.dropFirst(5)))
-                    print("[EVAL OUT \(try e.eval(context: context))]")
+                    printout("[EVAL OUT \(try e.eval(context: context))]")
                 } catch let e as GRPHCompileError {
-                    print("[EVAL ERR \(e.message)]")
+                    printout("[EVAL ERR \(e.message)]")
                 } catch let e as GRPHRuntimeError {
-                    print("[EVAL ERR \(e.message)]")
+                    printout("[EVAL ERR \(e.message)]")
                 } catch {
-                    print("[EVAL ERR Unexpected error]")
+                    printout("[EVAL ERR Unexpected error]")
                 }
             default:
                 break

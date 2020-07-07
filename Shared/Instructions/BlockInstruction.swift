@@ -44,7 +44,7 @@ class BlockInstruction: Instruction {
             context.last = last
             let runtime = context.runtime
             if runtime?.debugging ?? false {
-                print("[DEBUG LOC \(child.line)]")
+                printout("[DEBUG LOC \(child.line)]")
             }
             if runtime?.debugStep ?? 0 > 0 {
                 _ = runtime?.debugSemaphore.wait(timeout: .now() + (runtime?.debugStep ?? 0))

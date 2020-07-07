@@ -81,7 +81,7 @@ struct Expressions {
                       let array = infer as? ArrayType {
                 type = array.content
             } else {
-                print("Warning: Component type of array literal couldn't be inferred. Using float.")
+                printout("Warning: Component type of array literal couldn't be inferred. Using float.")
                 type = SimpleType.float
             }
             return ArrayLiteralExpression(wrapped: type, values: try splitParameters(context: context, in: result[2]!, delimiter: comma, infer: type))

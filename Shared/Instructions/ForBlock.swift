@@ -42,7 +42,7 @@ class ForBlock: BlockInstruction {
             let v = Variable(name: varName, type: arr.content, content: arr.wrapped[i], final: !inOut)
             variables.append(v)
             if context.runtime?.debugging ?? false {
-                print("[DEBUG VAR \(v.name)=\(v.content!)]")
+                printout("[DEBUG VAR \(v.name)=\(v.content!)]")
             }
             try runChildren(context: context)
             if inOut {
