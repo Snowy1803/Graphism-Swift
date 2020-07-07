@@ -14,11 +14,11 @@ class VariableDeclarationInstruction: Instruction {
     
     var type: GRPHType
     var name: String
-    var value: Expression?
+    var value: Expression? // nil for fields in #type
     
     var lineNumber: Int
     
-    init(lineNumber: Int, global: Bool, constant: Bool, type: GRPHType, name: String, value: Expression?) {
+    init(lineNumber: Int, global: Bool, constant: Bool, type: GRPHType, name: String, value: Expression) {
         self.lineNumber = lineNumber
         self.global = global
         self.constant = constant
@@ -42,7 +42,8 @@ class VariableDeclarationInstruction: Instruction {
     }
     
     func run(context: GRPHContext) throws {
-        let v = Variable(name: name, type: type, content: try value?.eval(context: context), final: constant)
+        let content = try GRPHTypes.autobox(value: try value!.eval(context: context), expected: type)
+        let v = Variable(name: name, type: type, content: content, final: constant)
         context.addVariable(v, global: global)
         if context.runtime?.debugging ?? false {
             printout("[DEBUG VAR \(v.name)=\(v.content ?? "<@#no content#>")]")

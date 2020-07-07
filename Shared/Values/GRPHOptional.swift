@@ -44,3 +44,14 @@ enum GRPHOptional: GRPHValue {
         return false
     }
 }
+
+extension GRPHOptional: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .null:
+            return "null"
+        case .some(let value):
+            return "Optional[\(value)]"
+        }
+    }
+}

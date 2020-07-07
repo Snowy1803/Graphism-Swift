@@ -122,7 +122,7 @@ extension Bool: StatefulValue {
             self.init(!str.isEmpty)
         } else if let pos = value as? Pos {
             self.init(pos.x != 0 || pos.y != 0)
-        } else if let arr = value as? GRPHArrayProtocol {
+        } else if let arr = value as? GRPHArray {
             self.init(arr.count != 0)
         } else if let opt = value as? GRPHOptional {
             self.init(!opt.isEmpty)

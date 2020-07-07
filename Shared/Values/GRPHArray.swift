@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GRPHArray: StatefulValue, GRPHArrayProtocol {
+class GRPHArray: StatefulValue {
     
     var wrapped: [GRPHValue]
     var content: GRPHType
@@ -36,7 +36,7 @@ class GRPHArray: StatefulValue, GRPHArrayProtocol {
             if let value = value as? StatefulValue {
                 str += "\(value.state), "
             } else {
-                str += "stateless, "
+                str += "\(value), "
             }
         }
         return "\(str.dropLast(2))}"
@@ -63,6 +63,8 @@ class GRPHArray: StatefulValue, GRPHArrayProtocol {
     }
 }
 
-protocol GRPHArrayProtocol {
-    var count: Int { get }
+extension GRPHArray: CustomStringConvertible {
+    var description: String {
+        "<\(content)>\(state)"
+    }
 }

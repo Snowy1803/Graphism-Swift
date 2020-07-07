@@ -113,7 +113,7 @@ struct GRPHTypes {
             } else { // Unboxing
                 switch value {
                 case .null:
-                    throw GRPHRuntimeError(type: .typeMismatch, message: "Tried to auto-unbox a 'null' value")
+                    throw GRPHRuntimeError(type: .cast, message: "Tried to auto-unbox a 'null' value")
                 case .some(let wrapped):
                     return try autobox(value: wrapped, expected: expected) // Unboxing
                 }
