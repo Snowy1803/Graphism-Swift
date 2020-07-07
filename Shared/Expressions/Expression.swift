@@ -108,7 +108,7 @@ struct Expressions {
                 guard let ns = member.namespace else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
                 }
-                guard let function = Function(imports: context.compiler?.imports ?? [], namespace: ns, name: member.member) else {
+                guard let function = Function(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member) else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                 }
                 return try FunctionExpression(ctx: context, function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
