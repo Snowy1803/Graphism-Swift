@@ -53,8 +53,38 @@ struct GraphismCLI: ParsableCommand {
     
     func listenForBBTCE(runtime: GRPHRuntime) {
         while let line = readLine() {
-            if line == "proceed" {
+            let cmd = line.components(separatedBy: " ")[0]
+            switch cmd {
+            case "proceed":
                 runtime.debugSemaphore.signal()
+            case "+debug":
+                runtime.debugging = true
+                runtime.debugStep = .infinity
+            case "-debug":
+                runtime.debugging = false
+                runtime.debugStep = 0
+                runtime.debugSemaphore.signal()
+            case "chwait":
+                runtime.debugStep = Double(line.dropFirst(7))! / 1000 // Using milliseconds here for consistency with Java Edition
+            case "setwait":
+                runtime.debugStep = Double(line.dropFirst(8))! // Using seconds here for consistency with command line argument
+            case "eval":
+                do {
+                    guard let context = runtime.context else {
+                        print("[EVAL ERR No context]")
+                        break
+                    }
+                    let e = try Expressions.parse(context: context, infer: nil, literal: String(line.dropFirst(5)))
+                    print("[EVAL OUT \(try e.eval(context: context))]")
+                } catch let e as GRPHCompileError {
+                    print("[EVAL ERR \(e.message)]")
+                } catch let e as GRPHRuntimeError {
+                    print("[EVAL ERR \(e.message)]")
+                } catch {
+                    print("[EVAL ERR Unexpected error]")
+                }
+            default:
+                break
             }
         }
     }
