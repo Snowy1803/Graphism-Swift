@@ -42,10 +42,13 @@ class BlockInstruction: Instruction {
         while i < children.count && !broken && !Thread.current.isCancelled {
             let child = children[i]
             context.last = last
-            if context.runtime?.debugging ?? false {
+            let runtime = context.runtime
+            if runtime?.debugging ?? false {
                 print("[DEBUG LOC \(child.line)]")
             }
-            Thread.sleep(forTimeInterval: context.runtime?.debugStep ?? 0) // should be cancellable? idk
+            if runtime?.debugStep ?? 0 > 0 {
+                _ = runtime?.debugSemaphore.wait(timeout: .now() + (runtime?.debugStep ?? 0))
+            }
             try child.safeRun(context: context)
             last = child
             i += 1

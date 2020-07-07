@@ -12,6 +12,7 @@ class GRPHRuntime: GRPHParser {
     // Debugging
     var debugging: Bool = false
     var debugStep: TimeInterval = 0
+    var debugSemaphore = DispatchSemaphore(value: 0)
     
     var globalVariables: [Variable]
     var instructions: [Instruction]
@@ -39,7 +40,9 @@ class GRPHRuntime: GRPHParser {
                 if debugging {
                     print("[DEBUG LOC \(line.line)]")
                 }
-                Thread.sleep(forTimeInterval: context.runtime?.debugStep ?? 0) // should be cancellable? idk
+                if debugStep > 0 {
+                    _ = debugSemaphore.wait(timeout: .now() + debugStep)
+                }
                 try line.safeRun(context: context)
                 last = line
                 i += 1

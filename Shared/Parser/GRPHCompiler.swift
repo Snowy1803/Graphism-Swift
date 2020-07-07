@@ -28,7 +28,7 @@ class GRPHCompiler: GRPHParser {
         self.entireContent = entireContent
     }
     
-    func dumWDIU() {
+    func dumpWDIU() {
         print("[WDIU INTERN]")
         for i in 0..<internStrings.count {
             let s = internStrings[i]

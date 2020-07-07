@@ -20,10 +20,10 @@ struct GraphismCLI: ParsableCommand {
     @Flag(help: "Enables step-by-step debugging, printing the current line")
     var debug = false
     
-    @Option(name: [.long, .customLong("wait")], help: "Step time between instructions, in seconds")
-    var step: TimeInterval = 0
+    @Option(name: [.long, .customLong("wait")], help: "Step time between instructions, in seconds (0 by default, or infinity when debugging)")
+    var step: TimeInterval?
     
-    @Argument(help: "The input file to read, as a utf8 encoded grph file")
+    @Argument(help: "The input file to read, as an utf8 encoded grph file")
     var input: String
     
     func run() throws {
@@ -32,17 +32,30 @@ struct GraphismCLI: ParsableCommand {
             throw ExitCode.failure
         }
         if wdiu {
-            compiler.dumWDIU()
+            compiler.dumpWDIU()
         }
         if onlyCheck {
             print("Code compiled successfully")
             throw ExitCode.success
         }
         let runtime = GRPHRuntime(compiler: compiler)
+        
         runtime.debugging = debug
-        runtime.debugStep = step
+        runtime.debugStep = step ?? (debug ? Double.infinity : 0)
+        
+        let listener = DispatchQueue(label: "bbtce-listener", qos: .background)
+        listener.async { listenForBBTCE(runtime: runtime) }
+        
         guard runtime.run() else {
             throw ExitCode.failure
+        }
+    }
+    
+    func listenForBBTCE(runtime: GRPHRuntime) {
+        while let line = readLine() {
+            if line == "proceed" {
+                runtime.debugSemaphore.signal()
+            }
         }
     }
 }
