@@ -209,24 +209,31 @@ class GRPHCompiler: GRPHParser {
                     throw GRPHCompileError(type: .unsupported, message: "labels have been removed")
                 } else {
                     // MARK: INSTRUCTIONS
-                    // array modification: arr{4} = var
+                    if let result = ArrayModificationInstruction.pattern.firstMatch(string: tline) {
+                        // arr{4} = var
+                        try addInstruction(try ArrayModificationInstruction(lineNumber: lineNumber, context: context, groups: result))
+                        continue
+                    }
                     // inline func declaration: color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
                     if let result = VariableDeclarationInstruction.pattern.firstMatch(string: tline) {
                         // {integer} arr = (0 1 2 3)
                         try addInstruction(try VariableDeclarationInstruction(lineNumber: lineNumber, groups: result, context: context))
+                        continue
                     }
                     if let result = AssignmentInstruction.pattern.firstMatch(string: tline) {
                         // assignments (=, +=, /= etc)
                         try addInstruction(try AssignmentInstruction(lineNumber: lineNumber, context: context, groups: result))
+                        continue
                     }
                     // method call: validate: shape1
                     // function call: log["test"]
                     if FunctionExpression.pattern.firstMatch(string: tline) != nil {
                         if let exp = try Expressions.parse(context: context, infer: SimpleType.mixed, literal: tline) as? FunctionExpression {
                             try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: exp))
+                            continue
                         }
                     }
-                    // ADD throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
+                    throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
                 }
             } catch let error as GRPHCompileError {
                 printerr("Compile Error: \(error.type.rawValue)Error: \(error.message); line \(lineNumber + 1)")
