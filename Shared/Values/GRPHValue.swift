@@ -74,7 +74,7 @@ extension String: StatefulValue {
     }
     
     var type: GRPHType { SimpleType.string }
-    var state: String { self.asLiteral }
+    var state: String { "\(self.asLiteral.dropLast())" }
 }
 
 extension Float: StatefulValue, GRPHNumber {
