@@ -14,10 +14,13 @@ struct FunctionExpression: Expression {
     var function: Function
     var values: [Expression?]
     
-    init(ctx: GRPHContext, function: Function, values: [Expression]) throws {
+    init(ctx: GRPHContext, function: Function, values: [Expression], asInstruction: Bool = false) throws {
         var nextParam = 0
         self.function = function
         self.values = []
+        guard asInstruction || function.returnType != nil else {
+            throw GRPHCompileError(type: .typeMismatch, message: "Void function can't be used as an expression")
+        }
         for param in values {
             guard let par = try function.parameter(index: nextParam, context: ctx, exp: param) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Unexpected '\(param.string)' of type '\(try param.getType(context: ctx, infer: function.parameter(index: nextParam).type))' in function '\(function.name)'")
@@ -40,7 +43,7 @@ struct FunctionExpression: Expression {
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
-        return function.type
+        return function.returnType!
     }
     
     var fullyQualified: String {

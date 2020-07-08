@@ -141,3 +141,15 @@ extension Collection {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
+enum GRPHVoid: GRPHValue {
+    case void
+    
+    var type: GRPHType {
+        fatalError("The return value of a void function must be discarded")
+    }
+    
+    func isEqual(to other: GRPHValue) -> Bool {
+        false
+    }
+}

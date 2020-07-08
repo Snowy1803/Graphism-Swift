@@ -35,7 +35,7 @@ struct StandardNameSpace: NameSpace {
     
     var exportedFunctions: [Function] {
         [
-            Function(ns: self, name: "log", parameters: [Parameter(name: "text...", type: SimpleType.mixed)], type: SimpleType.string, varargs: true) { context, params in
+            Function(ns: self, name: "log", parameters: [Parameter(name: "text...", type: SimpleType.mixed)], returnType: SimpleType.string, varargs: true) { context, params in
                 let result = params.map { $0 ?? "null" }.map { val -> String in
                     if let val = val as? CustomStringConvertible {
                         return val.description
@@ -47,12 +47,12 @@ struct StandardNameSpace: NameSpace {
                 printout("Log: \(result)")
                 return result
             },
-            Function(ns: self, name: "validate", parameters: [Parameter(name: "shape", type: SimpleType.shape)], type: SimpleType.shape) { context, params in
+            Function(ns: self, name: "validate", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: nil) { context, params in
                 let shape = params[0] as! GShape
                 context.runtime?.image.shapes.append(shape)
-                return shape
+                return GRPHVoid.void
             },
-            Function(ns: self, name: "clippedShape", parameters: [Parameter(name: "shape", type: SimpleType.shape), Parameter(name: "clip", type: SimpleType.shape)], type: SimpleType.shape) { context, params in
+            Function(ns: self, name: "clippedShape", parameters: [Parameter(name: "shape", type: SimpleType.shape), Parameter(name: "clip", type: SimpleType.shape)], returnType: SimpleType.shape) { context, params in
                 return GClip(shape: params[0] as! GShape, clip: params[1] as! GShape)
             }
         ]

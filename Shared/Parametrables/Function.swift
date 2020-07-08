@@ -11,8 +11,7 @@ struct Function: Parametrable, Importable {
     var ns: NameSpace
     var name: String
     var parameters: [Parameter]
-    var type: GRPHType
-    var returnType: GRPHType? { type }
+    var returnType: GRPHType?
     var varargs: Bool = false
     var executable: (GRPHContext, [GRPHValue?]) throws -> GRPHValue
 }

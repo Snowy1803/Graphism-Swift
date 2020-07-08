@@ -252,15 +252,19 @@ class GRPHCompiler: GRPHParser {
                         guard let function = Function(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member) else {
                             throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                         }
-                        try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try FunctionExpression(ctx: context, function: function, values: try Expressions.splitParameters(context: context, in: result[3]!, delimiter: Expressions.space))))
+                        try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try FunctionExpression(ctx: context, function: function, values: try Expressions.splitParameters(context: context, in: result[3]!, delimiter: Expressions.space), asInstruction: true)))
                         continue
                     }
-                    // function call: log["test"]
-                    if FunctionExpression.pattern.firstMatch(string: tline) != nil {
-                        if let exp = try Expressions.parse(context: context, infer: SimpleType.mixed, literal: tline) as? FunctionExpression {
-                            try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: exp))
-                            continue
+                    if let result = FunctionExpression.pattern.firstMatch(string: tline) {
+                        // function call: log["test"]
+                        let member = NameSpaces.namespacedMember(from: result[1]!)
+                        guard let ns = member.namespace else {
+                            throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
                         }
+                        guard let function = Function(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member) else {
+                            throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
+                        }
+                        try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try FunctionExpression(ctx: context, function: function, values: try Expressions.splitParameters(context: context, in: result[2]!, delimiter: Expressions.space), asInstruction: true)))
                     }
                     throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
                 }
