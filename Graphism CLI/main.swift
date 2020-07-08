@@ -38,7 +38,7 @@ struct GraphismCLI: ParsableCommand {
             printout("Code compiled successfully")
             throw ExitCode.success
         }
-        let runtime = GRPHRuntime(compiler: compiler)
+        let runtime = GRPHRuntime(compiler: compiler, image: GImage())
         
         runtime.debugging = debug
         runtime.debugStep = step ?? (debug ? Double.infinity : 0)

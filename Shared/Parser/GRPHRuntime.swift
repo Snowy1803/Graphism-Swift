@@ -27,13 +27,16 @@ class GRPHRuntime: GRPHParser {
     var timestamp: Date!
     var context: GRPHContext!
     
-    init(instructions: [Instruction], globalVariables: [Variable] = []) {
+    var image: GImage
+    
+    init(instructions: [Instruction], globalVariables: [Variable] = [], image: GImage) {
         self.instructions = instructions
         self.globalVariables = globalVariables
+        self.image = image
     }
     
-    convenience init(compiler: GRPHCompiler) {
-        self.init(instructions: compiler.instructions, globalVariables: compiler.globalVariables.filter { !$0.compileTime })
+    convenience init(compiler: GRPHCompiler, image: GImage) {
+        self.init(instructions: compiler.instructions, globalVariables: compiler.globalVariables.filter { !$0.compileTime }, image: image)
     }
     
     func run() -> Bool {

@@ -15,6 +15,7 @@ class GImage: GGroup {
     init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.alpha)) {
         self.size = size
         self.background = background
+        super.init(givenName: nil)
     }
     
     override var typeKey: String {

@@ -77,7 +77,7 @@ struct GraphismDocument: FileDocument {
             guard compiler.compile() else {
                 return // TODO show error
             }
-            let runtime = GRPHRuntime(compiler: compiler)
+            let runtime = GRPHRuntime(compiler: compiler, image: image)
             _ = runtime.run()
         }
     }

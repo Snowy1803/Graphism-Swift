@@ -46,6 +46,11 @@ struct StandardNameSpace: NameSpace {
                 }.joined(separator: " ")
                 printout("Log: \(result)")
                 return result
+            },
+            Function(ns: self, name: "validate", parameters: [Parameter(name: "shape", type: SimpleType.shape)], type: SimpleType.shape, varargs: true) { context, params in
+                let shape = params[0] as! GShape
+                context.runtime?.image.shapes.append(shape)
+                return shape
             }
         ]
     }

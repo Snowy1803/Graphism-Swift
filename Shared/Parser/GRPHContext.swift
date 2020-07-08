@@ -9,7 +9,7 @@ import Foundation
 
 class GRPHContext {
     let parent: GRPHContext?
-    let parser: GRPHParser
+    unowned let parser: GRPHParser
     var last: Instruction?
     var blocks: [BlockInstruction] = []
     
