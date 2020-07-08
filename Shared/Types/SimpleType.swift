@@ -222,9 +222,15 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                   strokeStyle: values.count == 4 ? nil : StrokeWrapper(strokeWidth: values[4] as? Float ?? 5, strokeType: values[safe: 5] as? Stroke ?? .elongated, strokeDashArray: values[safe: 6] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
         case .Group:
-            return nil // TODO
+            return Constructor(parameters: [.shapeName, .zpos, .rotation, Parameter(name: "shapes...", type: SimpleType.shape, optional: true)], type: self, varargs: true) { context, values in
+                return GGroup(givenName: values[0] as? String,
+                              positionZ: values[1] as? Int ?? 0,
+                              shapes: values.count > 3 ? values[3...].map { $0 as! GShape } : []) // TODO use rotation
+            }
         case .Background:
-            return nil // TODO
+            return Constructor(parameters: [.size, .paint], type: self) { context, values in
+                return GImage(size: values[0] as! Pos, background: AnyPaint.auto(values[1]!))
+            }
         }
     }
 }

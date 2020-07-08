@@ -45,6 +45,10 @@
 		201E1F6324B62B5E005A2BBE /* GImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6124B62B5E005A2BBE /* GImage.swift */; };
 		201E1F6424B62B5E005A2BBE /* GImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6124B62B5E005A2BBE /* GImage.swift */; };
 		201E1F6524B62B5F005A2BBE /* GImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6124B62B5E005A2BBE /* GImage.swift */; };
+		201E1F6724B630B0005A2BBE /* GGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6624B630B0005A2BBE /* GGroup.swift */; };
+		201E1F6824B630B0005A2BBE /* GGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6624B630B0005A2BBE /* GGroup.swift */; };
+		201E1F6924B630B0005A2BBE /* GGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6624B630B0005A2BBE /* GGroup.swift */; };
+		201E1F6A24B630B0005A2BBE /* GGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6624B630B0005A2BBE /* GGroup.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -284,6 +288,7 @@
 		200A5F8024ABA4E60028180B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		200A5F9724ABF6020028180B /* GRPHCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHCompiler.swift; sourceTree = "<group>"; };
 		201E1F6124B62B5E005A2BBE /* GImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GImage.swift; sourceTree = "<group>"; };
+		201E1F6624B630B0005A2BBE /* GGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GGroup.swift; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -474,6 +479,7 @@
 				2098B68424AA18B30042D465 /* GPath.swift */,
 				2098B68A24AA98070042D465 /* GPolygon.swift */,
 				2098B68724AA26740042D465 /* GClip.swift */,
+				201E1F6624B630B0005A2BBE /* GGroup.swift */,
 				201E1F6124B62B5E005A2BBE /* GImage.swift */,
 			);
 			path = Shapes;
@@ -755,6 +761,7 @@
 				200A5F9A24ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				20DE0BC324AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				20D1EF6624B28DDF00EB4BEE /* Function.swift in Sources */,
+				201E1F6924B630B0005A2BBE /* GGroup.swift in Sources */,
 				200A5F8924ABA5180028180B /* Paint.swift in Sources */,
 				200A5F9024ABA51E0028180B /* GRectangle.swift in Sources */,
 				200A5F8624ABA5180028180B /* Rotation.swift in Sources */,
@@ -855,6 +862,7 @@
 				20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				200A5F7024AB76560028180B /* GRPHType.swift in Sources */,
 				2098B67B24A970350042D465 /* GShape.swift in Sources */,
+				201E1F6724B630B0005A2BBE /* GGroup.swift in Sources */,
 				20D1EF7024B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				20DE0BD124AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
@@ -925,6 +933,7 @@
 				20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				200A5F7124AB76560028180B /* GRPHType.swift in Sources */,
 				2098B67C24A970350042D465 /* GShape.swift in Sources */,
+				201E1F6824B630B0005A2BBE /* GGroup.swift in Sources */,
 				20D1EF7124B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
@@ -963,6 +972,7 @@
 				20D1EF8824B2AFF600EB4BEE /* NameSpace.swift in Sources */,
 				20D1EF9C24B2AFF600EB4BEE /* Parameter.swift in Sources */,
 				20D1EF9724B2AFF600EB4BEE /* GLine.swift in Sources */,
+				201E1F6A24B630B0005A2BBE /* GGroup.swift in Sources */,
 				20D1EFA724B2AFF600EB4BEE /* NullExpression.swift in Sources */,
 				20D1EFA424B2AFF600EB4BEE /* UnaryExpression.swift in Sources */,
 				20D1EF9824B2AFF600EB4BEE /* ThrowInstruction.swift in Sources */,

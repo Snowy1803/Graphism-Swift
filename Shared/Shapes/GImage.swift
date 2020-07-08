@@ -8,16 +8,28 @@
 import Foundation
 import SwiftUI
 
-class GImage {
-    var shapes: [GShape] = []
+class GImage: GGroup {
     var size: Pos = Pos(x: 640, y: 480)
     var background: AnyPaint = AnyPaint.color(ColorPaint.alpha)
     
-    var graphics: AnyView {
-        ZStack(alignment: .topLeading) {
-            ForEach(shapes, id: \.uuid) { shape in
-                shape.graphics
-            }
-        }.erased
+    init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.alpha)) {
+        self.size = size
+        self.background = background
+    }
+    
+    override var typeKey: String {
+        "Background"
+    }
+    
+    override var type: GRPHType {
+        SimpleType.Background
+    }
+    
+    override var stateDefinitions: String {
+        "" // never called
+    }
+    
+    override var stateConstructor: String {
+        "Background(\(size.state) \(background.state))"
     }
 }
