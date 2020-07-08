@@ -18,11 +18,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ShapeListSidebar(document: $document)
-            ZStack(alignment: .topLeading) {
-                ForEach(document.shapes, id: \.uuid) { shape in
-                    shape.graphics
-                }
-            }
+            document.image.graphics
         }
     }
 }
@@ -32,7 +28,7 @@ struct ShapeListSidebar: View {
     
     var body: some View {
         List {
-            ForEach(document.shapes, id: \.uuid) { shape in
+            ForEach(document.image.shapes, id: \.uuid) { shape in
                 Text(shape.effectiveName)
             }
         }.listStyle(SidebarListStyle())

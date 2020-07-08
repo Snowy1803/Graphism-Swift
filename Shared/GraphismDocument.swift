@@ -16,13 +16,16 @@ extension UTType {
 struct GraphismDocument: FileDocument {
     var source: String
     
-    var shapes: [GShape]
+    var image: GImage
+    
+    static var readableContentTypes: [UTType] { [.grphSource] }
 
     init(shapes: [GShape]? = nil) {
+        var result: [GShape]
         if let shapes = shapes {
-            self.shapes = shapes
+            result = shapes
         } else {
-            self.shapes = [GRectangle(position: Pos(x: 200, y: 100), size: Pos(x: 150, y: 100), paint: .color(.red)),
+            result = [GRectangle(position: Pos(x: 200, y: 100), size: Pos(x: 150, y: 100), paint: .color(.red)),
                            GRectangle(position: Pos(x: 40, y: 0), size: Pos(x: 50, y: 100), paint: .color(.green), strokeStyle: StrokeWrapper(strokeWidth: 5, strokeType: .rounded, strokeDashArray: GRPHArray([1, 10], of: SimpleType.float))),
                            GRectangle(position: Pos(x: 250, y: 125), size: Pos(x: 50, y: 50), rotation: 45, paint: .color(.yellow)),
                            GCircle(position: Pos(x: 260, y: 135), size: Pos(x: 30, y: 30), paint: .color(.red)),
@@ -33,49 +36,49 @@ struct GraphismDocument: FileDocument {
                                  clip: GRectangle(position: Pos(x: 300, y: 300), size: Pos(x: 50, y: 50), rotation: 45, paint: .color(.black))),
                            GPolygon(points: [Pos(x: 200, y: 0), Pos(x: 300, y: 0), Pos(x: 275, y: 30), Pos(x: 300, y: 60), Pos(x: 200, y: 60), Pos(x: 225, y: 30)], paint: .color(.orange))]
         }
-        var source = ""
+        var source = "#setting generated true\n"
         
-        for shape in self.shapes {
+        for shape in result {
             source += shape.stateDefinitions
             source += "validate: \(shape.stateConstructor)\n"
         }
-        
+        self.image = GImage()
         self.source = source
-        print("Creating file")
-        print(source)
-        
-        let compiler = GRPHCompiler(entireContent: """
-int i = 0
-#while i < 1000000
-\t#if i * 100000 == 0
-\t\t//log["Iteration" i]
-\ti += 1
-""")
-        _ = compiler.compile()
-        print(compiler.wdiuInstructions)
-        let runtime = GRPHRuntime(compiler: compiler)
-        _ = runtime.run()
-        print("Took \(-runtime.timestamp.timeIntervalSinceNow) s")
+        runGRPH()
+    }
+    
+    init(source: String) {
+        self.image = GImage()
+        self.source = source
+        runGRPH()
     }
 
-    static var readableContentTypes: [UTType] { [.grphSource] }
-
     init(fileWrapper: FileWrapper, contentType: UTType) throws {
-        print("Opening \(fileWrapper)")
         guard let data = fileWrapper.regularFileContents,
               let string = String(data: data, encoding: .utf8)
         else {
-            print("Corrupted :/")
             throw CocoaError(.fileReadCorruptFile)
         }
-        source = string
-        shapes = []
-        print("Opened \(fileWrapper)")
+        self.image = GImage()
+        self.source = string
+        runGRPH()
     }
     
     func write(to fileWrapper: inout FileWrapper, contentType: UTType) throws {
-        print("Saving \(fileWrapper)")
         let data = source.data(using: .utf8)!
         fileWrapper = FileWrapper(regularFileWithContents: data)
+    }
+    
+    func runGRPH() {
+        let queue = DispatchQueue(label: "GRPH")
+        queue.async {
+            let compiler = GRPHCompiler(entireContent: source)
+            
+            guard compiler.compile() else {
+                return // TODO show error
+            }
+            let runtime = GRPHRuntime(compiler: compiler)
+            _ = runtime.run()
+        }
     }
 }

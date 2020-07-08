@@ -10,11 +10,8 @@ import SwiftUI
 @main
 struct GraphismApp: App {
     var body: some Scene {
-//        DocumentGroup(newDocument: GraphismDocument()) { file in
-//            ContentView(document: file.$document)
-//        }
-        WindowGroup {
-            ContentView(document: .constant(GraphismDocument()))
+        DocumentGroup(newDocument: GraphismDocument()) { file in
+            ContentView(document: file.$document)
         }
     }
 }

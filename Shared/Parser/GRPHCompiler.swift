@@ -186,6 +186,7 @@ class GRPHCompiler: GRPHParser {
                         throw GRPHCompileError(type: .unsupported, message: "#type is not available yet")
                     case "#setting":
                         // #setting key value
+                        // - autorepaint *true*/false
                         // - selection *true*/false
                         // - generated true/*false* <-- flag "generated automatically; you can save the state over the file with no loss"
                         // - sidebar *true*/false
