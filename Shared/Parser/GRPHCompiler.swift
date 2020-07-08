@@ -16,7 +16,7 @@ class GRPHCompiler: GRPHParser {
     var blocks: [BlockInstruction] = []
     
     var internStrings: [String] = []
-    var globalVariables: [Variable] = [] // Add this, back and colors
+    var globalVariables: [Variable] = []
     var imports: [Importable] = [NameSpaces.namespace(named: "standard")!]
     var instructions: [Instruction] = []
     
@@ -26,6 +26,19 @@ class GRPHCompiler: GRPHParser {
     
     init(entireContent: String) {
         self.entireContent = entireContent
+        // Add "this"
+        globalVariables.append(Variable(name: "back", type: SimpleType.Background, final: false, compileTime: true))
+        globalVariables.append(Variable(name: "WHITE", type: SimpleType.color, content: ColorPaint.white, final: true))
+        globalVariables.append(Variable(name: "BLACK", type: SimpleType.color, content: ColorPaint.black, final: true))
+        globalVariables.append(Variable(name: "RED", type: SimpleType.color, content: ColorPaint.red, final: true))
+        globalVariables.append(Variable(name: "GREEN", type: SimpleType.color, content: ColorPaint.green, final: true))
+        globalVariables.append(Variable(name: "BLUE", type: SimpleType.color, content: ColorPaint.blue, final: true))
+        globalVariables.append(Variable(name: "ORANGE", type: SimpleType.color, content: ColorPaint.orange, final: true))
+        globalVariables.append(Variable(name: "YELLOW", type: SimpleType.color, content: ColorPaint.yellow, final: true))
+        globalVariables.append(Variable(name: "PINK", type: SimpleType.color, content: ColorPaint.pink, final: true))
+        globalVariables.append(Variable(name: "PURPLE", type: SimpleType.color, content: ColorPaint.purple, final: true))
+        globalVariables.append(Variable(name: "AQUA", type: SimpleType.color, content: ColorPaint.aqua, final: true))
+        globalVariables.append(Variable(name: "ALPHA", type: SimpleType.color, content: ColorPaint.alpha, final: true))
     }
     
     func dumpWDIU() {

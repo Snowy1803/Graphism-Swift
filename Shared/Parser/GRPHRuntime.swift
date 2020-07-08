@@ -33,6 +33,7 @@ class GRPHRuntime: GRPHParser {
         self.instructions = instructions
         self.globalVariables = globalVariables
         self.image = image
+        self.globalVariables.append(Variable(name: "back", type: SimpleType.Background, content: image, final: false))
     }
     
     convenience init(compiler: GRPHCompiler, image: GImage) {

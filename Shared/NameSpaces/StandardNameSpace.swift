@@ -47,10 +47,13 @@ struct StandardNameSpace: NameSpace {
                 printout("Log: \(result)")
                 return result
             },
-            Function(ns: self, name: "validate", parameters: [Parameter(name: "shape", type: SimpleType.shape)], type: SimpleType.shape, varargs: true) { context, params in
+            Function(ns: self, name: "validate", parameters: [Parameter(name: "shape", type: SimpleType.shape)], type: SimpleType.shape) { context, params in
                 let shape = params[0] as! GShape
                 context.runtime?.image.shapes.append(shape)
                 return shape
+            },
+            Function(ns: self, name: "clippedShape", parameters: [Parameter(name: "shape", type: SimpleType.shape), Parameter(name: "clip", type: SimpleType.shape)], type: SimpleType.shape) { context, params in
+                return GClip(shape: params[0] as! GShape, clip: params[1] as! GShape)
             }
         ]
     }
