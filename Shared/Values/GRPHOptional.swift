@@ -43,6 +43,14 @@ enum GRPHOptional: GRPHValue {
         }
         return false
     }
+    
+    init(_ value: GRPHValue?) {
+        if let value = value {
+            self = .some(value)
+        } else {
+            self = .null
+        }
+    }
 }
 
 extension GRPHOptional: CustomStringConvertible {

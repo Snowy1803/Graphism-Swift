@@ -158,8 +158,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 return Rotation(value: values[0] as! Int)
             }
         case .pos:
-            return Constructor(parameters: [Parameter(name: "x", type: SimpleType.float), Parameter(name: "y", type: SimpleType.float)], type: self) { context, values in
-                return Pos(x: values[0] as! Float, y: values[0] as! Float)
+            return Constructor(parameters: [Parameter(name: "x", type: SimpleType.num), Parameter(name: "y", type: SimpleType.num)], type: self) { context, values in
+                return Pos(x: values[0] as? Float ?? Float(values[0] as! Int), y: values[1] as? Float ?? Float(values[1] as! Int))
             }
         case .color:
             return Constructor(parameters: [Parameter(name: "red", type: SimpleType.integer), Parameter(name: "green", type: SimpleType.integer), Parameter(name: "blue", type: SimpleType.integer), Parameter(name: "alpha", type: SimpleType.float, optional: true)], type: self) { context, values in

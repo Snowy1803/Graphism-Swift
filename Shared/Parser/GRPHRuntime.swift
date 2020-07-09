@@ -64,6 +64,8 @@ class GRPHRuntime: GRPHParser {
             printerr("GRPH Exited because a runtime exception was not catched")
             printerr("\(e.type.rawValue)Exception: \(e.message)")
             e.stack.forEach { print($0) }
+        } catch _ as GRPHExecutionTerminated {
+            return true // Returning normally, execution terminated from an "end:" instruction
         } catch let e {
             printerr("GRPH Exited after an unknown native error occurred")
             printerr("\(e)")
@@ -80,4 +82,8 @@ func printout(_ str: String, terminator: String = "\n") {
 func printerr(_ str: String, terminator: String = "\n") {
     guard let data = (str + terminator).data(using: .utf8) else { return }
     FileHandle.standardError.write(data)
+}
+
+struct GRPHExecutionTerminated: Error {
+    
 }

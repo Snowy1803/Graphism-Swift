@@ -265,6 +265,7 @@ class GRPHCompiler: GRPHParser {
                             throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                         }
                         try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try FunctionExpression(ctx: context, function: function, values: try Expressions.splitParameters(context: context, in: result[2]!, delimiter: Expressions.space), asInstruction: true)))
+                        continue
                     }
                     throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
                 }
