@@ -24,6 +24,8 @@ class GRPHCompiler: GRPHParser {
     var lines: [String] = []
     var context: GRPHContext!
     
+    var settings: [RuntimeSetting: Bool] = [:]
+    
     init(entireContent: String) {
         self.entireContent = entireContent
         // Add "this"
@@ -198,17 +200,25 @@ class GRPHCompiler: GRPHParser {
                     case "#type":
                         throw GRPHCompileError(type: .unsupported, message: "#type is not available yet")
                     case "#setting":
-                        // #setting key value
-                        // - autorepaint *true*/false
-                        // - selection *true*/false
-                        // - generated true/*false* <-- flag "generated automatically; you can save the state over the file with no loss"
-                        // - sidebar *true*/false
-                        // - propertybar *true*/false
-                        // - toolbar *true*/false
-                        // - movable *true*/false
-                        // - editable *true*/false
-                        // - readonly true/*false* -- sets movable, editable
-                        // - fullscreen true/*false* -- sets sidebar, propertybar, toolbar
+                        let split = params.components(separatedBy: " ")
+                        guard split.count == 2 else {
+                            throw GRPHCompileError(type: .parse, message: "Expected syntax '#setting key value'")
+                        }
+                        guard let value = Bool(split[1]) else { // only accepts "true" and "false"
+                            throw GRPHCompileError(type: .parse, message: "Expected value to be a boolean literal. Dynamic values are not supported.")
+                        }
+                        if split[0] == "readonly" {
+                            settings[.movable] = !value
+                            settings[.editable] = !value
+                        } else if split[0] == "fullscreen" {
+                            settings[.sidebar] = !value
+                            settings[.propertybar] = !value
+                            settings[.toolbar] = !value
+                        } else if let key = RuntimeSetting(rawValue: split[0]) {
+                            settings[key] = value
+                        } else {
+                            throw GRPHCompileError(type: .parse, message: "Key '\(split[0])' not found")
+                        }
                         break
                     case "#compiler":
                         // #compiler key value

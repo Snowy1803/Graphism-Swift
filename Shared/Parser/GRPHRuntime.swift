@@ -29,7 +29,7 @@ class GRPHRuntime: GRPHParser {
     
     var image: GImage
     
-    var autorepaint: Bool = true
+    var settings: [RuntimeSetting: Bool] = [:]
     
     init(instructions: [Instruction], globalVariables: [Variable] = [], image: GImage) {
         self.instructions = instructions
@@ -40,6 +40,7 @@ class GRPHRuntime: GRPHParser {
     
     convenience init(compiler: GRPHCompiler, image: GImage) {
         self.init(instructions: compiler.instructions, globalVariables: compiler.globalVariables.filter { !$0.compileTime }, image: image)
+        self.settings = compiler.settings
     }
     
     func run() -> Bool {
@@ -76,7 +77,7 @@ class GRPHRuntime: GRPHParser {
     }
     
     func triggerAutorepaint() {
-        if autorepaint {
+        if settings[current: .autoupdate] {
             image.willNeedRepaint()
         }
     }
@@ -94,4 +95,23 @@ func printerr(_ str: String, terminator: String = "\n") {
 
 struct GRPHExecutionTerminated: Error {
     
+}
+
+enum RuntimeSetting: String {
+    case autoupdate, selection, generated, sidebar, propertybar, toolbar, movable, editable
+    
+    var defaultValue: Bool {
+        switch self {
+        case .autoupdate, .selection, .sidebar, .propertybar, .toolbar, .movable, .editable:
+            return true
+        case .generated:
+            return false // flag "generated automatically; you can save the state over the file with no loss"
+        }
+    }
+}
+
+extension Dictionary where Key == RuntimeSetting, Value == Bool {
+    subscript(current setting: RuntimeSetting) -> Value {
+        return self[setting] ?? setting.defaultValue
+    }
 }
