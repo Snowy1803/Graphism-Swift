@@ -12,6 +12,8 @@ class GImage: GGroup, ObservableObject {
     var size: Pos = Pos(x: 640, y: 480)
     var background: AnyPaint = AnyPaint.color(ColorPaint.alpha)
     
+    var destroyed = false
+    
     init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.alpha)) {
         self.size = size
         self.background = background
@@ -38,5 +40,10 @@ class GImage: GGroup, ObservableObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
+    }
+    
+    /// Called by the view when the document is closed
+    func destroy() {
+        destroyed = true
     }
 }

@@ -55,6 +55,9 @@ class GRPHRuntime: GRPHParser {
                 if debugging {
                     printout("[DEBUG LOC \(line.line)]")
                 }
+                if image.destroyed {
+                    throw GRPHExecutionTerminated()
+                }
                 if debugStep > 0 {
                     _ = debugSemaphore.wait(timeout: .now() + debugStep)
                 }
@@ -68,7 +71,7 @@ class GRPHRuntime: GRPHParser {
             printerr("\(e.type.rawValue)Exception: \(e.message)")
             e.stack.forEach { print($0) }
         } catch _ as GRPHExecutionTerminated {
-            return true // Returning normally, execution terminated from an "end:" instruction
+            return true // Returning normally, execution terminated from an "end:" instruction or by the user when closing the file
         } catch let e {
             printerr("GRPH Exited after an unknown native error occurred")
             printerr("\(e)")

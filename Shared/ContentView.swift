@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Binding var document: GraphismDocument
     @ObservedObject var image: GImage
+    @State var destroyOnChange: GImage? = nil
     
     init(document: Binding<GraphismDocument>) {
         self._document = document
@@ -21,6 +22,13 @@ struct ContentView: View {
         NavigationView {
             ShapeListSidebar(document: $document)
             document.image.graphics
+        }.onChange(of: document.image.uuid) { _ in // If changed from the outside and reloaded automatically
+            if let old = destroyOnChange {
+                old.destroy()
+            }
+            destroyOnChange = image
+        }.onDisappear { // If closed
+            image.destroy()
         }
     }
 }

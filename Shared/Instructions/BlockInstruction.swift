@@ -46,6 +46,9 @@ class BlockInstruction: Instruction {
             if runtime?.debugging ?? false {
                 printout("[DEBUG LOC \(child.line)]")
             }
+            if runtime?.image.destroyed ?? false {
+                throw GRPHExecutionTerminated()
+            }
             if runtime?.debugStep ?? 0 > 0 {
                 _ = runtime?.debugSemaphore.wait(timeout: .now() + (runtime?.debugStep ?? 0))
             }
