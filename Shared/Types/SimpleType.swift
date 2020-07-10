@@ -208,6 +208,14 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return [VirtualField<GPolygon>(name: "points", type: SimpleType.pos.inArray, getter: { GRPHArray($0.points, of: SimpleType.pos) }, setter: { $0.points = ($1 as! GRPHArray).wrapped.map { $0 as! Pos } })]
         case .Group:
             return [VirtualField<GGroup>(name: "shapes", type: SimpleType.shape.inArray, getter: { GRPHArray($0.shapes, of: SimpleType.shape) }, setter: { $0.shapes = ($1 as! GRPHArray).wrapped.map { $0 as! GShape } })]
+        case .Background:
+            // if we call it paint, it will shadow paint from shape, not override it, so if we have an unknown shape variable, it will use paint from shape even if it is a Background, and it will throw. Same with size.
+            return [VirtualField<GImage>(name: "background", type: SimpleType.paint,
+                                         getter: { $0.background.unwrapped },
+                                         setter: { $0.background = AnyPaint.auto($1) }),
+                    VirtualField<GImage>(name: "dimension", type: SimpleType.pos,
+                                         getter: { $0.size },
+                                         setter: { $0.size = $1 as! Pos })]
         default:
             return []
         }
