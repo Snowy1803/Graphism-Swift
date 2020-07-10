@@ -45,7 +45,15 @@ extension VariableExpression: AssignableExpression {
     
     func assign(context: GRPHContext, value: GRPHValue, cache: inout [GRPHValue]) throws {
         if let v = context.findVariable(named: name) {
-            try v.setContent(value)
+            if v.name == "back" {
+                let new = value as! GImage
+                let old = context.runtime!.image
+                old.background = new.background
+                old.size = new.size
+                old.shapes = new.shapes
+            } else {
+                try v.setContent(value)
+            }
             if v.type.isInstance(of: SimpleType.shape) {
                 context.runtime?.triggerAutorepaint()
             }
