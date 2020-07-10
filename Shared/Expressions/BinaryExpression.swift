@@ -9,9 +9,9 @@ import Foundation
 
 struct BinaryExpression: Expression {
     static let signs1 = try! NSRegularExpression(pattern: "&&|\\|\\|")
-    static let signs2 = try! NSRegularExpression(pattern: ">=|<=|>|<")
+    static let signs2 = try! NSRegularExpression(pattern: ">=|<=|>|<|≥|≤")
     static let signs3 = try! NSRegularExpression(pattern: "&|\\||\\^|<<|>>|>>>")
-    static let signs4 = try! NSRegularExpression(pattern: "==|!=")
+    static let signs4 = try! NSRegularExpression(pattern: "==|!=|≠")
     static let signs5 = try! NSRegularExpression(pattern: "\\+|\\-")
     static let signs6 = try! NSRegularExpression(pattern: "\\*|\\/|\\%")
     
@@ -23,7 +23,7 @@ struct BinaryExpression: Expression {
     init(context: GRPHContext, left: Expression, op: String, right: Expression) throws {
         self.left = left
         self.right = right
-        self.op = BinaryOperator(rawValue: op)!
+        self.op = BinaryOperator(string: op)!
         // TYPE CHECKS
         switch self.op {
         case .plus, .concat: // concat impossible here
@@ -266,8 +266,8 @@ struct BinaryExpression: Expression {
 enum BinaryOperator: String {
     case logicalAnd = "&&"
     case logicalOr = "||"
-    case greaterOrEqualTo = ">="
-    case lessOrEqualTo = "<="
+    case greaterOrEqualTo = "≥"
+    case lessOrEqualTo = "≤"
     case greaterThan = ">"
     case lessThan = "<"
     case bitwiseAnd = "&"
@@ -284,6 +284,18 @@ enum BinaryOperator: String {
     case divide = "/"
     case modulo = "%"
     case concat = "<+>" // Sign not actually used
+    
+    init?(string: String) {
+        if string == ">=" {
+            self = .greaterOrEqualTo
+        } else if string == "<=" {
+            self = .lessOrEqualTo
+        } else if string == "≠" {
+            self = .notEqual
+        } else {
+            self.init(rawValue: string)
+        }
+    }
     
     var string: String {
         switch self {

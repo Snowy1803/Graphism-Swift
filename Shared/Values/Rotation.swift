@@ -16,11 +16,18 @@ struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
     }
     
     init(integerLiteral value: Int) {
-        self.value = value
+        self.init(value: value)
     }
     
     init(value: Int) {
-        self.value = value
+        // Normalize: -180 < value ≤ 180
+        self.value = value % 360
+        if self.value <= -180 {
+            self.value += 360
+        }
+        if self.value > 180 {
+            self.value -= 360
+        }
     }
     
     var angle: Angle {
