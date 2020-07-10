@@ -28,7 +28,7 @@ class Variable {
     
     func setContent(_ content: GRPHValue) throws {
         if final {
-            throw GRPHRuntimeError(type: .cast, message: "Variable '\(name)' is final")
+            throw GRPHRuntimeError(type: .unexpected, message: "Variable '\(name)' is final")
         }
         self.content = content
     }

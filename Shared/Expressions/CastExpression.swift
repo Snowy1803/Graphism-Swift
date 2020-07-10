@@ -16,9 +16,14 @@ struct CastExpression: Expression {
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         if cast {
-            fatalError("TODO")
+            let value = try GRPHTypes.autobox(value: try from.eval(context: context), expected: to)
+            if GRPHTypes.type(of: value).isInstance(of: to) {
+                return value
+            }
+            // TODO implement other casts
+            throw GRPHRuntimeError(type: .cast, message: "Couldn't cast from \(GRPHTypes.type(of: value)) to \(to)")
         } else {
-            return GRPHTypes.type(of: try from.eval(context: context)).isInstance(of: to)
+            return GRPHTypes.type(of: try from.eval(context: context)).isInstance(of: to) // no autoboxing in is
         }
     }
     
