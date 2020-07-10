@@ -34,7 +34,14 @@ struct BinaryExpression: Expression {
             } else {
                 fallthrough
             }
-        case .multiply, .divide, .modulo, .minus:
+        case .minus:
+            if try SimpleType.rotation.isInstance(context: context, expression: left),
+               try SimpleType.rotation.isInstance(context: context, expression: right) {
+                self.operands = .rotation
+            } else {
+                fallthrough
+            }
+        case .multiply, .divide, .modulo:
             guard try SimpleType.num.isInstance(context: context, expression: left),
                   try SimpleType.num.isInstance(context: context, expression: right) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Operator '\(op)' needs two numbers")
@@ -106,7 +113,17 @@ struct BinaryExpression: Expression {
         }
         let right = unbox ? try GRPHTypes.unbox(value: try self.right.eval(context: context)) : try self.right.eval(context: context)
         switch op {
-        case .greaterOrEqualTo, .lessOrEqualTo, .greaterThan, .lessThan, .plus, .minus, .multiply, .divide, .modulo:
+        case .greaterThan, .greaterOrEqualTo, .lessThan, .lessOrEqualTo:
+            if operands == .pos {
+                return run(left as! Pos, right as! Pos)
+            }
+            fallthrough
+        case .plus, .minus:
+            if operands == .rotation {
+                return run(left as! Rotation, right as! Rotation)
+            }
+            fallthrough
+        case .multiply, .divide, .modulo:
             // num: int or float
             if operands == .integer {
                 return run(left as! Int, right as! Int)
@@ -201,6 +218,32 @@ struct BinaryExpression: Expression {
             return first % second
         default:
             fatalError("Operator \(op.rawValue) doesn't take integers")
+        }
+    }
+    
+    func run(_ first: Pos, _ second: Pos) -> GRPHValue {
+        switch op {
+        case .greaterOrEqualTo:
+            return first.x >= second.x && first.y >= second.y
+        case .lessOrEqualTo:
+            return first.x <= second.x && first.y <= second.y
+        case .greaterThan:
+            return first.x > second.x && first.y > second.y
+        case .lessThan:
+            return first.x < second.x && first.y < second.y
+        default:
+            fatalError("Operator \(op.rawValue) doesn't take pos")
+        }
+    }
+    
+    func run(_ first: Rotation, _ second: Rotation) -> GRPHValue {
+        switch op {
+        case .plus:
+            return first + second
+        case .minus:
+            return first - second
+        default:
+            fatalError("Operator \(op.rawValue) doesn't take floats")
         }
     }
     

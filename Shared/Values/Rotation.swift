@@ -28,4 +28,12 @@ struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
     }
     
     var type: GRPHType { SimpleType.rotation }
+    
+    static func + (lhs: Rotation, rhs: Rotation) -> Rotation {
+        Rotation(value: lhs.value + rhs.value)
+    }
+    
+    static func - (lhs: Rotation, rhs: Rotation) -> Rotation {
+        Rotation(value: lhs.value - rhs.value)
+    }
 }
