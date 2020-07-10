@@ -45,10 +45,10 @@ extension VariableExpression: AssignableExpression {
     
     func assign(context: GRPHContext, value: GRPHValue, cache: inout [GRPHValue]) throws {
         if let v = context.findVariable(named: name) {
+            try v.setContent(value)
             if v.type.isInstance(of: SimpleType.shape) {
                 context.runtime?.triggerAutorepaint()
             }
-            try v.setContent(value)
             if context.runtime?.debugging ?? false {
                 printout("[DEBUG VAR \(v.name)=\(v.content!)]")
             }
