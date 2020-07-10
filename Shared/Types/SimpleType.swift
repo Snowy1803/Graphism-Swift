@@ -122,7 +122,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     KeyPathField(name: "radius", type: SimpleType.float, keyPath: \RadialPaint.radius)]
         // fonts & images
         case .rotation:
-            return [KeyPathField(name: "value", type: SimpleType.integer, keyPath: \Rotation.value)]
+            return [KeyPathField(name: "value", type: SimpleType.integer, keyPath: \Rotation.value),
+                    VirtualField<Rotation>(name: "radians", type: SimpleType.float, getter: { Float($0.value) * (Float.pi / 180) }, setter: { $0.value = Int(($1 as! Float) * (180 / Float.pi)) })]
         case .string:
             return [VirtualField<String>(name: "length", type: SimpleType.integer, getter: { $0.count })]
         case .shape:
@@ -144,13 +145,13 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no size")
                 }
             }),
-//            ErasedField(name: "rotationCenter", type: SimpleType.pos, getter: { ($0 as? RotatableShape)?.rotationCenter ?? Pos(x: 0, y: 0) }, setter: {
-//                if var shape = $0 as? RotatableShape {
-//                    shape.rotationCenter = $1 as! Pos
-//                } else {
-//                    throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no rotation center")
-//                }
-//            }),
+            ErasedField(name: "rotationCenter", type: SimpleType.pos, getter: { ($0 as? RotatableShape)?.currentRotationCenter ?? Pos(x: 0, y: 0) }, setter: {
+                if var shape = $0 as? RotatableShape {
+                    shape.rotationCenter = ($1 as! Pos)
+                } else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no rotation center")
+                }
+            }),
             ErasedField(name: "rotation", type: SimpleType.rotation, getter: { ($0 as? RotatableShape)?.rotation ?? Rotation(value: 0) }, setter: {
                 if var shape = $0 as? RotatableShape {
                     shape.rotation = $1 as! Rotation

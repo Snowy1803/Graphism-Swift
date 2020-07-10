@@ -19,6 +19,7 @@ class GCircle: RectangularShape, SimpleShape, RotatableShape {
     var positionZ: Int = 0
     var size: Pos
     var rotation: Rotation = 0
+    var rotationCenter: Pos?
     
     var paint: AnyPaint
     var strokeStyle: StrokeWrapper?
@@ -37,7 +38,7 @@ class GCircle: RectangularShape, SimpleShape, RotatableShape {
         Ellipse()
             .applyingFillOrStroke(for: self)
             .frame(width: CGFloat(size.x), height: CGFloat(size.y))
-            .rotationEffect(rotation.angle, anchor: .center) // TODO support for rotationCenter
+            .rotationEffect(rotation.angle, anchor: UnitPoint(x: CGFloat(rotationCenter?.x ?? 0.5), y: CGFloat(rotationCenter?.y ?? 0.5)))
             .position(center.cg)
             .erased
     }

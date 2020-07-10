@@ -50,7 +50,7 @@ protocol SimpleShape: GShape {
 
 protocol RotatableShape: GShape {
     var rotation: Rotation { get set }
-    // rotation center
+    var rotationCenter: Pos? { get set }
 }
 
 protocol RectangularShape: BasicShape {
@@ -60,6 +60,18 @@ protocol RectangularShape: BasicShape {
 extension RectangularShape {
     var center: Pos {
         Pos(x: position.x + (size.x / 2), y: position.y + (size.y / 2))
+    }
+}
+
+extension RotatableShape {
+    var currentRotationCenter: Pos {
+        rotationCenter ?? Pos(x: 0.5, y: 0.5)
+    }
+}
+
+extension RotatableShape where Self: RectangularShape {
+    var currentRotationCenter: Pos {
+        rotationCenter ?? center
     }
 }
 
