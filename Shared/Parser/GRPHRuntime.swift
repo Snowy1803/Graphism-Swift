@@ -29,6 +29,8 @@ class GRPHRuntime: GRPHParser {
     
     var image: GImage
     
+    var autorepaint: Bool = true
+    
     init(instructions: [Instruction], globalVariables: [Variable] = [], image: GImage) {
         self.instructions = instructions
         self.globalVariables = globalVariables
@@ -71,6 +73,12 @@ class GRPHRuntime: GRPHParser {
             printerr("\(e)")
         }
         return false
+    }
+    
+    func triggerAutorepaint() {
+        if autorepaint {
+            image.willNeedRepaint()
+        }
     }
 }
 

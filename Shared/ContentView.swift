@@ -9,9 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     @Binding var document: GraphismDocument
+    @ObservedObject var image: GImage
     
     init(document: Binding<GraphismDocument>) {
         self._document = document
+        self.image = document.wrappedValue.image
         print("Created ContentView")
     }
 

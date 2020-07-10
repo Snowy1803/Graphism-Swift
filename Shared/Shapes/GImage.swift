@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class GImage: GGroup {
+class GImage: GGroup, ObservableObject {
     var size: Pos = Pos(x: 640, y: 480)
     var background: AnyPaint = AnyPaint.color(ColorPaint.alpha)
     
@@ -32,5 +32,11 @@ class GImage: GGroup {
     
     override var stateConstructor: String {
         "Background(\(size.state) \(background.state))"
+    }
+    
+    func willNeedRepaint() {
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
     }
 }

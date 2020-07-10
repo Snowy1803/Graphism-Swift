@@ -49,6 +49,9 @@ extension FieldExpression: AssignableExpression {
         try field.setValue(on: &modified, value: value)
         // if 'modified' is a reference type, it is already updated
         if type(of: modified) is AnyClass {
+            if modified is GShape {
+                context.runtime?.triggerAutorepaint()
+            }
             return
         }
         cache.removeLast()
