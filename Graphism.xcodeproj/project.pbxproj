@@ -61,6 +61,10 @@
 		201E1F7724BBBF25005A2BBE /* StringUtilsNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7524BBBF25005A2BBE /* StringUtilsNameSpace.swift */; };
 		201E1F7824BBBF25005A2BBE /* StringUtilsNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7524BBBF25005A2BBE /* StringUtilsNameSpace.swift */; };
 		201E1F7924BBBF25005A2BBE /* StringUtilsNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7524BBBF25005A2BBE /* StringUtilsNameSpace.swift */; };
+		201E1F7B24BBCE86005A2BBE /* MathNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7A24BBCE86005A2BBE /* MathNameSpace.swift */; };
+		201E1F7C24BBCE86005A2BBE /* MathNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7A24BBCE86005A2BBE /* MathNameSpace.swift */; };
+		201E1F7D24BBCE86005A2BBE /* MathNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7A24BBCE86005A2BBE /* MathNameSpace.swift */; };
+		201E1F7E24BBCE86005A2BBE /* MathNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7A24BBCE86005A2BBE /* MathNameSpace.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -304,6 +308,7 @@
 		201E1F6B24BBB198005A2BBE /* InputOutputNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputOutputNameSpace.swift; sourceTree = "<group>"; };
 		201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomNameSpace.swift; sourceTree = "<group>"; };
 		201E1F7524BBBF25005A2BBE /* StringUtilsNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtilsNameSpace.swift; sourceTree = "<group>"; };
+		201E1F7A24BBCE86005A2BBE /* MathNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathNameSpace.swift; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -549,6 +554,7 @@
 				201E1F6B24BBB198005A2BBE /* InputOutputNameSpace.swift */,
 				201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */,
 				201E1F7524BBBF25005A2BBE /* StringUtilsNameSpace.swift */,
+				201E1F7A24BBCE86005A2BBE /* MathNameSpace.swift */,
 			);
 			path = NameSpaces;
 			sourceTree = "<group>";
@@ -797,6 +803,7 @@
 				20DE0BAF24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				200A5F8B24ABA5180028180B /* Stroke.swift in Sources */,
 				20D1EF3824B12AEE00EB4BEE /* SimpleType.swift in Sources */,
+				201E1F7D24BBCE86005A2BBE /* MathNameSpace.swift in Sources */,
 				200A5F8E24ABA5180028180B /* Pos.swift in Sources */,
 				200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */,
 				20DE0BE724AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
@@ -853,6 +860,7 @@
 				20DE0BE924B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BF124B0B35600ABFB6E /* TryBlock.swift in Sources */,
 				20DE0BB924AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
+				201E1F7B24BBCE86005A2BBE /* MathNameSpace.swift in Sources */,
 				200A5F7324AB82DA0028180B /* GRPHArray.swift in Sources */,
 				20D1EF2D24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */,
 				20DE0BCD24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
@@ -927,6 +935,7 @@
 				20DE0BEA24B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BF224B0B35600ABFB6E /* TryBlock.swift in Sources */,
 				20DE0BBA24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
+				201E1F7C24BBCE86005A2BBE /* MathNameSpace.swift in Sources */,
 				200A5F7424AB82DA0028180B /* GRPHArray.swift in Sources */,
 				20D1EF2E24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */,
 				20DE0BCE24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
@@ -1017,6 +1026,7 @@
 				20D1EF8024B2AFF600EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20D1EF8F24B2AFF600EB4BEE /* WhileBlock.swift in Sources */,
 				20D1EFA824B2AFF600EB4BEE /* GRPHRuntime.swift in Sources */,
+				201E1F7E24BBCE86005A2BBE /* MathNameSpace.swift in Sources */,
 				20D1EF7F24B2AFF600EB4BEE /* GClip.swift in Sources */,
 				20D1EFB724B2AFF600EB4BEE /* Direction.swift in Sources */,
 				20D1EFAD24B2AFF600EB4BEE /* VariableDeclarationInstruction.swift in Sources */,
