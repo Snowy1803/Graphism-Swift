@@ -26,6 +26,7 @@ struct NameSpaces {
         [
             StandardNameSpace(),
             InputOutputNameSpace(),
+            RandomNameSpace(),
         ]
     
     static let none: NameSpace = NoNameSpace()

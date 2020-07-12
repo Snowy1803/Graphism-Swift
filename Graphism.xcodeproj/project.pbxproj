@@ -53,6 +53,10 @@
 		201E1F6D24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6B24BBB198005A2BBE /* InputOutputNameSpace.swift */; };
 		201E1F6E24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6B24BBB198005A2BBE /* InputOutputNameSpace.swift */; };
 		201E1F6F24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F6B24BBB198005A2BBE /* InputOutputNameSpace.swift */; };
+		201E1F7124BBB927005A2BBE /* RandomNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */; };
+		201E1F7224BBB927005A2BBE /* RandomNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */; };
+		201E1F7324BBB927005A2BBE /* RandomNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */; };
+		201E1F7424BBB927005A2BBE /* RandomNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -294,6 +298,7 @@
 		201E1F6124B62B5E005A2BBE /* GImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GImage.swift; sourceTree = "<group>"; };
 		201E1F6624B630B0005A2BBE /* GGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GGroup.swift; sourceTree = "<group>"; };
 		201E1F6B24BBB198005A2BBE /* InputOutputNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputOutputNameSpace.swift; sourceTree = "<group>"; };
+		201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomNameSpace.swift; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -537,6 +542,7 @@
 				20D1EF4F24B20ED600EB4BEE /* NameSpace.swift */,
 				20D1EF5324B217FB00EB4BEE /* StandardNameSpace.swift */,
 				201E1F6B24BBB198005A2BBE /* InputOutputNameSpace.swift */,
+				201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */,
 			);
 			path = NameSpaces;
 			sourceTree = "<group>";
@@ -802,6 +808,7 @@
 				200A5F8F24ABA51E0028180B /* GShape.swift in Sources */,
 				20DE0BCB24AE976800ABFB6E /* UnaryExpression.swift in Sources */,
 				20DE0BB324AD503F00ABFB6E /* Variable.swift in Sources */,
+				201E1F7324BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
 				201E1F6E24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -850,6 +857,7 @@
 				20DE0BC124AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				20D1EF3B24B12BB600EB4BEE /* Parametrable.swift in Sources */,
 				2098B68F24AAB06A0042D465 /* GRPHValue.swift in Sources */,
+				201E1F7124BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
 				200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				208D2FB624B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
 				200A5F7624AB85E10028180B /* Stroke.swift in Sources */,
@@ -922,6 +930,7 @@
 				20DE0BC224AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				20D1EF3C24B12BB600EB4BEE /* Parametrable.swift in Sources */,
 				2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */,
+				201E1F7224BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
 				200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
 				200A5F7724AB85E10028180B /* Stroke.swift in Sources */,
@@ -1016,6 +1025,7 @@
 				20D1EF9924B2AFF600EB4BEE /* Parametrable.swift in Sources */,
 				20D1EF8424B2AFF600EB4BEE /* BlockInstruction.swift in Sources */,
 				20D1EF7E24B2AFF600EB4BEE /* ConstantExpression.swift in Sources */,
+				201E1F7424BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
 				201E1F6F24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

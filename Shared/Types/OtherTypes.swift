@@ -44,6 +44,13 @@ struct ArrayType: GRPHType {
         "{\(content.string)}"
     }
     
+    var supertype: GRPHType {
+        if content.isTheMixed {
+            return SimpleType.mixed
+        }
+        return ArrayType(content: content.supertype)
+    }
+    
     func isInstance(of other: GRPHType) -> Bool {
         if let option = other as? OptionalType {
             return isInstance(of: option.wrapped)
