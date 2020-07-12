@@ -22,9 +22,11 @@ extension NameSpace {
 struct NameSpaces {
     private init() {}
     
-    static let instances: [NameSpace] = {
-        return [StandardNameSpace()]
-    }()
+    static let instances: [NameSpace] =
+        [
+            StandardNameSpace(),
+            InputOutputNameSpace(),
+        ]
     
     static let none: NameSpace = NoNameSpace()
     
