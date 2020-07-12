@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Cocoa
 
 struct InputOutputNameSpace: NameSpace {
     var name: String { "stdio" }
