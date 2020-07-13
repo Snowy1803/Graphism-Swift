@@ -182,6 +182,20 @@ struct StandardNameSpace: NameSpace {
         ]
     }
     
+    var exportedMethods: [Method] {
+        [
+            Method(ns: self, name: "rotate", inType: SimpleType.shape, parameters: [Parameter(name: "addRotation", type: SimpleType.rotation)]) { context, on, params in
+                if var on = on as? RotatableShape {
+                    on.rotation = on.rotation + (params[0] as! Rotation)
+                    context.runtime?.triggerAutorepaint()
+                } else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "A \(on.type) has no rotation")
+                }
+                return GRPHVoid.void
+            }
+        ]
+    }
+    
     func constructorLegacyFunction(type: GRPHType) -> Function {
         let base = type.constructor!
         return Function(ns: self, name: type.string, parameters: base.parameters, returnType: type, varargs: base.varargs, executable: base.executable)

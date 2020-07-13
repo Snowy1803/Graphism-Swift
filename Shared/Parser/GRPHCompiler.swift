@@ -28,7 +28,8 @@ class GRPHCompiler: GRPHParser {
     
     init(entireContent: String) {
         self.entireContent = entireContent
-        // Add "this"
+        // TODO change this to file, or a new type
+        globalVariables.append(Variable(name: "this", type: SimpleType.string, content: "currentDocument", final: true))
         globalVariables.append(Variable(name: "back", type: SimpleType.Background, final: false, compileTime: true))
         globalVariables.append(Variable(name: "WHITE", type: SimpleType.color, content: ColorPaint.white, final: true))
         globalVariables.append(Variable(name: "BLACK", type: SimpleType.color, content: ColorPaint.black, final: true))
@@ -250,19 +251,28 @@ class GRPHCompiler: GRPHParser {
                         continue
                     }
                     if let result = FunctionExpression.instructionPattern.firstMatch(string: tline) {
-                        // method call: validate: shape1
-                        if result[2] != nil {
-                            continue // method
-                        }
-                        // function, alternate syntax OR method on this (TODO)
+                        // validate: shape1
                         let member = NameSpaces.namespacedMember(from: result[1]!)
                         guard let ns = member.namespace else {
                             throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
                         }
-                        guard let function = Function(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member) else {
-                            throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
+                        if let onLiteral = result[2] {
+                            // ALWAYS a method
+                            let on = try Expressions.parse(context: context, infer: nil, literal: onLiteral)
+                            guard let method = Method(imports: imports, namespace: ns, name: member.member, inType: try on.getType(context: context, infer: SimpleType.mixed)) else {
+                                throw GRPHCompileError(type: .undeclared, message: "Undeclared method '\(try on.getType(context: context, infer: SimpleType.mixed))>\(result[1]!)'")
+                            }
+                            try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try MethodExpression(ctx: context, method: method, on: on, values: try Expressions.splitParameters(context: context, in: result[3]!, delimiter: Expressions.space), asInstruction: true)))
+                            continue
                         }
-                        try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try FunctionExpression(ctx: context, function: function, values: try Expressions.splitParameters(context: context, in: result[3]!, delimiter: Expressions.space), asInstruction: true)))
+                        // function or method on this
+                        if let function = Function(imports: imports, namespace: ns, name: member.member) {
+                            try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try FunctionExpression(ctx: context, function: function, values: try Expressions.splitParameters(context: context, in: result[3]!, delimiter: Expressions.space), asInstruction: true)))
+                        } else if let method = Method(imports: imports, namespace: ns, name: member.member, inType: context.findVariable(named: "this")!.type) {
+                            try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try MethodExpression(ctx: context, method: method, on: VariableExpression(name: "this"), values: try Expressions.splitParameters(context: context, in: result[3]!, delimiter: Expressions.space), asInstruction: true)))
+                        } else {
+                            throw GRPHCompileError(type: .undeclared, message: "Undeclared function or method '\(result[1]!)'")
+                        }
                         continue
                     }
                     if let result = FunctionExpression.pattern.firstMatch(string: tline) {
