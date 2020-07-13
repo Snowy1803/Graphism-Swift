@@ -38,6 +38,15 @@ enum SimpleType: String, GRPHType, CaseIterable {
         }
     }
     
+    var final: Bool {
+        switch self {
+        case .integer, .float, .color, .linear, .radial, .boolean, .string, .rotation, .pos, .direction, .stroke, .font:
+            return true
+        case .Rectangle, .Circle, .Line, .Polygon, .Text, .Path, .Group, .Background, .num, .paint, .shape, .mixed:
+            return false
+        }
+    }
+    
     func isInstance(of other: GRPHType) -> Bool {
         if let option = other as? OptionalType {
             return isInstance(of: option.wrapped)

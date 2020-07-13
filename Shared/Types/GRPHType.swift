@@ -17,6 +17,7 @@ protocol GRPHType: CustomStringConvertible {
     var constructor: Constructor? { get }
     
     var supertype: GRPHType { get }
+    var final: Bool { get }
 }
 
 extension GRPHType {
@@ -40,6 +41,7 @@ extension GRPHType {
     var staticConstants: [TypeConstant] {[]}
     var fields: [Field] {[]}
     var supertype: GRPHType { SimpleType.mixed }
+    var final: Bool { false }
     var constructor: Constructor? { nil }
     
     var description: String {
