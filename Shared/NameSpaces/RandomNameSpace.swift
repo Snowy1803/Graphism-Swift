@@ -18,17 +18,14 @@ struct RandomNameSpace: NameSpace {
             Function(ns: self, name: "randomFloat", parameters: [], returnType: SimpleType.float) { ctx, params in
                 return Float.random(in: 0..<1)
             },
-            Function(ns: self, name: "randomString", parameters: [Parameter(name: "length", type: SimpleType.integer)], returnType: SimpleType.string) { ctx, params in
+            Function(ns: self, name: "randomString", parameters: [Parameter(name: "length", type: SimpleType.integer), Parameter(name: "characters", type: SimpleType.string, optional: true)], returnType: SimpleType.string) { ctx, params in
+                let characters = params.count == 1 ? "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" : params[1] as! String
+                if characters.isEmpty {
+                    throw GRPHRuntimeError(type: .invalidArgument, message: "randomString characters cannot be empty, don't pass the characters parameter to use the default value")
+                }
                 var str = ""
                 for _ in 0..<(params[0] as! Int) {
-                    let b = Int.random(in: 0..<62)
-                    if b < 10 {
-                        str.append(Character(UnicodeScalar(b + 48)!))
-                    } else if b < 36 {
-                        str.append(Character(UnicodeScalar(b + 55)!))
-                    } else {
-                        str.append(Character(UnicodeScalar(b + 61)!))
-                    }
+                    str.append(characters.randomElement()!)
                 }
                 return str
             },
