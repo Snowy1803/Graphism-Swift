@@ -25,4 +25,8 @@ struct Pos: StatefulValue, Equatable {
     }
     
     var type: GRPHType { SimpleType.pos }
+    
+    static func + (lhs: Pos, rhs: Pos) -> Pos {
+        Pos(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
 }

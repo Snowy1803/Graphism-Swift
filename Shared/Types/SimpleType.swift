@@ -315,3 +315,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
         }
     }
 }
+
+extension SimpleType {
+    static var rootThisType: SimpleType { SimpleType.string }
+}

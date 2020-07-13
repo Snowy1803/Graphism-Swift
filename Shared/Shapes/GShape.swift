@@ -61,6 +61,30 @@ extension RectangularShape {
     var center: Pos {
         Pos(x: position.x + (size.x / 2), y: position.y + (size.y / 2))
     }
+    
+    mutating func setHCentered(img: GImage) {
+        position.x = img.size.x / 2 - size.x / 2
+    }
+    
+    mutating func setLeftAligned(img: GImage) {
+        position.x = 0
+    }
+    
+    mutating func setRightAligned(img: GImage) {
+        position.x = img.size.x - size.x
+    }
+    
+    mutating func setVCentered(img: GImage) {
+        position.y = img.size.y / 2 - size.y / 2
+    }
+    
+    mutating func setTopAligned(img: GImage) {
+        position.y = 0
+    }
+    
+    mutating func setBottomAligned(img: GImage) {
+        position.y = img.size.y - size.y
+    }
 }
 
 extension RotatableShape {

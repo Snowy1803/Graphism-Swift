@@ -29,7 +29,7 @@ class GRPHCompiler: GRPHParser {
     init(entireContent: String) {
         self.entireContent = entireContent
         // TODO change this to file, or a new type
-        globalVariables.append(Variable(name: "this", type: SimpleType.string, content: "currentDocument", final: true))
+        globalVariables.append(Variable(name: "this", type: SimpleType.rootThisType, content: "currentDocument", final: true))
         globalVariables.append(Variable(name: "back", type: SimpleType.Background, final: false, compileTime: true))
         globalVariables.append(Variable(name: "WHITE", type: SimpleType.color, content: ColorPaint.white, final: true))
         globalVariables.append(Variable(name: "BLACK", type: SimpleType.color, content: ColorPaint.black, final: true))

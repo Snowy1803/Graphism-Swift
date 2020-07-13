@@ -51,6 +51,15 @@ enum GRPHOptional: GRPHValue {
             self = .null
         }
     }
+    
+    var content: GRPHValue? {
+        switch self {
+        case .null:
+            return nil
+        case .some(let value):
+            return value
+        }
+    }
 }
 
 extension GRPHOptional: CustomStringConvertible {
