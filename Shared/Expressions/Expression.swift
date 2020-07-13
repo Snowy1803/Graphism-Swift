@@ -103,7 +103,7 @@ struct Expressions {
         }
         // function call
         if let result = FunctionExpression.pattern.firstMatch(string: str) {
-            if checkBalance(literal: result[2]!) {
+            if result[2]!.isEmpty || checkBalance(literal: result[2]!) {
                 let member = NameSpaces.namespacedMember(from: result[1]!)
                 guard let ns = member.namespace else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
@@ -113,6 +113,20 @@ struct Expressions {
                 }
                 return try FunctionExpression(ctx: context, function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
             }
+        }
+        if let result = MethodExpression.pattern.firstMatch(string: str) {
+            if checkBalance(literal: result[1]!) && (result[3]!.isEmpty || checkBalance(literal: result[3]!)) {
+                let member = NameSpaces.namespacedMember(from: result[2]!)
+                guard let ns = member.namespace else {
+                    throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[2]!)'")
+                }
+                let on = try Expressions.parse(context: context, infer: nil, literal: result[1]!)
+                guard let method = Method(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member, inType: try on.getType(context: context, infer: SimpleType.mixed)) else {
+                    throw GRPHCompileError(type: .undeclared, message: "Undeclared method '\(try on.getType(context: context, infer: SimpleType.mixed)).\(result[2]!)'")
+                }
+                return try MethodExpression(ctx: context, method: method, on: on, values: try splitParameters(context: context, in: result[3]!, delimiter: space))
+            }
+            print("Warning: balance failed, consider breaking the expression down")
         }
         if let exp = try findBinary(context: context, str: str, regex: BinaryExpression.signs1)
                       ?? findBinary(context: context, str: str, regex: BinaryExpression.signs2)

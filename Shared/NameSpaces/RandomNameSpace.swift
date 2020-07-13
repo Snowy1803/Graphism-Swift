@@ -40,4 +40,17 @@ struct RandomNameSpace: NameSpace {
             }
         ]
     }
+    
+    var exportedMethods: [Method] {
+        [
+            Method(ns: self, name: "shuffled", inType: SimpleType.string, parameters: [], returnType: SimpleType.string) { context, on, params in
+                return String((on as! String).shuffled())
+            },
+            Method(ns: self, name: "shuffleArray", inType: SimpleType.mixed.inArray, parameters: []) { context, on, params in
+                let on = on as! GRPHArray
+                on.wrapped.shuffle()
+                return GRPHVoid.void
+            }
+        ]
+    }
 }

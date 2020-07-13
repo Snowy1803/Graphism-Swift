@@ -25,7 +25,7 @@ struct MethodExpression: Expression {
         }
         for param in values {
             guard let par = try method.parameter(index: nextParam, context: ctx, exp: param) else {
-                throw GRPHCompileError(type: .typeMismatch, message: "Unexpected '\(param.string)' of type '\(try param.getType(context: ctx, infer: method.parameter(index: nextParam).type))' in method '\(method.inType)>\(method.name)'")
+                throw GRPHCompileError(type: .typeMismatch, message: "Unexpected '\(param.string)' of type '\(try param.getType(context: ctx, infer: SimpleType.mixed))' in method '\(method.inType)>\(method.name)'")
             }
             nextParam += par.add
             while self.values.count < nextParam - 1 {

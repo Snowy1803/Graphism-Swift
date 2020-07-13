@@ -260,7 +260,7 @@ class GRPHCompiler: GRPHParser {
                             // ALWAYS a method
                             let on = try Expressions.parse(context: context, infer: nil, literal: onLiteral)
                             guard let method = Method(imports: imports, namespace: ns, name: member.member, inType: try on.getType(context: context, infer: SimpleType.mixed)) else {
-                                throw GRPHCompileError(type: .undeclared, message: "Undeclared method '\(try on.getType(context: context, infer: SimpleType.mixed))>\(result[1]!)'")
+                                throw GRPHCompileError(type: .undeclared, message: "Undeclared method '\(try on.getType(context: context, infer: SimpleType.mixed)).\(result[1]!)'")
                             }
                             try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try MethodExpression(ctx: context, method: method, on: on, values: try Expressions.splitParameters(context: context, in: result[3]!, delimiter: Expressions.space), asInstruction: true)))
                             continue
