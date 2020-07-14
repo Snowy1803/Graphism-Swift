@@ -88,6 +88,10 @@ class GRPHCompiler: GRPHParser {
                 }
             }
             
+            if tline.isEmpty {
+                continue
+            }
+            
             do {
                 
                 if tline.hasPrefix("#") {
@@ -261,6 +265,7 @@ class GRPHCompiler: GRPHParser {
                         // #compiler key value
                         // - tabsize <number> (4 for spaces, 1 for tabs by default)
                         // - indent *tabs*/spaces
+                        // - ignore lines that don't compile (toggleable)
                         // - maybe disable autounboxing and use postfix "!"
                         break
                     default:
