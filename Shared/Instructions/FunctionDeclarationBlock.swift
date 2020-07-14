@@ -32,7 +32,14 @@ class FunctionDeclarationBlock: BlockInstruction {
         let definition: String
         if let couple = couple {
             definition = couple.0
-            returnDefault = try Expressions.parse(context: context, infer: returnType, literal: couple.1)
+            let defaultReturn = try Expressions.parse(context: context, infer: returnType, literal: couple.1)
+            guard let returnType = returnType else {
+                throw GRPHCompileError(type: .parse, message: "Unexpected default value in void function")
+            }
+            guard try returnType.isInstance(context: context, expression: defaultReturn) else {
+                throw GRPHCompileError(type: .parse, message: "Expected a default return value of type \(returnType), found a \(try defaultReturn.getType(context: context, infer: returnType))")
+            }
+            returnDefault = defaultReturn
         } else {
             definition = def
         }

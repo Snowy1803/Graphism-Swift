@@ -190,8 +190,24 @@ class GRPHCompiler: GRPHParser {
                     case "#function":
                         try addInstruction(FunctionDeclarationBlock(lineNumber: lineNumber, context: context, def: params))
                     case "#return":
-                        // TODO type checks !!!
-                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .return, value: Expressions.parse(context: context, infer: nil, literal: params)))
+                        let exp = params.isEmpty ? nil : try Expressions.parse(context: context, infer: nil, literal: params)
+                        guard let ctx = context as? GRPHFunctionContext,
+                              let block = ctx.blocks[0] as? FunctionDeclarationBlock else {
+                            throw GRPHCompileError(type: .parse, message: "Cannot use #return outside of a #function block")
+                        }
+                        let expected = block.generated.returnType
+                        if let exp = exp,
+                           let expected = expected {
+                            guard try expected.isInstance(context: context, expression: exp) else {
+                                throw GRPHCompileError(type: .parse, message: "Expected a #return value of type \(expected), found a \(try exp.getType(context: context, infer: expected))")
+                            }
+                        } else if exp != nil {
+                            throw GRPHCompileError(type: .parse, message: "Cannot #return a value in a void function")
+                        } else if let expected = expected,
+                                  block.returnDefault == nil { // expects something, no default return
+                            throw GRPHCompileError(type: .parse, message: "No #return value nor default value in non-void function, expected a \(expected)")
+                        }
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .return, value: exp))
                     case "#break":
                         try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break))
                     case "#continue":
