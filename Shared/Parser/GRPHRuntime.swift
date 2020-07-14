@@ -89,6 +89,7 @@ class GRPHRuntime: GRPHParser {
 func printout(_ str: String, terminator: String = "\n") {
     guard let data = (str + terminator).data(using: .utf8) else { return }
     FileHandle.standardOutput.write(data)
+//    print(str, terminator: terminator)
 }
 
 func printerr(_ str: String, terminator: String = "\n") {

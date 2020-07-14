@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol GRPHType: CustomStringConvertible {
+protocol GRPHType: CustomStringConvertible, Importable {
     var string: String { get }
     
     func isInstance(of other: GRPHType) -> Bool
@@ -47,6 +47,8 @@ extension GRPHType {
     var description: String {
         string
     }
+    
+    var exportedTypes: [GRPHType] { [self] }
 }
 
 struct GRPHTypes {
