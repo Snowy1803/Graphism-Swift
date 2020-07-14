@@ -22,6 +22,8 @@ struct Method: Parametrable, Importable {
     var effectivelyFinal: Bool {
         final || inType.final
     }
+    
+    var exportedMethods: [Method] { [self] }
 }
 
 extension Method {

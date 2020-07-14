@@ -14,6 +14,8 @@ struct Function: Parametrable, Importable {
     var returnType: GRPHType?
     var varargs: Bool = false
     var executable: (GRPHContext, [GRPHValue?]) throws -> GRPHValue
+    
+    var exportedFunctions: [Function] { [self] }
 }
 
 extension Function {

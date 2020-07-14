@@ -100,7 +100,11 @@ class GRPHContext {
         try breakNearestBlock(BlockInstruction.self).continueBlock()
     }
     
-    private func breakNearestBlock<T: BlockInstruction>(_ type: T.Type) throws -> T {
+    func returnFunction(returnValue: GRPHValue?) throws {
+        try breakNearestBlock(FunctionDeclarationBlock.self).setReturnValue(returnValue: returnValue)
+    }
+    
+    func breakNearestBlock<T: BlockInstruction>(_ type: T.Type) throws -> T {
         for block in blocks.reversed() {
             block.breakBlock()
             if let block = block as? T {

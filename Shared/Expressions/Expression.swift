@@ -224,7 +224,7 @@ struct Expressions {
         return nil
     }
     
-    private static func checkBalance<S: StringProtocol>(literal str: S) -> Bool {
+    static func checkBalance<S: StringProtocol>(literal str: S) -> Bool {
         if str.isEmpty {
             return false // Fix error from Java; unary - matches empty substraction instead of unary
         }

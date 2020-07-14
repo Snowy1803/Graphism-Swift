@@ -19,8 +19,7 @@ struct BreakInstruction: Instruction {
         case .continue:
             try context.continueBlock()
         case .return:
-            // ADD try context.returnFunction(value.eval(context)!)
-            break
+            try context.returnFunction(returnValue: value?.eval(context: context))
         }
     }
     

@@ -81,7 +81,10 @@ class GRPHCompiler: GRPHParser {
                 while tabs < blocks.count {
                     blocks.removeLast()
                     context.closeBlock()
-                    // TODO change context if going out of function
+                    if context.blocks.isEmpty,
+                       let parent = context.parent {
+                        context = parent
+                    }
                 }
             }
             
@@ -185,9 +188,10 @@ class GRPHCompiler: GRPHParser {
                         }
                         try addInstruction(ThrowInstruction(lineNumber: lineNumber, type: error, message: exp))
                     case "#function":
-                        break
+                        try addInstruction(FunctionDeclarationBlock(lineNumber: lineNumber, context: context, def: params))
                     case "#return":
-                        break
+                        // TODO type checks !!!
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .return, value: Expressions.parse(context: context, infer: nil, literal: params)))
                     case "#break":
                         try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break))
                     case "#continue":
@@ -311,9 +315,10 @@ class GRPHCompiler: GRPHParser {
     func addInstruction(_ instruction: Instruction) throws {
         addNonBlockInstruction(instruction)
         // context.accepts(instruction) // for types ig
-        /* ADD if let function = instruction as? FunctionDeclarationBlock {
-            blocks.append(instruction)
-        } else */if let block = instruction as? BlockInstruction {
+        if let function = instruction as? FunctionDeclarationBlock {
+            blocks.append(function)
+            context = GRPHFunctionContext(parent: context, function: function)
+        } else if let block = instruction as? BlockInstruction {
             blocks.append(block)
             context.inBlock(block: block)
         }
