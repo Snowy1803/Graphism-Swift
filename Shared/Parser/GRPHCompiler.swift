@@ -237,9 +237,26 @@ class GRPHCompiler: GRPHParser {
                     case "#block":
                         try addInstruction(BlockInstruction(lineNumber: lineNumber))
                     case "#requires":
-                        break
+                        let p = params.components(separatedBy: " ")
+                        let version: Version
+                        if p.count == 1 {
+                            version = Version()
+                        } else if p.count == 2 {
+                            guard let v = Version(description: p[1]) else {
+                                throw GRPHCompileError(type: .parse, message: "Couldn't parse version number '\(p[1])'")
+                            }
+                            version = v
+                        } else {
+                            throw GRPHCompileError(type: .parse, message: "Expected syntax '#requires plugin version'")
+                        }
+                        let requires = RequiresInstruction(lineNumber: lineNumber, plugin: p[0], version: version)
+                        if blocks.isEmpty {
+                            try requires.run(context: context)
+                        } else {
+                            try addInstruction(requires)
+                        }
                     case "#type":
-                        throw GRPHCompileError(type: .unsupported, message: "#type is not available yet")
+                        throw GRPHCompileError(type: .unsupported, message: "#type requires GRPH 2.0")
                     case "#setting":
                         let split = params.components(separatedBy: " ")
                         guard split.count == 2 else {
