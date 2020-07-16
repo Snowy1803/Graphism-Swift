@@ -87,6 +87,8 @@ struct CastExpression: Expression {
                   let array = value as? GRPHArray,
                   array.wrapped.allSatisfy({ GRPHTypes.realType(of: $0, expected: to.content).isInstance(of: to.content) }) {
             return GRPHArray(array.wrapped, of: to.content)
+        } else if let to = to as? MultiOrType {
+            return cast(value: value, to: to.type1) ?? cast(value: value, to: to.type2)
         }
         return nil
     }

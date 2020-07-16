@@ -155,6 +155,11 @@ class GraphismTests: XCTestCase {
         try cast(literal: "zzz as int", expected: "46655")
         try cast(literal: "{mixed}(ff col zzz) as <{string}>", expected: ##"<string>{"45", "#ff0000", "0zZZZ"}"##)
         try cast(literal: "3 as string as rotation as float", expected: "3.0")
+        try cast(literal: "color.RED as paint", expected: "red")
+        try cast(literal: "ff as paint|string", expected: "45")
+        try cast(literal: "5 as rotation|float", expected: "Rotation(value: 5)")
+        try cast(literal: "5f as rotation|float", expected: "5.0")
+        try cast(literal: "5 as rotation|float|integer|float", expected: "5")
     }
     
     func cast(literal: String, expected: String) throws {
