@@ -30,6 +30,27 @@ struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
         }
     }
     
+    init?(byCasting value: GRPHValue) {
+        if let value = value as? Int {
+            self.init(value: value)
+            return
+        } else if let value = value as? Float {
+            self.init(value: Int(value))
+            return
+        } else if let value = value as? String {
+            if value.hasSuffix("º") || value.hasSuffix("°") {
+                if let i = Int(decoding: value.dropLast()) {
+                    self.init(value: i)
+                    return
+                }
+            } else if let i = Int(decoding: value) {
+                self.init(value: i)
+                return
+            }
+        }
+        return nil
+    }
+    
     var angle: Angle {
         .degrees(Double(value))
     }

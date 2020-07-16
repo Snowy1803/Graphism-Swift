@@ -34,16 +34,35 @@ extension GRPHValue where Self: Equatable {
 extension Int: StatefulValue, GRPHNumber {
     
     init?(byCasting value: GRPHValue) {
-        if let int = value as? Int {
-            self.init(int)
-        } else if let num = value as? Float {
+        if let num = value as? Float {
             self.init(num)
         } else if let rot = value as? Rotation {
             self.init(rot.value)
         } else if let str = value as? String {
-            self.init(str) // May return nil
+            self.init(decoding: str) // May return nil
         } else {
             return nil
+        }
+    }
+    
+    init?<S: StringProtocol>(decoding string: S) {
+        if string.hasPrefix("0x") || string.hasPrefix("0X") {
+            self.init(string.dropFirst(2), radix: 16)
+        } else if string.hasPrefix("0o") {
+            self.init(string.dropFirst(2), radix: 8)
+        } else if string.hasPrefix("0b") {
+            self.init(string.dropFirst(2), radix: 2)
+        } else if string.hasPrefix("#") {
+            self.init(string.dropFirst(), radix: 16)
+        } else if string.hasPrefix("0z") {
+            self.init(string.dropFirst(2), radix: 36)
+        } else if string.hasPrefix("-") {
+            self.init(decoding: string.dropFirst())
+            self = -self
+        } else if string.hasPrefix("+") {
+            self.init(decoding: string.dropFirst())
+        } else {
+            self.init(string)
         }
     }
     
@@ -68,6 +87,8 @@ extension String: StatefulValue {
             self.init(str) // Not a literal
         } else if let val = value as? StatefulValue {
             self.init(val.state)
+        } else if let val = value as? CustomStringConvertible {
+            self.init(val.description)
         } else {
             return nil
         }
@@ -82,8 +103,6 @@ extension Float: StatefulValue, GRPHNumber {
     init?(byCasting value: GRPHValue) {
         if let int = value as? Int {
             self.init(int)
-        } else if let num = value as? Float {
-            self.init(num)
         } else if let rot = value as? Rotation {
             self.init(rot.value)
         } else if let str = value as? String {
@@ -110,9 +129,7 @@ extension Float: StatefulValue, GRPHNumber {
 extension Bool: StatefulValue {
     
     init?(byCasting value: GRPHValue) {
-        if let bool = value as? Bool {
-            self.init(bool)
-        } else if let int = value as? Int {
+        if let int = value as? Int {
             self.init(int != 0)
         } else if let num = value as? Float {
             self.init(num != 0)
@@ -124,7 +141,7 @@ extension Bool: StatefulValue {
             self.init(pos.x != 0 || pos.y != 0)
         } else if let arr = value as? GRPHArray {
             self.init(arr.count != 0)
-        } else if let opt = value as? GRPHOptional {
+        } else if let opt = value as? GRPHOptional { // never really reached
             self.init(!opt.isEmpty)
         } else {
             self.init(true)

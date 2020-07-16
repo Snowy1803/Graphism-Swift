@@ -40,10 +40,7 @@ struct StandardNameSpace: NameSpace {
             constructorLegacyFunction(type: SimpleType.radial),
             Function(ns: self, name: "colorFromInt", parameters: [Parameter(name: "value", type: SimpleType.integer)], returnType: SimpleType.color) { context, params in
                 let value = params[0] as! Int
-                return ColorPaint.components(red: Float((value >> 16) & 0xFF) / 255,
-                                             green: Float((value >> 8) & 0xFF) / 255,
-                                             blue: Float(value & 0xFF) / 255,
-                                             alpha: Float((value >> 24) & 0xFF) / 255)
+                return ColorPaint(integer: value, alpha: true)
             },
             // file manipulation functions removed
             Function(ns: self, name: "stringToInteger", parameters: [Parameter(name: "string", type: SimpleType.string)], returnType: SimpleType.integer.optional) { context, params in

@@ -164,4 +164,11 @@ extension ColorPaint {
             }
         }
     }
+    
+    init(integer value: Int, alpha: Bool) {
+         self = .components(red: Float((value >> 16) & 0xFF) / 255,
+                                     green: Float((value >> 8) & 0xFF) / 255,
+                                     blue: Float(value & 0xFF) / 255,
+                                     alpha: alpha ? Float((value >> 24) & 0xFF) / 255 : 1)
+    }
 }

@@ -143,6 +143,25 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "[var as {string}].length").string, "[var as {string}].length")
     }
     
+    func testCasts() throws {
+        try cast(literal: "1 as string", expected: "1")
+        try cast(literal: "1 as string?", expected: "Optional[1]")
+        try cast(literal: "3° as integer", expected: "3")
+        context.addVariable(Variable(name: "ff", type: SimpleType.string, content: "45", final: true), global: true)
+        context.addVariable(Variable(name: "col", type: SimpleType.string, content: "#ff0000", final: true), global: true)
+        context.addVariable(Variable(name: "zzz", type: SimpleType.string, content: "0zZZZ", final: true), global: true)
+        try cast(literal: "ff as integer", expected: "45")
+        try cast(literal: "col as color", expected: "components(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)")
+        try cast(literal: "zzz as int", expected: "46655")
+        try cast(literal: "{mixed}(ff col zzz) as <{string}>", expected: ##"<string>{"45", "#ff0000", "0zZZZ"}"##)
+        try cast(literal: "3 as string as rotation as float", expected: "3.0")
+    }
+    
+    func cast(literal: String, expected: String) throws {
+        let exp = try Expressions.parse(context: context, infer: SimpleType.integer, literal: literal)
+        XCTAssertEqual("\(try exp.eval(context: context))", expected)
+    }
+    
     func testSampleProgram() {
         compiler = GRPHCompiler(entireContent: """
 #typealias Colors {color}?
@@ -164,7 +183,7 @@ class GraphismTests: XCTestCase {
 """)
         XCTAssertTrue(compiler.compile())
         print(compiler.wdiuInstructions)
-        let runtime = GRPHRuntime(compiler: compiler)
+        let runtime = GRPHRuntime(compiler: compiler, image: GImage())
         XCTAssertTrue(runtime.run())
     }
 

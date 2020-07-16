@@ -34,3 +34,20 @@ struct Pos: StatefulValue, Equatable {
         Pos(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 }
+
+extension Pos {
+    init?(byCasting value: GRPHValue) {
+        if let value = value as? String {
+            let components = value.components(separatedBy: ",")
+            if components.count == 2,
+               let x = Float(components[0]),
+               let y = Float(components[1]) {
+                self.init(x: x, y: y)
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+}
