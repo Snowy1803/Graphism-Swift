@@ -24,7 +24,7 @@ class AssignmentInstruction: Instruction {
         
         let varType = try assigned.getType(context: context, infer: SimpleType.mixed)
         guard try varType.isInstance(context: context, expression: value) else {
-            throw GRPHRuntimeError(type: .typeMismatch, message: "Incompatible types '\(try value.getType(context: context, infer: SimpleType.mixed))' and '\(varType)' in assignment")
+            throw GRPHCompileError(type: .typeMismatch, message: "Incompatible types '\(try value.getType(context: context, infer: SimpleType.mixed))' and '\(varType)' in assignment")
         }
         
         if let op = op {

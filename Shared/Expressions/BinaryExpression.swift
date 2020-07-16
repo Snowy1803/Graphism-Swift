@@ -38,6 +38,9 @@ struct BinaryExpression: Expression {
             if try SimpleType.rotation.isInstance(context: context, expression: left),
                try SimpleType.rotation.isInstance(context: context, expression: right) {
                 self.operands = .rotation
+            } else if try SimpleType.pos.isInstance(context: context, expression: left),
+                      try SimpleType.pos.isInstance(context: context, expression: right) {
+                       self.operands = .pos
             } else {
                 fallthrough
             }
@@ -113,14 +116,14 @@ struct BinaryExpression: Expression {
         }
         let right = unbox ? try GRPHTypes.unbox(value: try self.right.eval(context: context)) : try self.right.eval(context: context)
         switch op {
-        case .greaterThan, .greaterOrEqualTo, .lessThan, .lessOrEqualTo:
-            if operands == .pos {
-                return run(left as! Pos, right as! Pos)
-            }
-            fallthrough
         case .plus, .minus:
             if operands == .rotation {
                 return run(left as! Rotation, right as! Rotation)
+            }
+            fallthrough
+        case .greaterThan, .greaterOrEqualTo, .lessThan, .lessOrEqualTo:
+            if operands == .pos {
+                return run(left as! Pos, right as! Pos)
             }
             fallthrough
         case .multiply, .divide, .modulo:
@@ -231,6 +234,10 @@ struct BinaryExpression: Expression {
             return first.x > second.x && first.y > second.y
         case .lessThan:
             return first.x < second.x && first.y < second.y
+        case .plus:
+            return first + second
+        case .minus:
+            return first - second
         default:
             fatalError("Operator \(op.rawValue) doesn't take pos")
         }

@@ -110,26 +110,21 @@ class GRPHCompiler: GRPHParser {
                         }
                         if ns.isEqual(to: NameSpaces.none) {
                             if let ns = NameSpaces.namespace(named: p.member) {
-                                print("Imported ns")
                                 imports.append(ns)
                             } else {
                                 throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in import '\(params)'")
                             }
                         } else if let f = Function(imports: [], namespace: ns, name: p.member) {
-                            print("Imported func")
                             imports.append(f)
                         } else if let t = ns.exportedTypes.first(where: { $0.string == p.member }) {
-                            print("Imported type")
                             imports.append(t)
                         } else if let t = ns.exportedTypeAliases.first(where: { $0.name == p.member }) {
-                            print("Imported typealias")
                             imports.append(t)
                         } else {
                             let cmps = p.member.components(separatedBy: ".")
                             if cmps.count == 2,
                                let type = GRPHTypes.parse(context: context, literal: cmps[0]),
                                let m = Method(imports: [], namespace: ns, name: cmps[1], inType: type) {
-                                print("Imported method")
                                 imports.append(m)
                             } else {
                                 throw GRPHCompileError(type: .undeclared, message: "Couldn't import '\(p.member)' from namespace '\(ns.name)'")
