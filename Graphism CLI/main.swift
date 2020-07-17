@@ -7,6 +7,7 @@
 
 import Foundation
 import ArgumentParser
+import Darwin
 
 struct GraphismCLI: ParsableCommand {
     
@@ -27,6 +28,7 @@ struct GraphismCLI: ParsableCommand {
     var input: String
     
     func run() throws {
+        setbuf(stdout, nil)
         let compiler = GRPHCompiler(entireContent: try String(contentsOfFile: input, encoding: .utf8))
         guard compiler.compile() else {
             throw ExitCode.failure
