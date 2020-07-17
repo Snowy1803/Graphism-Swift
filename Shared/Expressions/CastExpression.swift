@@ -8,33 +8,52 @@
 import Foundation
 
 struct CastExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^(.+) (as|is) (\(Expressions.typePattern))$")
+    static let pattern = try! NSRegularExpression(pattern: "^(.+) (is|as\\??!?) (\(Expressions.typePattern))$")
     
     var from: Expression
-    var cast: Bool
+    var cast: CastType
     var to: GRPHType
     
     func eval(context: GRPHContext) throws -> GRPHValue {
-        if cast {
-            let value = try GRPHTypes.autobox(value: try from.eval(context: context), expected: to)
+        let raw = try from.eval(context: context)
+        if case .typeCheck = cast {
+            return GRPHTypes.type(of: raw).isInstance(of: to) // no autoboxing in is
+        }
+        let value = try GRPHTypes.autobox(value: raw, expected: to)
+        if case .strict(optional: _) = cast {
+            if GRPHTypes.type(of: value).isInstance(of: to) {
+                return wrap(value)
+            }
+        } else {
             // boxing, unboxing and all null values returns here
             if GRPHTypes.type(of: value).isInstance(of: to) {
-                return value
+                return wrap(value)
             }
             if let result = CastExpression.cast(value: value, to: to) {
-                return result
+                return wrap(result)
             }
-            throw GRPHRuntimeError(type: .cast, message: "Couldn't cast from \(GRPHTypes.type(of: value)) to \(to)")
-        } else {
-            return GRPHTypes.type(of: try from.eval(context: context)).isInstance(of: to) // no autoboxing in is
         }
+        if cast.optional {
+            return GRPHOptional.null
+        }
+        throw GRPHRuntimeError(type: .cast, message: "Couldn't cast from \(GRPHTypes.type(of: value)) to \(to)")
+    }
+    
+    @inlinable func wrap(_ value: GRPHValue) -> GRPHValue {
+        cast.optional ? GRPHOptional(value) : value
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
-        cast ? to : SimpleType.boolean
+        if case .typeCheck = cast {
+            return SimpleType.boolean
+        } else if cast.optional {
+            return to.optional
+        } else {
+            return to
+        }
     }
     
-    var string: String { "\(from.string) \(cast ? "as" : "is") \(to.string)" }
+    var string: String { "\(from.string) \(cast.string) \(to.string)" }
     
     var needsBrackets: Bool { true }
     
@@ -91,5 +110,48 @@ struct CastExpression: Expression {
             return cast(value: value, to: to.type1) ?? cast(value: value, to: to.type2)
         }
         return nil
+    }
+}
+
+enum CastType {
+    case typeCheck
+    case conversion(optional: Bool)
+    case strict(optional: Bool)
+    
+    var string: String {
+        switch self {
+        case .typeCheck:
+            return "is"
+        case .conversion(optional: let optional):
+            return "as\(optional ? "?" : "")"
+        case .strict(optional: let optional):
+            return "as\(optional ? "?" : "")!"
+        }
+    }
+    
+    init?(_ str: String) {
+        if str == "is" {
+            self = .typeCheck
+        } else if str.hasPrefix("as") {
+            let optional = str.dropFirst(2).hasPrefix("?")
+            if str.hasSuffix("!") {
+                self = .strict(optional: optional)
+            } else {
+                self = .conversion(optional: optional)
+            }
+        } else {
+            return nil
+        }
+    }
+    
+    var optional: Bool {
+        switch self {
+        case .typeCheck:
+            return false
+        case .conversion(optional: let optional):
+            return optional
+        case .strict(optional: let optional):
+            return optional
+        }
     }
 }

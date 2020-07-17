@@ -160,16 +160,25 @@ class GraphismTests: XCTestCase {
         try cast(literal: "5 as rotation|float", expected: "Rotation(value: 5)")
         try cast(literal: "5f as rotation|float", expected: "5.0")
         try cast(literal: "5 as rotation|float|integer|float", expected: "5")
+        
+        try cast(literal: "5 as? float", expected: "Optional[5.0]")
+        try cast(literal: "5.0 as! float", expected: "5.0")
+        try cast(literal: "color.RED as? float", expected: "null")
+        try cast(literal: "color.RED as?! float", expected: "null")
+        try cast(literal: "5.0 as?! float?", expected: "Optional[Optional[5.0]]")
+        try cast(literal: "5 as?! float?", expected: "null")
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as! float").eval(context: context))
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as float").eval(context: context))
     }
     
     func cast(literal: String, expected: String) throws {
-        let exp = try Expressions.parse(context: context, infer: SimpleType.integer, literal: literal)
+        let exp = try Expressions.parse(context: context, infer: SimpleType.mixed, literal: literal)
         XCTAssertEqual("\(try exp.eval(context: context))", expected)
     }
     
     func testSampleProgram() {
         compiler = GRPHCompiler(entireContent: """
-#typealias Colors {color}?
+#typealias Colors {color}
 #if 0 == 0
 \t// ok
 \t#break
