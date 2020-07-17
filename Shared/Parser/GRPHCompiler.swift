@@ -277,7 +277,9 @@ class GRPHCompiler: GRPHParser {
                         // #compiler key value
                         // - tabsize <number> (4 for spaces, 1 for tabs by default)
                         // - indent *tabs*/spaces
+                        // - natural true —> replaces ( -> [, [ -> {, { -> ( after internation before parsing
                         // - ignore lines that don't compile (toggleable)
+                        // -> ignore errors/warnings/TypeError/UndeclaredError
                         // - maybe disable autounboxing and use postfix "!"
                         break
                     default:
@@ -292,7 +294,11 @@ class GRPHCompiler: GRPHParser {
                         try addInstruction(try ArrayModificationInstruction(lineNumber: lineNumber, context: context, groups: result))
                         continue
                     }
-                    // inline func declaration: color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
+                    if FunctionDeclarationBlock.inlineDeclaration.firstMatch(string: tline) != nil {
+                        // color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
+                        try addNonBlockInstruction(try FunctionDeclarationBlock(lineNumber: lineNumber, context: context, def: tline))
+                        continue
+                    }
                     if let result = VariableDeclarationInstruction.pattern.firstMatch(string: tline) {
                         // {integer} arr = (0 1 2 3)
                         try addInstruction(try VariableDeclarationInstruction(lineNumber: lineNumber, groups: result, context: context))
@@ -353,7 +359,8 @@ class GRPHCompiler: GRPHParser {
         return true
     }
     
-    func addNonBlockInstruction(_ instruction: Instruction) {
+    func addNonBlockInstruction(_ instruction: Instruction) throws {
+        // context.accepts(instruction) // for type contexts
         if let block = blocks.last {
             block.children.append(instruction)
         } else {
@@ -362,8 +369,7 @@ class GRPHCompiler: GRPHParser {
     }
     
     func addInstruction(_ instruction: Instruction) throws {
-        addNonBlockInstruction(instruction)
-        // context.accepts(instruction) // for types ig
+        try addNonBlockInstruction(instruction)
         if let function = instruction as? FunctionDeclarationBlock {
             blocks.append(function)
             context = GRPHFunctionContext(parent: context, function: function)

@@ -9,7 +9,7 @@ import Foundation
 
 class FunctionDeclarationBlock: BlockInstruction {
     static let equals = try! NSRegularExpression(pattern: "=")
-    static let parameter = try! NSRegularExpression(pattern: "\(Expressions.typePattern) [A-Za-z_]+\\[.*\\] = .+")
+    static let inlineDeclaration = try! NSRegularExpression(pattern: "\(Expressions.typePattern) [A-Za-z_]+\\[.*\\] = .+")
     
     var generated: Function!
     var defaults: [Expression?] = []
