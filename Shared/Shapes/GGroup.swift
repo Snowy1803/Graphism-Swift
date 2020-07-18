@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class GGroup: GShape { // rotation
-    var uuid = UUID()
+    let uuid = UUID()
     
     var typeKey: String {
         "Group"

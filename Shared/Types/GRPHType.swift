@@ -51,6 +51,10 @@ extension GRPHType {
     var exportedTypes: [GRPHType] { [self] }
 }
 
+func | (lhs: GRPHType, rhs: GRPHType) -> MultiOrType {
+    MultiOrType(type1: lhs, type2: rhs)
+}
+
 struct GRPHTypes {
     
     private init() {}

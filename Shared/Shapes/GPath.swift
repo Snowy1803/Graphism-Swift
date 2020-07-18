@@ -13,7 +13,7 @@ class GPath: SimpleShape { // Add rotation support
     var givenName: String?
     var typeKey: String { "Path" }
     
-    var uuid = UUID()
+    let uuid = UUID()
     
     var points: [Pos] = []
     var actions: [PathActions] = []

@@ -303,7 +303,14 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                   strokeStyle: StrokeWrapper(strokeWidth: values[safe: 3] as? Float ?? 5, strokeType: values[safe: 4] as? Stroke ?? .elongated, strokeDashArray: values[safe: 5] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
         case .Text:
-            return nil // TODO
+            return Constructor(parameters: [Parameter(name: "text", type: SimpleType.string), .pos, .zpos, Parameter(name: "font", type: SimpleType.font | SimpleType.integer), .rotation, .paint], type: self, varargs: true) { context, values in
+                return GText(givenName: (values[0] as! String),
+                             position: values[1] as! Pos,
+                             positionZ: values[2] as! Int,
+                             font: values[3] as? JFont ?? JFont(size: values[3] as! Int),
+                             // rotation
+                             paint: AnyPaint.auto(values[5]!))
+            }
         case .Path:
             return Constructor(parameters: [.shapeName, .zpos, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
                 return GPath(givenName: values[0] as? String,

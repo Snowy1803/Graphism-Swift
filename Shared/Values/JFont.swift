@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct JFont: StatefulValue, Equatable {
     static let plain = 0
@@ -32,5 +33,20 @@ struct JFont: StatefulValue, Equatable {
     
     var state: String {
         "font(\(name?.asLiteral ?? "")\(size) \(weight))"
+    }
+    
+    var cg: Font {
+        if let name = name {
+            return .custom(name, size: CGFloat(size))
+        }
+        return .system(size: CGFloat(size))
+    }
+    
+    func apply(_ text : Text) -> Text {
+        let text = text.font(cg).fontWeight(bold ? .bold : .regular)
+        if italic {
+            return text.italic()
+        }
+        return text
     }
 }

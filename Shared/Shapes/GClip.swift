@@ -15,7 +15,7 @@ struct GClip: GShape {
     var givenName: String?
     var typeKey: String { "Clip" }
     
-    var uuid = UUID()
+    let uuid = UUID()
     
     var positionZ: Int = 0
     

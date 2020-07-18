@@ -13,7 +13,7 @@ class GCircle: RectangularShape, SimpleShape, RotatableShape {
     var givenName: String?
     var typeKey: String { size.square ? "Circle" : "Ellipse" }
     
-    var uuid = UUID()
+    let uuid = UUID()
     
     var position: Pos
     var positionZ: Int = 0

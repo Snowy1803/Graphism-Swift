@@ -126,6 +126,10 @@
 		20A1EF6224C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
 		20A1EF6324C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
 		20A1EF6424C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
+		20A1EF6624C35376000F67FB /* GText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6524C35376000F67FB /* GText.swift */; };
+		20A1EF6724C35376000F67FB /* GText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6524C35376000F67FB /* GText.swift */; };
+		20A1EF6824C35376000F67FB /* GText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6524C35376000F67FB /* GText.swift */; };
+		20A1EF6924C35376000F67FB /* GText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6524C35376000F67FB /* GText.swift */; };
 		20D1EF2D24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2E24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2F24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
@@ -361,6 +365,7 @@
 		2098B69724AB61350042D465 /* Paint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paint.swift; sourceTree = "<group>"; };
 		2098B69A24AB62B60042D465 /* ColorPaint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPaint.swift; sourceTree = "<group>"; };
 		20A1EF6024C348E8000F67FB /* JFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JFont.swift; sourceTree = "<group>"; };
+		20A1EF6524C35376000F67FB /* GText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GText.swift; sourceTree = "<group>"; };
 		20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakInstruction.swift; sourceTree = "<group>"; };
 		20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherTypes.swift; sourceTree = "<group>"; };
 		20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleType.swift; sourceTree = "<group>"; };
@@ -532,6 +537,7 @@
 				2098B68724AA26740042D465 /* GClip.swift */,
 				201E1F6624B630B0005A2BBE /* GGroup.swift */,
 				201E1F6124B62B5E005A2BBE /* GImage.swift */,
+				20A1EF6524C35376000F67FB /* GText.swift */,
 			);
 			path = Shapes;
 			sourceTree = "<group>";
@@ -848,6 +854,7 @@
 				200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */,
 				20DE0BE724AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				20D1EF5624B217FB00EB4BEE /* StandardNameSpace.swift in Sources */,
+				20A1EF6824C35376000F67FB /* GText.swift in Sources */,
 				200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */,
 				200A5F8A24ABA5180028180B /* ColorPaint.swift in Sources */,
 				200A5F8C24ABA5180028180B /* GRPHType.swift in Sources */,
@@ -880,6 +887,7 @@
 				201E1F6224B62B5E005A2BBE /* GImage.swift in Sources */,
 				200A5F6D24AB6FB60028180B /* RadialPaint.swift in Sources */,
 				20D1EF3624B12AEE00EB4BEE /* SimpleType.swift in Sources */,
+				20A1EF6624C35376000F67FB /* GText.swift in Sources */,
 				20D1EF3F24B1393E00EB4BEE /* Parameter.swift in Sources */,
 				201E1F8024BC9FA3005A2BBE /* Method.swift in Sources */,
 				2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */,
@@ -961,6 +969,7 @@
 				201E1F6324B62B5E005A2BBE /* GImage.swift in Sources */,
 				200A5F6E24AB6FB60028180B /* RadialPaint.swift in Sources */,
 				20D1EF3724B12AEE00EB4BEE /* SimpleType.swift in Sources */,
+				20A1EF6724C35376000F67FB /* GText.swift in Sources */,
 				20D1EF4024B1393E00EB4BEE /* Parameter.swift in Sources */,
 				201E1F8124BC9FA3005A2BBE /* Method.swift in Sources */,
 				2063128324A8C38D0095911B /* GraphismDocument.swift in Sources */,
@@ -1089,6 +1098,7 @@
 				20D1EFB724B2AFF600EB4BEE /* Direction.swift in Sources */,
 				20D1EFAD24B2AFF600EB4BEE /* VariableDeclarationInstruction.swift in Sources */,
 				20D1EF9E24B2AFF600EB4BEE /* ArrayLiteralExpression.swift in Sources */,
+				20A1EF6924C35376000F67FB /* GText.swift in Sources */,
 				20D1EFB224B2AFF600EB4BEE /* CatchBlock.swift in Sources */,
 				20D1EFA624B2AFF600EB4BEE /* ColorPaint.swift in Sources */,
 				20D1EF8C24B2AFF600EB4BEE /* Expression.swift in Sources */,

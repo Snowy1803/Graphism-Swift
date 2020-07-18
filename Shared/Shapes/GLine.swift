@@ -13,7 +13,7 @@ class GLine: SimpleShape {
     var givenName: String?
     var typeKey: String { "Line" }
     
-    var uuid = UUID()
+    let uuid = UUID()
     
     var start: Pos
     var end: Pos

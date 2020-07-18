@@ -13,7 +13,7 @@ class GPolygon: SimpleShape { // Add rotation support
     var givenName: String?
     var typeKey: String { "Polygon" }
     
-    var uuid = UUID()
+    let uuid = UUID()
     
     var points: [Pos] = []
     var positionZ: Int = 0
