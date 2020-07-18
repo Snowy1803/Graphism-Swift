@@ -38,6 +38,7 @@ struct StandardNameSpace: NameSpace {
             constructorLegacyFunction(type: SimpleType.color),
             constructorLegacyFunction(type: SimpleType.linear),
             constructorLegacyFunction(type: SimpleType.radial),
+            constructorLegacyFunction(type: SimpleType.font),
             Function(ns: self, name: "colorFromInt", parameters: [Parameter(name: "value", type: SimpleType.integer)], returnType: SimpleType.color) { context, params in
                 let value = params[0] as! Int
                 return ColorPaint(integer: value, alpha: true)

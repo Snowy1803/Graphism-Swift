@@ -84,7 +84,9 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return [TypeConstant(name: "MAX", type: self, value: Int.max),
                     TypeConstant(name: "MIN", type: self, value: Int.min)]
         case .font:
-            return [] // TODO
+            return [TypeConstant(name: "PLAIN", type: SimpleType.integer, value: JFont.plain),
+                    TypeConstant(name: "BOLD", type: SimpleType.integer, value: JFont.bold),
+                    TypeConstant(name: "ITALIC", type: SimpleType.integer, value: JFont.italic)]
         case .pos:
             return [TypeConstant(name: "ORIGIN", type: self, value: Pos(x: 0, y: 0))]
         case .stroke:
@@ -123,13 +125,16 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return [KeyPathField(name: "fromColor", type: SimpleType.color, keyPath: \LinearPaint.from),
                     KeyPathField(name: "toColor", type: SimpleType.color, keyPath: \LinearPaint.to),
                     KeyPathField(name: "direction", type: SimpleType.direction, keyPath: \LinearPaint.direction)]
-            // TODO Test assignment implementation
         case .radial:
             return [KeyPathField(name: "fromColor", type: SimpleType.color, keyPath: \RadialPaint.centerColor),
                     KeyPathField(name: "toColor", type: SimpleType.color, keyPath: \RadialPaint.externalColor),
                     KeyPathField(name: "center", type: SimpleType.pos, keyPath: \RadialPaint.center),
                     KeyPathField(name: "radius", type: SimpleType.float, keyPath: \RadialPaint.radius)]
-        // fonts & images
+        case .font:
+            return [KeyPathField(name: "name", type: SimpleType.string, keyPath: \JFont.grphName),
+                    KeyPathField(name: "size", type: SimpleType.integer, keyPath: \JFont.size),
+                    KeyPathField(name: "style", type: SimpleType.integer, keyPath: \JFont.weight)]
+        // images
         case .rotation:
             return [KeyPathField(name: "value", type: SimpleType.integer, keyPath: \Rotation.value),
                     VirtualField<Rotation>(name: "radians", type: SimpleType.float, getter: { Float($0.value) * (Float.pi / 180) }, setter: { $0.value = Int(($1 as! Float) * (180 / Float.pi)) })]
@@ -255,7 +260,11 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 return RadialPaint(centerColor: values[0] as! ColorPaint, center: values[1] as? Pos ?? Pos(x: 0.5, y: 0.5), externalColor: values[2] as! ColorPaint, radius: values[3] as! Float)
             }
         case .font:
-            return nil // TODO
+            return Constructor(parameters: [Parameter(name: "name", type: SimpleType.string, optional: true),
+                                            Parameter(name: "size", type: SimpleType.integer),
+                                            Parameter(name: "style", type: SimpleType.integer, optional: true)], type: self) { context, values in
+                return JFont(name: values[0] as? String, size: values[1] as! Int, weight: values.count == 3 ? values[2] as! Int : JFont.plain)
+            }
         case .Rectangle:
             return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
                 return GRectangle(givenName: values[0] as? String,

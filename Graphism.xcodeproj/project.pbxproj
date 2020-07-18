@@ -122,6 +122,10 @@
 		2098B69924AB61350042D465 /* Paint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69724AB61350042D465 /* Paint.swift */; };
 		2098B69B24AB62B60042D465 /* ColorPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69A24AB62B60042D465 /* ColorPaint.swift */; };
 		2098B69C24AB62B60042D465 /* ColorPaint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B69A24AB62B60042D465 /* ColorPaint.swift */; };
+		20A1EF6124C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
+		20A1EF6224C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
+		20A1EF6324C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
+		20A1EF6424C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
 		20D1EF2D24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2E24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2F24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
@@ -356,6 +360,7 @@
 		2098B69424AB5EDA0042D465 /* Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rotation.swift; sourceTree = "<group>"; };
 		2098B69724AB61350042D465 /* Paint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paint.swift; sourceTree = "<group>"; };
 		2098B69A24AB62B60042D465 /* ColorPaint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPaint.swift; sourceTree = "<group>"; };
+		20A1EF6024C348E8000F67FB /* JFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JFont.swift; sourceTree = "<group>"; };
 		20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakInstruction.swift; sourceTree = "<group>"; };
 		20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherTypes.swift; sourceTree = "<group>"; };
 		20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleType.swift; sourceTree = "<group>"; };
@@ -556,6 +561,7 @@
 				200A5F6C24AB6FB60028180B /* RadialPaint.swift */,
 				200A5F6924AB6AE60028180B /* Direction.swift */,
 				200A5F7524AB85E10028180B /* Stroke.swift */,
+				20A1EF6024C348E8000F67FB /* JFont.swift */,
 			);
 			path = Values;
 			sourceTree = "<group>";
@@ -851,6 +857,7 @@
 				20DE0BCF24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
 				201E1F6424B62B5E005A2BBE /* GImage.swift in Sources */,
 				200A5F8824ABA5180028180B /* Direction.swift in Sources */,
+				20A1EF6324C348E8000F67FB /* JFont.swift in Sources */,
 				201E1F8224BC9FA3005A2BBE /* Method.swift in Sources */,
 				20D1EF5A24B21AF800EB4BEE /* TypeAlias.swift in Sources */,
 				200A5F9524ABA51E0028180B /* GLine.swift in Sources */,
@@ -933,6 +940,7 @@
 				20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				201E1F6C24BBB199005A2BBE /* InputOutputNameSpace.swift in Sources */,
 				200A5F7024AB76560028180B /* GRPHType.swift in Sources */,
+				20A1EF6124C348E8000F67FB /* JFont.swift in Sources */,
 				2098B67B24A970350042D465 /* GShape.swift in Sources */,
 				201E1F6724B630B0005A2BBE /* GGroup.swift in Sources */,
 				20D1EF7024B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
@@ -1013,6 +1021,7 @@
 				20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				201E1F6D24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
 				200A5F7124AB76560028180B /* GRPHType.swift in Sources */,
+				20A1EF6224C348E8000F67FB /* JFont.swift in Sources */,
 				2098B67C24A970350042D465 /* GShape.swift in Sources */,
 				201E1F6824B630B0005A2BBE /* GGroup.swift in Sources */,
 				20D1EF7124B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
@@ -1089,6 +1098,7 @@
 				20D1EF9D24B2AFF600EB4BEE /* OtherTypes.swift in Sources */,
 				201E1F6524B62B5F005A2BBE /* GImage.swift in Sources */,
 				20D1EF9224B2AFF600EB4BEE /* FunctionExpression.swift in Sources */,
+				20A1EF6424C348E8000F67FB /* JFont.swift in Sources */,
 				201E1F8324BC9FA3005A2BBE /* Method.swift in Sources */,
 				20D1EF9A24B2AFF600EB4BEE /* GRPHCompiler.swift in Sources */,
 				20D1EF9324B2AFF600EB4BEE /* BinaryExpression.swift in Sources */,
