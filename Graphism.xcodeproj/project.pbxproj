@@ -134,6 +134,10 @@
 		20A1EF6C24C364CF000F67FB /* ReflectNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */; };
 		20A1EF6D24C364CF000F67FB /* ReflectNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */; };
 		20A1EF6E24C364CF000F67FB /* ReflectNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */; };
+		20A1EF7024C37796000F67FB /* GShape+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6F24C37796000F67FB /* GShape+SwiftUI.swift */; };
+		20A1EF7124C37796000F67FB /* GShape+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6F24C37796000F67FB /* GShape+SwiftUI.swift */; };
+		20A1EF7524C37D8A000F67FB /* GRPHValue+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF7424C37D8A000F67FB /* GRPHValue+SwiftUI.swift */; };
+		20A1EF7624C37D8A000F67FB /* GRPHValue+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF7424C37D8A000F67FB /* GRPHValue+SwiftUI.swift */; };
 		20D1EF2D24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2E24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2F24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
@@ -371,6 +375,8 @@
 		20A1EF6024C348E8000F67FB /* JFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JFont.swift; sourceTree = "<group>"; };
 		20A1EF6524C35376000F67FB /* GText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GText.swift; sourceTree = "<group>"; };
 		20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectNameSpace.swift; sourceTree = "<group>"; };
+		20A1EF6F24C37796000F67FB /* GShape+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GShape+SwiftUI.swift"; sourceTree = "<group>"; };
+		20A1EF7424C37D8A000F67FB /* GRPHValue+SwiftUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GRPHValue+SwiftUI.swift"; sourceTree = "<group>"; };
 		20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakInstruction.swift; sourceTree = "<group>"; };
 		20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherTypes.swift; sourceTree = "<group>"; };
 		20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleType.swift; sourceTree = "<group>"; };
@@ -543,6 +549,7 @@
 				201E1F6624B630B0005A2BBE /* GGroup.swift */,
 				201E1F6124B62B5E005A2BBE /* GImage.swift */,
 				20A1EF6524C35376000F67FB /* GText.swift */,
+				20A1EF6F24C37796000F67FB /* GShape+SwiftUI.swift */,
 			);
 			path = Shapes;
 			sourceTree = "<group>";
@@ -573,6 +580,7 @@
 				200A5F6924AB6AE60028180B /* Direction.swift */,
 				200A5F7524AB85E10028180B /* Stroke.swift */,
 				20A1EF6024C348E8000F67FB /* JFont.swift */,
+				20A1EF7424C37D8A000F67FB /* GRPHValue+SwiftUI.swift */,
 			);
 			path = Values;
 			sourceTree = "<group>";
@@ -899,9 +907,11 @@
 				201E1F8024BC9FA3005A2BBE /* Method.swift in Sources */,
 				2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */,
 				20D1EF6824B292ED00EB4BEE /* FunctionExpression.swift in Sources */,
+				20A1EF7524C37D8A000F67FB /* GRPHValue+SwiftUI.swift in Sources */,
 				2098B69824AB61350042D465 /* Paint.swift in Sources */,
 				200A5F6724AB69DB0028180B /* LinearPaint.swift in Sources */,
 				201E1F8A24BD1B8A005A2BBE /* GRPHFunctionContext.swift in Sources */,
+				20A1EF7024C37796000F67FB /* GShape+SwiftUI.swift in Sources */,
 				20D1EF5824B21AF800EB4BEE /* TypeAlias.swift in Sources */,
 				20DE0BC524AE783400ABFB6E /* BinaryExpression.swift in Sources */,
 				20D1EF4324B1401700EB4BEE /* Constructor.swift in Sources */,
@@ -982,9 +992,11 @@
 				201E1F8124BC9FA3005A2BBE /* Method.swift in Sources */,
 				2063128324A8C38D0095911B /* GraphismDocument.swift in Sources */,
 				20D1EF6924B292ED00EB4BEE /* FunctionExpression.swift in Sources */,
+				20A1EF7624C37D8A000F67FB /* GRPHValue+SwiftUI.swift in Sources */,
 				2098B69924AB61350042D465 /* Paint.swift in Sources */,
 				200A5F6824AB69DB0028180B /* LinearPaint.swift in Sources */,
 				201E1F8B24BD1B8A005A2BBE /* GRPHFunctionContext.swift in Sources */,
+				20A1EF7124C37796000F67FB /* GShape+SwiftUI.swift in Sources */,
 				20D1EF5924B21AF800EB4BEE /* TypeAlias.swift in Sources */,
 				20DE0BC624AE783400ABFB6E /* BinaryExpression.swift in Sources */,
 				20D1EF4424B1401700EB4BEE /* Constructor.swift in Sources */,
@@ -1298,9 +1310,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				NEW_SETTING = "";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.orbisec.Graphism;
 				PRODUCT_NAME = Graphism;
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG GRAPHICAL";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1320,9 +1335,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				NEW_SETTING = "";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.orbisec.Graphism;
 				PRODUCT_NAME = Graphism;
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = GRAPHICAL;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1349,6 +1367,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fr.orbisec.Graphism;
 				PRODUCT_NAME = Graphism;
 				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG GRAPHICAL";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1373,6 +1392,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fr.orbisec.Graphism;
 				PRODUCT_NAME = Graphism;
 				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = GRAPHICAL;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

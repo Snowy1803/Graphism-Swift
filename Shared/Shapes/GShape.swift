@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if GRAPHICAL
 import SwiftUI
+#endif
 
 protocol GShape: GRPHValue {
     var uuid: UUID { get }
@@ -15,7 +17,9 @@ protocol GShape: GRPHValue {
     var givenName: String? { get set }
     var typeKey: String { get }
     
+    #if GRAPHICAL
     var graphics: AnyView { get }
+    #endif
     
     var stateDefinitions: String { get }
     var stateConstructor: String { get }
@@ -96,44 +100,6 @@ extension RotatableShape {
 extension RotatableShape where Self: RectangularShape {
     var currentRotationCenter: Pos {
         rotationCenter ?? center
-    }
-}
-
-extension View {
-    var erased: AnyView {
-        AnyView(self)
-    }
-}
-
-extension Shape {
-    func applyingFillOrStroke(for def: SimpleShape) -> some View {
-        Group {
-            if let style = def.strokeStyle {
-                applyingStroke(style.cg, paint: def.paint)
-            } else {
-                switch def.paint {
-                case .color(let color):
-                    self.fill(color.style)
-                case .linear(let linear):
-                    self.fill(linear.style)
-                case .radial(let radial):
-                    self.fill(radial.style)
-                }
-            }
-        }
-    }
-    
-    func applyingStroke(_ stroke: StrokeStyle, paint: AnyPaint) -> some View {
-        Group {
-            switch paint {
-            case .color(let color):
-                self.stroke(color.style, style: stroke)
-            case .linear(let linear):
-                self.stroke(linear.style, style: stroke)
-            case .radial(let radial):
-                self.stroke(radial.style, style: stroke)
-            }
-        }
     }
 }
 

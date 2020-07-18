@@ -21,7 +21,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ShapeListSidebar(document: $document)
-            document.image.graphics
+            document.image.contentGraphics
         }.onChange(of: document.image.uuid) { _ in // If changed from the outside and reloaded automatically
             if let old = destroyOnChange {
                 old.destroy()

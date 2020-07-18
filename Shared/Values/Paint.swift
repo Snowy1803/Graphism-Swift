@@ -6,13 +6,16 @@
 //
 
 import Foundation
+#if GRAPHICAL
 import SwiftUI
+#endif
 
 protocol Paint: StatefulValue {
-    
+    #if GRAPHICAL
     associatedtype Style: ShapeStyle
     
     var style: Style { get }
+    #endif
 }
 
 enum AnyPaint {

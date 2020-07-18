@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
-
 
 class GPath: SimpleShape { // Add rotation support
     var givenName: String?
@@ -29,36 +27,6 @@ class GPath: SimpleShape { // Add rotation support
         self.positionZ = positionZ
         self.paint = paint
         self.strokeStyle = strokeStyle
-    }
-    
-    var path: Path {
-        Path { path in
-            var i = 0
-            for action in actions {
-                switch action {
-                case .moveTo:
-                    path.move(to: points[i].cg)
-                    i += 1
-                case .lineTo:
-                    path.addLine(to: points[i].cg)
-                    i += 1
-                case .quadTo:
-                    path.addQuadCurve(to: points[i + 1].cg, control: points[i].cg)
-                    i += 2
-                case .cubicTo:
-                    path.addCurve(to: points[i + 2].cg, control1: points[i].cg, control2: points[i + 1].cg)
-                    i += 3
-                case .closePath:
-                    path.closeSubpath()
-                }
-            }
-            assert(i == points.count, "Path is not valid")
-        }
-    }
-    
-    var graphics: AnyView {
-        path.applyingFillOrStroke(for: self)
-            .erased
     }
     
     var stateDefinitions: String {

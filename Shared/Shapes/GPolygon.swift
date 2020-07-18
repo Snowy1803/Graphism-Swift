@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
-
 
 class GPolygon: SimpleShape { // Add rotation support
     var givenName: String?
@@ -27,24 +25,6 @@ class GPolygon: SimpleShape { // Add rotation support
         self.positionZ = positionZ
         self.paint = paint
         self.strokeStyle = strokeStyle
-    }
-    
-    var path: Path {
-        Path { path in
-            guard points.count >= 2 else {
-                return
-            }
-            path.move(to: points[0].cg)
-            for point in points {
-                path.addLine(to: point.cg)
-            }
-            path.closeSubpath()
-        }
-    }
-    
-    var graphics: AnyView {
-        path.applyingFillOrStroke(for: self)
-            .erased
     }
     
     var stateDefinitions: String { "" }

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 enum Direction: String, StatefulValue {
     case right, downRight, down, downLeft, left, upLeft, up, upRight
@@ -30,31 +29,6 @@ enum Direction: String, StatefulValue {
         case .upRight:
             return .downLeft
         }
-    }
-    
-    var toPoint: UnitPoint {
-        switch self {
-        case .right:
-            return .trailing
-        case .downRight:
-            return .bottomTrailing
-        case .down:
-            return .bottom
-        case .downLeft:
-            return .bottomLeading
-        case .left:
-            return .leading
-        case .upLeft:
-            return .topLeading
-        case .up:
-            return .top
-        case .upRight:
-            return .topTrailing
-        }
-    }
-    
-    var fromPoint: UnitPoint {
-        reverse.toPoint
     }
     
     var state: String { rawValue }

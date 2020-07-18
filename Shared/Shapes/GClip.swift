@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
-
 
 struct GClip: GShape {
     // rotable
@@ -21,10 +19,6 @@ struct GClip: GShape {
     
     var shape: GShape
     var clip: GShape
-    
-    var graphics: AnyView {
-        AnyView(shape.graphics.mask(clip.graphics))
-    }
     
     var stateDefinitions: String {
         shape.stateDefinitions + clip.stateDefinitions

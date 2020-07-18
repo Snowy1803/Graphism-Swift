@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreGraphics
 
 struct Pos: StatefulValue, Equatable {
     var x: Float
@@ -18,10 +17,6 @@ struct Pos: StatefulValue, Equatable {
     
     var square: Bool {
         x == y
-    }
-    
-    var cg: CGPoint {
-        CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
     
     var type: GRPHType { SimpleType.pos }

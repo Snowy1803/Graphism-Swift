@@ -6,41 +6,11 @@
 //
 
 import Foundation
-import SwiftUI
 
 enum ColorPaint: Paint, Equatable {
     case white, black, red, green, blue, orange, yellow, pink, purple, aqua, alpha
     
     case components(red: Float, green: Float, blue: Float, alpha: Float = 1)
-    
-    var style: Color {
-        switch self {
-        case .components(red: let red, green: let green, blue: let blue, alpha: let alpha):
-            return Color(red: Double(red), green: Double(green), blue: Double(blue), opacity: Double(alpha))
-        case .white:
-            return .white
-        case .black:
-            return .black
-        case .red:
-            return .red
-        case .green:
-            return .green
-        case .blue:
-            return .blue
-        case .orange:
-            return .orange
-        case .yellow:
-            return .yellow
-        case .pink:
-            return .pink
-        case .purple:
-            return .purple
-        case .aqua:
-            return .init(red: 0, green: 0.85, blue: 0.85)
-        case .alpha:
-            return .clear
-        }
-    }
     
     var state: String {
         switch self {

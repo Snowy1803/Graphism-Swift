@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 class GImage: GGroup, ObservableObject {
     var size: Pos = Pos(x: 640, y: 480)
@@ -34,23 +33,6 @@ class GImage: GGroup, ObservableObject {
     
     override var stateConstructor: String {
         "Background(\(size.state) \(background.state))"
-    }
-    
-    override var graphics: AnyView {
-        ZStack {
-            switch background {
-            case .color(let color):
-                color.style
-            case .linear(let linear):
-                linear.style
-            case .radial(let radial):
-                radial.style
-            }
-            super.graphics
-        }
-        .frame(width: size.cg.x, height: size.cg.y)
-        .clipped()
-        .erased
     }
     
     func willNeedRepaint() {

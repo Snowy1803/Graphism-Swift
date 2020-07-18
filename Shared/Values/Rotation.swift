@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
     var value: Int
@@ -49,10 +48,6 @@ struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
             }
         }
         return nil
-    }
-    
-    var angle: Angle {
-        .degrees(Double(value))
     }
     
     var type: GRPHType { SimpleType.rotation }

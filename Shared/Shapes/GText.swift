@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 class GText: SimpleShape, BasicShape {
     
@@ -30,27 +29,6 @@ class GText: SimpleShape, BasicShape {
         self.positionZ = positionZ
         self.font = font
         self.paint = paint
-    }
-    
-    var uiText: Text {
-        font.apply(Text(effectiveName))
-    }
-    
-    var modifiedText: AnyView {
-        switch paint {
-        case .color(let c):
-            return uiText.foregroundColor(c.style).erased
-        case .linear(let l):
-            return l.style.mask(uiText).erased
-        case .radial(let r):
-            return r.style.mask(uiText).erased
-        }
-    }
-    
-    var graphics: AnyView {
-        modifiedText
-            .position(position.cg)
-            .erased
     }
     
     var stateDefinitions: String { "" }

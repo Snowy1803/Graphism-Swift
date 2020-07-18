@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
-
 
 class GLine: SimpleShape {
     var givenName: String?
@@ -29,18 +27,6 @@ class GLine: SimpleShape {
         self.positionZ = positionZ
         self.paint = paint
         self.strokeStyle = strokeStyle
-    }
-    
-    var path: Path {
-        Path { path in
-            path.move(to: start.cg)
-            path.addLine(to: end.cg)
-        }
-    }
-    
-    var graphics: AnyView {
-        path.applyingStroke(strokeStyle?.cg ?? StrokeStyle(lineWidth: 5), paint: paint)
-            .erased
     }
     
     var stateDefinitions: String { "" }

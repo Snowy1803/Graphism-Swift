@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 class GGroup: GShape { // rotation
     let uuid = UUID()
@@ -23,14 +22,6 @@ class GGroup: GShape { // rotation
         self.givenName = givenName
         self.positionZ = positionZ
         self.shapes = shapes
-    }
-    
-    var graphics: AnyView {
-        ZStack(alignment: .topLeading) {
-            ForEach(shapes.sorted(by: { $0.positionZ < $1.positionZ }), id: \.uuid) { shape in
-                shape.graphics
-            }
-        }.erased
     }
     
     var stateDefinitions: String {

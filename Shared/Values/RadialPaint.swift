@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct RadialPaint: Paint, Equatable {
     var centerColor: ColorPaint
@@ -14,10 +13,6 @@ struct RadialPaint: Paint, Equatable {
     var externalColor: ColorPaint
     var radius: Float // Radius is real coordinates, unlike Java version :/
     // Does not support focus :(
-    
-    var style: RadialGradient {
-        RadialGradient(gradient: Gradient(colors: [centerColor.style, externalColor.style]), center: .init(x: center.cg.x, y: center.cg.y), startRadius: 0, endRadius: CGFloat(radius))
-    }
     
     var state: String {
         "radial(\(centerColor.state) \(center.state) \(externalColor.state) \(radius))"

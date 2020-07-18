@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
-
 
 class GRectangle: RectangularShape, SimpleShape, RotatableShape {
     
@@ -33,15 +31,6 @@ class GRectangle: RectangularShape, SimpleShape, RotatableShape {
         self.rotation = rotation
         self.paint = paint
         self.strokeStyle = strokeStyle
-    }
-    
-    var graphics: AnyView {
-        Rectangle()
-            .applyingFillOrStroke(for: self)
-            .frame(width: CGFloat(size.x), height: CGFloat(size.y))
-            .rotationEffect(rotation.angle, anchor: UnitPoint(x: CGFloat(rotationCenter?.x ?? 0.5), y: CGFloat(rotationCenter?.y ?? 0.5)))
-            .position(center.cg)
-            .erased
     }
     
     var stateDefinitions: String { "" }
