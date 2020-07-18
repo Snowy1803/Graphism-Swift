@@ -130,6 +130,10 @@
 		20A1EF6724C35376000F67FB /* GText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6524C35376000F67FB /* GText.swift */; };
 		20A1EF6824C35376000F67FB /* GText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6524C35376000F67FB /* GText.swift */; };
 		20A1EF6924C35376000F67FB /* GText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6524C35376000F67FB /* GText.swift */; };
+		20A1EF6B24C364CF000F67FB /* ReflectNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */; };
+		20A1EF6C24C364CF000F67FB /* ReflectNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */; };
+		20A1EF6D24C364CF000F67FB /* ReflectNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */; };
+		20A1EF6E24C364CF000F67FB /* ReflectNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */; };
 		20D1EF2D24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2E24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
 		20D1EF2F24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */; };
@@ -366,6 +370,7 @@
 		2098B69A24AB62B60042D465 /* ColorPaint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPaint.swift; sourceTree = "<group>"; };
 		20A1EF6024C348E8000F67FB /* JFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JFont.swift; sourceTree = "<group>"; };
 		20A1EF6524C35376000F67FB /* GText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GText.swift; sourceTree = "<group>"; };
+		20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectNameSpace.swift; sourceTree = "<group>"; };
 		20D1EF2C24B0C2CF00EB4BEE /* BreakInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakInstruction.swift; sourceTree = "<group>"; };
 		20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherTypes.swift; sourceTree = "<group>"; };
 		20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleType.swift; sourceTree = "<group>"; };
@@ -594,6 +599,7 @@
 				201E1F7024BBB927005A2BBE /* RandomNameSpace.swift */,
 				201E1F7524BBBF25005A2BBE /* StringUtilsNameSpace.swift */,
 				201E1F7A24BBCE86005A2BBE /* MathNameSpace.swift */,
+				20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */,
 			);
 			path = NameSpaces;
 			sourceTree = "<group>";
@@ -853,6 +859,7 @@
 				200A5F8E24ABA5180028180B /* Pos.swift in Sources */,
 				200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */,
 				20DE0BE724AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
+				20A1EF6D24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
 				20D1EF5624B217FB00EB4BEE /* StandardNameSpace.swift in Sources */,
 				20A1EF6824C35376000F67FB /* GText.swift in Sources */,
 				200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */,
@@ -955,6 +962,7 @@
 				20DE0BD124AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B67F24A970350042D465 /* GCircle.swift in Sources */,
+				20A1EF6B24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1037,6 +1045,7 @@
 				20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				2098B68024A970350042D465 /* GCircle.swift in Sources */,
+				20A1EF6C24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1097,6 +1106,7 @@
 				20D1EF7F24B2AFF600EB4BEE /* GClip.swift in Sources */,
 				20D1EFB724B2AFF600EB4BEE /* Direction.swift in Sources */,
 				20D1EFAD24B2AFF600EB4BEE /* VariableDeclarationInstruction.swift in Sources */,
+				20A1EF6E24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
 				20D1EF9E24B2AFF600EB4BEE /* ArrayLiteralExpression.swift in Sources */,
 				20A1EF6924C35376000F67FB /* GText.swift in Sources */,
 				20D1EFB224B2AFF600EB4BEE /* CatchBlock.swift in Sources */,

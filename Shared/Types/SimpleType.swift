@@ -306,7 +306,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return Constructor(parameters: [Parameter(name: "text", type: SimpleType.string), .pos, .zpos, Parameter(name: "font", type: SimpleType.font | SimpleType.integer), .rotation, .paint], type: self, varargs: true) { context, values in
                 return GText(givenName: (values[0] as! String),
                              position: values[1] as! Pos,
-                             positionZ: values[2] as! Int,
+                             positionZ: values[2] as? Int ?? 0,
                              font: values[3] as? JFont ?? JFont(size: values[3] as! Int),
                              // rotation
                              paint: AnyPaint.auto(values[5]!))

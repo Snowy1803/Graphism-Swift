@@ -29,6 +29,7 @@ struct NameSpaces {
             RandomNameSpace(),
             StringUtilsNameSpace(),
             MathNameSpace(),
+            ReflectNameSpace(),
         ]
     
     static let none: NameSpace = NoNameSpace()
