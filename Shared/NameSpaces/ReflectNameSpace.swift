@@ -13,14 +13,22 @@ struct ReflectNameSpace: NameSpace {
     var exportedFunctions: [Function] {
         [
             Function(ns: self, name: "callFunction", parameters: [Parameter(name: "funcName", type: SimpleType.string), Parameter(name: "namespace", type: SimpleType.string, optional: true), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.mixed, varargs: true) { context, params in
-                guard let ns = NameSpaces.namespace(named: params.count == 1 || params[1] == nil ? "standard" : params[1] as! String) else {
+                guard let ns = NameSpaces.namespace(named: params.count == 1 || params[1] == nil || (params.count & 1) == 1 ? "standard" : params[1] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Namespace '\(params[1]!)' not found")
                 }
                 guard let f = Function(imports: NameSpaces.instances, namespace: ns, name: params[0] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Function '\(params[0]!)' not found in namespace '\(ns.name)'")
                 }
-                // TODO !!! supposed to use labelled parameters + make callMethod + make callConstructor
-                return try f.executable(context, [])
+                if params.count <= 2 {
+                    guard f.parameters.allSatisfy({ $0.optional }) else {
+                        throw GRPHRuntimeError(type: .reflection, message: "Function '\(f.name)' requires arguments")
+                    }
+                    return try f.executable(context, [])
+                }
+                // TODO make callMethod + make callConstructor
+                // ["name" "ns" "param1" value1] -- params.count == 4 -- drop 2
+                // ["name" "param1" value1] -- 3 -- drop 1
+                return try f.executable(context, f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! }))
             },
             Function(ns: self, name: "castTo", parameters: [Parameter(name: "type", type: SimpleType.string), Parameter(name: "param", type: SimpleType.mixed)], returnType: SimpleType.mixed) { context, params in
                 guard let type = GRPHTypes.parse(context: context, literal: params[0] as! String) else {
