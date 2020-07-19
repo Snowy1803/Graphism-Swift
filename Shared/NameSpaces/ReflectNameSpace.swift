@@ -25,10 +25,21 @@ struct ReflectNameSpace: NameSpace {
                     }
                     return try f.executable(context, [])
                 }
-                // TODO make callMethod + make callConstructor
+                // TODO make callConstructor
                 // ["name" "ns" "param1" value1] -- params.count == 4 -- drop 2
                 // ["name" "param1" value1] -- 3 -- drop 1
                 return try f.executable(context, f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! }))
+            },
+            Function(ns: self, name: "callMethod", parameters: [Parameter(name: "methodName", type: SimpleType.string), Parameter(name: "namespace", type: SimpleType.string), Parameter(name: "on", type: SimpleType.mixed), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.mixed, varargs: true) { context, params in
+                guard let ns = NameSpaces.namespace(named: params[1] as! String) else {
+                    throw GRPHRuntimeError(type: .reflection, message: "Namespace '\(params[1]!)' not found")
+                }
+                let value = params[2]!
+                let valueType = GRPHTypes.type(of: value)
+                guard let f = Method(imports: NameSpaces.instances, namespace: ns, name: params[0] as! String, inType: valueType) else {
+                    throw GRPHRuntimeError(type: .reflection, message: "Function '\(params[0]!)' not found in namespace '\(ns.name)'")
+                }
+                return try f.executable(context, value, f.labelled(values: params.dropFirst(3).map { $0! }))
             },
             Function(ns: self, name: "castTo", parameters: [Parameter(name: "type", type: SimpleType.string), Parameter(name: "param", type: SimpleType.mixed)], returnType: SimpleType.mixed) { context, params in
                 guard let type = GRPHTypes.parse(context: context, literal: params[0] as! String) else {
