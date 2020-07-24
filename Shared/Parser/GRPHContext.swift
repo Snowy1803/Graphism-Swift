@@ -92,23 +92,34 @@ class GRPHContext {
         }
     }
     
-    func breakBlock() throws {
-        _ = try breakNearestBlock(BlockInstruction.self)
+    func breakBlock(scope: BreakInstruction.BreakScope) throws {
+        try breakNearestBlock(BlockInstruction.self, scope: scope)
     }
     
-    func continueBlock() throws {
-        try breakNearestBlock(BlockInstruction.self).continueBlock()
+    func continueBlock(scope: BreakInstruction.BreakScope) throws {
+        try breakNearestBlock(BlockInstruction.self, scope: scope).continueBlock()
     }
     
     func returnFunction(returnValue: GRPHValue?) throws {
         try breakNearestBlock(FunctionDeclarationBlock.self).setReturnValue(returnValue: returnValue)
     }
     
-    func breakNearestBlock<T: BlockInstruction>(_ type: T.Type) throws -> T {
+    @discardableResult func breakNearestBlock<T: BlockInstruction>(_ type: T.Type, scope: BreakInstruction.BreakScope = .scopes(1)) throws -> T {
+        var nscope = -1 // will never be 0 after decrementing
+        if case .scopes(let n) = scope {
+            nscope = n
+        }
         for block in blocks.reversed() {
             block.breakBlock()
             if let block = block as? T {
-                return block
+                nscope -= 1
+                if case .label(let label) = scope,
+                   block.label == label {
+                    return block
+                }
+                if nscope == 0 {
+                    return block
+                }
             }
         }
         throw GRPHRuntimeError(type: .unexpected, message: "Couldn't break out")

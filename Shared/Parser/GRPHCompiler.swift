@@ -9,7 +9,9 @@ import Foundation
 
 class GRPHCompiler: GRPHParser {
     static let grphVersion = "1.11"
-    let internStringPattern = try! NSRegularExpression(pattern: #"(?<!\\)".*?(?<!\\)""#)
+    static let label = try! NSRegularExpression(pattern: "^[A-Za-z][A-Za-z0-9_]*$")
+    
+    static let internStringPattern = try! NSRegularExpression(pattern: #"(?<!\\)".*?(?<!\\)""#)
     // static let internFilePattern = try! NSRegularExpression(pattern: "(?<!\\\\)'.*?(?<!\\\\)'")
     
     var line0: String = ""
@@ -19,6 +21,7 @@ class GRPHCompiler: GRPHParser {
     var globalVariables: [Variable] = []
     var imports: [Importable] = [NameSpaces.namespace(named: "standard")!]
     var instructions: [Instruction] = []
+    var nextLabel: String?
     
     var entireContent: String
     var lines: [String] = []
@@ -224,9 +227,9 @@ class GRPHCompiler: GRPHParser {
                         }
                         try addInstruction(ReturnInstruction(lineNumber: lineNumber, value: exp))
                     case "#break":
-                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break))
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break, scope: .parse(params: params)))
                     case "#continue":
-                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .continue))
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .continue, scope: .parse(params: params)))
                     case "#goto":
                         throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
                     case "#block":
@@ -286,7 +289,11 @@ class GRPHCompiler: GRPHParser {
                         printout("Warning: Unknown command `\(tline)`; line \(lineNumber + 1). This will get ignored")
                     }
                 } else if tline.hasPrefix("::") {
-                    throw GRPHCompileError(type: .unsupported, message: "labels have been removed")
+                    let label = String(tline.dropFirst(2))
+                    guard GRPHCompiler.label.firstMatch(string: label) != nil else {
+                        throw GRPHCompileError(type: .invalidArguments, message: "Invalid label name '\(label)'")
+                    }
+                    nextLabel = label
                 } else {
                     // MARK: INSTRUCTIONS
                     if let result = ArrayModificationInstruction.pattern.firstMatch(string: tline) {
@@ -360,6 +367,10 @@ class GRPHCompiler: GRPHParser {
     }
     
     func addNonBlockInstruction(_ instruction: Instruction) throws {
+        guard nextLabel == nil else {
+            // Inline functions
+            throw GRPHCompileError(type: .unsupported, message: "Floating labels aren't supported: Labels must precede a block")
+        }
         // context.accepts(instruction) // for type contexts
         if let block = blocks.last {
             block.children.append(instruction)
@@ -369,13 +380,19 @@ class GRPHCompiler: GRPHParser {
     }
     
     func addInstruction(_ instruction: Instruction) throws {
+        let label = nextLabel
+        nextLabel = nil
         try addNonBlockInstruction(instruction)
         if let function = instruction as? FunctionDeclarationBlock {
+            function.label = label
             blocks.append(function)
             context = GRPHFunctionContext(parent: context, function: function)
         } else if let block = instruction as? BlockInstruction {
+            block.label = label
             blocks.append(block)
             context.inBlock(block: block)
+        } else if label != nil {
+            throw GRPHCompileError(type: .unsupported, message: "Floating labels aren't supported: Labels must precede a block")
         }
     }
     
@@ -399,7 +416,7 @@ class GRPHCompiler: GRPHParser {
     }
     
     func internStringLiterals(line: String) -> String {
-        internStringPattern.replaceMatches(in: line) { match in
+        GRPHCompiler.internStringPattern.replaceMatches(in: line) { match in
             let str = parseStringLiteral(in: match, delimiter: "\"")
             var index = internStrings.firstIndex(of: "\"\(str)")
             if index == nil {

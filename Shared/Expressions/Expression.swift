@@ -30,6 +30,7 @@ extension Expression {
 
 struct Expressions {
     static let typePattern = "[A-Za-z|<>{}?]+"
+    
     static let comma = try! NSRegularExpression(pattern: ",")
     static let space = try! NSRegularExpression(pattern: " ")
     

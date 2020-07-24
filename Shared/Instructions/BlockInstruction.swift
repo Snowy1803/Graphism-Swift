@@ -9,15 +9,21 @@ import Foundation
 
 /// The #block instruction, but also the base class for all other blocks
 class BlockInstruction: Instruction {
-    var children: [Instruction] = []
-    var variables: [Variable] = []
+    
     var lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
+    
+    // context
+    
+    var variables: [Variable] = []
     /// true if the next else can run, false otherwise
     var canNextRun: Bool = true
     /// true if #break or #continue was called in this block
     var broken: Bool = false
     /// true if #continue was caled in this block
     var continued: Bool = false
+    
     
     init(lineNumber: Int) {
         self.lineNumber = lineNumber
@@ -67,6 +73,9 @@ class BlockInstruction: Instruction {
     
     func toString(indent: String) -> String {
         var builder = "\(line):\(indent)#\(name)\n"
+        if let label = label {
+            builder = "\(line - 1):\(indent)::\(label)\n\(builder)"
+        }
         for child in children {
             builder += child.toString(indent: "\(indent)\t")
         }
