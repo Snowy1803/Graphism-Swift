@@ -18,7 +18,7 @@ struct FunctionExpression: Expression {
         var nextParam = 0
         self.function = function
         self.values = []
-        guard asInstruction || function.returnType != nil else {
+        guard asInstruction || !function.returnType.isTheVoid else {
             throw GRPHCompileError(type: .typeMismatch, message: "Void function can't be used as an expression")
         }
         for param in values {
@@ -43,7 +43,7 @@ struct FunctionExpression: Expression {
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
-        return function.returnType!
+        return function.returnType
     }
     
     var fullyQualified: String {

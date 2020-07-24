@@ -25,6 +25,10 @@ extension GRPHType {
         self as? SimpleType == SimpleType.mixed
     }
     
+    var isTheVoid: Bool {
+        self as? SimpleType == SimpleType.void
+    }
+    
     var inArray: ArrayType {
         ArrayType(content: self)
     }

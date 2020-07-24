@@ -212,13 +212,13 @@ class GRPHCompiler: GRPHParser {
                         }
                         let expected = block.generated.returnType
                         if let exp = exp,
-                           let expected = expected {
+                           !expected.isTheVoid {
                             guard try expected.isInstance(context: context, expression: exp) else {
                                 throw GRPHCompileError(type: .parse, message: "Expected a #return value of type \(expected), found a \(try exp.getType(context: context, infer: expected))")
                             }
                         } else if exp != nil {
                             throw GRPHCompileError(type: .parse, message: "Cannot #return a value in a void function")
-                        } else if let expected = expected,
+                        } else if !expected.isTheVoid,
                                   block.returnDefault == nil { // expects something, no default return
                             throw GRPHCompileError(type: .parse, message: "No #return value nor default value in non-void function, expected a \(expected)")
                         }

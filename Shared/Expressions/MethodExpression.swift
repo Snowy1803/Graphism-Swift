@@ -20,7 +20,7 @@ struct MethodExpression: Expression {
         self.method = method
         self.on = on
         self.values = []
-        guard asInstruction || method.returnType != nil else {
+        guard asInstruction || !method.returnType.isTheVoid else {
             throw GRPHCompileError(type: .typeMismatch, message: "Void function can't be used as an expression")
         }
         for param in values {
@@ -52,7 +52,7 @@ struct MethodExpression: Expression {
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
-        return method.returnType!
+        return method.returnType
     }
     
     var fullyQualified: String {

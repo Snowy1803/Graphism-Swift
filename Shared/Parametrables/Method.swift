@@ -14,7 +14,7 @@ struct Method: Parametrable, Importable {
     var inType: GRPHType
     var final: Bool = false
     var parameters: [Parameter]
-    var returnType: GRPHType? // new in GRPH 1.11, methods can be called with on.name[] syntax
+    var returnType: GRPHType = SimpleType.void // new in GRPH 1.11, methods can be called with on.name[] syntax
     var varargs: Bool = false
     var executable: (GRPHContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue
     

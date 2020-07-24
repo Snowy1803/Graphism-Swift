@@ -17,7 +17,7 @@ class FunctionDeclarationBlock: BlockInstruction {
     
     var currentReturnValue: GRPHValue?
     
-    init(lineNumber: Int, context ctx: GRPHContext, returnType: GRPHType?, name: String, def: String) throws {
+    init(lineNumber: Int, context ctx: GRPHContext, returnType: GRPHType, name: String, def: String) throws {
         super.init(lineNumber: lineNumber)
         let context = GRPHFunctionContext(parent: ctx, function: self)
         // finding returnDefault
@@ -33,7 +33,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         if let couple = couple {
             definition = couple.0
             let defaultReturn = try Expressions.parse(context: context, infer: returnType, literal: couple.1)
-            guard let returnType = returnType else {
+            guard !returnType.isTheVoid else {
                 throw GRPHCompileError(type: .parse, message: "Unexpected default value in void function")
             }
             guard try returnType.isInstance(context: context, expression: defaultReturn) else {
@@ -98,10 +98,8 @@ class FunctionDeclarationBlock: BlockInstruction {
            let space = def.firstIndex(of: " "),
            space < bracket {
             let typeLiteral = String(def[..<space])
-            let returnType: GRPHType?
-            if typeLiteral == "void" { // New in GRPH 1.11
-                returnType = nil
-            } else if let rtype = GRPHTypes.parse(context: context, literal: typeLiteral) {
+            let returnType: GRPHType
+            if let rtype = GRPHTypes.parse(context: context, literal: typeLiteral) {
                 returnType = rtype
             } else {
                 throw GRPHCompileError(type: .parse, message: "Unknown return type '\(typeLiteral)'")
@@ -147,7 +145,7 @@ class FunctionDeclarationBlock: BlockInstruction {
                 return returning
             } else if let returning = returnDefault {
                 return try returning.eval(context: ctx)
-            } else if generated.returnType == nil {
+            } else if generated.returnType.isTheVoid {
                 return GRPHVoid.void
             } else {
                 throw GRPHRuntimeError(type: .unexpected, message: "No #return value nor default value in non-void function")
@@ -198,13 +196,13 @@ class FunctionDeclarationBlock: BlockInstruction {
     
     // type check #return at compile time!!!
     func setReturnValue(returnValue: GRPHValue?) throws {
-        currentReturnValue = returnValue == nil ? nil : try GRPHTypes.autobox(value: returnValue!, expected: generated.returnType!)
+        currentReturnValue = returnValue == nil ? nil : try GRPHTypes.autobox(value: returnValue!, expected: generated.returnType)
     }
     
     override func canRun(context: GRPHContext) throws -> Bool { false }
     
     override var name: String {
-        var str = "function \(generated.returnType?.string ?? "void") \(generated.name)["
+        var str = "function \(generated.returnType.string) \(generated.name)["
         var i = 0
         generated.parameters.forEach { p in
             if i > 0 {

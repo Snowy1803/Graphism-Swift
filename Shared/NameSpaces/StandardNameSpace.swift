@@ -144,13 +144,13 @@ struct StandardNameSpace: NameSpace {
                 return GRPHArray(array, of: SimpleType.integer)
             },
             // == Migrated methods ==
-            Function(ns: self, name: "validate", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: nil) { context, params in
+            Function(ns: self, name: "validate", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
                 let shape = params[0] as! GShape
                 context.runtime?.image.shapes.append(shape)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
-            Function(ns: self, name: "validateAll", parameters: [], returnType: nil) { context, params in
+            Function(ns: self, name: "validateAll", parameters: []) { context, params in
                 let img = context.runtime!.image
                 for v in context.allVariables {
                     if v.name != "back" && v.type.isInstance(of: SimpleType.shape) {
@@ -160,21 +160,21 @@ struct StandardNameSpace: NameSpace {
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
-            Function(ns: self, name: "unvalidate", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: nil) { context, params in
+            Function(ns: self, name: "unvalidate", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
                 let shape = params[0] as! GShape
                 context.runtime?.image.shapes.removeAll { $0.isEqual(to: shape) }
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
-            Function(ns: self, name: "update", parameters: [], returnType: nil) { context, params in
+            Function(ns: self, name: "update", parameters: []) { context, params in
                 context.runtime?.image.willNeedRepaint()
                 return GRPHVoid.void
             },
-            Function(ns: self, name: "wait", parameters: [Parameter(name: "time", type: SimpleType.integer)], returnType: nil) { context, params in
+            Function(ns: self, name: "wait", parameters: [Parameter(name: "time", type: SimpleType.integer)]) { context, params in
                 Thread.sleep(forTimeInterval: Double(params[0] as! Int) / 1000)
                 return GRPHVoid.void
             },
-            Function(ns: self, name: "end", parameters: [], returnType: nil) { context, params in
+            Function(ns: self, name: "end", parameters: []) { context, params in
                 throw GRPHExecutionTerminated()
             },
             // LEGACY

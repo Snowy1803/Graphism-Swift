@@ -105,7 +105,7 @@ struct ReflectNameSpace: NameSpace {
                 Parameter(name: "global", type: SimpleType.boolean, optional: true),
                 Parameter(name: "type", type: SimpleType.string),
                 Parameter(name: "value", type: SimpleType.mixed),
-            ], returnType: nil) { context, params in
+            ]) { context, params in
                 let name = params[0] as! String
                 let global = params[1] as? Bool ?? false
                 guard context.findVariableInScope(named: name) == nil else {
@@ -125,7 +125,7 @@ struct ReflectNameSpace: NameSpace {
             Function(ns: self, name: "setVarValue", parameters: [
                 Parameter(name: "name", type: SimpleType.string),
                 Parameter(name: "value", type: SimpleType.mixed),
-            ], returnType: nil) { context, params in
+            ]) { context, params in
                 guard let v = context.findVariable(named: params[0] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Undeclared variable '\(params[0]!)' in setVarValue.")
                 }

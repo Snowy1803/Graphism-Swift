@@ -16,5 +16,5 @@ struct Constructor: Parametrable {
     var executable: (GRPHContext, [GRPHValue?]) -> GRPHValue
     
     var name: String { type.string }
-    var returnType: GRPHType? { type }
+    var returnType: GRPHType { type }
 }

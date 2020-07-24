@@ -12,7 +12,7 @@ protocol Parametrable {
     
     var name: String { get }
     
-    var returnType: GRPHType? { get }
+    var returnType: GRPHType { get }
     
     var varargs: Bool { get }
 }
