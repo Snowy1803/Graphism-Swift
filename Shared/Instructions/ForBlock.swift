@@ -8,8 +8,6 @@
 import Foundation
 
 class ForBlock: BlockInstruction {
-    static let varNameRequirement = try! NSRegularExpression(pattern: "^[$A-Za-z_][A-Za-z0-9_]*$")
-    
     var varName: String
     var array: Expression
     var inOut: Bool
@@ -26,7 +24,7 @@ class ForBlock: BlockInstruction {
             throw GRPHCompileError(type: .typeMismatch, message: "#foreach needs an array, a \(type) was given")
         }
         
-        guard ForBlock.varNameRequirement.firstMatch(string: self.varName) != nil else {
+        guard GRPHCompiler.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
         variables.append(Variable(name: self.varName, type: arrtype.content, final: !inOut, compileTime: true))

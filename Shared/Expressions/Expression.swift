@@ -89,7 +89,7 @@ struct Expressions {
         }
         if let result = CastExpression.pattern.firstMatch(string: str) {
             if let type = GRPHTypes.parse(context: context, literal: result[3]!) {
-                return CastExpression(from: try parse(context: context, infer: nil, literal: result[1]!), cast: CastType(result[2]!)!, to: type)
+                return CastExpression(from: try parse(context: context, infer: type, literal: result[1]!), cast: CastType(result[2]!)!, to: type)
             } else {
                 throw GRPHCompileError(type: .parse, message: "Unknown type '\(result[3]!)' in cast")
             }

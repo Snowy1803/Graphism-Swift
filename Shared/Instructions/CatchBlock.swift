@@ -15,7 +15,7 @@ class CatchBlock: BlockInstruction {
         self.varName = varName
         super.init(lineNumber: lineNumber)
         
-        guard ForBlock.varNameRequirement.firstMatch(string: self.varName) != nil else {
+        guard GRPHCompiler.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
         

@@ -83,7 +83,7 @@ class FunctionDeclarationBlock: BlockInstruction {
                 optional = false
                 variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
             }
-            guard ForBlock.varNameRequirement.firstMatch(string: pname) != nil else {
+            guard GRPHCompiler.varNameRequirement.firstMatch(string: pname) != nil else {
                 throw GRPHCompileError(type: .parse, message: "Illegal var name '\(pname)'")
             }
             i += 1

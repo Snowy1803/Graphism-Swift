@@ -34,10 +34,14 @@ class VariableDeclarationInstruction: Instruction {
         guard groups[5] != nil else {
             throw GRPHCompileError(type: .parse, message: "A variable must have a value when it is defined")
         }
-        guard context.findVariableInScope(named: groups[4]!) == nil else {
-            throw GRPHCompileError(type: .parse, message: "Invalid redeclaration of variable '\(groups[4]!)'")
+        let name = groups[4]!
+        guard context.findVariableInScope(named: name) == nil else {
+            throw GRPHCompileError(type: .parse, message: "Invalid redeclaration of variable '\(name)'")
         }
-        context.addVariable(Variable(name: groups[4]!, type: type, final: groups[2] != nil, compileTime: true), global: groups[1] != nil)
+        guard GRPHCompiler.varNameRequirement.firstMatch(string: name) != nil else {
+            throw GRPHCompileError(type: .parse, message: "Invalid variable name '\(name)'")
+        }
+        context.addVariable(Variable(name: name, type: type, final: groups[2] != nil, compileTime: true), global: groups[1] != nil)
         self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: try Expressions.parse(context: context, infer: type, literal: groups[5]!))
     }
     

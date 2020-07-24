@@ -10,6 +10,7 @@ import Foundation
 class GRPHCompiler: GRPHParser {
     static let grphVersion = "1.11"
     static let label = try! NSRegularExpression(pattern: "^[A-Za-z][A-Za-z0-9_]*$")
+    static let varNameRequirement = try! NSRegularExpression(pattern: "^[$A-Za-z_][A-Za-z0-9_]*$")
     
     static let internStringPattern = try! NSRegularExpression(pattern: #"(?<!\\)".*?(?<!\\)""#)
     // static let internFilePattern = try! NSRegularExpression(pattern: "(?<!\\\\)'.*?(?<!\\\\)'")
