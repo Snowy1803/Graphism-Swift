@@ -9,11 +9,9 @@ import Foundation
 
 enum SimpleType: String, GRPHType, CaseIterable {
     
-    case num, integer, float, rotation, pos, boolean, string, paint, color, linear, radial, shape, direction, stroke, /*file, image,*/ font, mixed
+    case num, integer, float, rotation, pos, boolean, string, paint, color, linear, radial, shape, direction, stroke, /*file, image,*/ font, mixed, void
     
     case Rectangle, Circle, Line, Polygon, /*Image,*/ Text, Path, Group, Background
-    
-    // MISSING = font, Text, Group, Background
     
     var string: String {
         rawValue
@@ -40,7 +38,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
     
     var final: Bool {
         switch self {
-        case .integer, .float, .color, .linear, .radial, .boolean, .string, .rotation, .pos, .direction, .stroke, .font:
+        case .integer, .float, .color, .linear, .radial, .boolean, .string, .rotation, .pos, .direction, .stroke, .font, .void:
             return true
         case .Rectangle, .Circle, .Line, .Polygon, .Text, .Path, .Group, .Background, .num, .paint, .shape, .mixed:
             return false
@@ -102,6 +100,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     TypeConstant(name: "UP_LEFT", type: self, value: Direction.upLeft),
                     TypeConstant(name: "UP", type: self, value: Direction.up),
                     TypeConstant(name: "UP_RIGHT", type: self, value: Direction.upRight)]
+        case .void:
+            return [TypeConstant(name: "VOID", type: self, value: GRPHVoid.void)]
         default:
             return []
         }
@@ -239,6 +239,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
         switch self {
         case .mixed, .num, .integer, .float, .boolean, .string, .paint, .shape, .direction, .stroke:
             return nil
+        case .void:
+            return Constructor(parameters: [], type: self) { _, _ in GRPHVoid.void }
         case .rotation:
             return Constructor(parameters: [Parameter(name: "degrees", type: SimpleType.integer)], type: self) { context, values in
                 return Rotation(value: values[0] as! Int)

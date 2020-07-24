@@ -159,14 +159,18 @@ extension Collection {
     }
 }
 
-enum GRPHVoid: GRPHValue {
+enum GRPHVoid: StatefulValue {
     case void
     
     var type: GRPHType {
-        fatalError("The return value of a void function must be discarded")
+        SimpleType.void
+    }
+    
+    var state: String {
+        "void.VOID"
     }
     
     func isEqual(to other: GRPHValue) -> Bool {
-        false
+        other is GRPHVoid
     }
 }
