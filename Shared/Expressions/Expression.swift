@@ -169,8 +169,16 @@ struct Expressions {
         if let result = FieldExpression.pattern.firstMatch(string: str) {
             let field = result[2]!
             if field.first!.isUppercase { // constants
-                guard let type = GRPHTypes.parse(context: context, literal: result[1]!) else {
-                    throw GRPHCompileError(type: .parse, message: "Unknown type \(result[1]!)")
+                var typeLit = result[1]!
+                if typeLit.hasPrefix("[") && typeLit.hasSuffix("]") {
+                    // The "|" can incorrectly be interpreted as a binary or instead of the component of a type. We allow here to use brackets so the user can change priority
+                    typeLit = String(typeLit.dropFirst().dropLast())
+                }
+                guard let type = GRPHTypes.parse(context: context, literal: typeLit) else {
+                    throw GRPHCompileError(type: .parse, message: "Unknown type '\(typeLit)'")
+                }
+                if field == "TYPE" {
+                    return TypeValueExpression(type: type)
                 }
                 guard let const = type.staticConstants.first(where: { $0.name == field }) else {
                     throw GRPHCompileError(type: .undeclared, message: "Constant '\(field)' was not found in type \(type.string)")
@@ -178,6 +186,9 @@ struct Expressions {
                 return ConstantPropertyExpression(property: const, inType: type)
             } else {
                 let exp = try parse(context: context, infer: nil, literal: result[1]!)
+                if field == "type" {
+                    return ValueTypeExpression(on: exp)
+                }
                 let type = try exp.getType(context: context, infer: SimpleType.mixed)
                 guard let property = GRPHTypes.field(named: field, in: type) else {
                     throw GRPHCompileError(type: .undeclared, message: "Field '\(field)' was not found in value of type \(type.string)")

@@ -81,3 +81,41 @@ struct ConstantPropertyExpression: Expression {
     
     var needsBrackets: Bool { false }
 }
+
+// These could return types directly in a future version
+
+struct ValueTypeExpression: Expression {
+    var on: Expression
+    
+    func eval(context: GRPHContext) throws -> GRPHValue {
+        try GRPHTypes.realType(of: on.eval(context: context), expected: nil).string
+    }
+    
+    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+        SimpleType.string
+    }
+    
+    var string: String {
+        "\(on.bracketized).type"
+    }
+    
+    var needsBrackets: Bool { false }
+}
+
+struct TypeValueExpression: Expression {
+    var type: GRPHType
+    
+    func eval(context: GRPHContext) throws -> GRPHValue {
+        type.string
+    }
+    
+    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+        SimpleType.string
+    }
+    
+    var string: String {
+        "[\(type.string)].TYPE"
+    }
+    
+    var needsBrackets: Bool { false }
+}
