@@ -10,7 +10,6 @@ import Foundation
 struct BreakInstruction: Instruction {
     var lineNumber: Int
     var type: BreakType
-    var value: Expression? = nil
     
     func run(context: GRPHContext) throws {
         switch type {
@@ -18,20 +17,28 @@ struct BreakInstruction: Instruction {
             try context.breakBlock()
         case .continue:
             try context.continueBlock()
-        case .return:
-            try context.returnFunction(returnValue: value?.eval(context: context))
         }
     }
     
     func toString(indent: String) -> String {
-        return "\(line):\(indent)#\(type.rawValue)\(value == nil ? "" : " \(value!.string)")\n"
+        return "\(line):\(indent)#\(type.rawValue)\n"
     }
     
     enum BreakType: String {
         case `break` = "break"
         case `continue` = "continue"
-        case `return` = "return"
     }
 }
 
-
+struct ReturnInstruction: Instruction {
+    var lineNumber: Int
+    var value: Expression? = nil
+    
+    func run(context: GRPHContext) throws {
+        try context.returnFunction(returnValue: value?.eval(context: context))
+    }
+    
+    func toString(indent: String) -> String {
+        return "\(line):\(indent)#return \(value?.string ?? "")\n"
+    }
+}

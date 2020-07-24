@@ -222,7 +222,7 @@ class GRPHCompiler: GRPHParser {
                                   block.returnDefault == nil { // expects something, no default return
                             throw GRPHCompileError(type: .parse, message: "No #return value nor default value in non-void function, expected a \(expected)")
                         }
-                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .return, value: exp))
+                        try addInstruction(ReturnInstruction(lineNumber: lineNumber, value: exp))
                     case "#break":
                         try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break))
                     case "#continue":
