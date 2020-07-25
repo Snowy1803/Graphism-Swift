@@ -70,7 +70,7 @@ class ArrayModificationInstruction: Instruction {
         try self.init(lineNumber: lineNumber, name: v.name, op: op, index: index, value: exp)
     }
     
-    func run(context: GRPHContext) throws {
+    func run(context: inout GRPHContext) throws {
         guard let v = context.findVariable(named: name) else {
             throw GRPHRuntimeError(type: .unexpected, message: "Undeclared variable '\(name)'")
         }

@@ -45,7 +45,7 @@ class VariableDeclarationInstruction: Instruction {
         self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: try Expressions.parse(context: context, infer: type, literal: groups[5]!))
     }
     
-    func run(context: GRPHContext) throws {
+    func run(context: inout GRPHContext) throws {
         let content = try GRPHTypes.autobox(value: try value!.eval(context: context), expected: type)
         let v = Variable(name: name, type: type, content: content, final: constant)
         context.addVariable(v, global: global)

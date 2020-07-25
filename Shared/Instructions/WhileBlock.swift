@@ -10,9 +10,9 @@ import Foundation
 class WhileBlock: BlockInstruction {
     let condition: Expression
     
-    init(lineNumber: Int, context: GRPHContext, condition: Expression) throws {
+    init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
         self.condition = condition
-        super.init(lineNumber: lineNumber)
+        super.init(context: &context, lineNumber: lineNumber)
         if try !SimpleType.boolean.isInstance(context: context, expression: condition) {
             throw GRPHCompileError(type: .typeMismatch, message: "#while needs a boolean, a \(try condition.getType(context: context, infer: SimpleType.boolean)) was given")
         }
@@ -22,12 +22,11 @@ class WhileBlock: BlockInstruction {
         try GRPHTypes.autobox(value: condition.eval(context: context), expected: SimpleType.boolean) as! Bool
     }
     
-    override func run(context: GRPHContext) throws {
-        canNextRun = true
-        broken = false
-        while try mustRun(context: context) || (!broken && canRun(context: context)) {
-            variables.removeAll()
-            try runChildren(context: context)
+    override func run(context: inout GRPHContext) throws {
+        let ctx = createContext(&context)
+        while try mustRun(context: ctx) || (!ctx.broken && canRun(context: ctx)) {
+            ctx.variables.removeAll()
+            try runChildren(context: ctx)
         }
     }
     

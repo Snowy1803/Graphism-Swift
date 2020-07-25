@@ -10,16 +10,16 @@ import Foundation
 protocol Instruction {
     var lineNumber: Int { get }
     
-    func run(context: GRPHContext) throws
+    func run(context: inout GRPHContext) throws
     
     /// Must end with a newline
     func toString(indent: String) -> String
 }
 
 extension Instruction {
-    func safeRun(context: GRPHContext) throws {
+    func safeRun(context: inout GRPHContext) throws {
         do {
-            try self.run(context: context)
+            try self.run(context: &context)
         } catch var exception as GRPHRuntimeError {
             exception.stack.append("\tat \(type(of: self)); line \(line)")
             throw exception

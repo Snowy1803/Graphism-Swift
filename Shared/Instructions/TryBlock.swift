@@ -10,19 +10,15 @@ import Foundation
 class TryBlock: BlockInstruction {
     var catches: [GRPHRuntimeError.RuntimeExceptionType?: CatchBlock] = [:]
     
-    override init(lineNumber: Int) {
-        super.init(lineNumber: lineNumber)
-    }
-    
-    override func run(context: GRPHContext) throws {
+    override func run(context: inout GRPHContext) throws {
         do {
-            variables.removeAll()
-            try runChildren(context: context)
+            let ctx = createContext(&context)
+            try runChildren(context: ctx)
         } catch let e as GRPHRuntimeError {
             if let c = catches[e.type] {
-                try c.exceptionCatched(context: context, exception: e)
+                try c.exceptionCatched(context: &context, exception: e)
             } else if let c = catches[nil] {
-                try c.exceptionCatched(context: context, exception: e)
+                try c.exceptionCatched(context: &context, exception: e)
             } else {
                 throw e
             }

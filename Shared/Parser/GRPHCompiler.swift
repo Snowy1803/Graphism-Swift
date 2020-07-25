@@ -84,11 +84,7 @@ class GRPHCompiler: GRPHParser {
                 let tabs = line.count - line.drop(while: { $0 == "\t" }).count
                 while tabs < blocks.count {
                     blocks.removeLast()
-                    context.closeBlock()
-                    if context.blocks.isEmpty,
-                       let parent = context.parent {
-                        context = parent
-                    }
+                    context = (context as! GRPHBlockContext).parent
                 }
             }
             
@@ -148,30 +144,30 @@ class GRPHCompiler: GRPHParser {
                         }
                         imports.append(TypeAlias(name: String(split[0]), type: type))
                     case "#if":
-                        try addInstruction(try IfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
+                        try addInstruction(try IfBlock(lineNumber: lineNumber, context: &context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                     case "#elseif", "#elif":
-                        try addInstruction(try ElseIfBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
+                        try addInstruction(try ElseIfBlock(lineNumber: lineNumber, context: &context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                     case "#else":
                         guard params.isEmpty else {
                             throw GRPHCompileError(type: .parse, message: "#else doesn't expect arguments")
                         }
-                        try addInstruction(ElseBlock(lineNumber: lineNumber))
+                        try addInstruction(ElseBlock(context: &context, lineNumber: lineNumber))
                     case "#while":
-                        try addInstruction(try WhileBlock(lineNumber: lineNumber, context: context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
+                        try addInstruction(try WhileBlock(lineNumber: lineNumber, context: &context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                     case "#foreach":
                         let split = params.split(separator: ":", maxSplits: 1)
                         guard split.count == 2 else {
                             throw GRPHCompileError(type: .parse, message: "'#foreach varName : array' syntax expected; array missing")
                         }
-                        try addInstruction(try ForEachBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
+                        try addInstruction(try ForEachBlock(lineNumber: lineNumber, context: &context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
                     case "#try":
-                        try addInstruction(TryBlock(lineNumber: lineNumber))
+                        try addInstruction(TryBlock(context: &context, lineNumber: lineNumber))
                     case "#catch":
                         let split = params.split(separator: ":", maxSplits: 1)
                         guard split.count == 2 else {
                             throw GRPHCompileError(type: .parse, message: "'#catch varName : errortype' syntax expected; error types missing")
                         }
-                        let block = try CatchBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces))
+                        let block = try CatchBlock(lineNumber: lineNumber, context: &context, varName: split[0].trimmingCharacters(in: .whitespaces))
                         let exs = split[1].components(separatedBy: "|")
                         let tr: TryBlock = try findTryBlock()
                         for rawErr in exs {
@@ -207,11 +203,11 @@ class GRPHCompiler: GRPHParser {
                         }
                         try addInstruction(ThrowInstruction(lineNumber: lineNumber, type: error, message: exp))
                     case "#function":
-                        try addInstruction(FunctionDeclarationBlock(lineNumber: lineNumber, context: context, def: params))
+                        try addInstruction(FunctionDeclarationBlock(lineNumber: lineNumber, context: &context, def: params))
                     case "#return":
                         let exp = params.isEmpty ? nil : try Expressions.parse(context: context, infer: nil, literal: params)
                         guard let ctx = context as? GRPHFunctionContext,
-                              let block = ctx.blocks[0] as? FunctionDeclarationBlock else {
+                              let block = ctx.inFunction else {
                             throw GRPHCompileError(type: .parse, message: "Cannot use #return outside of a #function block")
                         }
                         let expected = block.generated.returnType
@@ -238,7 +234,7 @@ class GRPHCompiler: GRPHParser {
                     case "#goto":
                         throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
                     case "#block":
-                        try addInstruction(BlockInstruction(lineNumber: lineNumber))
+                        try addInstruction(BlockInstruction(context: &context, lineNumber: lineNumber))
                     case "#requires":
                         let p = params.components(separatedBy: " ")
                         let version: Version
@@ -254,7 +250,7 @@ class GRPHCompiler: GRPHParser {
                         }
                         let requires = RequiresInstruction(lineNumber: lineNumber, plugin: p[0], version: version)
                         if blocks.isEmpty {
-                            try requires.run(context: context)
+                            try requires.run(context: &context)
                         } else {
                             try addInstruction(requires)
                         }
@@ -308,7 +304,8 @@ class GRPHCompiler: GRPHParser {
                     }
                     if FunctionDeclarationBlock.inlineDeclaration.firstMatch(string: tline) != nil {
                         // color randomColor[] = color[randomInteger[256] randomInteger[256] randomInteger[256]]
-                        try addNonBlockInstruction(try FunctionDeclarationBlock(lineNumber: lineNumber, context: context, def: tline))
+                        var inner = context!
+                        try addNonBlockInstruction(try FunctionDeclarationBlock(lineNumber: lineNumber, context: &inner, def: tline))
                         continue
                     }
                     if let result = VariableDeclarationInstruction.pattern.firstMatch(string: tline) {
@@ -362,12 +359,16 @@ class GRPHCompiler: GRPHParser {
                 }
             } catch let error as GRPHCompileError {
                 printerr("Compile Error: \(error.type.rawValue)Error: \(error.message); line \(lineNumber + 1)")
+                context = nil
                 return false
             } catch {
                 printerr("NativeError; line \(lineNumber + 1)")
                 printerr(error.localizedDescription)
+                context = nil
+                return false
             }
         }
+        context = nil
         return true
     }
     
@@ -388,14 +389,9 @@ class GRPHCompiler: GRPHParser {
         let label = nextLabel
         nextLabel = nil
         try addNonBlockInstruction(instruction)
-        if let function = instruction as? FunctionDeclarationBlock {
-            function.label = label
-            blocks.append(function)
-            context = GRPHFunctionContext(parent: context, function: function)
-        } else if let block = instruction as? BlockInstruction {
+        if let block = instruction as? BlockInstruction {
             block.label = label
             blocks.append(block)
-            context.inBlock(block: block)
         } else if label != nil {
             throw GRPHCompileError(type: .unsupported, message: "Floating labels aren't supported: Labels must precede a block")
         }

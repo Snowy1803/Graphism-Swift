@@ -314,6 +314,10 @@
 		20DE0BF524B0B48500ABFB6E /* CatchBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BF424B0B48500ABFB6E /* CatchBlock.swift */; };
 		20DE0BF624B0B48500ABFB6E /* CatchBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BF424B0B48500ABFB6E /* CatchBlock.swift */; };
 		20DE0BF724B0B48500ABFB6E /* CatchBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DE0BF424B0B48500ABFB6E /* CatchBlock.swift */; };
+		20E4158524CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4158424CC8C9600EFB590 /* GRPHBlockContext.swift */; };
+		20E4158624CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4158424CC8C9600EFB590 /* GRPHBlockContext.swift */; };
+		20E4158724CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4158424CC8C9600EFB590 /* GRPHBlockContext.swift */; };
+		20E4158824CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4158424CC8C9600EFB590 /* GRPHBlockContext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -418,6 +422,7 @@
 		20DE0BEC24B0AD5100ABFB6E /* ForEachBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForEachBlock.swift; sourceTree = "<group>"; };
 		20DE0BF024B0B35600ABFB6E /* TryBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryBlock.swift; sourceTree = "<group>"; };
 		20DE0BF424B0B48500ABFB6E /* CatchBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatchBlock.swift; sourceTree = "<group>"; };
+		20E4158424CC8C9600EFB590 /* GRPHBlockContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GRPHBlockContext.swift; sourceTree = "<group>"; };
 		20FD1DA524A8E3240027232B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -469,6 +474,7 @@
 				200A5F9724ABF6020028180B /* GRPHCompiler.swift */,
 				20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */,
 				20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */,
+				20E4158424CC8C9600EFB590 /* GRPHBlockContext.swift */,
 				201E1F8924BD1B8A005A2BBE /* GRPHFunctionContext.swift */,
 				20DE0BB024AD503F00ABFB6E /* Variable.swift */,
 				20DE0BDC24AF80C200ABFB6E /* Property.swift */,
@@ -852,6 +858,7 @@
 				20D1EF6224B22B5300EB4BEE /* AssignmentInstruction.swift in Sources */,
 				200A5F8D24ABA5180028180B /* LinearPaint.swift in Sources */,
 				20DE0BC724AE783400ABFB6E /* BinaryExpression.swift in Sources */,
+				20E4158724CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */,
 				201E1F9124BD1D5B005A2BBE /* FunctionDeclarationBlock.swift in Sources */,
 				20D1EF4924B141E300EB4BEE /* ConstructorExpression.swift in Sources */,
 				201E1FA924BE7E66005A2BBE /* RequiresInstruction.swift in Sources */,
@@ -962,6 +969,7 @@
 				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
 				20D1EF6C24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20DE0BD524AEA88100ABFB6E /* CastExpression.swift in Sources */,
+				20E4158524CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */,
 				20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				201E1F6C24BBB199005A2BBE /* InputOutputNameSpace.swift in Sources */,
 				200A5F7024AB76560028180B /* GRPHType.swift in Sources */,
@@ -1047,6 +1055,7 @@
 				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
 				20D1EF6D24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20DE0BD624AEA88100ABFB6E /* CastExpression.swift in Sources */,
+				20E4158624CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */,
 				20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				201E1F6D24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
 				200A5F7124AB76560028180B /* GRPHType.swift in Sources */,
@@ -1103,6 +1112,7 @@
 				20D1EF8124B2AFF600EB4BEE /* StandardNameSpace.swift in Sources */,
 				20D1EFA324B2AFF600EB4BEE /* SimpleType.swift in Sources */,
 				20D1EF8724B2AFF600EB4BEE /* Instruction.swift in Sources */,
+				20E4158824CC8C9600EFB590 /* GRPHBlockContext.swift in Sources */,
 				201E1F9224BD1D5B005A2BBE /* FunctionDeclarationBlock.swift in Sources */,
 				20D1EFAA24B2AFF600EB4BEE /* BreakInstruction.swift in Sources */,
 				201E1FAA24BE7E67005A2BBE /* RequiresInstruction.swift in Sources */,

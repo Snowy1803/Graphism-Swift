@@ -11,7 +11,7 @@ struct ExpressionInstruction: Instruction {
     let lineNumber: Int
     let expression: Expression
     
-    func run(context: GRPHContext) throws {
+    func run(context: inout GRPHContext) throws {
         _ = try expression.eval(context: context)
     }
     

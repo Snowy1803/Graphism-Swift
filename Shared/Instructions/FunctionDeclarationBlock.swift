@@ -15,11 +15,8 @@ class FunctionDeclarationBlock: BlockInstruction {
     var defaults: [Expression?] = []
     var returnDefault: Expression?
     
-    var currentReturnValue: GRPHValue?
-    
-    init(lineNumber: Int, context ctx: GRPHContext, returnType: GRPHType, name: String, def: String) throws {
-        super.init(lineNumber: lineNumber)
-        let context = GRPHFunctionContext(parent: ctx, function: self)
+    init(lineNumber: Int, context: inout GRPHContext, returnType: GRPHType, name: String, def: String) throws {
+        super.init(context: &context, lineNumber: lineNumber)
         // finding returnDefault
         var couple: (String, String)?
         try! FunctionDeclarationBlock.equals.allMatches(in: def) { range in
@@ -51,6 +48,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         var varargs = false
         defaults = [Expression?](repeating: nil, count: params.count)
         var i = 0
+        let context = context as! GRPHFunctionContext
         let pars = try params.map { param -> Parameter in
             guard let space = param.firstIndex(of: " ") else {
                 throw GRPHCompileError(type: .parse, message: "Expected format 'type name' for each parameter")
@@ -65,7 +63,7 @@ class FunctionDeclarationBlock: BlockInstruction {
                 defaults[i] = try Expressions.parse(context: context, infer: ptype, literal: remainder[remainder.index(after: equals)...].trimmingCharacters(in: .whitespaces))
                 pname = remainder[..<equals].trimmingCharacters(in: .whitespaces)
                 optional = true
-                variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
+                context.variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
             } else if remainder.hasSuffix("...") {
                 guard i == params.count - 1 else {
                     throw GRPHCompileError(type: .parse, message: "The varargs '...' must be the last parameter")
@@ -73,15 +71,15 @@ class FunctionDeclarationBlock: BlockInstruction {
                 pname = remainder.dropLast(3).trimmingCharacters(in: .whitespaces)
                 optional = false // varargs needs at least 1 argument
                 varargs = true
-                variables.append(Variable(name: pname, type: ptype.inArray, final: false, compileTime: true))
+                context.variables.append(Variable(name: pname, type: ptype.inArray, final: false, compileTime: true))
             } else if remainder.hasSuffix("?") {
                 pname = remainder.dropLast().trimmingCharacters(in: .whitespaces)
                 optional = true
-                variables.append(Variable(name: pname, type: ptype.optional, final: false, compileTime: true))
+                context.variables.append(Variable(name: pname, type: ptype.optional, final: false, compileTime: true))
             } else {
                 pname = remainder
                 optional = false
-                variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
+                context.variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
             }
             guard GRPHCompiler.varNameRequirement.firstMatch(string: pname) != nil else {
                 throw GRPHCompileError(type: .parse, message: "Illegal var name '\(pname)'")
@@ -93,7 +91,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         context.compiler!.imports.append(generated)
     }
     
-    convenience init(lineNumber: Int, context: GRPHContext, def: String) throws {
+    convenience init(lineNumber: Int, context: inout GRPHContext, def: String) throws {
         if let bracket = def.firstIndex(of: "["),
            let space = def.firstIndex(of: " "),
            space < bracket {
@@ -108,10 +106,16 @@ class FunctionDeclarationBlock: BlockInstruction {
             guard name.allSatisfy({ $0 == "_" || ($0.isASCII && $0.isLetter) }) else {
                 throw GRPHCompileError(type: .parse, message: "Invalid function name '\(name)'")
             }
-            try self.init(lineNumber: lineNumber, context: context, returnType: returnType, name: name, def: def)
+            try self.init(lineNumber: lineNumber, context: &context, returnType: returnType, name: name, def: def)
             return
         }
         throw GRPHCompileError(type: .parse, message: "Invalid #function declaration")
+    }
+    
+    override func createContext(_ context: inout GRPHContext) -> GRPHBlockContext {
+        let ctx = GRPHFunctionContext(parent: context, function: self)
+        context = ctx
+        return ctx
     }
     
     func splitParameters(string: Substring) -> [String] {
@@ -134,14 +138,10 @@ class FunctionDeclarationBlock: BlockInstruction {
     
     func executeFunction(context: GRPHContext, params: [GRPHValue?]) throws -> GRPHValue {
         do {
-            variables.removeAll()
-            // Note that this means recursion & multithreading would not work
-            currentReturnValue = nil
-            broken = false
             let ctx = GRPHFunctionContext(parent: context, function: self)
             try parseParameters(context: ctx, params: params)
             try runChildren(context: ctx)
-            if let returning = currentReturnValue {
+            if let returning = ctx.currentReturnValue {
                 return returning
             } else if let returning = returnDefault {
                 return try returning.eval(context: ctx)
@@ -156,7 +156,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         }
     }
     
-    func parseParameters(context: GRPHContext, params: [GRPHValue?]) throws {
+    func parseParameters(context: GRPHFunctionContext, params: [GRPHValue?]) throws {
         var varargs: GRPHArray? = nil
         for i in 0..<params.count {
             let val = params[i]
@@ -164,21 +164,21 @@ class FunctionDeclarationBlock: BlockInstruction {
             if generated.varargs && i >= generated.parameters.count - 1 {
                 if varargs == nil {
                     varargs = GRPHArray(of: p.type)
-                    variables.append(Variable(name: p.name, type: p.type.inArray, content: varargs, final: false))
+                    context.variables.append(Variable(name: p.name, type: p.type.inArray, content: varargs, final: false))
                 }
                 varargs!.wrapped.append(val!)
             } else if p.optional {
                 if let def = defaults[i] {
                     if val == nil {
-                        variables.append(Variable(name: p.name, type: p.type, content: try def.eval(context: context), final: false))
+                        context.variables.append(Variable(name: p.name, type: p.type, content: try def.eval(context: context), final: false))
                     } else {
-                        variables.append(Variable(name: p.name, type: p.type, content: val, final: false))
+                        context.variables.append(Variable(name: p.name, type: p.type, content: val, final: false))
                     }
                 } else {
-                    variables.append(Variable(name: p.name, type: p.type.optional, content: GRPHOptional(val), final: false))
+                    context.variables.append(Variable(name: p.name, type: p.type.optional, content: GRPHOptional(val), final: false))
                 }
             } else {
-                variables.append(Variable(name: p.name, type: p.type, content: val, final: false))
+                context.variables.append(Variable(name: p.name, type: p.type, content: val, final: false))
             }
         }
         // Optional trailing parameters
@@ -186,17 +186,12 @@ class FunctionDeclarationBlock: BlockInstruction {
             for i in params.count..<generated.parameters.count {
                 let p = generated.parameter(index: i)
                 if let def = defaults[i] {
-                    variables.append(Variable(name: p.name, type: p.type, content: try def.eval(context: context), final: false))
+                    context.variables.append(Variable(name: p.name, type: p.type, content: try def.eval(context: context), final: false))
                 } else {
-                    variables.append(Variable(name: p.name, type: p.type.optional, content: GRPHOptional.null, final: false))
+                    context.variables.append(Variable(name: p.name, type: p.type.optional, content: GRPHOptional.null, final: false))
                 }
             }
         }
-    }
-    
-    // type check #return at compile time!!!
-    func setReturnValue(returnValue: GRPHValue?) throws {
-        currentReturnValue = returnValue == nil ? nil : try GRPHTypes.autobox(value: returnValue!, expected: generated.returnType)
     }
     
     override func canRun(context: GRPHContext) throws -> Bool { false }

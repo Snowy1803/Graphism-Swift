@@ -43,7 +43,7 @@ class AssignmentInstruction: Instruction {
         try self.init(lineNumber: lineNumber, context: context, assigned: exp, op: groups[2], value: Expressions.parse(context: context, infer: exp.getType(context: context, infer: SimpleType.mixed), literal: groups[3]!))
     }
     
-    func run(context: GRPHContext) throws {
+    func run(context: inout GRPHContext) throws {
         var cache = [GRPHValue]()
         virtualValue = try assigned.eval(context: context, cache: &cache)
         let val = virtualized ? try value.eval(context: context) : try GRPHTypes.autobox(value: value.eval(context: context), expected: assigned.getType(context: context, infer: SimpleType.mixed))

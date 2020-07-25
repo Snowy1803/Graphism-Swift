@@ -27,8 +27,8 @@ struct GraphismCLI: ParsableCommand {
     @Argument(help: "The input file to read, as an utf8 encoded grph file")
     var input: String
     
-    func run() throws {
-        setbuf(stdout, nil)
+    // That way, the compiler will be deallocated when not needed anymore
+    func createRuntime() throws -> GRPHRuntime {
         let compiler = GRPHCompiler(entireContent: try String(contentsOfFile: input, encoding: .utf8))
         guard compiler.compile() else {
             throw ExitCode.failure
@@ -40,7 +40,13 @@ struct GraphismCLI: ParsableCommand {
             printout("Code compiled successfully")
             throw ExitCode.success
         }
-        let runtime = GRPHRuntime(compiler: compiler, image: GImage())
+        return GRPHRuntime(compiler: compiler, image: GImage())
+    }
+    
+    func run() throws {
+        setbuf(stdout, nil)
+        
+        let runtime = try createRuntime()
         
         runtime.debugging = debug
         runtime.debugStep = step ?? (debug ? Double.infinity : 0)

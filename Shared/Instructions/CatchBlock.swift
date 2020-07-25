@@ -11,27 +11,26 @@ class CatchBlock: BlockInstruction {
     let varName: String
     var def: String = ""
     
-    init(lineNumber: Int, context: GRPHContext, varName: String) throws {
+    init(lineNumber: Int, context: inout GRPHContext, varName: String) throws {
         self.varName = varName
-        super.init(lineNumber: lineNumber)
+        super.init(context: &context, lineNumber: lineNumber)
         
         guard GRPHCompiler.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
         
-        variables.append(Variable(name: varName, type: SimpleType.string, final: true, compileTime: true))
+        (context as! GRPHBlockContext).variables.append(Variable(name: varName, type: SimpleType.string, final: true, compileTime: true))
     }
     
-    func exceptionCatched(context: GRPHContext, exception: GRPHRuntimeError) throws {
+    func exceptionCatched(context: inout GRPHContext, exception: GRPHRuntimeError) throws {
         do {
-            variables.removeAll()
-            broken = false
+            let ctx = createContext(&context)
             let v = Variable(name: varName, type: SimpleType.string, content: exception.message, final: true)
-            variables.append(v)
+            ctx.variables.append(v)
             if context.runtime?.debugging ?? false {
                 printout("[DEBUG VAR \(v.name)=\(v.content!)]")
             }
-            try self.runChildren(context: context)
+            try self.runChildren(context: ctx)
         } catch var exception as GRPHRuntimeError {
             exception.stack.append("\tat \(type(of: self)); line \(line)")
             throw exception

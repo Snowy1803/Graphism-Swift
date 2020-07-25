@@ -43,11 +43,15 @@ class GRPHRuntime: GRPHParser {
         self.settings = compiler.settings
     }
     
+    deinit {
+        print("runtime deallocated")
+    }
+    
     func run() -> Bool {
         timestamp = Date()
         context = GRPHContext(parser: self)
         do {
-            var last: Instruction?
+            var last: GRPHContext?
             var i = 0
             while i < instructions.count && !Thread.current.isCancelled {
                 let line = instructions[i]
@@ -61,21 +65,29 @@ class GRPHRuntime: GRPHParser {
                 if debugStep > 0 {
                     _ = debugSemaphore.wait(timeout: .now() + debugStep)
                 }
-                try line.safeRun(context: context)
-                last = line
+                var inner = context!
+                try line.safeRun(context: &inner)
+                if inner !== context! {
+                    last = inner
+                } else {
+                    last = nil
+                }
                 i += 1
             }
+            context = nil // deallocate before self
             return true
         } catch let e as GRPHRuntimeError {
             printerr("GRPH Exited because a runtime exception was not catched")
             printerr("\(e.type.rawValue)Exception: \(e.message)")
             e.stack.forEach { print($0) }
-        } catch _ as GRPHExecutionTerminated {
+        } catch is GRPHExecutionTerminated {
+            context = nil // deallocate before self
             return true // Returning normally, execution terminated from an "end:" instruction or by the user when closing the file
         } catch let e {
             printerr("GRPH Exited after an unknown native error occurred")
             printerr("\(e)")
         }
+        context = nil // deallocate before self
         return false
     }
     

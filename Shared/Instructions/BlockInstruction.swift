@@ -14,34 +14,27 @@ class BlockInstruction: Instruction {
     var children: [Instruction] = []
     var label: String?
     
-    // context
-    
-    var variables: [Variable] = []
-    /// true if the next else can run, false otherwise
-    var canNextRun: Bool = true
-    /// true if #break or #continue was called in this block
-    var broken: Bool = false
-    /// true if #continue was called in this block
-    var continued: Bool = false
-    /// true if #fallthrough was called in this block
-    var mustNextRun: Bool = false
-    
-    
-    init(lineNumber: Int) {
+    init(context: inout GRPHContext, lineNumber: Int) {
         self.lineNumber = lineNumber
+        createContext(&context)
     }
     
-    func run(context: GRPHContext) throws {
-        canNextRun = true
-        broken = false
-        if try mustRun(context: context) || canRun(context: context) {
-            variables.removeAll()
-            try runChildren(context: context)
+    @discardableResult func createContext(_ context: inout GRPHContext) -> GRPHBlockContext {
+        let ctx = GRPHBlockContext(parent: context, block: self)
+        context = ctx
+        return ctx
+    }
+    
+    func run(context: inout GRPHContext) throws {
+        let ctx = createContext(&context)
+        if try mustRun(context: ctx) || canRun(context: ctx) {
+            ctx.variables.removeAll()
+            try runChildren(context: ctx)
         }
     }
     
-    func mustRun(context: GRPHContext) -> Bool {
-        if let last = context.last as? BlockInstruction,
+    func mustRun(context: GRPHBlockContext) -> Bool {
+        if let last = context.parent.last as? GRPHBlockContext,
            last.mustNextRun {
             last.mustNextRun = false
             return true
@@ -49,15 +42,11 @@ class BlockInstruction: Instruction {
         return false
     }
     
-    func runChildren(context: GRPHContext) throws {
-        canNextRun = false
-        var last: Instruction?
-        context.inBlock(block: self)
-        defer {
-            context.closeBlock()
-        }
+    func runChildren(context: GRPHBlockContext) throws {
+        context.canNextRun = false
+        var last: GRPHContext?
         var i = 0
-        while i < children.count && !broken && !Thread.current.isCancelled {
+        while i < children.count && !context.broken && !Thread.current.isCancelled {
             let child = children[i]
             context.last = last
             let runtime = context.runtime
@@ -70,17 +59,22 @@ class BlockInstruction: Instruction {
             if runtime?.debugStep ?? 0 > 0 {
                 _ = runtime?.debugSemaphore.wait(timeout: .now() + (runtime?.debugStep ?? 0))
             }
-            try child.safeRun(context: context)
-            last = child
+            var inner: GRPHContext = context
+            try child.safeRun(context: &inner)
+            if inner !== context {
+                last = inner
+            } else {
+                last = nil
+            }
             i += 1
         }
-        if continued {
-            broken = false
-            continued = false
+        if context.continued {
+            context.broken = false
+            context.continued = false
         }
     }
     
-    func canRun(context: GRPHContext) throws -> Bool { true }
+    func canRun(context: GRPHBlockContext) throws -> Bool { true }
     
     func toString(indent: String) -> String {
         var builder = "\(line):\(indent)#\(name)\n"
@@ -94,23 +88,4 @@ class BlockInstruction: Instruction {
     }
     
     var name: String { "block" }
-    
-    func breakBlock() {
-        broken = true
-    }
-    
-    func continueBlock() {
-        broken = true
-        continued = true
-    }
-    
-    func fallFrom() {
-        broken = true
-        canNextRun = true
-    }
-    
-    func fallthroughNext() {
-        broken = true
-        mustNextRun = true
-    }
 }

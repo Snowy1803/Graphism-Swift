@@ -12,7 +12,7 @@ struct ThrowInstruction: Instruction {
     let type: GRPHRuntimeError.RuntimeExceptionType
     let message: Expression
     
-    func run(context: GRPHContext) throws {
+    func run(context: inout GRPHContext) throws {
         throw GRPHRuntimeError(type: type, message: try message.eval(context: context) as! String)
     }
     
