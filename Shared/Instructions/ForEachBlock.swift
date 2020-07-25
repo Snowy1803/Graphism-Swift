@@ -1,5 +1,5 @@
 //
-//  ForBlock.swift
+//  ForEachBlock.swift
 //  Graphism
 //
 //  Created by Emil Pedersen on 04/07/2020.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ForBlock: BlockInstruction {
+class ForEachBlock: BlockInstruction {
     var varName: String
     var array: Expression
     var inOut: Bool
@@ -35,6 +35,9 @@ class ForBlock: BlockInstruction {
         broken = false
         var i = 0
         let arr = try GRPHTypes.autobox(value: array.eval(context: context), expected: ArrayType(content: SimpleType.mixed)) as! GRPHArray
+        if mustRun(context: context) {
+            throw GRPHRuntimeError(type: .unexpected, message: "Cannot fallthrough a #foreach block")
+        }
         while !broken && i < arr.count {
             variables.removeAll()
             let v = Variable(name: varName, type: arr.content, content: arr.wrapped[i], final: !inOut)

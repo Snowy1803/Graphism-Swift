@@ -25,7 +25,7 @@ class WhileBlock: BlockInstruction {
     override func run(context: GRPHContext) throws {
         canNextRun = true
         broken = false
-        while try !broken && canRun(context: context) {
+        while try mustRun(context: context) || (!broken && canRun(context: context)) {
             variables.removeAll()
             try runChildren(context: context)
         }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct ConstructorExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^(\(Expressions.typePattern))?\\((.+)\\)$")
+    static let pattern = try! NSRegularExpression(pattern: "^(\(Expressions.typePattern))?\\((.*)\\)$")
     var constructor: Constructor
     var values: [Expression?]
     

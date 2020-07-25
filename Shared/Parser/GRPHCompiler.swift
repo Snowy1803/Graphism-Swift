@@ -163,7 +163,7 @@ class GRPHCompiler: GRPHParser {
                         guard split.count == 2 else {
                             throw GRPHCompileError(type: .parse, message: "'#foreach varName : array' syntax expected; array missing")
                         }
-                        try addInstruction(try ForBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
+                        try addInstruction(try ForEachBlock(lineNumber: lineNumber, context: context, varName: split[0].trimmingCharacters(in: .whitespaces), array: Expressions.parse(context: context, infer: ArrayType(content: SimpleType.mixed), literal: split[1].trimmingCharacters(in: .whitespaces))))
                     case "#try":
                         try addInstruction(TryBlock(lineNumber: lineNumber))
                     case "#catch":
