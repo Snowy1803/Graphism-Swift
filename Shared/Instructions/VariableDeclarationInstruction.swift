@@ -10,13 +10,13 @@ import Foundation
 class VariableDeclarationInstruction: Instruction {
     static let pattern = try! NSRegularExpression(pattern: "^(global +)?(final +)?(\(Expressions.typePattern)) +([$A-Za-z_][A-Za-z0-9_]*)(?: *= *(.*))?$")
     
-    var global, constant: Bool
+    let global, constant: Bool
     
-    var type: GRPHType
-    var name: String
-    var value: Expression? // nil for fields in #type
+    let type: GRPHType
+    let name: String
+    let value: Expression? // nil for fields in #type
     
-    var lineNumber: Int
+    let lineNumber: Int
     
     init(lineNumber: Int, global: Bool, constant: Bool, type: GRPHType, name: String, value: Expression) {
         self.lineNumber = lineNumber

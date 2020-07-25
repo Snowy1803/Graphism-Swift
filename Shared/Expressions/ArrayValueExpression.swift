@@ -10,8 +10,8 @@ import Foundation
 struct ArrayValueExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^([$A-Za-z_][A-Za-z0-9_]*)\\{(.*)\\}$")
     
-    var varName: String
-    var index: Expression
+    let varName: String
+    let index: Expression
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         guard let val = context.findVariable(named: varName)?.content as? GRPHArray else {

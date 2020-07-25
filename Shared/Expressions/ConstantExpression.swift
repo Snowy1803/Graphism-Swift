@@ -12,7 +12,7 @@ struct ConstantExpression: Expression {
     static let intPattern = try! NSRegularExpression(pattern: "^-?[0-9]+$")
     static let floatPattern = try! NSRegularExpression(pattern: "^-?[0-9]+(?:\\.[0-9]+[Ff]?|[Ff])$")
     
-    var value: StatefulValue
+    let value: StatefulValue
     
     init(boolean: Bool) {
         self.value = boolean

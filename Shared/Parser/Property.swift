@@ -13,9 +13,9 @@ protocol Property {
 }
 
 struct TypeConstant: Property {
-    var name: String
-    var type: GRPHType
-    var value: GRPHValue
+    let name: String
+    let type: GRPHType
+    let value: GRPHValue
 }
 
 protocol Field: Property {
@@ -26,11 +26,18 @@ protocol Field: Property {
 }
 
 struct VirtualField<On: GRPHValue>: Field {
-    var name: String
-    var type: GRPHType
+    let name: String
+    let type: GRPHType
     
-    var getter: (_ on: On) -> GRPHValue
-    var setter: ((_ on: inout On, _ newValue: GRPHValue) throws -> Void)?
+    let getter: (_ on: On) -> GRPHValue
+    let setter: ((_ on: inout On, _ newValue: GRPHValue) throws -> Void)?
+    
+    init(name: String, type: GRPHType, getter: @escaping (On) -> GRPHValue, setter: ((inout On, GRPHValue) throws -> Void)? = nil) {
+        self.name = name
+        self.type = type
+        self.getter = getter
+        self.setter = setter
+    }
     
     func getValue(on: GRPHValue) -> GRPHValue {
         getter(on as! On)
@@ -53,11 +60,11 @@ struct VirtualField<On: GRPHValue>: Field {
 }
 
 struct ErasedField: Field {
-    var name: String
-    var type: GRPHType
+    let name: String
+    let type: GRPHType
     
-    var getter: (_ on: GRPHValue) -> GRPHValue
-    var setter: ((_ on: inout GRPHValue, _ newValue: GRPHValue) throws -> Void)?
+    let getter: (_ on: GRPHValue) -> GRPHValue
+    let setter: ((_ on: inout GRPHValue, _ newValue: GRPHValue) throws -> Void)?
     
     func getValue(on: GRPHValue) -> GRPHValue {
         getter(on)
@@ -75,10 +82,10 @@ struct ErasedField: Field {
 }
 
 struct KeyPathField<On: GRPHValue, Value: GRPHValue>: Field {
-    var name: String
-    var type: GRPHType
+    let name: String
+    let type: GRPHType
     
-    var keyPath: WritableKeyPath<On, Value>
+    let keyPath: WritableKeyPath<On, Value>
     
     func getValue(on: GRPHValue) -> GRPHValue {
         if let on = on as? On {

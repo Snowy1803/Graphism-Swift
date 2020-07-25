@@ -15,10 +15,10 @@ struct BinaryExpression: Expression {
     static let signs5 = try! NSRegularExpression(pattern: "\\+|\\-")
     static let signs6 = try! NSRegularExpression(pattern: "\\*|\\/|\\%")
     
-    var left, right: Expression
+    let left, right: Expression
     var op: BinaryOperator
     var operands: SimpleType
-    var unbox: Bool
+    let unbox: Bool
     
     init(context: GRPHContext, left: Expression, op: String, right: Expression) throws {
         self.left = left

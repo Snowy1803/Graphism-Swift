@@ -8,7 +8,7 @@
 import Foundation
 
 struct OptionalType: GRPHType {
-    var wrapped: GRPHType
+    let wrapped: GRPHType
     
     var string: String {
         if wrapped is MultiOrType {
@@ -23,7 +23,7 @@ struct OptionalType: GRPHType {
 }
 
 struct MultiOrType: GRPHType {
-    var type1, type2: GRPHType
+    let type1, type2: GRPHType
     
     var string: String {
         "\(type1.string)|\(type2.string)"
@@ -38,7 +38,7 @@ struct MultiOrType: GRPHType {
 }
 
 struct ArrayType: GRPHType {
-    var content: GRPHType
+    let content: GRPHType
     
     var string: String {
         "{\(content.string)}"

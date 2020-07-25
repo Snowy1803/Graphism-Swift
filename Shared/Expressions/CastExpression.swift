@@ -10,9 +10,9 @@ import Foundation
 struct CastExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^(.+) (is|as\\??!?) (\(Expressions.typePattern))$")
     
-    var from: Expression
-    var cast: CastType
-    var to: GRPHType
+    let from: Expression
+    let cast: CastType
+    let to: GRPHType
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         let raw = try from.eval(context: context)

@@ -8,7 +8,7 @@
 import Foundation
 
 class IfBlock: BlockInstruction {
-    var condition: Expression
+    let condition: Expression
     
     init(lineNumber: Int, context: GRPHContext, condition: Expression) throws {
         self.condition = condition
@@ -26,7 +26,7 @@ class IfBlock: BlockInstruction {
 }
 
 class ElseIfBlock: BlockInstruction {
-    var condition: Expression
+    let condition: Expression
     
     init(lineNumber: Int, context: GRPHContext, condition: Expression) throws {
         self.condition = condition

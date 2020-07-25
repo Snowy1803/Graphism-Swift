@@ -7,10 +7,10 @@
 
 import Foundation
 
-class RequiresInstruction: Instruction {
-    var lineNumber: Int
-    var plugin: String
-    var version: Version
+struct RequiresInstruction: Instruction {
+    let lineNumber: Int
+    let plugin: String
+    let version: Version
     
     init(lineNumber: Int, plugin: String, version: Version) {
         self.lineNumber = lineNumber
@@ -64,7 +64,7 @@ class RequiresInstruction: Instruction {
 }
 
 struct Version: Comparable {
-    var components: [Int]
+    let components: [Int]
     
     init(_ components: Int...) {
         self.components = components

@@ -8,7 +8,7 @@
 import Foundation
 
 class WhileBlock: BlockInstruction {
-    var condition: Expression
+    let condition: Expression
     
     init(lineNumber: Int, context: GRPHContext, condition: Expression) throws {
         self.condition = condition

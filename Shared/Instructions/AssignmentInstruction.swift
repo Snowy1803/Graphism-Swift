@@ -10,12 +10,12 @@ import Foundation
 class AssignmentInstruction: Instruction {
     static let pattern = try! NSRegularExpression(pattern: "^([^ \\n]+) *(\\+|-|\\*|\\/|%|&|\\||\\^|<<|>>>|>>)?= *(.*)$")
     
-    var lineNumber: Int
-    var assigned: AssignableExpression
+    let lineNumber: Int
+    let assigned: AssignableExpression
     var value: Expression
     
     private var virtualValue: GRPHValue?
-    var virtualized = false
+    let virtualized: Bool
     
     init(lineNumber: Int, context: GRPHContext, assigned: AssignableExpression, op: String?, value: Expression) throws {
         self.lineNumber = lineNumber
@@ -28,8 +28,10 @@ class AssignmentInstruction: Instruction {
         }
         
         if let op = op {
-            self.value = try BinaryExpression(context: context, left: VirtualExpression(parent: self), op: op, right: value)
             self.virtualized = true
+            self.value = try BinaryExpression(context: context, left: VirtualExpression(parent: self), op: op, right: value)
+        } else {
+            self.virtualized = false
         }
         try assigned.checkCanAssign(context: context)
     }

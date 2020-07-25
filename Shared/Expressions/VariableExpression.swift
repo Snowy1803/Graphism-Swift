@@ -10,7 +10,7 @@ import Foundation
 struct VariableExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^[A-Za-z0-9_$]+$")
     
-    var name: String
+    let name: String
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         if let v = context.findVariable(named: name) {

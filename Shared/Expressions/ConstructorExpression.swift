@@ -9,8 +9,8 @@ import Foundation
 
 struct ConstructorExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^(\(Expressions.typePattern))?\\((.*)\\)$")
-    var constructor: Constructor
-    var values: [Expression?]
+    let constructor: Constructor
+    let values: [Expression?]
     
     init(ctx: GRPHContext, type: GRPHType, values: [Expression]) throws {
         guard let constructor = type.constructor else {
@@ -19,17 +19,18 @@ struct ConstructorExpression: Expression {
         self.constructor = constructor
         // Java did kinda support multiple constructor but they didn't exist
         var nextParam = 0
-        self.values = []
+        var ourvalues: [Expression?] = []
         for param in values {
             guard let par = try constructor.parameter(index: nextParam, context: ctx, exp: param) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Unexpected '\(param.string)' of type '\(try param.getType(context: ctx, infer: constructor.parameter(index: nextParam).type))' in constructor for '\(type.string)'")
             }
             nextParam += par.add
-            while self.values.count < nextParam - 1 {
-                self.values.append(nil)
+            while ourvalues.count < nextParam - 1 {
+                ourvalues.append(nil)
             }
-            self.values.append(param) // at pars[nextParam - 1] aka current param
+            ourvalues.append(param) // at pars[nextParam - 1] aka current param
         }
+        self.values = ourvalues
     }
     
     func eval(context: GRPHContext) throws -> GRPHValue {

@@ -20,11 +20,16 @@ struct Parameter {
     static let strokeWidth = Parameter(name: "strokeWidth", type: SimpleType.float, optional: true)
     static let strokeType = Parameter(name: "strokeType", type: SimpleType.stroke, optional: true)
     static let strokeDashArray = Parameter(name: "strokeDashArray", type: ArrayType(content: SimpleType.float), optional: true)
+
+    let name: String
+    let type: GRPHType
+    let optional: Bool
     
-    
-    var name: String
-    var type: GRPHType
-    var optional: Bool = false
+    init(name: String, type: GRPHType, optional: Bool = false) {
+        self.name = name
+        self.type = type
+        self.optional = optional
+    }
     
     var string: String {
         "\(type.string) \(name)"

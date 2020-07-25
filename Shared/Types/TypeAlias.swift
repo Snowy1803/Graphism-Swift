@@ -8,8 +8,8 @@
 import Foundation
 
 struct TypeAlias: Importable {
-    var name: String
-    var type: GRPHType
+    let name: String
+    let type: GRPHType
     
     var exportedTypeAliases: [TypeAlias] { [self] }
 }

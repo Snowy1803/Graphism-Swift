@@ -10,7 +10,7 @@ import Foundation
 /// The #block instruction, but also the base class for all other blocks
 class BlockInstruction: Instruction {
     
-    var lineNumber: Int
+    let lineNumber: Int
     var children: [Instruction] = []
     var label: String?
     

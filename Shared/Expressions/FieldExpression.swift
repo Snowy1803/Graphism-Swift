@@ -10,8 +10,8 @@ import Foundation
 struct FieldExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^(.+)\\.([A-Za-z0-9_]+)$")
     
-    var on: Expression
-    var field: Field
+    let on: Expression
+    let field: Field
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         field.getValue(on: try on.eval(context: context))
@@ -64,8 +64,8 @@ extension FieldExpression: AssignableExpression {
 }
 
 struct ConstantPropertyExpression: Expression {
-    var property: TypeConstant
-    var inType: GRPHType
+    let property: TypeConstant
+    let inType: GRPHType
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         property.value
@@ -85,7 +85,7 @@ struct ConstantPropertyExpression: Expression {
 // These could return types directly in a future version
 
 struct ValueTypeExpression: Expression {
-    var on: Expression
+    let on: Expression
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         try GRPHTypes.realType(of: on.eval(context: context), expected: nil).string
@@ -103,7 +103,7 @@ struct ValueTypeExpression: Expression {
 }
 
 struct TypeValueExpression: Expression {
-    var type: GRPHType
+    let type: GRPHType
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         type.string

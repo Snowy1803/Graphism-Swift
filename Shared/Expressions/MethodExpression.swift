@@ -11,15 +11,15 @@ struct MethodExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^(.*?)\\.([A-Za-z>]+)\\[(.*)\\]$")
     //static let instructionPattern = try! NSRegularExpression(pattern: "^([A-Za-z>]+)(?: ([^ \\n]+))? *: *(.*)$")
     
-    var method: Method
-    var on: Expression
-    var values: [Expression?]
+    let method: Method
+    let on: Expression
+    let values: [Expression?]
     
     init(ctx: GRPHContext, method: Method, on: Expression, values: [Expression], asInstruction: Bool = false) throws {
         var nextParam = 0
         self.method = method
         self.on = on
-        self.values = []
+        var ourvalues: [Expression?] = []
         guard asInstruction || !method.returnType.isTheVoid else {
             throw GRPHCompileError(type: .typeMismatch, message: "Void function can't be used as an expression")
         }
@@ -28,11 +28,12 @@ struct MethodExpression: Expression {
                 throw GRPHCompileError(type: .typeMismatch, message: "Unexpected '\(param.string)' of type '\(try param.getType(context: ctx, infer: SimpleType.mixed))' in method '\(method.inType)>\(method.name)'")
             }
             nextParam += par.add
-            while self.values.count < nextParam - 1 {
-                self.values.append(nil)
+            while ourvalues.count < nextParam - 1 {
+                ourvalues.append(nil)
             }
-            self.values.append(param) // at pars[nextParam - 1] aka current param
+            ourvalues.append(param) // at pars[nextParam - 1] aka current param
         }
+        self.values = ourvalues
     }
     
     func eval(context: GRPHContext) throws -> GRPHValue {

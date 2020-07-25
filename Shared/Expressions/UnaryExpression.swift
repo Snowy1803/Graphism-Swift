@@ -9,8 +9,8 @@ import Foundation
 
 struct UnaryExpression: Expression {
     
-    var exp: Expression
-    var op: UnaryOperator
+    let exp: Expression
+    let op: UnaryOperator
     
     init(context: GRPHContext, op: String, exp: Expression) throws {
         self.op = UnaryOperator(rawValue: op)!

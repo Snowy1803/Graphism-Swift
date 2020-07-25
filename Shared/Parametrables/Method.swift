@@ -8,15 +8,15 @@
 import Foundation
 
 struct Method: Parametrable, Importable {
-    var ns: NameSpace
-    var name: String
+    let ns: NameSpace
+    let name: String
     /// In this version, inType cannot be a MultiOrType. Create two methods with the same name in the respective types.
-    var inType: GRPHType
-    var final: Bool = false
-    var parameters: [Parameter]
-    var returnType: GRPHType = SimpleType.void // new in GRPH 1.11, methods can be called with on.name[] syntax
-    var varargs: Bool = false
-    var executable: (GRPHContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue
+    let inType: GRPHType
+    let final: Bool
+    let parameters: [Parameter]
+    let returnType: GRPHType // new in GRPH 1.11, methods can be called with on.name[] syntax
+    let varargs: Bool
+    let executable: (GRPHContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue
     
     /// If true, runtime type checks are skipped
     var effectivelyFinal: Bool {
@@ -24,6 +24,17 @@ struct Method: Parametrable, Importable {
     }
     
     var exportedMethods: [Method] { [self] }
+    
+    init(ns: NameSpace, name: String, inType: GRPHType, final: Bool = false, parameters: [Parameter], returnType: GRPHType = SimpleType.void, varargs: Bool = false, executable: @escaping (GRPHContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue) {
+        self.ns = ns
+        self.name = name
+        self.inType = inType
+        self.final = final
+        self.parameters = parameters
+        self.returnType = returnType
+        self.varargs = varargs
+        self.executable = executable
+    }
 }
 
 extension Method {

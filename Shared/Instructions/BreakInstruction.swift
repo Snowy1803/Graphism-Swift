@@ -8,9 +8,9 @@
 import Foundation
 
 struct BreakInstruction: Instruction {
-    var lineNumber: Int
-    var type: BreakType
-    var scope: BreakScope
+    let lineNumber: Int
+    let type: BreakType
+    let scope: BreakScope
     
     func run(context: GRPHContext) throws {
         switch type {
@@ -64,7 +64,7 @@ struct BreakInstruction: Instruction {
 }
 
 struct ReturnInstruction: Instruction {
-    var lineNumber: Int
+    let lineNumber: Int
     var value: Expression? = nil
     
     func run(context: GRPHContext) throws {

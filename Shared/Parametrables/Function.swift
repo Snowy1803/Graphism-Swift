@@ -8,12 +8,21 @@
 import Foundation
 
 struct Function: Parametrable, Importable {
-    var ns: NameSpace
-    var name: String
-    var parameters: [Parameter]
-    var returnType: GRPHType = SimpleType.void
-    var varargs: Bool = false
-    var executable: (GRPHContext, [GRPHValue?]) throws -> GRPHValue
+    let ns: NameSpace
+    let name: String
+    let parameters: [Parameter]
+    let returnType: GRPHType
+    let varargs: Bool
+    let executable: (GRPHContext, [GRPHValue?]) throws -> GRPHValue
+    
+    init(ns: NameSpace, name: String, parameters: [Parameter], returnType: GRPHType = SimpleType.void, varargs: Bool = false, executable: @escaping (GRPHContext, [GRPHValue?]) throws -> GRPHValue) {
+        self.ns = ns
+        self.name = name
+        self.parameters = parameters
+        self.returnType = returnType
+        self.varargs = varargs
+        self.executable = executable
+    }
     
     var exportedFunctions: [Function] { [self] }
 }

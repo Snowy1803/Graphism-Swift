@@ -8,9 +8,9 @@
 import Foundation
 
 class ForEachBlock: BlockInstruction {
-    var varName: String
-    var array: Expression
-    var inOut: Bool
+    let varName: String
+    let array: Expression
+    let inOut: Bool
     
     init(lineNumber: Int, context: GRPHContext, varName: String, array: Expression) throws {
         self.inOut = varName.hasPrefix("&") // new in Swift Edition

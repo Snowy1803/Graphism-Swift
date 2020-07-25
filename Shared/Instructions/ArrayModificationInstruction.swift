@@ -9,11 +9,11 @@ import Foundation
 
 class ArrayModificationInstruction: Instruction {
     static let pattern = try! NSRegularExpression(pattern: "([^ ]+)\\{(.+)\\} *= *(.*)")
-    var lineNumber: Int
-    var name: String
-    var op: ArrayModificationOperation
-    var index: Expression?
-    var value: Expression?
+    let lineNumber: Int
+    let name: String
+    let op: ArrayModificationOperation
+    let index: Expression?
+    let value: Expression?
     
     init(lineNumber: Int, name: String, op: ArrayModificationOperation, index: Expression?, value: Expression?) throws {
         self.lineNumber = lineNumber

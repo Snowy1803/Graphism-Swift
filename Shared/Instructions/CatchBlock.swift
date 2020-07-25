@@ -8,7 +8,7 @@
 import Foundation
 
 class CatchBlock: BlockInstruction {
-    var varName: String
+    let varName: String
     var def: String = ""
     
     init(lineNumber: Int, context: GRPHContext, varName: String) throws {

@@ -10,8 +10,8 @@ import Foundation
 struct ArrayLiteralExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^(\(Expressions.typePattern))? *\\{(.*)\\}$")
     
-    var wrapped: GRPHType
-    var values: [Expression]
+    let wrapped: GRPHType
+    let values: [Expression]
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         let array = GRPHArray(of: wrapped)

@@ -8,8 +8,8 @@
 import Foundation
 
 struct ExpressionInstruction: Instruction {
-    var lineNumber: Int
-    var expression: Expression
+    let lineNumber: Int
+    let expression: Expression
     
     func run(context: GRPHContext) throws {
         _ = try expression.eval(context: context)
