@@ -100,6 +100,14 @@ class GRPHContext {
         try breakNearestBlock(BlockInstruction.self, scope: scope).continueBlock()
     }
     
+    func fallFromBlock(scope: BreakInstruction.BreakScope) throws {
+        try breakNearestBlock(BlockInstruction.self, scope: scope).fallFrom()
+    }
+    
+    func fallthroughNextBlock(scope: BreakInstruction.BreakScope) throws {
+        try breakNearestBlock(BlockInstruction.self, scope: scope).fallthroughNext()
+    }
+    
     func returnFunction(returnValue: GRPHValue?) throws {
         try breakNearestBlock(FunctionDeclarationBlock.self).setReturnValue(returnValue: returnValue)
     }

@@ -231,6 +231,10 @@ class GRPHCompiler: GRPHParser {
                         try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break, scope: .parse(params: params)))
                     case "#continue":
                         try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .continue, scope: .parse(params: params)))
+                    case "#fall":
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .fall, scope: .parse(params: params)))
+                    case "#fallthrough":
+                        try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .fallthrough, scope: .parse(params: params)))
                     case "#goto":
                         throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
                     case "#block":

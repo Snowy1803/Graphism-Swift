@@ -18,6 +18,10 @@ struct BreakInstruction: Instruction {
             try context.breakBlock(scope: scope)
         case .continue:
             try context.continueBlock(scope: scope)
+        case .fall:
+            try context.fallFromBlock(scope: scope)
+        case .fallthrough:
+            try context.fallthroughNextBlock(scope: scope)
         }
     }
     
@@ -28,6 +32,8 @@ struct BreakInstruction: Instruction {
     enum BreakType: String {
         case `break` = "break"
         case `continue` = "continue"
+        case fall = "fall"
+        case `fallthrough` = "fallthrough"
     }
     
     enum BreakScope: CustomStringConvertible {

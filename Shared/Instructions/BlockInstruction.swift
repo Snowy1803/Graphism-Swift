@@ -21,8 +21,10 @@ class BlockInstruction: Instruction {
     var canNextRun: Bool = true
     /// true if #break or #continue was called in this block
     var broken: Bool = false
-    /// true if #continue was caled in this block
+    /// true if #continue was called in this block
     var continued: Bool = false
+    /// true if #fallthrough was called in this block
+    var mustNextRun: Bool = false
     
     
     init(lineNumber: Int) {
@@ -32,13 +34,23 @@ class BlockInstruction: Instruction {
     func run(context: GRPHContext) throws {
         canNextRun = true
         broken = false
-        if try canRun(context: context) {
+        if try mustRun(context: context) || canRun(context: context) {
             variables.removeAll()
             try runChildren(context: context)
         }
     }
     
+    func mustRun(context: GRPHContext) -> Bool {
+        if let last = context.last as? BlockInstruction,
+           last.mustNextRun {
+            last.mustNextRun = false
+            return true
+        }
+        return false
+    }
+    
     func runChildren(context: GRPHContext) throws {
+        canNextRun = false
         var last: Instruction?
         context.inBlock(block: self)
         defer {
@@ -66,7 +78,6 @@ class BlockInstruction: Instruction {
             broken = false
             continued = false
         }
-        canNextRun = false
     }
     
     func canRun(context: GRPHContext) throws -> Bool { true }
@@ -91,5 +102,15 @@ class BlockInstruction: Instruction {
     func continueBlock() {
         broken = true
         continued = true
+    }
+    
+    func fallFrom() {
+        broken = true
+        canNextRun = true
+    }
+    
+    func fallthroughNext() {
+        broken = true
+        mustNextRun = true
     }
 }
