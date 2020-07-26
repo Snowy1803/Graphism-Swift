@@ -7,7 +7,7 @@
 
 import Foundation
 
-class VariableDeclarationInstruction: Instruction {
+struct VariableDeclarationInstruction: Instruction {
     static let pattern = try! NSRegularExpression(pattern: "^(global +)?(final +)?(\(Expressions.typePattern)) +([$A-Za-z_][A-Za-z0-9_]*)(?: *= *(.*))?$")
     
     let global, constant: Bool
@@ -27,7 +27,7 @@ class VariableDeclarationInstruction: Instruction {
         self.value = value
     }
     
-    convenience init(lineNumber: Int, groups: [String?], context: GRPHContext) throws {
+    init(lineNumber: Int, groups: [String?], context: GRPHContext) throws {
         guard let type = GRPHTypes.parse(context: context, literal: groups[3]!.trimmingCharacters(in: .whitespaces)) else {
             throw GRPHCompileError(type: .parse, message: "Unknown type '\(groups[3]!)'")
         }

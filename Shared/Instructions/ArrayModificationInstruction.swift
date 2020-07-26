@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ArrayModificationInstruction: Instruction {
+struct ArrayModificationInstruction: Instruction {
     static let pattern = try! NSRegularExpression(pattern: "([^ ]+)\\{(.+)\\} *= *(.*)")
     let lineNumber: Int
     let name: String
@@ -33,7 +33,7 @@ class ArrayModificationInstruction: Instruction {
         }
     }
     
-    convenience init(lineNumber: Int, context: GRPHContext, groups: [String?]) throws {
+    init(lineNumber: Int, context: GRPHContext, groups: [String?]) throws {
         var inside = groups[2]!
         var op: ArrayModificationOperation = .set
         if inside.hasSuffix("+") {

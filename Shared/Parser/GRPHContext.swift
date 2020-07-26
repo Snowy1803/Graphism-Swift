@@ -42,23 +42,23 @@ class GRPHContext {
         parser.globalVariables.append(variable)
     }
     
-    func breakBlock(scope: BreakInstruction.BreakScope) throws {
+    final func breakBlock(scope: BreakInstruction.BreakScope) throws {
         try breakNearestBlock(GRPHBlockContext.self, scope: scope)
     }
     
-    func continueBlock(scope: BreakInstruction.BreakScope) throws {
+    final func continueBlock(scope: BreakInstruction.BreakScope) throws {
         try breakNearestBlock(GRPHBlockContext.self, scope: scope).continueBlock()
     }
     
-    func fallFromBlock(scope: BreakInstruction.BreakScope) throws {
+    final func fallFromBlock(scope: BreakInstruction.BreakScope) throws {
         try breakNearestBlock(GRPHBlockContext.self, scope: scope).fallFrom()
     }
     
-    func fallthroughNextBlock(scope: BreakInstruction.BreakScope) throws {
+    final func fallthroughNextBlock(scope: BreakInstruction.BreakScope) throws {
         try breakNearestBlock(GRPHBlockContext.self, scope: scope).fallthroughNext()
     }
     
-    func returnFunction(returnValue: GRPHValue?) throws {
+    final func returnFunction(returnValue: GRPHValue?) throws {
         try breakNearestBlock(GRPHFunctionContext.self).setReturnValue(returnValue: returnValue)
     }
     
