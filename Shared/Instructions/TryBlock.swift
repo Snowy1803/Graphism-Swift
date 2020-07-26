@@ -7,10 +7,21 @@
 
 import Foundation
 
+// reference type required to later add catch clauses to it, during compilation
 class TryBlock: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
     var catches: [GRPHRuntimeError.RuntimeExceptionType?: CatchBlock] = [:]
     
-    override func run(context: inout GRPHContext) throws {
+    init(context: inout GRPHContext, lineNumber: Int) {
+        self.lineNumber = lineNumber
+        createContext(&context)
+    }
+    
+    func canRun(context: GRPHBlockContext) throws -> Bool { true }
+    
+    func run(context: inout GRPHContext) throws {
         do {
             let ctx = createContext(&context)
             try runChildren(context: ctx)
@@ -25,5 +36,5 @@ class TryBlock: BlockInstruction {
         }
     }
     
-    override var name: String { "try" }
+    var name: String { "try" }
 }

@@ -7,16 +7,21 @@
 
 import Foundation
 
-class FunctionDeclarationBlock: BlockInstruction {
+struct FunctionDeclarationBlock: BlockInstruction {
     static let equals = try! NSRegularExpression(pattern: "=")
     static let inlineDeclaration = try! NSRegularExpression(pattern: "\(Expressions.typePattern) [A-Za-z_]+\\[.*\\] = .+")
+    
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
     
     var generated: Function!
     var defaults: [Expression?] = []
     var returnDefault: Expression?
     
     init(lineNumber: Int, context: inout GRPHContext, returnType: GRPHType, name: String, def: String) throws {
-        super.init(context: &context, lineNumber: lineNumber)
+        self.lineNumber = lineNumber
+        let context = createContext(&context)
         // finding returnDefault
         var couple: (String, String)?
         try! FunctionDeclarationBlock.equals.allMatches(in: def) { range in
@@ -48,7 +53,6 @@ class FunctionDeclarationBlock: BlockInstruction {
         var varargs = false
         defaults = [Expression?](repeating: nil, count: params.count)
         var i = 0
-        let context = context as! GRPHFunctionContext
         let pars = try params.map { param -> Parameter in
             guard let space = param.firstIndex(of: " ") else {
                 throw GRPHCompileError(type: .parse, message: "Expected format 'type name' for each parameter")
@@ -91,7 +95,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         context.compiler!.imports.append(generated)
     }
     
-    convenience init(lineNumber: Int, context: inout GRPHContext, def: String) throws {
+    init(lineNumber: Int, context: inout GRPHContext, def: String) throws {
         if let bracket = def.firstIndex(of: "["),
            let space = def.firstIndex(of: " "),
            space < bracket {
@@ -112,7 +116,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         throw GRPHCompileError(type: .parse, message: "Invalid #function declaration")
     }
     
-    override func createContext(_ context: inout GRPHContext) -> GRPHBlockContext {
+    func createContext(_ context: inout GRPHContext) -> GRPHBlockContext {
         let ctx = GRPHFunctionContext(parent: context, function: self)
         context = ctx
         return ctx
@@ -194,9 +198,9 @@ class FunctionDeclarationBlock: BlockInstruction {
         }
     }
     
-    override func canRun(context: GRPHContext) throws -> Bool { false }
+    func canRun(context: GRPHBlockContext) throws -> Bool { false }
     
-    override var name: String {
+    var name: String {
         var str = "function \(generated.returnType.string) \(generated.name)["
         var i = 0
         generated.parameters.forEach { p in

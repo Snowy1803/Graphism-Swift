@@ -7,36 +7,44 @@
 
 import Foundation
 
-class IfBlock: BlockInstruction {
+struct IfBlock: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
     let condition: Expression
     
     init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
+        self.lineNumber = lineNumber
         self.condition = condition
-        super.init(context: &context, lineNumber: lineNumber)
+        createContext(&context)
         if try !SimpleType.boolean.isInstance(context: context, expression: condition) {
             throw GRPHCompileError(type: .typeMismatch, message: "#if needs a boolean, a \(try condition.getType(context: context, infer: SimpleType.boolean)) was given")
         }
     }
     
-    override func canRun(context: GRPHBlockContext) throws -> Bool {
+    func canRun(context: GRPHBlockContext) throws -> Bool {
         try GRPHTypes.autobox(value: condition.eval(context: context), expected: SimpleType.boolean) as! Bool
     }
     
-    override var name: String { "if \(condition.string)" }
+    var name: String { "if \(condition.string)" }
 }
 
-class ElseIfBlock: BlockInstruction {
+struct ElseIfBlock: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
     let condition: Expression
     
     init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
+        self.lineNumber = lineNumber
         self.condition = condition
-        super.init(context: &context, lineNumber: lineNumber)
+        createContext(&context)
         if try !SimpleType.boolean.isInstance(context: context, expression: condition) {
             throw GRPHCompileError(type: .typeMismatch, message: "#elseif needs a boolean, a \(try condition.getType(context: context, infer: SimpleType.boolean)) was given")
         }
     }
     
-    override func canRun(context: GRPHBlockContext) throws -> Bool {
+    func canRun(context: GRPHBlockContext) throws -> Bool {
         if let last = context.parent.last as? GRPHBlockContext {
             context.canNextRun = last.canNextRun
             return try context.canNextRun && GRPHTypes.autobox(value: condition.eval(context: context), expected: SimpleType.boolean) as! Bool
@@ -45,15 +53,20 @@ class ElseIfBlock: BlockInstruction {
         }
     }
     
-    override var name: String { "elseif \(condition.string)" }
+    var name: String { "elseif \(condition.string)" }
 }
 
-class ElseBlock: BlockInstruction {
-    override init(context: inout GRPHContext, lineNumber: Int) {
-        super.init(context: &context, lineNumber: lineNumber)
+struct ElseBlock: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
+    
+    init(context: inout GRPHContext, lineNumber: Int) {
+        self.lineNumber = lineNumber
+        createContext(&context)
     }
     
-    override func canRun(context: GRPHBlockContext) throws -> Bool {
+    func canRun(context: GRPHBlockContext) throws -> Bool {
         if let last = context.parent.last as? GRPHBlockContext {
             return last.canNextRun
         } else {
@@ -61,5 +74,5 @@ class ElseBlock: BlockInstruction {
         }
     }
     
-    override var name: String { "else" }
+    var name: String { "else" }
 }

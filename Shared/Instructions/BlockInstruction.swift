@@ -8,15 +8,31 @@
 import Foundation
 
 /// The #block instruction, but also the base class for all other blocks
-class BlockInstruction: Instruction {
+protocol BlockInstruction: Instruction {
+    var children: [Instruction] { get set }
+    var label: String? { get set }
     
-    let lineNumber: Int
-    var children: [Instruction] = []
-    var label: String?
+    @discardableResult func createContext(_ context: inout GRPHContext) -> GRPHBlockContext
     
-    init(context: inout GRPHContext, lineNumber: Int) {
-        self.lineNumber = lineNumber
-        createContext(&context)
+    func run(context: inout GRPHContext) throws
+    
+    func mustRun(context: GRPHBlockContext) -> Bool
+    
+    func canRun(context: GRPHBlockContext) throws -> Bool
+    
+    var name: String { get }
+}
+
+extension BlockInstruction {
+    func toString(indent: String) -> String {
+        var builder = "\(line):\(indent)#\(name)\n"
+        if let label = label {
+            builder = "\(line - 1):\(indent)::\(label)\n\(builder)"
+        }
+        for child in children {
+            builder += child.toString(indent: "\(indent)\t")
+        }
+        return builder
     }
     
     @discardableResult func createContext(_ context: inout GRPHContext) -> GRPHBlockContext {
@@ -73,19 +89,19 @@ class BlockInstruction: Instruction {
             context.continued = false
         }
     }
+}
+
+struct SimpleBlockInstruction: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
     
-    func canRun(context: GRPHBlockContext) throws -> Bool { true }
-    
-    func toString(indent: String) -> String {
-        var builder = "\(line):\(indent)#\(name)\n"
-        if let label = label {
-            builder = "\(line - 1):\(indent)::\(label)\n\(builder)"
-        }
-        for child in children {
-            builder += child.toString(indent: "\(indent)\t")
-        }
-        return builder
+    init(context: inout GRPHContext, lineNumber: Int) {
+        self.lineNumber = lineNumber
+        createContext(&context)
     }
     
     var name: String { "block" }
+    
+    func canRun(context: GRPHBlockContext) throws -> Bool { true }
 }

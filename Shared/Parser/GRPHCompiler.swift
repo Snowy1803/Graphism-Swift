@@ -16,7 +16,7 @@ class GRPHCompiler: GRPHParser {
     // static let internFilePattern = try! NSRegularExpression(pattern: "(?<!\\\\)'.*?(?<!\\\\)'")
     
     var line0: String = ""
-    var blocks: [BlockInstruction] = []
+    var blockCount = 0
     
     var internStrings: [String] = []
     var globalVariables: [Variable] = []
@@ -80,11 +80,11 @@ class GRPHCompiler: GRPHParser {
             }
             
             // Close blocks
-            if !blocks.isEmpty {
+            if blockCount != 0 {
                 let tabs = line.count - line.drop(while: { $0 == "\t" }).count
-                while tabs < blocks.count {
-                    blocks.removeLast()
+                while tabs < blockCount {
                     context = (context as! GRPHBlockContext).parent
+                    blockCount -= 1
                 }
             }
             
@@ -167,9 +167,9 @@ class GRPHCompiler: GRPHParser {
                         guard split.count == 2 else {
                             throw GRPHCompileError(type: .parse, message: "'#catch varName : errortype' syntax expected; error types missing")
                         }
-                        let block = try CatchBlock(lineNumber: lineNumber, context: &context, varName: split[0].trimmingCharacters(in: .whitespaces))
                         let exs = split[1].components(separatedBy: "|")
                         let tr: TryBlock = try findTryBlock()
+                        let block = try CatchBlock(lineNumber: lineNumber, context: &context, varName: split[0].trimmingCharacters(in: .whitespaces))
                         for rawErr in exs {
                             let error = rawErr.trimmingCharacters(in: .whitespaces)
                             if error == "Exception" {
@@ -234,7 +234,7 @@ class GRPHCompiler: GRPHParser {
                     case "#goto":
                         throw GRPHCompileError(type: .unsupported, message: "#goto has been removed")
                     case "#block":
-                        try addInstruction(BlockInstruction(context: &context, lineNumber: lineNumber))
+                        try addInstruction(SimpleBlockInstruction(context: &context, lineNumber: lineNumber))
                     case "#requires":
                         let p = params.components(separatedBy: " ")
                         let version: Version
@@ -249,7 +249,7 @@ class GRPHCompiler: GRPHParser {
                             throw GRPHCompileError(type: .parse, message: "Expected syntax '#requires plugin version'")
                         }
                         let requires = RequiresInstruction(lineNumber: lineNumber, plugin: p[0], version: version)
-                        if blocks.isEmpty {
+                        if blockCount == 0 {
                             try requires.run(context: &context)
                         } else {
                             try addInstruction(requires)
@@ -378,28 +378,31 @@ class GRPHCompiler: GRPHParser {
             throw GRPHCompileError(type: .unsupported, message: "Floating labels aren't supported: Labels must precede a block")
         }
         // context.accepts(instruction) // for type contexts
-        if let block = blocks.last {
-            block.children.append(instruction)
-        } else {
+        if blockCount == 0 {
             instructions.append(instruction)
+        } else {
+            currentBlock!.children.append(instruction)
         }
     }
     
     func addInstruction(_ instruction: Instruction) throws {
         let label = nextLabel
         nextLabel = nil
-        try addNonBlockInstruction(instruction)
-        if let block = instruction as? BlockInstruction {
+        if var block = instruction as? BlockInstruction {
             block.label = label
-            blocks.append(block)
+            try addNonBlockInstruction(block)
+            blockCount += 1
+            return
         } else if label != nil {
             throw GRPHCompileError(type: .unsupported, message: "Floating labels aren't supported: Labels must precede a block")
         }
+        try addNonBlockInstruction(instruction)
     }
     
     func findTryBlock(minus: Int = 1) throws -> TryBlock {
         var last: Instruction? = nil
-        if let block = blocks.last {
+        if blockCount > 0,
+           let block = currentBlock {
             if block.children.count >= minus {
                 last = block.children[block.children.count - minus]
             }
@@ -447,6 +450,45 @@ class GRPHCompiler: GRPHParser {
             builder += line.toString(indent: "\t")
         }
         return builder
+    }
+    
+    private var currentBlock: BlockInstruction? {
+        get {
+            lastBlock(in: instructions, max: blockCount)
+        }
+        set {
+            let succeeded = lastBlock(in: &instructions, max: blockCount, new: newValue!)
+            assert(succeeded)
+        }
+    }
+    
+    private func lastBlock(in arr: [Instruction], max: Int) -> BlockInstruction? {
+        if let curr = arr.last as? BlockInstruction {
+            if max == 1 {
+                return curr
+            }
+            return lastBlock(in: curr.children, max: max - 1) ?? curr
+        } else {
+            return nil
+        }
+    }
+    
+    private func lastBlock(in arr: inout [Instruction], max: Int, new: BlockInstruction) -> Bool {
+        if max == 1 {
+            arr[arr.count - 1] = new
+            return true
+        }
+        if var copy = arr.last as? BlockInstruction {
+            if lastBlock(in: &copy.children, max: max - 1, new: new) {
+                arr[arr.count - 1] = copy
+                return true
+            } else {
+                arr = new.children
+                return true
+            }
+        } else {
+            return false
+        }
     }
 }
 

@@ -7,19 +7,25 @@
 
 import Foundation
 
+// Reference type required because it is referenced in the corresponding #try block
 class CatchBlock: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
+    
     let varName: String
     var def: String = ""
     
     init(lineNumber: Int, context: inout GRPHContext, varName: String) throws {
         self.varName = varName
-        super.init(context: &context, lineNumber: lineNumber)
+        self.lineNumber = lineNumber
+        let ctx = createContext(&context)
         
         guard GRPHCompiler.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
         
-        (context as! GRPHBlockContext).variables.append(Variable(name: varName, type: SimpleType.string, final: true, compileTime: true))
+        ctx.variables.append(Variable(name: varName, type: SimpleType.string, final: true, compileTime: true))
     }
     
     func exceptionCatched(context: inout GRPHContext, exception: GRPHRuntimeError) throws {
@@ -45,7 +51,7 @@ class CatchBlock: BlockInstruction {
         }
     }
     
-    override func canRun(context: GRPHContext) throws -> Bool { false }
+    func canRun(context: GRPHBlockContext) throws -> Bool { false }
     
-    override var name: String { "catch \(varName) : \(def)" }
+    var name: String { "catch \(varName) : \(def)" }
 }

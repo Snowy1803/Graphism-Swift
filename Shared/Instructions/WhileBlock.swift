@@ -7,22 +7,26 @@
 
 import Foundation
 
-class WhileBlock: BlockInstruction {
+struct WhileBlock: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
     let condition: Expression
     
     init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
         self.condition = condition
-        super.init(context: &context, lineNumber: lineNumber)
+        self.lineNumber = lineNumber
+        createContext(&context)
         if try !SimpleType.boolean.isInstance(context: context, expression: condition) {
             throw GRPHCompileError(type: .typeMismatch, message: "#while needs a boolean, a \(try condition.getType(context: context, infer: SimpleType.boolean)) was given")
         }
     }
     
-    override func canRun(context: GRPHContext) throws -> Bool {
+    func canRun(context: GRPHBlockContext) throws -> Bool {
         try GRPHTypes.autobox(value: condition.eval(context: context), expected: SimpleType.boolean) as! Bool
     }
     
-    override func run(context: inout GRPHContext) throws {
+    func run(context: inout GRPHContext) throws {
         let ctx = createContext(&context)
         while try mustRun(context: ctx) || (!ctx.broken && canRun(context: ctx)) {
             ctx.variables.removeAll()
@@ -30,5 +34,5 @@ class WhileBlock: BlockInstruction {
         }
     }
     
-    override var name: String { "while \(condition.string)" }
+    var name: String { "while \(condition.string)" }
 }

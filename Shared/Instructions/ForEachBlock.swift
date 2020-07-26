@@ -7,7 +7,11 @@
 
 import Foundation
 
-class ForEachBlock: BlockInstruction {
+struct ForEachBlock: BlockInstruction {
+    let lineNumber: Int
+    var children: [Instruction] = []
+    var label: String?
+    
     let varName: String
     let array: Expression
     let inOut: Bool
@@ -16,7 +20,8 @@ class ForEachBlock: BlockInstruction {
         self.inOut = varName.hasPrefix("&") // new in Swift Edition
         self.varName = inOut ? String(varName.dropFirst()) : varName
         self.array = array
-        super.init(context: &context, lineNumber: lineNumber)
+        self.lineNumber = lineNumber
+        let ctx = createContext(&context)
         
         let type = try array.getType(context: context, infer: ArrayType(content: SimpleType.mixed))
         
@@ -27,10 +32,12 @@ class ForEachBlock: BlockInstruction {
         guard GRPHCompiler.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
-        (context as! GRPHBlockContext).variables.append(Variable(name: self.varName, type: arrtype.content, final: !inOut, compileTime: true))
+        ctx.variables.append(Variable(name: self.varName, type: arrtype.content, final: !inOut, compileTime: true))
     }
     
-    override func run(context: inout GRPHContext) throws {
+    func canRun(context: GRPHBlockContext) throws -> Bool { true } // not called
+    
+    func run(context: inout GRPHContext) throws {
         let ctx = createContext(&context)
         var i = 0
         let arr = try GRPHTypes.autobox(value: array.eval(context: context), expected: ArrayType(content: SimpleType.mixed)) as! GRPHArray
@@ -52,5 +59,5 @@ class ForEachBlock: BlockInstruction {
         }
     }
     
-    override var name: String { "foreach \(inOut ? "&" : "")\(varName) : \(array.string)" }
+    var name: String { "foreach \(inOut ? "&" : "")\(varName) : \(array.string)" }
 }
