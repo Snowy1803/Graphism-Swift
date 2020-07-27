@@ -1,0 +1,18 @@
+/* 
+  ShapeNames.strings
+  Graphism
+
+  Created by Emil Pedersen on 27/07/2020.
+  
+*/
+
+"Rectangle" = "Rektangel";
+"Square" = "Kvadrat";
+"Ellipse" = "Ellipse";
+"Circle" = "Cirkel";
+"Polygon" = "Polygon";
+"Line" = "Linje";
+"Text" = "Tekst";
+"Path" = "Sti";
+"Group" = "Gruppe";
+"Clip" = "Skæring";

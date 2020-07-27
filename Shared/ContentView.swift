@@ -39,7 +39,7 @@ struct ShapeListSidebar: View {
     var body: some View {
         List {
             ForEach(document.image.shapes, id: \.uuid) { shape in
-                Text(shape.effectiveName)
+                shape.localizedEffectiveName
             }
         }.listStyle(SidebarListStyle())
     }

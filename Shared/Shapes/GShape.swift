@@ -30,7 +30,7 @@ protocol GShape: GRPHValue, AnyObject {
 extension GShape {
     var effectiveName: String {
         get {
-            givenName ?? typeKey // TODO LOCALIZE typeKey
+            givenName ?? NSLocalizedString(typeKey, comment: "") // will not get localized on CLI version
         }
         set {
             givenName = newValue

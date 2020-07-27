@@ -47,6 +47,15 @@ extension Shape {
     }
 }
 
+extension GShape {
+    var localizedEffectiveName: Text {
+        if let name = givenName {
+            return Text(name)
+        }
+        return Text(LocalizedStringKey(typeKey))
+    }
+}
+
 extension GRectangle {
     var graphics: AnyView {
         Rectangle()
