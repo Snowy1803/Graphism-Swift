@@ -41,12 +41,12 @@ struct ReflectNameSpace: NameSpace {
                         _ = try f.executable(context, params)
                     } catch let e as GRPHRuntimeError {
                         context.runtime?.image.destroy()
-                        printerr("GRPH exited after an async function threw an unhandled exception.")
+                        printerr("GRPH exited because of an unhandled exception in an async function threw ")
                         printerr("\(e.type.rawValue)Exception: \(e.message)")
                     } catch is GRPHExecutionTerminated {
                         // ignore
                     } catch let e {
-                        printerr("Async function exited after an unknown native error occurred")
+                        printerr("Async function exited because of an unknown native error")
                         printerr("\(e)")
                     }
                 }

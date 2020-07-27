@@ -232,6 +232,7 @@ struct StandardNameSpace: NameSpace {
                 return GRPHVoid.void
             },
             Function(ns: self, name: "end", parameters: []) { context, params in
+                context.runtime?.image.destroy()
                 throw GRPHExecutionTerminated()
             },
             // LEGACY
