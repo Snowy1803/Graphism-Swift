@@ -28,6 +28,10 @@ struct Pos: StatefulValue, Equatable {
     static func - (lhs: Pos, rhs: Pos) -> Pos {
         Pos(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
+    
+    static func += (lhs: inout Pos, rhs: Pos) {
+        lhs = lhs + rhs
+    }
 }
 
 extension Pos {

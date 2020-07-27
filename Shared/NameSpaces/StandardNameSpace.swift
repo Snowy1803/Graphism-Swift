@@ -236,37 +236,37 @@ struct StandardNameSpace: NameSpace {
             },
             // LEGACY
             Function(ns: self, name: "setHCentered", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
-                var on = try typeCheck(value: params[0], as: RectangularShape.self)
+                let on = try typeCheck(value: params[0], as: RectangularShape.self)
                 on.setHCentered(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Function(ns: self, name: "setLeftAligned", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
-                var on = try typeCheck(value: params[0], as: RectangularShape.self)
+                let on = try typeCheck(value: params[0], as: RectangularShape.self)
                 on.setLeftAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Function(ns: self, name: "setRightAligned", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
-                var on = try typeCheck(value: params[0], as: RectangularShape.self)
+                let on = try typeCheck(value: params[0], as: RectangularShape.self)
                 on.setRightAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Function(ns: self, name: "setVCentered", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
-                var on = try typeCheck(value: params[0], as: RectangularShape.self)
+                let on = try typeCheck(value: params[0], as: RectangularShape.self)
                 on.setVCentered(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Function(ns: self, name: "setTopAligned", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
-                var on = try typeCheck(value: params[0], as: RectangularShape.self)
+                let on = try typeCheck(value: params[0], as: RectangularShape.self)
                 on.setTopAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Function(ns: self, name: "setBottomAligned", parameters: [Parameter(name: "shape", type: SimpleType.shape)]) { context, params in
-                var on = try typeCheck(value: params[0], as: RectangularShape.self)
+                let on = try typeCheck(value: params[0], as: RectangularShape.self)
                 on.setBottomAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
@@ -277,100 +277,101 @@ struct StandardNameSpace: NameSpace {
     var exportedMethods: [Method] {
         [
             Method(ns: self, name: "rotate", inType: SimpleType.shape, parameters: [Parameter(name: "addRotation", type: SimpleType.rotation)]) { context, on, params in
-                var on = try typeCheck(value: on, as: RotatableShape.self)
+                let on = try typeCheck(value: on, as: RotatableShape.self)
                 on.rotation = on.rotation + (params[0] as! Rotation)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setRotation", inType: SimpleType.shape, parameters: [Parameter(name: "newRotation", type: SimpleType.rotation)]) { context, on, params in
-                var on = try typeCheck(value: on, as: RotatableShape.self)
+                let on = try typeCheck(value: on, as: RotatableShape.self)
                 on.rotation = params[0] as! Rotation
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setRotationCenter", inType: SimpleType.shape, parameters: [Parameter(name: "rotationCenter", type: SimpleType.pos.optional)]) { context, on, params in
-                var on = try typeCheck(value: on, as: RotatableShape.self)
+                let on = try typeCheck(value: on, as: RotatableShape.self)
                 on.rotationCenter = (params[0] as! GRPHOptional).content as? Pos
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "translate", inType: SimpleType.shape, parameters: [Parameter(name: "translation", type: SimpleType.pos)]) { context, on, params in
-                var on = try typeCheck(value: on, as: BasicShape.self)
-                // Note that translation is supposed to work on ALL shapes, even paths or polygons
-                on.position = on.position + (params[0] as! Pos)
+                let on = on as! GShape
+                on.translate(by: params[0] as! Pos)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setPosition", inType: SimpleType.shape, parameters: [Parameter(name: "newPosition", type: SimpleType.pos)]) { context, on, params in
-                var on = try typeCheck(value: on, as: BasicShape.self)
+                let on = try typeCheck(value: on, as: BasicShape.self)
                 on.position = params[0] as! Pos
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             // ON SHAPES
             Method(ns: self, name: "setHCentered", inType: SimpleType.shape, parameters: []) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.setHCentered(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setLeftAligned", inType: SimpleType.shape, parameters: []) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.setLeftAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setRightAligned", inType: SimpleType.shape, parameters: []) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.setRightAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setVCentered", inType: SimpleType.shape, parameters: []) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.setVCentered(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setTopAligned", inType: SimpleType.shape, parameters: []) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.setTopAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setBottomAligned", inType: SimpleType.shape, parameters: []) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.setBottomAligned(img: context.runtime!.image)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             // TODO mirror
             Method(ns: self, name: "grow", inType: SimpleType.shape, parameters: [Parameter(name: "extension", type: SimpleType.pos)]) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.size = on.size + (params[0] as! Pos)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setSize", inType: SimpleType.shape, parameters: [Parameter(name: "newSize", type: SimpleType.pos)]) { context, on, params in
-                var on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: RectangularShape.self)
                 on.size = params[0] as! Pos
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setName", inType: SimpleType.shape, parameters: [Parameter(name: "newName", type: SimpleType.string)]) { context, on, params in
-                var shape = on as! GShape
+                let shape = on as! GShape
                 shape.effectiveName = params[0] as! String
-                //context.runtime?.triggerAutorepaint() // only for texts
+                if shape is GText {
+                    context.runtime?.triggerAutorepaint()
+                }
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setPaint", inType: SimpleType.shape, parameters: [Parameter(name: "newPaint", type: SimpleType.paint)]) { context, on, params in
-                var on = try typeCheck(value: on, as: SimpleShape.self)
+                let on = try typeCheck(value: on, as: SimpleShape.self)
                 on.paint = AnyPaint.auto(params[0]!)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setStroke", inType: SimpleType.shape, parameters: [.strokeWidth, .strokeType, .strokeDashArray]) { context, on, params in
-                var on = try typeCheck(value: on, as: SimpleShape.self)
+                let on = try typeCheck(value: on, as: SimpleShape.self)
                 on.strokeStyle = StrokeWrapper(strokeWidth: params.count == 0 ? 5 : params[0] as! Float,
                                                strokeType: params.count <= 1 ? .elongated : params[1] as! Stroke,
                                                strokeDashArray: params.count <= 2 ? GRPHArray(of: SimpleType.float) : params[2] as! GRPHArray)
@@ -378,7 +379,7 @@ struct StandardNameSpace: NameSpace {
                 return GRPHVoid.void
             },
             Method(ns: self, name: "filling", inType: SimpleType.shape, parameters: [Parameter(name: "fill", type: SimpleType.boolean)]) { context, on, params in
-                var on = try typeCheck(value: on, as: SimpleShape.self)
+                let on = try typeCheck(value: on, as: SimpleShape.self)
                 let val = params[0] as! Bool
                 if val != (on.strokeStyle == nil) {
                     if val {
@@ -391,7 +392,7 @@ struct StandardNameSpace: NameSpace {
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setZPos", inType: SimpleType.shape, parameters: [Parameter(name: "zpos", type: SimpleType.integer)]) { context, on, params in
-                var shape = on as! GShape
+                let shape = on as! GShape
                 shape.positionZ = params[0] as! Int
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void

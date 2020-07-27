@@ -35,4 +35,8 @@ class GGroup: GShape { // rotation
     var type: GRPHType {
         SimpleType.Group
     }
+    
+    func translate(by diff: Pos) {
+        shapes.forEach { $0.translate(by: diff) }
+    }
 }

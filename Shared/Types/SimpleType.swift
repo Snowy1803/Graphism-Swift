@@ -142,46 +142,46 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return [VirtualField<String>(name: "length", type: SimpleType.integer, getter: { $0.count })]
         case .shape:
             return [ErasedField(name: "name", type: SimpleType.string, getter: { ($0 as! GShape).effectiveName }, setter: {
-                var shape = ($0 as! GShape)
+                let shape = ($0 as! GShape)
                 shape.effectiveName = $1 as! String // shapes are always reference types
             }),
             ErasedField(name: "location", type: SimpleType.pos, getter: { ($0 as? BasicShape)?.position ?? Pos(x: 0, y: 0) }, setter: {
-                if var shape = $0 as? BasicShape {
+                if let shape = $0 as? BasicShape {
                     shape.position = $1 as! Pos
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no position")
                 }
             }),
             ErasedField(name: "size", type: SimpleType.pos, getter: { ($0 as? RectangularShape)?.size ?? Pos(x: 0, y: 0) }, setter: {
-                if var shape = $0 as? RectangularShape {
+                if let shape = $0 as? RectangularShape {
                     shape.size = $1 as! Pos
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no size")
                 }
             }),
             ErasedField(name: "rotationCenter", type: SimpleType.pos, getter: { ($0 as? RotatableShape)?.currentRotationCenter ?? Pos(x: 0, y: 0) }, setter: {
-                if var shape = $0 as? RotatableShape {
+                if let shape = $0 as? RotatableShape {
                     shape.rotationCenter = ($1 as! Pos)
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no rotation center")
                 }
             }),
             ErasedField(name: "rotation", type: SimpleType.rotation, getter: { ($0 as? RotatableShape)?.rotation ?? Rotation(value: 0) }, setter: {
-                if var shape = $0 as? RotatableShape {
+                if let shape = $0 as? RotatableShape {
                     shape.rotation = $1 as! Rotation
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no rotation")
                 }
             }),
             ErasedField(name: "paint", type: SimpleType.paint, getter: { ($0 as? SimpleShape)?.paint.unwrapped ?? ColorPaint.black }, setter: {
-                if var shape = $0 as? SimpleShape {
+                if let shape = $0 as? SimpleShape {
                     shape.paint = AnyPaint.auto($1)
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no paint")
                 }
             }),
             ErasedField(name: "strokeWidth", type: SimpleType.float, getter: { ($0 as? SimpleShape)?.strokeStyle?.strokeWidth ?? 5 }, setter: {
-                if var shape = $0 as? SimpleShape {
+                if let shape = $0 as? SimpleShape {
                     var style = shape.strokeStyle ?? StrokeWrapper()
                     style.strokeWidth = $1 as! Float
                     shape.strokeStyle = style
@@ -190,7 +190,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 }
             }),
             ErasedField(name: "strokeType", type: SimpleType.stroke, getter: { ($0 as? SimpleShape)?.strokeStyle?.strokeType ?? .elongated }, setter: {
-                if var shape = $0 as? SimpleShape {
+                if let shape = $0 as? SimpleShape {
                     var style = shape.strokeStyle ?? StrokeWrapper()
                     style.strokeType = $1 as! Stroke
                     shape.strokeStyle = style
@@ -199,7 +199,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 }
             }),
             ErasedField(name: "strokeDashArray", type: SimpleType.float.inArray, getter: { ($0 as? SimpleShape)?.strokeStyle?.strokeDashArray ?? GRPHArray([], of: SimpleType.float) }, setter: {
-                if var shape = $0 as? SimpleShape {
+                if let shape = $0 as? SimpleShape {
                     var style = shape.strokeStyle ?? StrokeWrapper()
                     style.strokeDashArray = $1 as! GRPHArray
                     shape.strokeStyle = style
@@ -208,14 +208,14 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 }
             }),
             ErasedField(name: "filling", type: SimpleType.boolean, getter: { ($0 as? SimpleShape)?.strokeStyle == nil }, setter: {
-                if var shape = $0 as? SimpleShape {
+                if let shape = $0 as? SimpleShape {
                     shape.strokeStyle = ($1 as! Bool) ? nil : StrokeWrapper()
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no stroke")
                 }
             }),
             ErasedField(name: "zPos", type: SimpleType.integer, getter: { ($0 as! GShape).positionZ }, setter: {
-                var shape = ($0 as! GShape)
+                let shape = ($0 as! GShape)
                 shape.positionZ = $1 as! Int
             }),] // TODO blurLevel + add shadow
         case .Text:

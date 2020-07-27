@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct GClip: GShape {
+class GClip: GShape {
+    
     // rotable
     
     var givenName: String?
@@ -20,6 +21,11 @@ struct GClip: GShape {
     var shape: GShape
     var clip: GShape
     
+    init(shape: GShape, clip: GShape) {
+        self.shape = shape
+        self.clip = clip
+    }
+    
     var stateDefinitions: String {
         shape.stateDefinitions + clip.stateDefinitions
     }
@@ -29,4 +35,9 @@ struct GClip: GShape {
     }
     
     var type: GRPHType { SimpleType.shape }
+    
+    func translate(by diff: Pos) {
+        shape.translate(by: diff)
+        clip.translate(by: diff)
+    }
 }

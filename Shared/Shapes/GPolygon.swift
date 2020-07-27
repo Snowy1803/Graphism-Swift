@@ -38,4 +38,8 @@ class GPolygon: SimpleShape { // Add rotation support
     }
     
     var type: GRPHType { SimpleType.Polygon }
+    
+    func translate(by diff: Pos) {
+        points = points.map { $0 + diff }
+    }
 }

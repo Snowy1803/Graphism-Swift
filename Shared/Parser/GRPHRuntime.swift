@@ -43,10 +43,6 @@ class GRPHRuntime: GRPHParser {
         self.settings = compiler.settings
     }
     
-    deinit {
-        print("runtime deallocated")
-    }
-    
     func run() -> Bool {
         timestamp = Date()
         context = GRPHContext(parser: self)

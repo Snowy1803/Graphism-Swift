@@ -59,6 +59,10 @@ class GPath: SimpleShape { // Add rotation support
     }
     
     var type: GRPHType { SimpleType.Path }
+    
+    func translate(by diff: Pos) {
+        points = points.map { $0 + diff }
+    }
 }
 
 enum PathActions {

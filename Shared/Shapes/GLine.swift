@@ -35,4 +35,9 @@ class GLine: SimpleShape {
     }
     
     var type: GRPHType { SimpleType.Line }
+    
+    func translate(by diff: Pos) {
+        start += diff
+        end += diff
+    }
 }

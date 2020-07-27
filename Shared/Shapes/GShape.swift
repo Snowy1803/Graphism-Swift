@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 #endif
 
-protocol GShape: GRPHValue {
+protocol GShape: GRPHValue, AnyObject {
     var uuid: UUID { get }
     
     var positionZ: Int { get set }
@@ -23,6 +23,8 @@ protocol GShape: GRPHValue {
     
     var stateDefinitions: String { get }
     var stateConstructor: String { get }
+    
+    func translate(by diff: Pos)
 }
 
 extension GShape {
@@ -61,32 +63,38 @@ protocol RectangularShape: BasicShape {
     var size: Pos { get set }
 }
 
+extension BasicShape {
+    func translate(by diff: Pos) {
+        position += diff
+    }
+}
+
 extension RectangularShape {
     var center: Pos {
         Pos(x: position.x + (size.x / 2), y: position.y + (size.y / 2))
     }
     
-    mutating func setHCentered(img: GImage) {
+    func setHCentered(img: GImage) {
         position.x = img.size.x / 2 - size.x / 2
     }
     
-    mutating func setLeftAligned(img: GImage) {
+    func setLeftAligned(img: GImage) {
         position.x = 0
     }
     
-    mutating func setRightAligned(img: GImage) {
+    func setRightAligned(img: GImage) {
         position.x = img.size.x - size.x
     }
     
-    mutating func setVCentered(img: GImage) {
+    func setVCentered(img: GImage) {
         position.y = img.size.y / 2 - size.y / 2
     }
     
-    mutating func setTopAligned(img: GImage) {
+    func setTopAligned(img: GImage) {
         position.y = 0
     }
     
-    mutating func setBottomAligned(img: GImage) {
+    func setBottomAligned(img: GImage) {
         position.y = img.size.y - size.y
     }
 }
