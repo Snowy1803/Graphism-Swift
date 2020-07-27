@@ -184,7 +184,7 @@ struct StandardNameSpace: NameSpace {
             Function(ns: self, name: "range", parameters: [Parameter(name: "first", type: SimpleType.integer), Parameter(name: "last", type: SimpleType.integer), Parameter(name: "step", type: SimpleType.integer, optional: true)], returnType: SimpleType.integer.inArray) { context, params in
                 let first = params[0] as! Int
                 let last = params[1] as! Int
-                let step = abs(params[2] as! Int)
+                let step = params.count == 2 ? 1 : abs(params[2] as! Int)
                 guard step != 0 else {
                     throw GRPHRuntimeError(type: .invalidArgument, message: "step cannot be 0")
                 }

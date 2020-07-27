@@ -29,6 +29,29 @@ struct ReflectNameSpace: NameSpace {
                 // ["name" "param1" value1] -- 3 -- drop 1
                 return try f.executable(context, f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! }))
             },
+            Function(ns: self, name: "callFunctionAsync", parameters: [Parameter(name: "funcName", type: SimpleType.string), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.void, varargs: true) { context, params in
+                guard let f = Function(imports: context.parser.imports, namespace: NameSpaces.none, name: params[0] as! String) else {
+                    throw GRPHRuntimeError(type: .reflection, message: "Local function '\(params[0]!)' not found")
+                }
+                let params = try f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! })
+                
+                let queue = DispatchQueue(label: "GRPH-Async")
+                queue.async {
+                    do {
+                        _ = try f.executable(context, params)
+                    } catch let e as GRPHRuntimeError {
+                        context.runtime?.image.destroy()
+                        printerr("GRPH exited after an async function threw an unhandled exception.")
+                        printerr("\(e.type.rawValue)Exception: \(e.message)")
+                    } catch is GRPHExecutionTerminated {
+                        // ignore
+                    } catch let e {
+                        printerr("Async function exited after an unknown native error occurred")
+                        printerr("\(e)")
+                    }
+                }
+                return GRPHVoid.void
+            },
             Function(ns: self, name: "callMethod", parameters: [Parameter(name: "methodName", type: SimpleType.string), Parameter(name: "namespace", type: SimpleType.string), Parameter(name: "on", type: SimpleType.mixed), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.mixed, varargs: true) { context, params in
                 guard let ns = NameSpaces.namespace(named: params[1] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Namespace '\(params[1]!)' not found")

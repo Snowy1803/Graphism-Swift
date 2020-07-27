@@ -8,7 +8,8 @@
 import Foundation
 
 class GRPHContext {
-    unowned let parser: GRPHParser
+    // Strong reference. Makes it a circular reference. As long as the script is running, this is not a problem. When the script is terminated, context is always deallocated, so the circular reference is broken.
+    let parser: GRPHParser
     var last: GRPHContext?
     
     var compiler: GRPHCompiler? {

@@ -73,20 +73,20 @@ class GRPHRuntime: GRPHParser {
                 }
                 i += 1
             }
-            context = nil // deallocate before self
+            context = nil // break circular reference
             return true
         } catch let e as GRPHRuntimeError {
             printerr("GRPH Exited because a runtime exception was not catched")
             printerr("\(e.type.rawValue)Exception: \(e.message)")
             e.stack.forEach { print($0) }
         } catch is GRPHExecutionTerminated {
-            context = nil // deallocate before self
+            context = nil // break circular reference
             return true // Returning normally, execution terminated from an "end:" instruction or by the user when closing the file
         } catch let e {
             printerr("GRPH Exited after an unknown native error occurred")
             printerr("\(e)")
         }
-        context = nil // deallocate before self
+        context = nil // break circular reference
         return false
     }
     
