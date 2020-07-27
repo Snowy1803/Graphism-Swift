@@ -11,7 +11,8 @@ class GImage: GGroup, ObservableObject {
     var size: Pos = Pos(x: 640, y: 480)
     var background: AnyPaint = AnyPaint.color(ColorPaint.alpha)
     
-    var destroyed = false
+    var destroySemaphore = DispatchSemaphore(value: 0)
+    private(set) var destroyed = false
     
     init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.alpha)) {
         self.size = size
@@ -44,5 +45,6 @@ class GImage: GGroup, ObservableObject {
     /// Called by the view when the document is closed
     func destroy() {
         destroyed = true
+        destroySemaphore.signal()
     }
 }

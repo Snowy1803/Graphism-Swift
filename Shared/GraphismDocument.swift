@@ -72,12 +72,16 @@ struct GraphismDocument: FileDocument {
     func runGRPH() {
         let queue = DispatchQueue(label: "GRPH")
         queue.async {
-            let compiler = GRPHCompiler(entireContent: source)
-            
-            guard compiler.compile() else {
-                return // TODO show error
+            guard let runtime = { [source, image] () -> GRPHRuntime? in
+                let compiler = GRPHCompiler(entireContent: source)
+                
+                guard compiler.compile() else {
+                    return nil // TODO show error
+                }
+                return GRPHRuntime(compiler: compiler, image: image)
+            }() else {
+                return
             }
-            let runtime = GRPHRuntime(compiler: compiler, image: image)
             _ = runtime.run()
         }
     }

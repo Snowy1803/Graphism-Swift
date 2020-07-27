@@ -228,7 +228,12 @@ struct StandardNameSpace: NameSpace {
                 return GRPHVoid.void
             },
             Function(ns: self, name: "wait", parameters: [Parameter(name: "time", type: SimpleType.integer)]) { context, params in
-                Thread.sleep(forTimeInterval: Double(params[0] as! Int) / 1000)
+                let result = context.runtime?.image.destroySemaphore.wait(timeout: .now() + .milliseconds(params[0] as! Int))
+                if result == .success {
+                    // The semaphore signaled. This means we were destroyed. We signal other threads that might wait too
+                    context.runtime?.image.destroySemaphore.signal()
+                    // As GImage.destroyed is true, the runtime or the block will terminate for us
+                }
                 return GRPHVoid.void
             },
             Function(ns: self, name: "end", parameters: []) { context, params in
