@@ -27,6 +27,8 @@ class GRPHRuntime: GRPHParser {
     var timestamp: Date!
     var context: GRPHContext!
     
+    var localFunctions: [Function] = []
+    
     var image: GImage
     
     var settings: [RuntimeSetting: Bool] = [:]
@@ -41,6 +43,7 @@ class GRPHRuntime: GRPHParser {
     convenience init(compiler: GRPHCompiler, image: GImage) {
         self.init(instructions: compiler.instructions, globalVariables: compiler.globalVariables.filter { !$0.compileTime }, image: image)
         self.settings = compiler.settings
+        self.localFunctions = compiler.imports.compactMap { $0 as? Function }.filter { $0.ns.isEqual(to: NameSpaces.none) }
     }
     
     func run() -> Bool {
@@ -91,6 +94,10 @@ class GRPHRuntime: GRPHParser {
         if settings[current: .autoupdate] {
             image.willNeedRepaint()
         }
+    }
+    
+    var imports: [Importable] {
+        NameSpaces.instances + localFunctions
     }
 }
 

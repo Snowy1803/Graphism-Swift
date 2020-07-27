@@ -13,10 +13,10 @@ struct ReflectNameSpace: NameSpace {
     var exportedFunctions: [Function] {
         [
             Function(ns: self, name: "callFunction", parameters: [Parameter(name: "funcName", type: SimpleType.string), Parameter(name: "namespace", type: SimpleType.string, optional: true), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.mixed, varargs: true) { context, params in
-                guard let ns = NameSpaces.namespace(named: params.count == 1 || params[1] == nil || (params.count & 1) == 1 ? "standard" : params[1] as! String) else {
+                guard let ns = params.count == 1 || params[1] == nil || (params.count & 1) == 1 ? NameSpaces.none : NameSpaces.namespace(named: params[1] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Namespace '\(params[1]!)' not found")
                 }
-                guard let f = Function(imports: NameSpaces.instances, namespace: ns, name: params[0] as! String) else {
+                guard let f = Function(imports: context.parser.imports, namespace: ns, name: params[0] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Function '\(params[0]!)' not found in namespace '\(ns.name)'")
                 }
                 if params.count <= 2 {
@@ -35,7 +35,7 @@ struct ReflectNameSpace: NameSpace {
                 }
                 let value = params[2]!
                 let valueType = GRPHTypes.type(of: value)
-                guard let f = Method(imports: NameSpaces.instances, namespace: ns, name: params[0] as! String, inType: valueType) else {
+                guard let f = Method(imports: context.parser.imports, namespace: ns, name: params[0] as! String, inType: valueType) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Function '\(params[0]!)' not found in namespace '\(ns.name)'")
                 }
                 return try f.executable(context, value, f.labelled(values: params.dropFirst(3).map { $0! }))

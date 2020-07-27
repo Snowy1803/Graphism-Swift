@@ -349,7 +349,7 @@ class GRPHCompiler: GRPHParser {
                         guard let ns = member.namespace else {
                             throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
                         }
-                        guard let function = Function(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member) else {
+                        guard let function = Function(imports: context.parser.imports, namespace: ns, name: member.member) else {
                             throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                         }
                         try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: try FunctionExpression(ctx: context, function: function, values: try Expressions.splitParameters(context: context, in: result[2]!, delimiter: Expressions.space), asInstruction: true)))

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FunctionDeclarationBlock: BlockInstruction {
+class FunctionDeclarationBlock: BlockInstruction {
     static let equals = try! NSRegularExpression(pattern: "=")
     static let inlineDeclaration = try! NSRegularExpression(pattern: "\(Expressions.typePattern) [A-Za-z_]+\\[.*\\] = .+")
     
@@ -95,7 +95,7 @@ struct FunctionDeclarationBlock: BlockInstruction {
         context.compiler!.imports.append(generated)
     }
     
-    init(lineNumber: Int, context: inout GRPHContext, def: String) throws {
+    convenience init(lineNumber: Int, context: inout GRPHContext, def: String) throws {
         if let bracket = def.firstIndex(of: "["),
            let space = def.firstIndex(of: " "),
            space < bracket {

@@ -109,7 +109,7 @@ struct Expressions {
                 guard let ns = member.namespace else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
                 }
-                guard let function = Function(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member) else {
+                guard let function = Function(imports: context.parser.imports, namespace: ns, name: member.member) else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                 }
                 return try FunctionExpression(ctx: context, function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
@@ -122,7 +122,7 @@ struct Expressions {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[2]!)'")
                 }
                 let on = try Expressions.parse(context: context, infer: nil, literal: result[1]!)
-                guard let method = Method(imports: context.compiler?.imports ?? NameSpaces.instances, namespace: ns, name: member.member, inType: try on.getType(context: context, infer: SimpleType.mixed)) else {
+                guard let method = Method(imports: context.parser.imports, namespace: ns, name: member.member, inType: try on.getType(context: context, infer: SimpleType.mixed)) else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared method '\(try on.getType(context: context, infer: SimpleType.mixed)).\(result[2]!)'")
                 }
                 return try MethodExpression(ctx: context, method: method, on: on, values: try splitParameters(context: context, in: result[3]!, delimiter: space))

@@ -71,4 +71,5 @@ class GRPHContext {
 
 protocol GRPHParser: AnyObject {
     var globalVariables: [Variable] { get set }
+    var imports: [Importable] { get }
 }

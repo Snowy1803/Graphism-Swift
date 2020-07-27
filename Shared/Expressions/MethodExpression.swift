@@ -41,8 +41,7 @@ struct MethodExpression: Expression {
         var m = method
         if !m.effectivelyFinal { // check for overrides
             let real = GRPHTypes.type(of: onValue, expected: m.inType)
-            // TODO this wouldn't work with custom methods
-            m = Method(imports: NameSpaces.instances, namespace: NameSpaces.none, name: m.name, inType: real) ?? m
+            m = Method(imports: context.parser.imports, namespace: NameSpaces.none, name: m.name, inType: real) ?? m
         }
         do {
             return try m.executable(context, onValue, try values.map { try $0?.eval(context: context) })
