@@ -62,17 +62,68 @@ struct StandardNameSpace: NameSpace {
                 return result
             },
             // getters for fields removed
+            Function(ns: self, name: "getRotation", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.rotation) { context, params in
+                guard let shape = params[0] as? RotatableShape else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of rotation")
+                }
+                return shape.rotation
+            },
+            Function(ns: self, name: "getPosition", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.pos) { context, params in
+                guard let shape = params[0] as? BasicShape else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of position")
+                }
+                return shape.position
+            },
+            Function(ns: self, name: "getSize", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.pos) { context, params in
+                guard let shape = params[0] as? RectangularShape else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of size")
+                }
+                return shape.size
+            },
             Function(ns: self, name: "getCenterPoint", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.pos) { context, params in
                 guard let shape = params[0] as? RectangularShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of center")
                 }
                 return shape.center
             },
-            Function(ns: self, name: "isFilled", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.pos) { context, params in
+            Function(ns: self, name: "getName", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.string) { context, params in
+                return (params[0] as! GShape).effectiveName
+            },
+            Function(ns: self, name: "getPaint", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.paint) { context, params in
+                guard let shape = params[0] as? SimpleShape else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
+                }
+                return shape.paint.unwrapped
+            },
+            Function(ns: self, name: "getStrokeWidth", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.float) { context, params in
+                guard let shape = params[0] as? SimpleShape else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
+                }
+                return (shape.strokeStyle ?? StrokeWrapper()).strokeWidth
+            },
+            Function(ns: self, name: "getStrokeType", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.stroke) { context, params in
+                guard let shape = params[0] as? SimpleShape else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
+                }
+                return (shape.strokeStyle ?? StrokeWrapper()).strokeType
+            },
+            Function(ns: self, name: "getStrokeDashArray", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.float.inArray) { context, params in
+                guard let shape = params[0] as? SimpleShape else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
+                }
+                return (shape.strokeStyle ?? StrokeWrapper()).strokeDashArray
+            },
+            Function(ns: self, name: "isFilled", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.boolean) { context, params in
                 guard let shape = params[0] as? SimpleShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
                 }
                 return shape.strokeStyle == nil
+            },
+            Function(ns: self, name: "getZPos", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.integer) { context, params in
+                return (params[0] as! GShape).positionZ
+            },
+            Function(ns: self, name: "getFont", parameters: [Parameter(name: "shape", type: SimpleType.Text)], returnType: SimpleType.font) { context, params in
+                return (params[0] as! GText).font
             },
             Function(ns: self, name: "getPoint", parameters: [Parameter(name: "shape", type: SimpleType.Polygon), Parameter(name: "index", type: SimpleType.integer)], returnType: SimpleType.pos) { context, params in
                 let shape = params[0] as! GPolygon
@@ -81,6 +132,12 @@ struct StandardNameSpace: NameSpace {
                     throw GRPHRuntimeError(type: .invalidArgument, message: "Index out of bounds")
                 }
                 return shape.points[index]
+            },
+            Function(ns: self, name: "getXForPos", parameters: [Parameter(name: "pos", type: SimpleType.pos)], returnType: SimpleType.float) { context, params in
+                return (params[0] as! Pos).x
+            },
+            Function(ns: self, name: "getYForPos", parameters: [Parameter(name: "pos", type: SimpleType.pos)], returnType: SimpleType.float) { context, params in
+                return (params[0] as! Pos).y
             },
             Function(ns: self, name: "integerToRotation", parameters: [Parameter(name: "integer", type: SimpleType.integer)], returnType: SimpleType.rotation) { context, params in
                 return Rotation(value: params[0] as! Int)

@@ -218,6 +218,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 var shape = ($0 as! GShape)
                 shape.positionZ = $1 as! Int
             }),] // TODO blurLevel + add shadow
+        case .Text:
+            return [KeyPathField(name: "font", type: SimpleType.font, keyPath: \GText.font)]
         case .Polygon:
             return [VirtualField<GPolygon>(name: "points", type: SimpleType.pos.inArray, getter: { GRPHArray($0.points, of: SimpleType.pos) }, setter: { $0.points = ($1 as! GRPHArray).wrapped.map { $0 as! Pos } })]
         case .Group:
