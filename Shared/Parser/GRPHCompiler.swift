@@ -89,10 +89,7 @@ class GRPHCompiler: GRPHParser {
                     partialLine = partialLine.dropFirst(indent.count)
                     tabs += 1
                 }
-                while tabs < blockCount {
-                    context = (context as! GRPHBlockContext).parent
-                    blockCount -= 1
-                }
+                closeBlocks(tabs: tabs)
                 tline = transformLine(line: partialLine)
             } else {
                 tline = transformLine(line: line)
@@ -276,6 +273,66 @@ class GRPHCompiler: GRPHParser {
                         } else {
                             try addInstruction(requires)
                         }
+                    case "#switch":
+                        guard nextLabel == nil else {
+                            throw GRPHCompileError(type: .parse, message: "A #switch block cannot have a label. Put the label on the cases instead.")
+                        }
+                        var name = "$_switch0$"
+                        var n = 1
+                        while context.findVariable(named: name) != nil {
+                            name = "$_switch\(n)$"
+                            n += 1
+                        }
+                        let exp = try Expressions.parse(context: context, infer: nil, literal: params)
+                        let type = try exp.getType(context: context, infer: SimpleType.mixed)
+                        // We declare our variable
+                        try addInstruction(VariableDeclarationInstruction(lineNumber: lineNumber, global: false, constant: true, type: type, name: name, value: exp))
+                        try addInstruction(SwitchTransparentBlock(lineNumber: lineNumber))
+                        // We create our context, denying non-#case/#default and advertising our var name
+                        context = SwitchContext(parent: context, compare: VariableExpression(name: name))
+                        // We advertise our var with it's type, so type checks in #case works
+                        context.addVariable(Variable(name: name, type: type, final: true, compileTime: true), global: false)
+                    case "#case": // uwu
+                        guard let ctx = context as? SwitchContext else {
+                            throw GRPHCompileError(type: .parse, message: "#case cannot be used outside of a #switch")
+                        }
+                        let type = try ctx.compare.getType(context: context, infer: SimpleType.mixed)
+                        let params = params.components(separatedBy: " ")
+                        guard params.count > 0 else {
+                            throw GRPHCompileError(type: .parse, message: "#case needs at least an argument")
+                        }
+                        let exps = try params.map { try Expressions.parse(context: ctx, infer: type, literal: $0) }
+                            .map { try BinaryExpression(context: ctx, left: ctx.compare, op: "==", right: $0) }
+                        let combined = try exps.reduce(into: nil) { (into: inout Expression?, curr: BinaryExpression) in
+                            if let last = into {
+                                into = try BinaryExpression(context: ctx, left: last, op: "||", right: curr)
+                            } else {
+                                into = curr
+                            }
+                        }!
+                        
+                        switch ctx.state {
+                        case .first:
+                            try addInstruction(IfBlock(lineNumber: lineNumber, context: &context, condition: combined))
+                            ctx.state = .next
+                        case .next:
+                            try addInstruction(ElseIfBlock(lineNumber: lineNumber, context: &context, condition: combined))
+                        case .last:
+                            throw GRPHCompileError(type: .parse, message: "#case must come before the #default in a #switch")
+                        }
+                    case "#default":
+                        guard let ctx = context as? SwitchContext else {
+                            throw GRPHCompileError(type: .parse, message: "#default cannot be used outside of a #switch")
+                        }
+                        switch ctx.state {
+                        case .first:
+                            throw GRPHCompileError(type: .parse, message: "#default must come after the first #case in a #switch")
+                        case .next:
+                            try addInstruction(ElseBlock(context: &context, lineNumber: lineNumber))
+                            ctx.state = .last
+                        case .last:
+                            throw GRPHCompileError(type: .parse, message: "Cannot put multiple #default cases in a #switch")
+                        }
                     case "#type":
                         throw GRPHCompileError(type: .unsupported, message: "#type requires GRPH 2.0")
                     case "#setting":
@@ -453,6 +510,7 @@ class GRPHCompiler: GRPHParser {
                 return false
             }
         }
+        closeBlocks(tabs: 0)
         context = nil
         return true
     }
@@ -462,7 +520,7 @@ class GRPHCompiler: GRPHParser {
             // Inline functions
             throw GRPHCompileError(type: .unsupported, message: "Floating labels aren't supported: Labels must precede a block")
         }
-        // context.accepts(instruction) // for type contexts
+        try context.accepts(instruction: instruction)
         if blockCount == 0 {
             instructions.append(instruction)
         } else {
@@ -484,7 +542,26 @@ class GRPHCompiler: GRPHParser {
         try addNonBlockInstruction(instruction)
     }
     
-    func findTryBlock(minus: Int = 1) throws -> Int {
+    private func closeBlocks(tabs: Int) {
+        while tabs < blockCount {
+            if let swi = currentBlock as? SwitchTransparentBlock {
+                blockCount -= 1
+                if blockCount > 0 {
+                    currentBlock!.children.removeLast() // remove the switch
+                    currentBlock!.children.append(contentsOf: swi.children) // add its content
+                } else {
+                    instructions.removeLast()
+                    instructions.append(contentsOf: swi.children)
+                }
+                context = (context as! SwitchContext).parent
+            } else {
+                blockCount -= 1
+                context = (context as! GRPHBlockContext).parent
+            }
+        }
+    }
+    
+    private func findTryBlock(minus: Int = 1) throws -> Int {
         var last: Instruction? = nil
         if blockCount > 0,
            let block = currentBlock {

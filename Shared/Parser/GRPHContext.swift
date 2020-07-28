@@ -43,6 +43,8 @@ class GRPHContext {
         parser.globalVariables.append(variable)
     }
     
+    func accepts(instruction: Instruction) throws {}
+    
     final func breakBlock(scope: BreakInstruction.BreakScope) throws {
         try breakNearestBlock(GRPHBlockContext.self, scope: scope)
     }
