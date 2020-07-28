@@ -12,6 +12,8 @@ class GRPHCompiler: GRPHParser {
     static let label = try! NSRegularExpression(pattern: "^[A-Za-z][A-Za-z0-9_]*$")
     static let varNameRequirement = try! NSRegularExpression(pattern: "^[$A-Za-z_][A-Za-z0-9_]*$")
     
+    static let allBrackets = try! NSRegularExpression(pattern: "[({\\[\\]})]")
+    
     static let internStringPattern = try! NSRegularExpression(pattern: #"(?<!\\)".*?(?<!\\)""#)
     // static let internFilePattern = try! NSRegularExpression(pattern: "(?<!\\\\)'.*?(?<!\\\\)'")
     
@@ -91,9 +93,9 @@ class GRPHCompiler: GRPHParser {
                     context = (context as! GRPHBlockContext).parent
                     blockCount -= 1
                 }
-                tline = partialLine.trimmingCharacters(in: .whitespaces)
+                tline = transformLine(line: partialLine)
             } else {
-                tline = line.trimmingCharacters(in: .whitespaces)
+                tline = transformLine(line: line)
             }
             
             if tline.isEmpty {
@@ -326,11 +328,19 @@ class GRPHCompiler: GRPHParser {
                                     throw GRPHCompileError(type: .parse, message: "Unknown indent '\(value)'")
                                 }
                             }
+                        case "altBrackets", "altBracketSet", "alternativeBracketSet":
+                            guard let value = Bool(split[1]) else { // only accepts "true" and "false"
+                                throw GRPHCompileError(type: .parse, message: "Expected value to be a boolean literal")
+                            }
+                            if value {
+                                compilerSettings.insert(.altBrackets)
+                            } else {
+                                compilerSettings.remove(.altBrackets)
+                            }
                         default:
                             throw GRPHCompileError(type: .parse, message: "Unknown compiler key '\(split[0])'")
                         }
                         // #compiler key value
-                        // - natural true —> replaces ( -> [, [ -> {, { -> ( after internation before parsing
                         // - ignore lines that don't compile (toggleable)
                         // -> ignore errors/warnings/TypeError/UndeclaredError
                         // - maybe disable autounboxing and use postfix "!"
@@ -491,6 +501,25 @@ class GRPHCompiler: GRPHParser {
             //.replacingOccurrences(of: "\\b", with: "\b")
             //.replacingOccurrences(of: "\\f", with: "\f")
             .replacingOccurrences(of: "\\\\", with: "\\") // TODO "\\n" will get parsed as `\(newline)` instead of `\n`
+    }
+    
+    private func transformLine<S: StringProtocol>(line: S) -> String {
+        let line = line.trimmingCharacters(in: .whitespaces)
+        if compilerSettings.contains(.altBrackets) {
+            // #compiler altBrackets true —> replaces ( -> [, [ -> {, { -> ( after internation before parsing
+            return GRPHCompiler.allBrackets.replaceMatches(in: line) { bracket in
+                switch bracket {
+                case "(": return "["
+                case ")": return "]"
+                case "[": return "{"
+                case "]": return "}"
+                case "{": return "("
+                case "}": return ")"
+                default: fatalError()
+                }
+            }
+        }
+        return line
     }
     
     var wdiuInstructions: String {
