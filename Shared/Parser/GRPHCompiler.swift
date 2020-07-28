@@ -30,6 +30,10 @@ class GRPHCompiler: GRPHParser {
     
     var settings: [RuntimeSetting: Bool] = [:]
     
+    
+    var indent = "\t"
+    var compilerSettings: Set<CompilerSetting> = []
+    
     init(entireContent: String) {
         self.entireContent = entireContent
         // TODO change this to file, or a new type
@@ -66,26 +70,30 @@ class GRPHCompiler: GRPHParser {
         for lineNumber in 0..<lines.count {
             // Real line
             line0 = lines[lineNumber]
-            var line, tline: String
             if line0.isEmpty || line0.hasPrefix("//") {
-                line = ""
-                tline = ""
                 continue
-            } else {
-                // Interned & stripped from comments
-                line = internStringLiterals(line: line0)
-                line = line.components(separatedBy: "//")[0]
-                // Stripped from tabs
-                tline = line.trimmingCharacters(in: .whitespaces)
             }
             
+            // Interned & stripped from comments
+            let line = internStringLiterals(line: line0).components(separatedBy: "//")[0]
+            // Stripped from tabs
+            
             // Close blocks
+            let tline: String
             if blockCount != 0 {
-                let tabs = line.count - line.drop(while: { $0 == "\t" }).count
+                var partialLine = line.dropFirst(0)
+                var tabs = 0
+                while partialLine.hasPrefix(indent) {
+                    partialLine = partialLine.dropFirst(indent.count)
+                    tabs += 1
+                }
                 while tabs < blockCount {
                     context = (context as! GRPHBlockContext).parent
                     blockCount -= 1
                 }
+                tline = partialLine.trimmingCharacters(in: .whitespaces)
+            } else {
+                tline = line.trimmingCharacters(in: .whitespaces)
             }
             
             if tline.isEmpty {
@@ -278,9 +286,50 @@ class GRPHCompiler: GRPHParser {
                         }
                         break
                     case "#compiler":
+                        let split = params.components(separatedBy: " ")
+                        guard split.count == 2 else {
+                            throw GRPHCompileError(type: .parse, message: "Expected syntax '#compiler key value'")
+                        }
+                        switch split[0] {
+                        case "indent":
+                            let vals = split[1].components(separatedBy: "*")
+                            let multiplier: Int?
+                            let value: String
+                            if vals.count == 2 {
+                                guard let int = Int(vals[0]) else {
+                                    throw GRPHCompileError(type: .parse, message: "Expected syntax '#compiler indent n*string'")
+                                }
+                                multiplier = int
+                                value = vals[1]
+                            } else {
+                                multiplier = nil
+                                value = split[1]
+                            }
+                            switch value {
+                            case "spaces", "space":
+                                indent = String(repeating: " ", count: multiplier ?? 4)
+                            case "tabs", "tab", "tabulation", "tabulations":
+                                indent = String(repeating: "\t", count: multiplier ?? 1)
+                            case "dash", "dashes", "-":
+                                indent = String(repeating: "-", count: multiplier ?? 4)
+                            case "underscores", "underscore", "_":
+                                indent = String(repeating: "_", count: multiplier ?? 4)
+                            case "tildes", "tilde", "~":
+                                indent = String(repeating: "~", count: multiplier ?? 4)
+                            case "uwus":
+                                indent = String(repeating: "uwu ", count: multiplier ?? 1)
+                            default:
+                                if let v = globalVariables.first(where: { $0.name == value }),
+                                   let content = v.content as? String {
+                                    indent = String(repeating: content, count: multiplier ?? 1)
+                                } else {
+                                    throw GRPHCompileError(type: .parse, message: "Unknown indent '\(value)'")
+                                }
+                            }
+                        default:
+                            throw GRPHCompileError(type: .parse, message: "Unknown compiler key '\(split[0])'")
+                        }
                         // #compiler key value
-                        // - tabsize <number> (4 for spaces, 1 for tabs by default)
-                        // - indent *tabs*/spaces
                         // - natural true —> replaces ( -> [, [ -> {, { -> ( after internation before parsing
                         // - ignore lines that don't compile (toggleable)
                         // -> ignore errors/warnings/TypeError/UndeclaredError
@@ -578,4 +627,10 @@ struct GRPHRuntimeError: Error {
         case invalidArgument = "InvalidArgument"
         case permission = "NoPermission"
     }
+}
+
+enum CompilerSetting: Hashable {
+    case altBrackets
+    case ignoreErrors
+    case ignore(GRPHCompileError.CompileErrorType)
 }
