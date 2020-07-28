@@ -337,12 +337,23 @@ class GRPHCompiler: GRPHParser {
                             } else {
                                 compilerSettings.remove(.altBrackets)
                             }
+                        case "ignore":
+                            switch split[1] { // warnings too
+                            case "errors", "Error":
+                                compilerSettings.insert(.ignoreErrors)
+                            case "reset", "nothing":
+                                compilerSettings = compilerSettings.filter { $0 == .altBrackets } // only keep other than ignore
+                            default:
+                                if split[1].hasSuffix("Error"),
+                                   let type = GRPHCompileError.CompileErrorType(rawValue: "\(split[1].dropLast(5))") {
+                                    compilerSettings.insert(.ignore(type))
+                                } else {
+                                    printerr("Unknown compile error \(split[1]) asked to ignore")
+                                }
+                            }
                         default:
                             throw GRPHCompileError(type: .parse, message: "Unknown compiler key '\(split[0])'")
                         }
-                        // #compiler key value
-                        // - ignore lines that don't compile (toggleable)
-                        // -> ignore errors/warnings/TypeError/UndeclaredError
                         // - maybe disable autounboxing and use postfix "!"
                         break
                     default:
@@ -417,6 +428,9 @@ class GRPHCompiler: GRPHParser {
                     throw GRPHCompileError(type: .parse, message: "Couldn't resolve instruction")
                 }
             } catch let error as GRPHCompileError {
+                if compilerSettings.contains(.ignoreErrors) || compilerSettings.contains(.ignore(error.type)) {
+                    continue
+                }
                 printerr("Compile Error: \(error.type.rawValue)Error: \(error.message); line \(lineNumber + 1)")
                 context = nil
                 return false
@@ -637,6 +651,7 @@ struct GRPHCompileError: Error {
         case parse = "Parse"
         case typeMismatch = "Type"
         case undeclared = "Undeclared"
+        case redeclaration = "Redeclaration"
         case invalidArguments = "InvalidArguments"
         case unsupported = "Unsupported"
     }

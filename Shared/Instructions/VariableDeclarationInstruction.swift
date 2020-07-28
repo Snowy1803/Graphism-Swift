@@ -36,7 +36,7 @@ struct VariableDeclarationInstruction: Instruction {
         }
         let name = groups[4]!
         guard context.findVariableInScope(named: name) == nil else {
-            throw GRPHCompileError(type: .parse, message: "Invalid redeclaration of variable '\(name)'")
+            throw GRPHCompileError(type: .redeclaration, message: "Invalid redeclaration of variable '\(name)'")
         }
         guard GRPHCompiler.varNameRequirement.firstMatch(string: name) != nil else {
             throw GRPHCompileError(type: .parse, message: "Invalid variable name '\(name)'")
