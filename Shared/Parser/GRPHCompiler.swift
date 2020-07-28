@@ -151,10 +151,22 @@ class GRPHCompiler: GRPHParser {
                         }
                         imports.append(TypeAlias(name: String(split[0]), type: type))
                     case "#if":
+                        if context is SwitchContext {
+                            throw GRPHCompileError(type: .parse, message: "Expected #case or #default in #switch block")
+                        }
                         try addInstruction(try IfBlock(lineNumber: lineNumber, context: &context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                     case "#elseif", "#elif":
+                        if let ctx = context as? SwitchContext {
+                            guard ctx.state == .next else {
+                                throw GRPHCompileError(type: .parse, message: "Expected #case or #default in #switch block")
+                            }
+                            // we can allow it here, it is harmless
+                        }
                         try addInstruction(try ElseIfBlock(lineNumber: lineNumber, context: &context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)))
                     case "#else":
+                        if context is SwitchContext {
+                            throw GRPHCompileError(type: .parse, message: "Expected #case or #default in #switch block")
+                        }
                         guard params.isEmpty else {
                             throw GRPHCompileError(type: .parse, message: "#else doesn't expect arguments")
                         }
@@ -275,7 +287,7 @@ class GRPHCompiler: GRPHParser {
                         }
                     case "#switch":
                         guard nextLabel == nil else {
-                            throw GRPHCompileError(type: .parse, message: "A #switch block cannot have a label. Put the label on the cases instead.")
+                            throw GRPHCompileError(type: .parse, message: "A #switch block cannot have a label. Put the label on the cases instead")
                         }
                         var name = "$_switch0$"
                         var n = 1
@@ -341,7 +353,7 @@ class GRPHCompiler: GRPHParser {
                             throw GRPHCompileError(type: .parse, message: "Expected syntax '#setting key value'")
                         }
                         guard let value = Bool(split[1]) else { // only accepts "true" and "false"
-                            throw GRPHCompileError(type: .parse, message: "Expected value to be a boolean literal. Dynamic values are not supported.")
+                            throw GRPHCompileError(type: .parse, message: "Expected value to be a boolean literal. Dynamic values are not supported")
                         }
                         if split[0] == "readonly" {
                             settings[.movable] = !value
