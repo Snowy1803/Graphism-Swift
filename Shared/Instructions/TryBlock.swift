@@ -7,8 +7,7 @@
 
 import Foundation
 
-// reference type required to later add catch clauses to it, during compilation
-class TryBlock: BlockInstruction {
+struct TryBlock: BlockInstruction {
     let lineNumber: Int
     var children: [Instruction] = []
     var label: String?

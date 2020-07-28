@@ -178,7 +178,14 @@ class GRPHCompiler: GRPHParser {
                             throw GRPHCompileError(type: .parse, message: "'#catch varName : errortype' syntax expected; error types missing")
                         }
                         let exs = split[1].components(separatedBy: "|")
-                        let tr: TryBlock = try findTryBlock()
+                        let trm = try findTryBlock()
+                        let currblock = currentBlock
+                        var tr: TryBlock
+                        if let currblock = currblock {
+                            tr = currblock.children[currblock.children.count - trm] as! TryBlock
+                        } else {
+                            tr = instructions[instructions.count - trm] as! TryBlock
+                        }
                         let block = try CatchBlock(lineNumber: lineNumber, context: &context, varName: split[0].trimmingCharacters(in: .whitespaces))
                         for rawErr in exs {
                             let error = rawErr.trimmingCharacters(in: .whitespaces)
@@ -195,6 +202,11 @@ class GRPHCompiler: GRPHParser {
                             } else {
                                 throw GRPHCompileError(type: .undeclared, message: "Error '\(error)' not found")
                             }
+                        }
+                        if let currblock = currblock {
+                            currentBlock!.children[currblock.children.count - trm] = tr
+                        } else {
+                            instructions[instructions.count - trm] = tr
                         }
                         try addInstruction(block)
                     case "#throw":
@@ -472,7 +484,7 @@ class GRPHCompiler: GRPHParser {
         try addNonBlockInstruction(instruction)
     }
     
-    func findTryBlock(minus: Int = 1) throws -> TryBlock {
+    func findTryBlock(minus: Int = 1) throws -> Int {
         var last: Instruction? = nil
         if blockCount > 0,
            let block = currentBlock {
@@ -484,8 +496,8 @@ class GRPHCompiler: GRPHParser {
                 last = instructions[instructions.count - minus]
             }
         }
-        if let last = last as? TryBlock {
-            return last
+        if last is TryBlock {
+            return minus
         } else if last is CatchBlock {
             return try findTryBlock(minus: minus + 1)
         }
@@ -555,7 +567,9 @@ class GRPHCompiler: GRPHParser {
     }
     
     private func lastBlock(in arr: [Instruction], max: Int) -> BlockInstruction? {
-        if let curr = arr.last as? BlockInstruction {
+        if max == 0 {
+            return nil
+        } else if let curr = arr.last as? BlockInstruction {
             if max == 1 {
                 return curr
             }
