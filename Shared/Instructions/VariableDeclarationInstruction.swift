@@ -14,7 +14,7 @@ struct VariableDeclarationInstruction: Instruction {
     
     let type: GRPHType
     let name: String
-    let value: Expression? // nil for fields in #type
+    let value: Expression
     
     let lineNumber: Int
     
@@ -42,11 +42,11 @@ struct VariableDeclarationInstruction: Instruction {
             throw GRPHCompileError(type: .parse, message: "Invalid variable name '\(name)'")
         }
         context.addVariable(Variable(name: name, type: type, final: groups[2] != nil, compileTime: true), global: groups[1] != nil)
-        self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: try Expressions.parse(context: context, infer: type, literal: groups[5]!))
+        self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: try GRPHTypes.autobox(context: context, expression: Expressions.parse(context: context, infer: type, literal: groups[5]!), expected: type))
     }
     
     func run(context: inout GRPHContext) throws {
-        let content = try GRPHTypes.autobox(value: try value!.eval(context: context), expected: type)
+        let content = try value.eval(context: context)
         let v = Variable(name: name, type: type, content: content, final: constant)
         context.addVariable(v, global: global)
         if context.runtime?.debugging ?? false {
@@ -55,6 +55,6 @@ struct VariableDeclarationInstruction: Instruction {
     }
     
     func toString(indent: String) -> String {
-        "\(line):\(indent)\(global ? "global " : "")\(constant ? "final " : "")\(type.string) \(name)\(value == nil ? "" : " = \(value!.string)")\n"
+        "\(line):\(indent)\(global ? "global " : "")\(constant ? "final " : "")\(type.string) \(name) = \(value.string)\n"
     }
 }

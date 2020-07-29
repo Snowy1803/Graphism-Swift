@@ -62,9 +62,36 @@ struct UnaryExpression: Expression {
     var string: String { "\(op.rawValue)\(exp.bracketized)" }
 }
 
-
 enum UnaryOperator: String {
     case bitwiseComplement = "~"
     case opposite = "-"
     case not = "!"
+}
+
+struct UnboxExpression: Expression {
+    let exp: Expression
+    
+    func eval(context: GRPHContext) throws -> GRPHValue {
+        let value = try exp.eval(context: context)
+        guard let opt = value as? GRPHOptional else {
+            throw GRPHRuntimeError(type: .unexpected, message: "Cannot unbox non optional")
+        }
+        switch opt {
+        case .null:
+            throw GRPHRuntimeError(type: .cast, message: "Tried to unbox a 'null' value")
+        case .some(let wrapped):
+            return wrapped
+        }
+    }
+    
+    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+        guard let type = try exp.getType(context: context, infer: infer.optional) as? OptionalType else {
+            throw GRPHCompileError(type: .typeMismatch, message: "Cannot unbox non optional")
+        }
+        return type.wrapped
+    }
+    
+    var needsBrackets: Bool { false }
+    
+    var string: String { "\(exp.bracketized)!" }
 }

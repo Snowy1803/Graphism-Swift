@@ -33,6 +33,11 @@ struct ConstructorExpression: Expression {
         self.values = ourvalues
     }
     
+    init(ctx: GRPHContext, boxing: Expression, infer: GRPHType) throws {
+        self.constructor = try boxing.getType(context: ctx, infer: infer).optional.constructor!
+        self.values = [boxing]
+    }
+    
     func eval(context: GRPHContext) throws -> GRPHValue {
         return constructor.executable(context, try values.map { try $0?.eval(context: context) })
     }

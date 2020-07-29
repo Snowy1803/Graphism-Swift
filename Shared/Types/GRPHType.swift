@@ -113,6 +113,22 @@ struct GRPHTypes {
         return type
     }
     
+    static func autobox(context: GRPHContext, expression: Expression, expected: GRPHType) throws -> Expression {
+        let type = try expression.getType(context: context, infer: expected)
+        if !(type is OptionalType),
+           let expected = expected as? OptionalType { // Boxing
+            return try ConstructorExpression(ctx: context, boxing: autobox(context: context, expression: expression, expected: expected.wrapped), infer: expected)
+        } else if type is OptionalType,
+                  let expected = expected as? OptionalType { // Recursive, multi? optional
+            if let expression = expression as? ConstructorExpression {
+                return try ConstructorExpression(ctx: context, boxing: autobox(context: context, expression: expression.values[0]!, expected: expected.wrapped), infer: expected)
+            }
+        } else if type is OptionalType { // Unboxing
+            return try autobox(context: context, expression: UnboxExpression(exp: expression), expected: expected)
+        }
+        return expression
+    }
+    
     static func autobox(value: GRPHValue, expected: GRPHType) throws -> GRPHValue {
         if let value = value as? GRPHOptional {
             if let expected = expected as? OptionalType { // recursive

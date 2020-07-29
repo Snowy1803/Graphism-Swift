@@ -20,6 +20,16 @@ struct OptionalType: GRPHType {
     func isInstance(of other: GRPHType) -> Bool {
         return other is OptionalType && wrapped.isInstance(of: (other as! OptionalType).wrapped)
     }
+    
+    var constructor: Constructor? {
+        Constructor(parameters: [Parameter(name: "wrapped", type: wrapped, optional: true)], type: self) { ctx, values in
+            if values.count == 1 {
+                return GRPHOptional.some(values[0]!)
+            } else {
+                return GRPHOptional.null
+            }
+        }
+    }
 }
 
 struct MultiOrType: GRPHType {
