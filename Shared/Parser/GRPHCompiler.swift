@@ -418,6 +418,35 @@ class GRPHCompiler: GRPHParser {
                             } else {
                                 compilerSettings.remove(.altBrackets)
                             }
+                        case "strict", "strictUnbox", "strictUnboxing", "noAutoUnbox":
+                            guard let value = Bool(split[1]) else { // only accepts "true" and "false"
+                                throw GRPHCompileError(type: .parse, message: "Expected value to be a boolean literal")
+                            }
+                            if value {
+                                compilerSettings.insert(.strictUnboxing)
+                            } else {
+                                compilerSettings.remove(.strictUnboxing)
+                            }
+                        case "strictBoxing", "noAutobox", "noAutoBox":
+                            guard let value = Bool(split[1]) else { // only accepts "true" and "false"
+                                throw GRPHCompileError(type: .parse, message: "Expected value to be a boolean literal")
+                            }
+                            if value {
+                                compilerSettings.insert(.strictBoxing)
+                            } else {
+                                compilerSettings.remove(.strictBoxing)
+                            }
+                        case "strictest":
+                            guard let value = Bool(split[1]) else { // only accepts "true" and "false"
+                                throw GRPHCompileError(type: .parse, message: "Expected value to be a boolean literal")
+                            }
+                            if value {
+                                compilerSettings.insert(.strictBoxing)
+                                compilerSettings.insert(.strictUnboxing)
+                            } else {
+                                compilerSettings.remove(.strictBoxing)
+                                compilerSettings.remove(.strictUnboxing)
+                            }
                         case "ignore":
                             switch split[1] { // warnings too
                             case "errors", "Error":
@@ -780,4 +809,6 @@ enum CompilerSetting: Hashable {
     case altBrackets
     case ignoreErrors
     case ignore(GRPHCompileError.CompileErrorType)
+    case strictUnboxing // Require the !, disable autounboxing
+    case strictBoxing // Require the type?(value), disable autoboxing
 }

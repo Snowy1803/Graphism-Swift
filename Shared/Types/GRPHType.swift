@@ -125,6 +125,9 @@ struct GRPHTypes {
         let type = try expression.getType(context: context, infer: expected)
         if !(type is OptionalType),
            let expected = expected as? OptionalType { // Boxing
+            if context.compiler?.compilerSettings.contains(.strictBoxing) ?? false {
+                throw GRPHCompileError(type: .typeMismatch, message: "Strict boxing is enabled. Please box the \(type) into a \(expected) with the '\(expected)' constructor")
+            }
             return try ConstructorExpression(ctx: context, boxing: autobox(context: context, expression: expression, expected: expected.wrapped), infer: expected)
         } else if type is OptionalType,
                   let expected = expected as? OptionalType { // Recursive, multi? optional
@@ -132,6 +135,12 @@ struct GRPHTypes {
                 return try ConstructorExpression(ctx: context, boxing: autobox(context: context, expression: expression.values[0]!, expected: expected.wrapped), infer: expected)
             }
         } else if type is OptionalType { // Unboxing
+            if context.compiler?.compilerSettings.contains(.strictUnboxing) ?? false {
+                if expected.isTheMixed {
+                    return expression // valid
+                }
+                throw GRPHCompileError(type: .typeMismatch, message: "Strict unboxing is enabled. Please unbox the \(type) into a \(expected) using the postfix unary '!' operator")
+            }
             return try autobox(context: context, expression: UnboxExpression(exp: expression), expected: expected)
         }
         return expression
