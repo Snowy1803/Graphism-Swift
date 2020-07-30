@@ -28,7 +28,8 @@ struct ConstructorExpression: Expression {
             while ourvalues.count < nextParam - 1 {
                 ourvalues.append(nil)
             }
-            ourvalues.append(param) // at pars[nextParam - 1] aka current param
+            ourvalues.append(try GRPHTypes.autobox(context: ctx, expression: param, expected: par.param.type))
+            // at pars[nextParam - 1] aka current param
         }
         self.values = ourvalues
     }
