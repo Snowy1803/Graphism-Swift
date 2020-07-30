@@ -27,9 +27,8 @@ class GRPHFunctionContext: GRPHBlockContext {
         return parser.globalVariables.first(where: { $0.name == name && $0.final })
     }
     
-    // type check #return at compile time!!!
     func setReturnValue(returnValue: GRPHValue?) throws {
-        currentReturnValue = returnValue == nil ? nil : try GRPHTypes.autobox(value: returnValue!, expected: (block as! FunctionDeclarationBlock).generated.returnType)
+        currentReturnValue = returnValue // type checked at compile time
     }
     
     override var inFunction: FunctionDeclarationBlock? { (block as! FunctionDeclarationBlock) }

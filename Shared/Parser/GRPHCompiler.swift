@@ -242,18 +242,18 @@ class GRPHCompiler: GRPHParser {
                             throw GRPHCompileError(type: .parse, message: "Cannot use #return outside of a #function block")
                         }
                         let expected = block.generated.returnType
-                        if let exp = exp,
-                           !expected.isTheVoid {
-                            guard try expected.isInstance(context: context, expression: exp) else {
-                                throw GRPHCompileError(type: .parse, message: "Expected a #return value of type \(expected), found a \(try exp.getType(context: context, infer: expected))")
+                        let aexp = exp == nil ? nil : try GRPHTypes.autobox(context: context, expression: exp!, expected: expected)
+                        if let aexp = aexp, !expected.isTheVoid {
+                            guard try expected.isInstance(context: context, expression: aexp) else {
+                                throw GRPHCompileError(type: .parse, message: "Expected a #return value of type \(expected), found a \(try aexp.getType(context: context, infer: expected))")
                             }
-                        } else if exp != nil {
+                        } else if aexp != nil {
                             throw GRPHCompileError(type: .parse, message: "Cannot #return a value in a void function")
                         } else if !expected.isTheVoid,
                                   block.returnDefault == nil { // expects something, no default return
                             throw GRPHCompileError(type: .parse, message: "No #return value nor default value in non-void function, expected a \(expected)")
                         }
-                        try addInstruction(ReturnInstruction(lineNumber: lineNumber, value: exp))
+                        try addInstruction(ReturnInstruction(lineNumber: lineNumber, value: aexp))
                     case "#break":
                         try addInstruction(BreakInstruction(lineNumber: lineNumber, type: .break, scope: .parse(params: params)))
                     case "#continue":

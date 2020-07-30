@@ -14,16 +14,16 @@ struct WhileBlock: BlockInstruction {
     let condition: Expression
     
     init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
-        self.condition = condition
         self.lineNumber = lineNumber
+        self.condition = try GRPHTypes.autobox(context: context, expression: condition, expected: SimpleType.boolean)
         createContext(&context)
-        if try !SimpleType.boolean.isInstance(context: context, expression: condition) {
+        guard try self.condition.getType(context: context, infer: SimpleType.boolean) == SimpleType.boolean else {
             throw GRPHCompileError(type: .typeMismatch, message: "#while needs a boolean, a \(try condition.getType(context: context, infer: SimpleType.boolean)) was given")
         }
     }
     
     func canRun(context: GRPHBlockContext) throws -> Bool {
-        try GRPHTypes.autobox(value: condition.eval(context: context), expected: SimpleType.boolean) as! Bool
+        try condition.eval(context: context) as! Bool
     }
     
     func run(context: inout GRPHContext) throws {

@@ -15,15 +15,15 @@ struct IfBlock: BlockInstruction {
     
     init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
         self.lineNumber = lineNumber
-        self.condition = condition
+        self.condition = try GRPHTypes.autobox(context: context, expression: condition, expected: SimpleType.boolean)
         createContext(&context)
-        if try !SimpleType.boolean.isInstance(context: context, expression: condition) {
+        guard try self.condition.getType(context: context, infer: SimpleType.boolean) == SimpleType.boolean else {
             throw GRPHCompileError(type: .typeMismatch, message: "#if needs a boolean, a \(try condition.getType(context: context, infer: SimpleType.boolean)) was given")
         }
     }
     
     func canRun(context: GRPHBlockContext) throws -> Bool {
-        try GRPHTypes.autobox(value: condition.eval(context: context), expected: SimpleType.boolean) as! Bool
+        try condition.eval(context: context) as! Bool
     }
     
     var name: String { "if \(condition.string)" }
@@ -37,9 +37,9 @@ struct ElseIfBlock: BlockInstruction {
     
     init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
         self.lineNumber = lineNumber
-        self.condition = condition
+        self.condition = try GRPHTypes.autobox(context: context, expression: condition, expected: SimpleType.boolean)
         createContext(&context)
-        if try !SimpleType.boolean.isInstance(context: context, expression: condition) {
+        guard try self.condition.getType(context: context, infer: SimpleType.boolean) == SimpleType.boolean else {
             throw GRPHCompileError(type: .typeMismatch, message: "#elseif needs a boolean, a \(try condition.getType(context: context, infer: SimpleType.boolean)) was given")
         }
     }
@@ -47,7 +47,7 @@ struct ElseIfBlock: BlockInstruction {
     func canRun(context: GRPHBlockContext) throws -> Bool {
         if let last = context.parent.last as? GRPHBlockContext {
             context.canNextRun = last.canNextRun
-            return try context.canNextRun && GRPHTypes.autobox(value: condition.eval(context: context), expected: SimpleType.boolean) as! Bool
+            return try context.canNextRun && condition.eval(context: context) as! Bool
         } else {
             throw GRPHRuntimeError(type: .unexpected, message: "#elseif must follow another block instruction")
         }

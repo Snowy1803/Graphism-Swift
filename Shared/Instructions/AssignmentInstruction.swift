@@ -20,16 +20,18 @@ struct AssignmentInstruction: Instruction {
         self.assigned = assigned
         
         let varType = try assigned.getType(context: context, infer: SimpleType.mixed)
-        guard try varType.isInstance(context: context, expression: value) else {
-            throw GRPHCompileError(type: .typeMismatch, message: "Incompatible types '\(try value.getType(context: context, infer: SimpleType.mixed))' and '\(varType)' in assignment")
+        let avalue = try GRPHTypes.autobox(context: context, expression: value, expected: varType)
+        
+        guard try varType.isInstance(context: context, expression: avalue) else {
+            throw GRPHCompileError(type: .typeMismatch, message: "Incompatible types '\(try avalue.getType(context: context, infer: SimpleType.mixed))' and '\(varType)' in assignment")
         }
         
         if let op = op {
             self.virtualized = true
-            self.value = try BinaryExpression(context: context, left: VirtualExpression(type: assigned.getType(context: context, infer: SimpleType.mixed)), op: op, right: value)
+            self.value = try BinaryExpression(context: context, left: VirtualExpression(type: assigned.getType(context: context, infer: SimpleType.mixed)), op: op, right: avalue)
         } else {
             self.virtualized = false
-            self.value = value
+            self.value = avalue
         }
         try assigned.checkCanAssign(context: context)
     }
@@ -44,7 +46,7 @@ struct AssignmentInstruction: Instruction {
     func run(context: inout GRPHContext) throws {
         var cache = [GRPHValue]()
         context = GRPHVirtualAssignmentContext(parent: context, virtualValue: try assigned.eval(context: context, cache: &cache))
-        let val = virtualized ? try value.eval(context: context) : try GRPHTypes.autobox(value: value.eval(context: context), expected: assigned.getType(context: context, infer: SimpleType.mixed))
+        let val = try value.eval(context: context)
         try assigned.assign(context: context, value: val, cache: &cache)
     }
     

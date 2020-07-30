@@ -166,6 +166,9 @@ struct Expressions {
            chr == "~" || chr == "-" || chr == "!" {
             return try UnaryExpression(context: context, op: String(chr), exp: parse(context: context, infer: infer, literal: String(str.dropFirst())))
         }
+        if let chr = str.last, chr == "!" {
+            return try UnboxExpression(exp: parse(context: context, infer: infer?.optional, literal: String(str.dropLast())))
+        }
         if let result = FieldExpression.pattern.firstMatch(string: str) {
             let field = result[2]!
             if field.first!.isUppercase { // constants

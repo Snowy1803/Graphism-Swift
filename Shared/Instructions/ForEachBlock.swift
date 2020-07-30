@@ -19,11 +19,11 @@ struct ForEachBlock: BlockInstruction {
     init(lineNumber: Int, context: inout GRPHContext, varName: String, array: Expression) throws {
         self.inOut = varName.hasPrefix("&") // new in Swift Edition
         self.varName = inOut ? String(varName.dropFirst()) : varName
-        self.array = array
+        self.array = try GRPHTypes.autobox(context: context, expression: array, expected: SimpleType.mixed.inArray)
         self.lineNumber = lineNumber
         let ctx = createContext(&context)
         
-        let type = try array.getType(context: context, infer: ArrayType(content: SimpleType.mixed))
+        let type = try array.getType(context: context, infer: SimpleType.mixed.inArray)
         
         guard let arrtype = type as? ArrayType else {
             throw GRPHCompileError(type: .typeMismatch, message: "#foreach needs an array, a \(type) was given")
@@ -40,7 +40,7 @@ struct ForEachBlock: BlockInstruction {
     func run(context: inout GRPHContext) throws {
         let ctx = createContext(&context)
         var i = 0
-        let arr = try GRPHTypes.autobox(value: array.eval(context: context), expected: ArrayType(content: SimpleType.mixed)) as! GRPHArray
+        let arr = try array.eval(context: context) as! GRPHArray
         if mustRun(context: ctx) {
             throw GRPHRuntimeError(type: .unexpected, message: "Cannot fallthrough a #foreach block")
         }

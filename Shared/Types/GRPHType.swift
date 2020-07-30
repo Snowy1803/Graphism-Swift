@@ -59,6 +59,14 @@ func | (lhs: GRPHType, rhs: GRPHType) -> MultiOrType {
     MultiOrType(type1: lhs, type2: rhs)
 }
 
+func == (lhs: GRPHType, rhs: GRPHType) -> Bool {
+    lhs.string == rhs.string
+}
+
+func != (lhs: GRPHType, rhs: GRPHType) -> Bool {
+    lhs.string != rhs.string
+}
+
 struct GRPHTypes {
     
     private init() {}
