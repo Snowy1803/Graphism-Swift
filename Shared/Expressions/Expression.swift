@@ -38,7 +38,12 @@ struct Expressions {
     
     static func parse(context: GRPHContext, infer: GRPHType?, literal str: String) throws -> Expression {
         if str.hasPrefix("[") && str.hasSuffix("]") {
-            return try parse(context: context, infer: infer, literal: "\(str.dropFirst().dropLast())")
+            let clipped = str.dropFirst().dropLast()
+            if checkBalance(literal: clipped) {
+                return try parse(context: context, infer: infer, literal: String(clipped))
+            }
+            // else: ["hey" as string].shuffled[]
+            //       ^~~~~~~~~~~~~~~~~~~~~~~~~~~^
         }
         
         if let direction = Direction(rawValue: str) {

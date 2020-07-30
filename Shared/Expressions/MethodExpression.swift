@@ -61,7 +61,7 @@ struct MethodExpression: Expression {
     }
     
     var string: String {
-        "\(on).\(fullyQualified)[\(method.formattedParameterList(values: values.compactMap {$0}))]"
+        "\(on.bracketized).\(fullyQualified)[\(method.formattedParameterList(values: values.compactMap {$0}))]"
     }
     
     var needsBrackets: Bool { false }
