@@ -11,19 +11,38 @@ struct ArrayValueExpression: Expression {
     static let pattern = try! NSRegularExpression(pattern: "^([$A-Za-z_][A-Za-z0-9_]*)\\{(.*)\\}$")
     
     let varName: String
-    let index: Expression
+    let index: Expression?
+    let removing: Bool
+    
+    internal init(context: GRPHContext, varName: String, index: Expression?, removing: Bool) throws {
+        self.varName = varName
+        self.index = index == nil ? nil : try GRPHTypes.autobox(context: context, expression: index!, expected: SimpleType.integer)
+        self.removing = removing
+    }
     
     func eval(context: GRPHContext) throws -> GRPHValue {
         guard let val = context.findVariable(named: varName)?.content as? GRPHArray else {
             throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression with non-array")
         }
-        guard let i = try GRPHTypes.unbox(value: try index.eval(context: context)) as? Int else {
-            throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression index couldn't be resolved as an integer")
+        guard val.count > 0 else {
+            throw GRPHRuntimeError(type: .invalidArgument, message: "Index out of bounds; array is empty")
         }
-        guard i < val.count else {
-            throw GRPHRuntimeError(type: .invalidArgument, message: "Array out of bounds; index \(i) not found in array of length \(val.count))")
+        if let index = index {
+            guard let i = try index.eval(context: context) as? Int else {
+                throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression index couldn't be resolved as an integer")
+            }
+            guard i < val.count else {
+                throw GRPHRuntimeError(type: .invalidArgument, message: "Index out of bounds; index \(i) not found in array of length \(val.count))")
+            }
+            if removing {
+                return val.wrapped.remove(at: i)
+            }
+            return val.wrapped[i]
+        } else if removing {
+            return val.wrapped.removeLast()
+        } else {
+            return val.wrapped.last!
         }
-        return val.wrapped[i]
     }
     
     func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
@@ -36,7 +55,7 @@ struct ArrayValueExpression: Expression {
         return type.content
     }
     
-    var string: String { "\(varName){\(index.string)}" }
+    var string: String { "\(varName){\(index?.string ?? "")\(removing ? "-" : "")}" }
     
     var needsBrackets: Bool { false }
 }
