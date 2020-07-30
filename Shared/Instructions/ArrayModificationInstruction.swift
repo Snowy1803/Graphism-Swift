@@ -49,7 +49,7 @@ struct ArrayModificationInstruction: Instruction {
         if inside.isEmpty {
             index = nil
         } else {
-            index = try Expressions.parse(context: context, infer: SimpleType.integer, literal: inside)
+            index = try GRPHTypes.autobox(context: context, expression: Expressions.parse(context: context, infer: SimpleType.integer, literal: inside), expected: SimpleType.integer)
             guard try SimpleType.integer.isInstance(context: context, expression: index!) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Expected integer in array modification index")
             }
@@ -61,7 +61,7 @@ struct ArrayModificationInstruction: Instruction {
             throw GRPHCompileError(type: .typeMismatch, message: "Expected an array in array modification, got a \(v.type)")
         }
         let value = groups[3]!.trimmingCharacters(in: .whitespaces)
-        let exp = value.isEmpty ? nil : try Expressions.parse(context: context, infer: arr.content, literal: value)
+        let exp = value.isEmpty ? nil : try GRPHTypes.autobox(context: context, expression: Expressions.parse(context: context, infer: arr.content, literal: value), expected: arr.content)
         if let exp = exp {
             guard try arr.content.isInstance(context: context, expression: exp) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Expected \(arr.content) as array content, got \(try exp.getType(context: context, infer: arr.content))")
@@ -84,31 +84,30 @@ struct ArrayModificationInstruction: Instruction {
                   index < arr.count else {
                 throw GRPHRuntimeError(type: .unexpected, message: "Invalid index")
             }
-            arr.wrapped[index] = try GRPHTypes.autobox(value: val!, expected: arr.content)
+            arr.wrapped[index] = val!
         case .add:
             if let index = try index?.eval(context: context) as? Int {
                 guard index <= arr.count else {
                     throw GRPHRuntimeError(type: .unexpected, message: "Invalid index \(index) in insertion for array of length \(arr.count)")
                 }
-                arr.wrapped.insert(try GRPHTypes.autobox(value: val!, expected: arr.content), at: index)
+                arr.wrapped.insert(val!, at: index)
             } else {
-                arr.wrapped.append(try GRPHTypes.autobox(value: val!, expected: arr.content))
+                arr.wrapped.append(val!)
             }
         case .remove:
-            let aval = val == nil ? nil : try GRPHTypes.autobox(value: val!, expected: arr.content)
             if let index = try index?.eval(context: context) as? Int {
                 guard index < arr.count else {
                     throw GRPHRuntimeError(type: .unexpected, message: "Invalid index \(index) in insertion for array of length \(arr.count)")
                 }
-                if let aval = aval {
-                    if arr.wrapped[index].isEqual(to: aval) {
+                if let val = val {
+                    if arr.wrapped[index].isEqual(to: val) {
                         arr.wrapped.remove(at: index)
                     }
                 } else {
                     arr.wrapped.remove(at: index)
                 }
-            } else if let aval = aval,
-                      let index = arr.wrapped.firstIndex(where: { $0.isEqual(to: aval) }) {
+            } else if let val = val,
+                      let index = arr.wrapped.firstIndex(where: { $0.isEqual(to: val) }) {
                 arr.wrapped.remove(at: index)
             }
         }

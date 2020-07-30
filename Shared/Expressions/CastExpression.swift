@@ -18,6 +18,8 @@ struct CastExpression: Expression {
         let raw = try from.eval(context: context)
         if case .typeCheck = cast {
             return GRPHTypes.type(of: raw).isInstance(of: to) // no autoboxing in is
+        } else if to.isTheMixed {
+            return wrap(raw) // anything is mixed, even an optional
         }
         let value = try GRPHTypes.autobox(value: raw, expected: to)
         if case .strict(optional: _) = cast {

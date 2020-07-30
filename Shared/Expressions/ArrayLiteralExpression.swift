@@ -24,7 +24,7 @@ struct ArrayLiteralExpression: Expression {
             } else {
                 throw GRPHRuntimeError(type: .invalidArgument, message: "'\(res)' (\(GRPHTypes.type(of: res, expected: wrapped))) is not a valid value in a {\(wrapped)}")
             }
-            array.wrapped.append(try GRPHTypes.autobox(value: res, expected: wrapped))
+            array.wrapped.append(res)
         }
         return array
     }

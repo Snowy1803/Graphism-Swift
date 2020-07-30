@@ -85,7 +85,7 @@ struct Expressions {
                 printout("Warning: Component type of array literal couldn't be inferred. Using float.")
                 type = SimpleType.float
             }
-            return ArrayLiteralExpression(wrapped: type, values: try splitParameters(context: context, in: result[2]!, delimiter: comma, infer: type))
+            return ArrayLiteralExpression(wrapped: type, values: try splitParameters(context: context, in: result[2]!, delimiter: comma, infer: type).map { try GRPHTypes.autobox(context: context, expression: $0, expected: type) })
         }
         if let result = CastExpression.pattern.firstMatch(string: str) {
             if let type = GRPHTypes.parse(context: context, literal: result[3]!) {
