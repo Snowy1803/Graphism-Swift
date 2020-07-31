@@ -717,69 +717,6 @@ class GRPHCompiler: GRPHParser {
     }
 }
 
-extension NSRegularExpression {
-    // Only throws if block throws, but can't use rethrows because NSRegularExpression.enumerateMatches doesn't rethrow
-    func allMatches(in string: String, using block: (_ match: Range<String.Index>) throws -> Void) throws {
-        var err: Error?
-        self.enumerateMatches(in: string, range: NSRange(string.startIndex..., in: string)) { result, _, stop in
-            if let result = result,
-               let range = Range(result.range, in: string) {
-                do {
-                    try block(range)
-                } catch let error {
-                    err = error
-                    stop.pointee = true
-                }
-            }
-        }
-        if let err = err {
-            throw err
-        }
-    }
-    
-    func replaceMatches(in string: String, using block: (_ match: String) -> String) -> String {
-        var builder = ""
-        var last: String.Index?
-        self.enumerateMatches(in: string, range: NSRange(string.startIndex..., in: string)) { result, _, _ in
-            if let result = result,
-               let range = Range(result.range, in: string) {
-                
-                builder += last == nil ? string[..<range.lowerBound] : string[last!..<range.lowerBound]
-                
-                // Replacement
-                builder += block(String(string[range]))
-                
-                last = range.upperBound
-            }
-        }
-        guard let end = last else {
-            return string // No matches
-        }
-        builder += string[end...]
-        return builder
-    }
-    
-    /// Returns the capture groups of the first match as strings
-    func firstMatch(string: String) -> [String?]? {
-        guard let result = self.firstMatch(in: string, range: NSRange(string.startIndex..., in: string)) else {
-            return nil
-        }
-        var matches = [String?]()
-        for i in 0...numberOfCaptureGroups {
-            if let range = Range(result.range(at: i), in: string) {
-                matches.append(String(string[range]))
-            } else {
-                matches.append(nil)
-            }
-        }
-        return matches
-    }
-    
-    static func ~= (lhs: NSRegularExpression, rhs: String) -> Bool {
-        return lhs.firstMatch(string: rhs) != nil
-    }
-}
-
 struct GRPHCompileError: Error {
     var type: CompileErrorType
     var message: String

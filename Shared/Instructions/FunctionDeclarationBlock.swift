@@ -24,7 +24,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         let context = createContext(&context)
         // finding returnDefault
         var couple: (String, String)?
-        try! FunctionDeclarationBlock.equals.allMatches(in: def) { range in
+        FunctionDeclarationBlock.equals.allMatches(in: def) { range in
             let a = def[..<range.lowerBound] // before =
             let b = def[range.upperBound...] // after =
             if Expressions.checkBalance(literal: a) && Expressions.checkBalance(literal: b) {
@@ -126,7 +126,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         var result = [String]()
         let trimmed = string.trimmingCharacters(in: .whitespaces)
         var last = trimmed.startIndex
-        try! Expressions.comma.allMatches(in: trimmed) { range in
+        Expressions.comma.allMatches(in: trimmed) { range in
             let exp = trimmed[last..<range.lowerBound].trimmingCharacters(in: .whitespaces)
             if Expressions.checkBalance(literal: exp) {
                 result.append(exp)

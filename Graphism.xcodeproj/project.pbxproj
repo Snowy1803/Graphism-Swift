@@ -90,6 +90,9 @@
 		203A3EDA24D0D69F002EAE2B /* SwitchTransparentBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3ED924D0D69F002EAE2B /* SwitchTransparentBlock.swift */; };
 		203A3EDB24D0D69F002EAE2B /* SwitchTransparentBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3ED924D0D69F002EAE2B /* SwitchTransparentBlock.swift */; };
 		203A3EDC24D0D69F002EAE2B /* SwitchTransparentBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3ED924D0D69F002EAE2B /* SwitchTransparentBlock.swift */; };
+		203A3EDE24D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3EDD24D44E12002EAE2B /* NSRegularExpression+Swift.swift */; };
+		203A3EDF24D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3EDD24D44E12002EAE2B /* NSRegularExpression+Swift.swift */; };
+		203A3EE024D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3EDD24D44E12002EAE2B /* NSRegularExpression+Swift.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -367,6 +370,7 @@
 		203A3ED024CF4451002EAE2B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		203A3ED124CF4467002EAE2B /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		203A3ED924D0D69F002EAE2B /* SwitchTransparentBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTransparentBlock.swift; sourceTree = "<group>"; };
+		203A3EDD24D44E12002EAE2B /* NSRegularExpression+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Swift.swift"; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -485,6 +489,7 @@
 		200A5F9624ABF5E30028180B /* Parser */ = {
 			isa = PBXGroup;
 			children = (
+				203A3EDD24D44E12002EAE2B /* NSRegularExpression+Swift.swift */,
 				200A5F9724ABF6020028180B /* GRPHCompiler.swift */,
 				20D1EF6F24B29F8500EB4BEE /* GRPHRuntime.swift */,
 				20DE0BA824AD46D600ABFB6E /* GRPHContext.swift */,
@@ -931,6 +936,7 @@
 				201E1F6224B62B5E005A2BBE /* GImage.swift in Sources */,
 				200A5F6D24AB6FB60028180B /* RadialPaint.swift in Sources */,
 				20D1EF3624B12AEE00EB4BEE /* SimpleType.swift in Sources */,
+				203A3EDE24D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */,
 				20A1EF6624C35376000F67FB /* GText.swift in Sources */,
 				20D1EF3F24B1393E00EB4BEE /* Parameter.swift in Sources */,
 				201E1F8024BC9FA3005A2BBE /* Method.swift in Sources */,
@@ -1019,6 +1025,7 @@
 				201E1F6324B62B5E005A2BBE /* GImage.swift in Sources */,
 				200A5F6E24AB6FB60028180B /* RadialPaint.swift in Sources */,
 				20D1EF3724B12AEE00EB4BEE /* SimpleType.swift in Sources */,
+				203A3EDF24D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */,
 				20A1EF6724C35376000F67FB /* GText.swift in Sources */,
 				20D1EF4024B1393E00EB4BEE /* Parameter.swift in Sources */,
 				201E1F8124BC9FA3005A2BBE /* Method.swift in Sources */,
@@ -1113,6 +1120,7 @@
 				20D1EF9024B2AFF600EB4BEE /* GRectangle.swift in Sources */,
 				20D1EFB024B2AFF600EB4BEE /* GRPHType.swift in Sources */,
 				201E1F7924BBBF25005A2BBE /* StringUtilsNameSpace.swift in Sources */,
+				203A3EE024D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */,
 				20D1EFAB24B2AFF600EB4BEE /* CastExpression.swift in Sources */,
 				201E1F8D24BD1B8A005A2BBE /* GRPHFunctionContext.swift in Sources */,
 				201E1F8824BCA4CD005A2BBE /* MethodExpression.swift in Sources */,

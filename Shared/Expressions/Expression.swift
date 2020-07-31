@@ -213,7 +213,7 @@ struct Expressions {
         var result = [Expression]()
         let trimmed = string.trimmingCharacters(in: .whitespaces)
         var last = trimmed.startIndex
-        try delimiter.allMatches(in: trimmed) { range in
+        try delimiter.allMatchesThrows(in: trimmed) { range in
             let exp = trimmed[last..<range.lowerBound].trimmingCharacters(in: .whitespaces)
             if checkBalance(literal: exp) {
                 result.append(try parse(context: context, infer: infer, literal: exp))
@@ -231,7 +231,7 @@ struct Expressions {
         var exp1 = "",
             exp2 = "",
             op = ""
-        try! regex.allMatches(in: str) { range in
+        regex.allMatches(in: str) { range in
             let left = str[..<range.lowerBound]
             let right = str[range.upperBound...]
             if checkBalance(literal: left) && checkBalance(literal: right) {
