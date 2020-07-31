@@ -111,8 +111,3 @@ extension RotatableShape where Self: RectangularShape {
     }
 }
 
-extension String {
-    var asLiteral: String {
-        "\"\(self.replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\t", with: "\\t").replacingOccurrences(of: "\n", with: "\\n").replacingOccurrences(of: "\\", with: "\\\\"))\" "
-    }
-}

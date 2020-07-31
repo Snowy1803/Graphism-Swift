@@ -14,9 +14,6 @@ class GRPHCompiler: GRPHParser {
     
     static let allBrackets = try! NSRegularExpression(pattern: "[({\\[\\]})]")
     
-    static let internStringPattern = try! NSRegularExpression(pattern: #"(?<!\\)".*?(?<!\\)""#)
-    // static let internFilePattern = try! NSRegularExpression(pattern: "(?<!\\\\)'.*?(?<!\\\\)'")
-    
     var line0: String = ""
     var blockCount = 0
     
@@ -58,7 +55,7 @@ class GRPHCompiler: GRPHParser {
         printout("[WDIU INTERN]")
         for i in 0..<internStrings.count {
             let s = internStrings[i]
-            printout("$_str\(i)$ = \(s.replacingOccurrences(of: "&", with: "&&").replacingOccurrences(of: "\n", with: "&n").replacingOccurrences(of: "\r", with: "&r"))\(s.first!)")
+            printout("$_str\(i)$ = \(s.state)")
         }
         printout("[WDIU START]")
         printout(wdiuInstructions, terminator: "")
@@ -623,29 +620,53 @@ class GRPHCompiler: GRPHParser {
         throw GRPHCompileError(type: .parse, message: "#catch requires a #try block before")
     }
     
-    func internStringLiterals(line: String) -> String {
-        GRPHCompiler.internStringPattern.replaceMatches(in: line) { match in
-            let str = parseStringLiteral(in: match, delimiter: "\"")
-            var index = internStrings.firstIndex(of: "\"\(str)")
-            if index == nil {
-                index = internStrings.count
-                internStrings.append("\"\(str)")
-                globalVariables.append(Variable(name: "$_str\(index!)$", type: SimpleType.string, content: str, final: true))
+    func internStringLiterals(line original: String) -> String {
+        var transformed = ""
+        var inString = false
+        var escaped = false
+        var current = ""
+        for char in original {
+            if inString {
+                if escaped {
+                    switch char {
+                    case "n": current.append("\n")
+                    case "t": current.append("\t")
+                    case "r": current.append("\r")
+                    case "0": current.append("\0")
+                    case "b": current.append("\u{8}")
+                    case "f": current.append("\u{c}")
+                    case "\\", "\"": current.append(char)
+                    default:
+                        printout("Warning: Invalid escape sequence \\\(char) in string literal")
+                    }
+                    escaped = false
+                } else if char == "\\" {
+                    escaped = true
+                } else if char == "\"" {
+                    inString = false
+                    transformed.append(registerInternString(current))
+                    current = ""
+                } else {
+                    current.append(char)
+                }
+            } else if char == "\"" {
+                inString = true
+            } else {
+                transformed.append(char)
             }
-            return "$_str\(index!)$"
         }
-        // should also replace files
+        // files were removed
+        return transformed
     }
     
-    private func parseStringLiteral(in literal: String, delimiter: Character) -> String {
-        String(literal.dropLast().dropFirst())
-            .replacingOccurrences(of: "\\\(delimiter)", with: "\(delimiter)")
-            .replacingOccurrences(of: "\\t", with: "\t")
-            .replacingOccurrences(of: "\\n", with: "\n")
-            .replacingOccurrences(of: "\\r", with: "\r")
-            //.replacingOccurrences(of: "\\b", with: "\b")
-            //.replacingOccurrences(of: "\\f", with: "\f")
-            .replacingOccurrences(of: "\\\\", with: "\\") // TODO "\\n" will get parsed as `\(newline)` instead of `\n`
+    private func registerInternString(_ string: String) -> String {
+        var index = internStrings.firstIndex(of: string)
+        if index == nil {
+            index = internStrings.count
+            internStrings.append(string)
+            globalVariables.append(Variable(name: "$_str\(index!)$", type: SimpleType.string, content: string, final: true))
+        }
+        return "$_str\(index!)$"
     }
     
     private func transformLine<S: StringProtocol>(line: S) -> String {

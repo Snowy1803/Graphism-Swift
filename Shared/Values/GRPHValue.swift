@@ -95,7 +95,14 @@ extension String: StatefulValue {
     }
     
     var type: GRPHType { SimpleType.string }
-    var state: String { "\(self.asLiteral.dropLast())" }
+    
+    var state: String {
+        "\"\(self.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\t", with: "\\t").replacingOccurrences(of: "\n", with: "\\n"))\""
+    }
+    
+    var asLiteral: String {
+        self.state + " "
+    }
 }
 
 extension Float: StatefulValue, GRPHNumber {
