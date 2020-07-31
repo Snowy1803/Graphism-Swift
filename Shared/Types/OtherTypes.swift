@@ -80,4 +80,12 @@ struct ArrayType: GRPHType {
             GRPHArray(values.compactMap { $0 }, of: content)
         }
     }
+    
+    var includedMethods: [Method] {
+        [
+            Method(ns: RandomNameSpace(), name: "shuffled", inType: self, parameters: [], returnType: self) { ctx, array, values in
+                return GRPHArray((array as! GRPHArray).wrapped.shuffled(), of: content)
+            }
+        ]
+    }
 }

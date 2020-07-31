@@ -40,13 +40,22 @@ struct Method: Parametrable, Importable {
 extension Method {
     init?(imports: [Importable], namespace: NameSpace, name: String, inType: GRPHType) {
         if namespace.isEqual(to: NameSpaces.none) {
+            // when using. either directly imported, either in the namespace, either in the type with an imported namespace
             for imp in imports {
                 if let found = imp.exportedMethods.first(where: { $0.name == name && $0.inType.string == inType.string }) {
                     self = found
                     return
+                } else if let ns = imp as? NameSpace,
+                          let found = inType.includedMethods.first(where: { $0.name == name && $0.ns.isEqual(to: ns) }) {
+                    self = found
+                    return
                 }
             }
-        } else if let found = namespace.exportedMethods.first(where: { $0.name == name && $0.inType.string == inType.string  }) {
+            // when importing/using as a namespaced member.
+        } else if let found = namespace.exportedMethods.first(where: { $0.name == name && $0.inType.string == inType.string }) {
+            self = found
+            return
+        } else if let found = inType.includedMethods.first(where: { $0.name == name && $0.ns.isEqual(to: namespace) }) {
             self = found
             return
         }
