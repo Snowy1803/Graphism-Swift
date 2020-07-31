@@ -41,8 +41,14 @@ struct VariableDeclarationInstruction: Instruction {
         guard GRPHCompiler.varNameRequirement.firstMatch(string: name) != nil else {
             throw GRPHCompileError(type: .parse, message: "Invalid variable name '\(name)'")
         }
+        let avalue = try GRPHTypes.autobox(context: context,
+                                           expression: Expressions.parse(context: context, infer: type, literal: groups[5]!),
+                                           expected: type)
+        guard try type.isInstance(context: context, expression: avalue) else {
+            throw GRPHCompileError(type: .typeMismatch, message: "Incompatible types '\(try avalue.getType(context: context, infer: SimpleType.mixed))' and '\(type)' in declaration")
+        }
         context.addVariable(Variable(name: name, type: type, final: groups[2] != nil, compileTime: true), global: groups[1] != nil)
-        self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: try GRPHTypes.autobox(context: context, expression: Expressions.parse(context: context, infer: type, literal: groups[5]!), expected: type))
+        self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: avalue)
     }
     
     func run(context: inout GRPHContext) throws {

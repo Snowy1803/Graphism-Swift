@@ -146,10 +146,19 @@ class GRPHCompiler: GRPHParser {
                         guard let type = GRPHTypes.parse(context: context, literal: String(split[1])) else {
                             throw GRPHCompileError(type: .parse, message: "Type '\(split[1])' not found")
                         }
-                        guard GRPHTypes.parse(context: context, literal: String(split[0])) == nil else {
-                            throw GRPHCompileError(type: .parse, message: "Existing type '\(split[0])' cannot be overridden with a typealias")
+                        let newname = String(split[0])
+                        guard GRPHTypes.parse(context: context, literal: newname) == nil else {
+                            throw GRPHCompileError(type: .redeclaration, message: "Existing type '\(newname)' cannot be overridden with a typealias")
                         }
-                        imports.append(TypeAlias(name: String(split[0]), type: type))
+                        switch newname {
+                        case "file", "image", "Image", "auto", "funcref", "final", "global", "dict", "set", "tuple":
+                            throw GRPHCompileError(type: .redeclaration, message: "Type name '\(newname)' is reserved and can't be used as a typealias name")
+                        case GRPHCompiler.varNameRequirement:
+                            break
+                        default:
+                            throw GRPHCompileError(type: .parse, message: "Type name '\(newname)' is not a valid type name")
+                        }
+                        imports.append(TypeAlias(name: newname, type: type))
                     case "#if":
                         if context is SwitchContext {
                             throw GRPHCompileError(type: .parse, message: "Expected #case or #default in #switch block")
@@ -764,6 +773,10 @@ extension NSRegularExpression {
             }
         }
         return matches
+    }
+    
+    static func ~= (lhs: NSRegularExpression, rhs: String) -> Bool {
+        return lhs.firstMatch(string: rhs) != nil
     }
 }
 

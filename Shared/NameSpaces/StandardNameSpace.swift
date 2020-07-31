@@ -16,7 +16,8 @@ struct StandardNameSpace: NameSpace {
     
     var exportedTypeAliases: [TypeAlias] {
         [
-            TypeAlias(name: "farray", type: ArrayType(content: SimpleType.float)),
+            TypeAlias(name: "farray", type: SimpleType.float.inArray),
+            TypeAlias(name: "array", type: SimpleType.mixed.inArray),
             TypeAlias(name: "int", type: SimpleType.integer),
             TypeAlias(name: "Square", type: SimpleType.Rectangle),
             TypeAlias(name: "Rect", type: SimpleType.Rectangle),
