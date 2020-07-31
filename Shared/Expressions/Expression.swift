@@ -95,7 +95,12 @@ struct Expressions {
             return ArrayLiteralExpression(wrapped: type, values: try splitParameters(context: context, in: result[2]!, delimiter: comma, infer: type).map { try GRPHTypes.autobox(context: context, expression: $0, expected: type) })
         }
         if let result = CastExpression.pattern.firstMatch(string: str) {
-            if let type = GRPHTypes.parse(context: context, literal: result[3]!) {
+            if result[3] == "auto" {
+                guard let infer = infer else {
+                    throw GRPHCompileError(type: .undeclared, message: "Cast type could not be inferred")
+                }
+                return CastExpression(from: try parse(context: context, infer: infer, literal: result[1]!), cast: CastType(result[2]!)!, to: infer)
+            } else if let type = GRPHTypes.parse(context: context, literal: result[3]!) {
                 return CastExpression(from: try parse(context: context, infer: type, literal: result[1]!), cast: CastType(result[2]!)!, to: type)
             } else {
                 throw GRPHCompileError(type: .parse, message: "Unknown type '\(result[3]!)' in cast")

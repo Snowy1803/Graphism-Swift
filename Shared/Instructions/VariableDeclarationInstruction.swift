@@ -28,9 +28,6 @@ struct VariableDeclarationInstruction: Instruction {
     }
     
     init(lineNumber: Int, groups: [String?], context: GRPHContext) throws {
-        guard let type = GRPHTypes.parse(context: context, literal: groups[3]!.trimmingCharacters(in: .whitespaces)) else {
-            throw GRPHCompileError(type: .parse, message: "Unknown type '\(groups[3]!)'")
-        }
         guard groups[5] != nil else {
             throw GRPHCompileError(type: .parse, message: "A variable must have a value when it is defined")
         }
@@ -41,14 +38,24 @@ struct VariableDeclarationInstruction: Instruction {
         guard GRPHCompiler.varNameRequirement.firstMatch(string: name) != nil else {
             throw GRPHCompileError(type: .parse, message: "Invalid variable name '\(name)'")
         }
-        let avalue = try GRPHTypes.autobox(context: context,
-                                           expression: Expressions.parse(context: context, infer: type, literal: groups[5]!),
-                                           expected: type)
-        guard try type.isInstance(context: context, expression: avalue) else {
-            throw GRPHCompileError(type: .typeMismatch, message: "Incompatible types '\(try avalue.getType(context: context, infer: SimpleType.mixed))' and '\(type)' in declaration")
+        let value: Expression
+        let type: GRPHType
+        if groups[3] == "auto" {
+            value = try Expressions.parse(context: context, infer: nil, literal: groups[5]!)
+            type = try value.getType(context: context, infer: SimpleType.mixed)
+        } else if let type0 = GRPHTypes.parse(context: context, literal: groups[3]!.trimmingCharacters(in: .whitespaces)) {
+            value = try GRPHTypes.autobox(context: context,
+                                          expression: Expressions.parse(context: context, infer: type0, literal: groups[5]!),
+                                          expected: type0)
+            type = type0
+            guard try type.isInstance(context: context, expression: value) else {
+                throw GRPHCompileError(type: .typeMismatch, message: "Incompatible types '\(try value.getType(context: context, infer: type))' and '\(type)' in declaration")
+            }
+        } else {
+            throw GRPHCompileError(type: .parse, message: "Unknown type '\(groups[3]!)'")
         }
         context.addVariable(Variable(name: name, type: type, final: groups[2] != nil, compileTime: true), global: groups[1] != nil)
-        self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: avalue)
+        self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: value)
     }
     
     func run(context: inout GRPHContext) throws {
