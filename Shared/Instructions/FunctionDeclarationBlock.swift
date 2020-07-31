@@ -19,7 +19,7 @@ class FunctionDeclarationBlock: BlockInstruction {
     var defaults: [Expression?] = []
     var returnDefault: Expression?
     
-    init(lineNumber: Int, context: inout GRPHContext, returnType: GRPHType, name: String, def: String) throws {
+    init(lineNumber: Int, context: inout GRPHContext, returnType autoableReturnType: GRPHType?, name: String, def: String) throws {
         self.lineNumber = lineNumber
         let context = createContext(&context)
         // finding returnDefault
@@ -32,18 +32,13 @@ class FunctionDeclarationBlock: BlockInstruction {
             }
         }
         let definition: String
+        let defaultReturnDef: String?
         if let couple = couple {
             definition = couple.0
-            let defaultReturn = try Expressions.parse(context: context, infer: returnType, literal: couple.1)
-            guard !returnType.isTheVoid else {
-                throw GRPHCompileError(type: .parse, message: "Unexpected default value in void function")
-            }
-            guard try returnType.isInstance(context: context, expression: defaultReturn) else {
-                throw GRPHCompileError(type: .parse, message: "Expected a default return value of type \(returnType), found a \(try defaultReturn.getType(context: context, infer: returnType))")
-            }
-            returnDefault = defaultReturn
+            defaultReturnDef = couple.1
         } else {
             definition = def
+            defaultReturnDef = nil
         }
         guard let openBracket = definition.firstIndex(of: "["),
               definition.last == "]" else {
@@ -91,6 +86,30 @@ class FunctionDeclarationBlock: BlockInstruction {
             i += 1
             return Parameter(name: pname, type: ptype, optional: optional)
         }
+        
+        let returnType: GRPHType
+        if let defaultReturnDef = defaultReturnDef {
+            let defaultReturn = try Expressions.parse(context: context, infer: autoableReturnType, literal: defaultReturnDef)
+            if let autoableReturnType = autoableReturnType {
+                returnType = autoableReturnType
+            } else {
+                returnType = try defaultReturn.getType(context: context, infer: SimpleType.mixed)
+            }
+            guard !returnType.isTheVoid else {
+                throw GRPHCompileError(type: .parse, message: "Unexpected default value in void function")
+            }
+            guard try returnType.isInstance(context: context, expression: defaultReturn) else {
+                throw GRPHCompileError(type: .parse, message: "Expected a default return value of type \(returnType), found a \(try defaultReturn.getType(context: context, infer: returnType))")
+            }
+            returnDefault = defaultReturn
+        } else {
+            if let autoableReturnType = autoableReturnType {
+                returnType = autoableReturnType
+            } else {
+                throw GRPHCompileError(type: .typeMismatch, message: "Cannot infer function type without a default value")
+            }
+        }
+        
         generated = Function(ns: NameSpaces.none, name: name, parameters: pars, returnType: returnType, varargs: varargs, executable: executeFunction(context:params:))
         context.compiler!.imports.append(generated)
     }
@@ -100,8 +119,10 @@ class FunctionDeclarationBlock: BlockInstruction {
            let space = def.firstIndex(of: " "),
            space < bracket {
             let typeLiteral = String(def[..<space])
-            let returnType: GRPHType
-            if let rtype = GRPHTypes.parse(context: context, literal: typeLiteral) {
+            let returnType: GRPHType?
+            if typeLiteral == "auto" {
+                returnType = nil
+            } else if let rtype = GRPHTypes.parse(context: context, literal: typeLiteral) {
                 returnType = rtype
             } else {
                 throw GRPHCompileError(type: .parse, message: "Unknown return type '\(typeLiteral)'")

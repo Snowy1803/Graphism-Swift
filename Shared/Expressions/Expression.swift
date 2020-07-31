@@ -79,7 +79,7 @@ struct Expressions {
         if let result = ArrayLiteralExpression.pattern.firstMatch(string: str) {
             // TODO deprecate in favor of Constructors (which would have the more consistant space separator)
             var type: GRPHType
-            if let typestr = result[1] {
+            if let typestr = result[1], typestr != "auto" {
                 if let parsed = GRPHTypes.parse(context: context, literal: typestr) {
                     type = parsed
                 } else {
@@ -97,7 +97,7 @@ struct Expressions {
         if let result = CastExpression.pattern.firstMatch(string: str) {
             if result[3] == "auto" {
                 guard let infer = infer else {
-                    throw GRPHCompileError(type: .undeclared, message: "Cast type could not be inferred")
+                    throw GRPHCompileError(type: .typeMismatch, message: "Cast type could not be inferred")
                 }
                 return CastExpression(from: try parse(context: context, infer: infer, literal: result[1]!), cast: CastType(result[2]!)!, to: infer)
             } else if let type = GRPHTypes.parse(context: context, literal: result[3]!) {
@@ -158,7 +158,7 @@ struct Expressions {
             } else if let infer = infer {
                 type = GRPHTypes.autoboxed(type: infer, expected: SimpleType.mixed) // unbox
             } else {
-                throw GRPHCompileError(type: .undeclared, message: "Constructor type could not be inferred")
+                throw GRPHCompileError(type: .typeMismatch, message: "Constructor type could not be inferred")
             }
             let infer: GRPHType?
             if let params = type.constructor?.parameters,
