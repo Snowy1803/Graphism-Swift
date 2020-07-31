@@ -149,7 +149,7 @@ struct Expressions {
         }
         if let result = ConstructorExpression.pattern.firstMatch(string: str) {
             var type: GRPHType
-            if let typestr = result[1] {
+            if let typestr = result[1], typestr != "auto" {
                 if let t = GRPHTypes.parse(context: context, literal: typestr) {
                     type = t
                 } else {

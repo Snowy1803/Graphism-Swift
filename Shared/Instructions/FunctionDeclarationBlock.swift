@@ -52,16 +52,27 @@ class FunctionDeclarationBlock: BlockInstruction {
             guard let space = param.firstIndex(of: " ") else {
                 throw GRPHCompileError(type: .parse, message: "Expected format 'type name' for each parameter")
             }
-            guard let ptype = GRPHTypes.parse(context: context, literal: String(param[..<space])) else {
+            let mptype: GRPHType?
+            if param[..<space] == "auto" {
+                mptype = nil
+            } else if let ptype = GRPHTypes.parse(context: context, literal: String(param[..<space])) {
+                mptype = ptype
+            } else {
                 throw GRPHCompileError(type: .parse, message: "Unknown type '\(param[..<space])'")
             }
             let remainder = param[space...].trimmingCharacters(in: .whitespaces)
             let optional: Bool
             let pname: String
+            let ptype: GRPHType
             if let equals = remainder.firstIndex(of: "=") {
-                defaults[i] = try Expressions.parse(context: context, infer: ptype, literal: remainder[remainder.index(after: equals)...].trimmingCharacters(in: .whitespaces))
+                defaults[i] = try Expressions.parse(context: context, infer: mptype, literal: remainder[remainder.index(after: equals)...].trimmingCharacters(in: .whitespaces))
                 pname = remainder[..<equals].trimmingCharacters(in: .whitespaces)
                 optional = true
+                if let mptype = mptype {
+                    ptype = mptype
+                } else {
+                    ptype = try defaults[i]!.getType(context: context, infer: SimpleType.mixed)
+                }
                 context.variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
             } else if remainder.hasSuffix("...") {
                 guard i == params.count - 1 else {
@@ -70,14 +81,29 @@ class FunctionDeclarationBlock: BlockInstruction {
                 pname = remainder.dropLast(3).trimmingCharacters(in: .whitespaces)
                 optional = false // varargs needs at least 1 argument
                 varargs = true
+                if let mptype = mptype {
+                    ptype = mptype
+                } else {
+                    throw GRPHCompileError(type: .typeMismatch, message: "Cannot infer parameter type without a default value")
+                }
                 context.variables.append(Variable(name: pname, type: ptype.inArray, final: false, compileTime: true))
             } else if remainder.hasSuffix("?") {
                 pname = remainder.dropLast().trimmingCharacters(in: .whitespaces)
                 optional = true
+                if let mptype = mptype {
+                    ptype = mptype
+                } else {
+                    throw GRPHCompileError(type: .typeMismatch, message: "Cannot infer parameter type without a default value")
+                }
                 context.variables.append(Variable(name: pname, type: ptype.optional, final: false, compileTime: true))
             } else {
                 pname = remainder
                 optional = false
+                if let mptype = mptype {
+                    ptype = mptype
+                } else {
+                    throw GRPHCompileError(type: .typeMismatch, message: "Cannot infer parameter type without a default value")
+                }
                 context.variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
             }
             guard GRPHCompiler.varNameRequirement.firstMatch(string: pname) != nil else {
