@@ -148,12 +148,17 @@ class GRPHCompiler: GRPHParser {
                             throw GRPHCompileError(type: .redeclaration, message: "Existing type '\(newname)' cannot be overridden with a typealias")
                         }
                         switch newname {
-                        case "file", "image", "Image", "auto", "funcref", "final", "global", "dict", "set", "tuple":
+                        case "file", "image", "Image", "auto", "funcref",
+                             "final", "global", "static", "public", "private", "protected",
+                             "dict", "set", "tuple":
                             throw GRPHCompileError(type: .redeclaration, message: "Type name '\(newname)' is reserved and can't be used as a typealias name")
                         case GRPHCompiler.varNameRequirement:
                             break
                         default:
                             throw GRPHCompileError(type: .parse, message: "Type name '\(newname)' is not a valid type name")
+                        }
+                        if newname.hasSuffix("Error") || newname.hasSuffix("Exception") {
+                            throw GRPHCompileError(type: .redeclaration, message: "Type name '\(newname)' is reserved and can't be used as a typealias name")
                         }
                         imports.append(TypeAlias(name: newname, type: type))
                     case "#if":

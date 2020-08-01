@@ -85,6 +85,9 @@ struct ArrayType: GRPHType {
         [
             Method(ns: RandomNameSpace(), name: "shuffled", inType: self, parameters: [], returnType: self) { ctx, array, values in
                 return GRPHArray((array as! GRPHArray).wrapped.shuffled(), of: content)
+            },
+            Method(ns: StandardNameSpace(), name: "copy", inType: self, parameters: [], returnType: self) { ctx, array, values in
+                return GRPHArray((array as! GRPHArray).wrapped, of: content)
             }
         ]
     }
