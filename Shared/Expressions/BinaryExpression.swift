@@ -264,7 +264,16 @@ struct BinaryExpression: Expression {
     }
     
     var string: String {
-        "\(left.bracketized) \(op.string) \(right.bracketized)"
+        "\(leftString) \(op.string) \(right.bracketized)"
+    }
+    
+    private var leftString: String {
+        if !op.multipleNeedsBrackets,
+           let left = left as? BinaryExpression,
+           left.op == self.op {
+            return left.string
+        }
+        return left.bracketized
     }
     
     var needsBrackets: Bool { true }
@@ -310,6 +319,14 @@ enum BinaryOperator: String {
             return "+"
         default:
             return rawValue
+        }
+    }
+    
+    var multipleNeedsBrackets: Bool {
+        switch self {
+        case .logicalOr, .logicalAnd, .bitwiseAnd, .bitwiseOr, .bitwiseXor, .plus, .multiply, .concat:
+            return false
+        default: return true
         }
     }
 }
