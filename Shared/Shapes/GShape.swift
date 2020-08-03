@@ -99,15 +99,3 @@ extension RectangularShape {
     }
 }
 
-extension RotatableShape {
-    var currentRotationCenter: Pos {
-        rotationCenter ?? Pos(x: 0.5, y: 0.5)
-    }
-}
-
-extension RotatableShape where Self: RectangularShape {
-    var currentRotationCenter: Pos {
-        rotationCenter ?? center
-    }
-}
-

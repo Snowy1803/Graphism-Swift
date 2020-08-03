@@ -159,9 +159,9 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no size")
                 }
             }),
-            ErasedField(name: "rotationCenter", type: SimpleType.pos, getter: { ($0 as? RotatableShape)?.currentRotationCenter ?? Pos(x: 0, y: 0) }, setter: {
+            ErasedField(name: "rotationCenter", type: SimpleType.pos.optional, getter: { GRPHOptional(($0 as? RotatableShape)?.rotationCenter) }, setter: {
                 if let shape = $0 as? RotatableShape {
-                    shape.rotationCenter = ($1 as! Pos)
+                    shape.rotationCenter = ($1 as! GRPHOptional).content as? Pos
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no rotation center")
                 }

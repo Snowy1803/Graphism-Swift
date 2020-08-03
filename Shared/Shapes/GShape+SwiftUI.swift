@@ -56,24 +56,37 @@ extension GShape {
     }
 }
 
+extension RotatableShape {
+    func rotatedView<V: View>(_ view: V) -> AnyView {
+        if let rotationCenter = rotationCenter {
+            return AnyView(view.transformEffect(
+                CGAffineTransform(translationX: rotationCenter.cg.x, y: rotationCenter.cg.y)
+                    .rotated(by: CGFloat(rotation.value) * .pi / 180)
+                    .translatedBy(x: -rotationCenter.cg.x, y: -rotationCenter.cg.y)))
+        } else {
+            return AnyView(view.rotationEffect(rotation.angle))
+        }
+    }
+}
+
 extension GRectangle {
     var graphics: AnyView {
-        Rectangle()
-            .applyingFillOrStroke(for: self)
-            .frame(width: CGFloat(size.x), height: CGFloat(size.y))
-            .rotationEffect(rotation.angle, anchor: UnitPoint(x: CGFloat(rotationCenter?.x ?? 0.5), y: CGFloat(rotationCenter?.y ?? 0.5)))
-            .position(center.cg)
+        rotatedView(
+            Rectangle()
+                .applyingFillOrStroke(for: self)
+                .frame(width: CGFloat(size.x), height: CGFloat(size.y))
+        ).position(center.cg)
             .erased
     }
 }
 
 extension GCircle {
     var graphics: AnyView {
-        Ellipse()
-            .applyingFillOrStroke(for: self)
-            .frame(width: CGFloat(size.x), height: CGFloat(size.y))
-            .rotationEffect(rotation.angle, anchor: UnitPoint(x: CGFloat(rotationCenter?.x ?? 0.5), y: CGFloat(rotationCenter?.y ?? 0.5)))
-            .position(center.cg)
+        rotatedView(
+            Ellipse()
+                .applyingFillOrStroke(for: self)
+                .frame(width: CGFloat(size.x), height: CGFloat(size.y))
+        ).position(center.cg)
             .erased
     }
 }
@@ -154,7 +167,7 @@ extension GGroup {
     var graphics: AnyView {
         ZStack(alignment: .topLeading) {
             ForEach(shapes.sorted(by: { $0.positionZ < $1.positionZ }), id: \.uuid) { shape in
-                shape.graphics.rotationEffect(self.rotation.angle, anchor: UnitPoint(x: CGFloat(self.rotationCenter?.x ?? 0.5), y: CGFloat(self.rotationCenter?.y ?? 0.5)))
+                self.rotatedView(shape.graphics)
             }
         }.erased
     }
