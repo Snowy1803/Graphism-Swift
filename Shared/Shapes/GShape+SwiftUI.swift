@@ -16,7 +16,7 @@ extension View {
 }
 
 extension Shape {
-    func applyingFillOrStroke(for def: SimpleShape) -> some View {
+    func applyingFillOrStroke(for def: PaintedShape) -> some View {
         Group {
             if let style = def.strokeStyle {
                 applyingStroke(style.cg, paint: def.paint)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GRectangle: RectangularShape, SimpleShape, RotatableShape {
+class GRectangle: RectangularShape, PaintedShape, RotatableShape {
     
     var givenName: String?
     var typeKey: String { size.square ? "Square" : "Rectangle" }

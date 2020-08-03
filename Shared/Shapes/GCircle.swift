@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GCircle: RectangularShape, SimpleShape, RotatableShape {
+class GCircle: RectangularShape, PaintedShape, RotatableShape {
     var givenName: String?
     var typeKey: String { size.square ? "Circle" : "Ellipse" }
     

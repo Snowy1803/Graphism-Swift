@@ -145,8 +145,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 let shape = ($0 as! GShape)
                 shape.effectiveName = $1 as! String // shapes are always reference types
             }),
-            ErasedField(name: "location", type: SimpleType.pos, getter: { ($0 as? BasicShape)?.position ?? Pos(x: 0, y: 0) }, setter: {
-                if let shape = $0 as? BasicShape {
+            ErasedField(name: "location", type: SimpleType.pos, getter: { ($0 as? PositionableShape)?.position ?? Pos(x: 0, y: 0) }, setter: {
+                if let shape = $0 as? PositionableShape {
                     shape.position = $1 as! Pos
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no position")
@@ -180,15 +180,15 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no rotation")
                 }
             }),
-            ErasedField(name: "paint", type: SimpleType.paint, getter: { ($0 as? SimpleShape)?.paint.unwrapped ?? ColorPaint.black }, setter: {
-                if let shape = $0 as? SimpleShape {
+            ErasedField(name: "paint", type: SimpleType.paint, getter: { ($0 as? PaintedShape)?.paint.unwrapped ?? ColorPaint.black }, setter: {
+                if let shape = $0 as? PaintedShape {
                     shape.paint = AnyPaint.auto($1)
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no paint")
                 }
             }),
-            ErasedField(name: "strokeWidth", type: SimpleType.float, getter: { ($0 as? SimpleShape)?.strokeStyle?.strokeWidth ?? 5 }, setter: {
-                if let shape = $0 as? SimpleShape {
+            ErasedField(name: "strokeWidth", type: SimpleType.float, getter: { ($0 as? PaintedShape)?.strokeStyle?.strokeWidth ?? 5 }, setter: {
+                if let shape = $0 as? PaintedShape {
                     var style = shape.strokeStyle ?? StrokeWrapper()
                     style.strokeWidth = $1 as! Float
                     shape.strokeStyle = style
@@ -196,8 +196,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no stroke")
                 }
             }),
-            ErasedField(name: "strokeType", type: SimpleType.stroke, getter: { ($0 as? SimpleShape)?.strokeStyle?.strokeType ?? .elongated }, setter: {
-                if let shape = $0 as? SimpleShape {
+            ErasedField(name: "strokeType", type: SimpleType.stroke, getter: { ($0 as? PaintedShape)?.strokeStyle?.strokeType ?? .elongated }, setter: {
+                if let shape = $0 as? PaintedShape {
                     var style = shape.strokeStyle ?? StrokeWrapper()
                     style.strokeType = $1 as! Stroke
                     shape.strokeStyle = style
@@ -205,8 +205,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no stroke")
                 }
             }),
-            ErasedField(name: "strokeDashArray", type: SimpleType.float.inArray, getter: { ($0 as? SimpleShape)?.strokeStyle?.strokeDashArray ?? GRPHArray([], of: SimpleType.float) }, setter: {
-                if let shape = $0 as? SimpleShape {
+            ErasedField(name: "strokeDashArray", type: SimpleType.float.inArray, getter: { ($0 as? PaintedShape)?.strokeStyle?.strokeDashArray ?? GRPHArray([], of: SimpleType.float) }, setter: {
+                if let shape = $0 as? PaintedShape {
                     var style = shape.strokeStyle ?? StrokeWrapper()
                     style.strokeDashArray = $1 as! GRPHArray
                     shape.strokeStyle = style
@@ -214,8 +214,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no stroke")
                 }
             }),
-            ErasedField(name: "filling", type: SimpleType.boolean, getter: { ($0 as? SimpleShape)?.strokeStyle == nil }, setter: {
-                if let shape = $0 as? SimpleShape {
+            ErasedField(name: "filling", type: SimpleType.boolean, getter: { ($0 as? PaintedShape)?.strokeStyle == nil }, setter: {
+                if let shape = $0 as? PaintedShape {
                     shape.strokeStyle = ($1 as! Bool) ? nil : StrokeWrapper()
                 } else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no stroke")

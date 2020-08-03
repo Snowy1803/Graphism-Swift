@@ -9,8 +9,6 @@ import Foundation
 
 class GClip: GShape {
     
-    // rotable
-    
     var givenName: String?
     var typeKey: String { "Clip" }
     

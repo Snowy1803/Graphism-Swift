@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GPath: SimpleShape, RotatableShape {
+class GPath: PaintedShape, RotatableShape {
     var givenName: String?
     var typeKey: String { "Path" }
     

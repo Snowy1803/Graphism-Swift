@@ -45,11 +45,11 @@ extension GShape {
     }
 }
 
-protocol BasicShape: GShape {
+protocol PositionableShape: GShape {
     var position: Pos { get set }
 }
 
-protocol SimpleShape: GShape {
+protocol PaintedShape: GShape {
     var paint: AnyPaint { get set }
     var strokeStyle: StrokeWrapper? { get set }
 }
@@ -59,11 +59,11 @@ protocol RotatableShape: GShape {
     var rotationCenter: Pos? { get set }
 }
 
-protocol RectangularShape: BasicShape {
+protocol RectangularShape: PositionableShape {
     var size: Pos { get set }
 }
 
-extension BasicShape {
+extension PositionableShape {
     func translate(by diff: Pos) {
         position += diff
     }

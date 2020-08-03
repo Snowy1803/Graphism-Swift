@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GText: SimpleShape, BasicShape, RotatableShape {
+class GText: PaintedShape, PositionableShape, RotatableShape {
     
     var givenName: String?
     var typeKey: String { "Text" }

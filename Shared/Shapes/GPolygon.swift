@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GPolygon: SimpleShape, RotatableShape {
+class GPolygon: PaintedShape, RotatableShape {
     var givenName: String?
     var typeKey: String { "Polygon" }
     

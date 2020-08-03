@@ -70,7 +70,7 @@ struct StandardNameSpace: NameSpace {
                 return shape.rotation
             },
             Function(ns: self, name: "getPosition", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.pos) { context, params in
-                guard let shape = params[0] as? BasicShape else {
+                guard let shape = params[0] as? PositionableShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of position")
                 }
                 return shape.position
@@ -91,31 +91,31 @@ struct StandardNameSpace: NameSpace {
                 return (params[0] as! GShape).effectiveName
             },
             Function(ns: self, name: "getPaint", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.paint) { context, params in
-                guard let shape = params[0] as? SimpleShape else {
+                guard let shape = params[0] as? PaintedShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
                 }
                 return shape.paint.unwrapped
             },
             Function(ns: self, name: "getStrokeWidth", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.float) { context, params in
-                guard let shape = params[0] as? SimpleShape else {
+                guard let shape = params[0] as? PaintedShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
                 }
                 return (shape.strokeStyle ?? StrokeWrapper()).strokeWidth
             },
             Function(ns: self, name: "getStrokeType", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.stroke) { context, params in
-                guard let shape = params[0] as? SimpleShape else {
+                guard let shape = params[0] as? PaintedShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
                 }
                 return (shape.strokeStyle ?? StrokeWrapper()).strokeType
             },
             Function(ns: self, name: "getStrokeDashArray", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.float.inArray) { context, params in
-                guard let shape = params[0] as? SimpleShape else {
+                guard let shape = params[0] as? PaintedShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
                 }
                 return (shape.strokeStyle ?? StrokeWrapper()).strokeDashArray
             },
             Function(ns: self, name: "isFilled", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.boolean) { context, params in
-                guard let shape = params[0] as? SimpleShape else {
+                guard let shape = params[0] as? PaintedShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of paint")
                 }
                 return shape.strokeStyle == nil
@@ -308,7 +308,7 @@ struct StandardNameSpace: NameSpace {
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setPosition", inType: SimpleType.shape, parameters: [Parameter(name: "newPosition", type: SimpleType.pos)]) { context, on, params in
-                let on = try typeCheck(value: on, as: BasicShape.self)
+                let on = try typeCheck(value: on, as: PositionableShape.self)
                 on.position = params[0] as! Pos
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
@@ -372,13 +372,13 @@ struct StandardNameSpace: NameSpace {
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setPaint", inType: SimpleType.shape, parameters: [Parameter(name: "newPaint", type: SimpleType.paint)]) { context, on, params in
-                let on = try typeCheck(value: on, as: SimpleShape.self)
+                let on = try typeCheck(value: on, as: PaintedShape.self)
                 on.paint = AnyPaint.auto(params[0]!)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setStroke", inType: SimpleType.shape, parameters: [.strokeWidth, .strokeType, .strokeDashArray]) { context, on, params in
-                let on = try typeCheck(value: on, as: SimpleShape.self)
+                let on = try typeCheck(value: on, as: PaintedShape.self)
                 on.strokeStyle = StrokeWrapper(strokeWidth: params.count == 0 ? 5 : params[0] as! Float,
                                                strokeType: params.count <= 1 ? .elongated : params[1] as! Stroke,
                                                strokeDashArray: params.count <= 2 ? GRPHArray(of: SimpleType.float) : params[2] as! GRPHArray)
@@ -386,7 +386,7 @@ struct StandardNameSpace: NameSpace {
                 return GRPHVoid.void
             },
             Method(ns: self, name: "filling", inType: SimpleType.shape, parameters: [Parameter(name: "fill", type: SimpleType.boolean)]) { context, on, params in
-                let on = try typeCheck(value: on, as: SimpleShape.self)
+                let on = try typeCheck(value: on, as: PaintedShape.self)
                 let val = params[0] as! Bool
                 if val != (on.strokeStyle == nil) {
                     if val {

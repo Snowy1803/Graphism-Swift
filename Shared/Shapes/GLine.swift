@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GLine: SimpleShape {
+class GLine: PaintedShape {
     var givenName: String?
     var typeKey: String { "Line" }
     
