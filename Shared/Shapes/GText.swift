@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GText: SimpleShape, BasicShape {
+class GText: SimpleShape, BasicShape, RotatableShape {
     
     var givenName: String?
     var typeKey: String { "Text" }
@@ -22,11 +22,15 @@ class GText: SimpleShape, BasicShape {
     var position: Pos
     var positionZ: Int
     
-    init(givenName: String? = nil, position: Pos, positionZ: Int = 0, font: JFont, paint: AnyPaint) {
+    var rotation: Rotation
+    var rotationCenter: Pos?
+    
+    init(givenName: String? = nil, position: Pos, positionZ: Int = 0, font: JFont, rotation: Rotation = 0, paint: AnyPaint) {
         self.givenName = givenName
         self.position = position
         self.positionZ = positionZ
         self.font = font
+        self.rotation = rotation
         self.paint = paint
     }
     

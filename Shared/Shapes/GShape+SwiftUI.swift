@@ -208,9 +208,15 @@ extension GText {
     }
     
     var graphics: AnyView {
-        modifiedText
-            .offset(x: position.cg.x, y: position.cg.y)
-            .alignmentGuide(.top) { $0[.lastTextBaseline] }
-            .erased
+        if rotationCenter == nil {
+            return rotatedView(modifiedText)
+                        .offset(x: position.cg.x, y: position.cg.y)
+                        .alignmentGuide(.top) { $0[.lastTextBaseline] }
+                        .erased
+        } else {
+            return rotatedView(modifiedText
+                                .offset(x: position.cg.x, y: position.cg.y)
+                                .alignmentGuide(.top) { $0[.lastTextBaseline] })
+        }
     }
 }

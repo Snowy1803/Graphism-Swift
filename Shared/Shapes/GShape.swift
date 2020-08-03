@@ -71,7 +71,12 @@ extension BasicShape {
 
 extension RectangularShape {
     var center: Pos {
-        Pos(x: position.x + (size.x / 2), y: position.y + (size.y / 2))
+        get {
+            Pos(x: position.x + (size.x / 2), y: position.y + (size.y / 2))
+        }
+        set {
+            position = Pos(x: newValue.x - (size.x / 2), y: newValue.y - (size.y / 2))
+        }
     }
     
     func setHCentered(img: GImage) {

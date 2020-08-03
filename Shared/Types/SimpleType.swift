@@ -159,6 +159,13 @@ enum SimpleType: String, GRPHType, CaseIterable {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no size")
                 }
             }),
+            ErasedField(name: "center", type: SimpleType.pos, getter: { ($0 as? RectangularShape)?.center ?? Pos(x: 0, y: 0) }, setter: {
+                if let shape = $0 as? RectangularShape {
+                    shape.center = $1 as! Pos
+                } else {
+                    throw GRPHRuntimeError(type: .typeMismatch, message: "A \($0.type) has no size")
+                }
+            }),
             ErasedField(name: "rotationCenter", type: SimpleType.pos.optional, getter: { GRPHOptional(($0 as? RotatableShape)?.rotationCenter) }, setter: {
                 if let shape = $0 as? RotatableShape {
                     shape.rotationCenter = ($1 as! GRPHOptional).content as? Pos
@@ -312,7 +319,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                              position: values[1] as! Pos,
                              positionZ: values[2] as? Int ?? 0,
                              font: values[3] as? JFont ?? JFont(size: values[3] as! Int),
-                             // rotation
+                             rotation: values[4] as? Rotation ?? 0,
                              paint: AnyPaint.auto(values[5]!))
             }
         case .Path:
@@ -328,7 +335,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                 return GGroup(givenName: values[0] as? String,
                               positionZ: values[1] as? Int ?? 0,
                               rotation: values[2] as? Rotation ?? 0,
-                              shapes: values.count > 3 ? values[3...].map { $0 as! GShape } : []) // TODO use rotation
+                              shapes: values.count > 3 ? values[3...].map { $0 as! GShape } : [])
             }
         case .Background:
             return Constructor(parameters: [.size, .paint], type: self) { context, values in
