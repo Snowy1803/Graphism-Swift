@@ -8,7 +8,24 @@
 import Foundation
 
 struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
-    var value: Int
+    private var _value: Int
+    
+    var value: Int {
+        get {
+            _value
+        }
+        set {
+            // Normalize: -180 < value ≤ 180
+            var v = newValue % 360
+            if v <= -180 {
+                v += 360
+            }
+            if v > 180 {
+                v -= 360
+            }
+            _value = v
+        }
+    }
     
     var state: String {
         "\(value)°"
@@ -19,14 +36,8 @@ struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
     }
     
     init(value: Int) {
-        // Normalize: -180 < value ≤ 180
-        self.value = value % 360
-        if self.value <= -180 {
-            self.value += 360
-        }
-        if self.value > 180 {
-            self.value -= 360
-        }
+        self._value = value
+        self.value = value // normalize
     }
     
     init?(byCasting value: GRPHValue) {
