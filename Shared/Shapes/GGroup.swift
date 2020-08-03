@@ -22,10 +22,11 @@ class GGroup: GShape, RotatableShape {
     var rotation: Rotation = 0
     var rotationCenter: Pos?
     
-    init(givenName: String?, positionZ: Int = 0, shapes: [GShape] = []) {
+    init(givenName: String?, positionZ: Int = 0, rotation: Rotation = 0, shapes: [GShape] = []) {
         self.givenName = givenName
         self.positionZ = positionZ
         self.shapes = shapes
+        self.rotation = rotation
     }
     
     var stateDefinitions: String {

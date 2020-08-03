@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GPath: SimpleShape { // Add rotation support
+class GPath: SimpleShape, RotatableShape {
     var givenName: String?
     var typeKey: String { "Path" }
     
@@ -20,13 +20,17 @@ class GPath: SimpleShape { // Add rotation support
     var paint: AnyPaint
     var strokeStyle: StrokeWrapper?
     
-    init(givenName: String? = nil, points: [Pos] = [], actions: [PathActions] = [], positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeWrapper? = nil) {
+    var rotation: Rotation = 0
+    var rotationCenter: Pos?
+    
+    init(givenName: String? = nil, points: [Pos] = [], actions: [PathActions] = [], positionZ: Int = 0, rotation: Rotation = 0, paint: AnyPaint, strokeStyle: StrokeWrapper? = nil) {
         self.givenName = givenName
         self.points = points
         self.actions = actions
         self.positionZ = positionZ
         self.paint = paint
         self.strokeStyle = strokeStyle
+        self.rotation = rotation
     }
     
     var stateDefinitions: String {

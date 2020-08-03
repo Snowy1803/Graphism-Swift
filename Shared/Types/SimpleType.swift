@@ -275,7 +275,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                   position: values[1] as! Pos,
                                   positionZ: values[2] as? Int ?? 0,
                                   size: values[3] as! Pos,
-                                  rotation: values[4] as? Rotation ?? Rotation(value: 0),
+                                  rotation: values[4] as? Rotation ?? 0,
                                   paint: AnyPaint.auto(values[5]!),
                                   strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[safe: 7] as? Stroke ?? .elongated, strokeDashArray: values[safe: 8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
@@ -285,7 +285,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                   position: values[1] as! Pos,
                                   positionZ: values[2] as? Int ?? 0,
                                   size: values[3] as! Pos,
-                                  rotation: values[4] as? Rotation ?? Rotation(value: 0),
+                                  rotation: values[4] as? Rotation ?? 0,
                                   paint: AnyPaint.auto(values[5]!),
                                   strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[safe: 7] as? Stroke ?? .elongated, strokeDashArray: values[safe: 8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
@@ -318,7 +318,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
         case .Path:
             return Constructor(parameters: [.shapeName, .zpos, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
                 return GPath(givenName: values[0] as? String,
-                                  positionZ: values[1] as? Int ?? 0, // TODO use rotation
+                                  positionZ: values[1] as? Int ?? 0,
+                                  rotation: values[2] as? Rotation ?? 0,
                                   paint: AnyPaint.auto(values[3]!),
                                   strokeStyle: values.count == 4 ? nil : StrokeWrapper(strokeWidth: values[4] as? Float ?? 5, strokeType: values[safe: 5] as? Stroke ?? .elongated, strokeDashArray: values[safe: 6] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
@@ -326,6 +327,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
             return Constructor(parameters: [.shapeName, .zpos, .rotation, Parameter(name: "shapes...", type: SimpleType.shape, optional: true)], type: self, varargs: true) { context, values in
                 return GGroup(givenName: values[0] as? String,
                               positionZ: values[1] as? Int ?? 0,
+                              rotation: values[2] as? Rotation ?? 0,
                               shapes: values.count > 3 ? values[3...].map { $0 as! GShape } : []) // TODO use rotation
             }
         case .Background:
