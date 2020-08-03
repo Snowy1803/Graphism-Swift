@@ -161,7 +161,14 @@ extension Bool: StatefulValue {
 
 extension Collection {
     /// Returns the element at the specified index if it is within bounds, otherwise nil.
-    subscript (safe index: Index) -> Element? {
+    subscript (safeExact index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
+extension Collection {
+    /// Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript<T>(safe index: Index) -> T? where Element == Optional<T> {
         return indices.contains(index) ? self[index] : nil
     }
 }

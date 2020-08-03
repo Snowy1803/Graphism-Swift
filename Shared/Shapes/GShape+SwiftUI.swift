@@ -154,7 +154,7 @@ extension GGroup {
     var graphics: AnyView {
         ZStack(alignment: .topLeading) {
             ForEach(shapes.sorted(by: { $0.positionZ < $1.positionZ }), id: \.uuid) { shape in
-                shape.graphics
+                shape.graphics.rotationEffect(self.rotation.angle, anchor: UnitPoint(x: CGFloat(self.rotationCenter?.x ?? 0.5), y: CGFloat(self.rotationCenter?.y ?? 0.5)))
             }
         }.erased
     }

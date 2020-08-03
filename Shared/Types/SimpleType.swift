@@ -304,7 +304,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                 points: values.count > 6 ? values[6...].map { $0 as! Pos } : [],
                                   positionZ: values[1] as? Int ?? 0,
                                   paint: AnyPaint.auto(values[2]!),
-                                  strokeStyle: StrokeWrapper(strokeWidth: values[safe: 3] as? Float ?? 5, strokeType: values[safe: 4] as? Stroke ?? .elongated, strokeDashArray: values[safe: 5] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
+                                  strokeStyle: (values[safe: 3] == nil && values[safe: 4] == nil && values[safe: 5] == nil) ? nil : StrokeWrapper(strokeWidth: values[safe: 3] as? Float ?? 5, strokeType: values[safe: 4] as? Stroke ?? .elongated, strokeDashArray: values[safe: 5] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
             }
         case .Text:
             return Constructor(parameters: [Parameter(name: "text", type: SimpleType.string), .pos, .zpos, Parameter(name: "font", type: SimpleType.font | SimpleType.integer), .rotation, .paint], type: self, varargs: true) { context, values in

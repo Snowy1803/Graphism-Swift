@@ -7,7 +7,8 @@
 
 import Foundation
 
-class GGroup: GShape { // rotation
+class GGroup: GShape, RotatableShape {
+    // rotation
     let uuid = UUID()
     
     var typeKey: String {
@@ -17,6 +18,9 @@ class GGroup: GShape { // rotation
     var givenName: String?
     var positionZ: Int = 0
     var shapes: [GShape] = []
+    
+    var rotation: Rotation = 0
+    var rotationCenter: Pos?
     
     init(givenName: String?, positionZ: Int = 0, shapes: [GShape] = []) {
         self.givenName = givenName
