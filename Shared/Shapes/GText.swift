@@ -19,7 +19,6 @@ class GText: SimpleShape, BasicShape {
     
     var font: JFont
     
-    // Here in Swift Edition, it is the center. On Java Graphism, its the leading point.
     var position: Pos
     var positionZ: Int
     

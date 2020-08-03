@@ -197,7 +197,8 @@ extension GText {
     
     var graphics: AnyView {
         modifiedText
-            .position(position.cg)
+            .offset(x: position.cg.x, y: position.cg.y)
+            .alignmentGuide(.top) { $0[.lastTextBaseline] }
             .erased
     }
 }
