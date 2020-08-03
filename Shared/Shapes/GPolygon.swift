@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GPolygon: SimpleShape { // Add rotation support
+class GPolygon: SimpleShape, RotatableShape {
     var givenName: String?
     var typeKey: String { "Polygon" }
     
@@ -18,6 +18,9 @@ class GPolygon: SimpleShape { // Add rotation support
     
     var paint: AnyPaint
     var strokeStyle: StrokeWrapper?
+    
+    var rotation: Rotation = 0
+    var rotationCenter: Pos?
     
     init(givenName: String? = nil, points: [Pos] = [], positionZ: Int = 0, paint: AnyPaint, strokeStyle: StrokeWrapper? = nil) {
         self.givenName = givenName

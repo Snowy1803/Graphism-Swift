@@ -151,8 +151,7 @@ extension GPolygon {
     }
     
     var graphics: AnyView {
-        path.applyingFillOrStroke(for: self)
-            .erased
+        rotatedView(path.applyingFillOrStroke(for: self)).erased
     }
 }
 
