@@ -19,6 +19,7 @@ struct GraphismDocument: FileDocument {
     var image: GImage
     
     static var readableContentTypes: [UTType] { [.grphSource] }
+    static var writableContentTypes: [UTType] { [.grphSource, .svg] }
 
     init(shapes: [GShape]? = nil) {
         var result: [GShape]
@@ -65,8 +66,17 @@ struct GraphismDocument: FileDocument {
     }
     
     func write(to fileWrapper: inout FileWrapper, contentType: UTType) throws {
-        let data = source.data(using: .utf8)!
-        fileWrapper = FileWrapper(regularFileWithContents: data)
+        switch contentType {
+        case .grphSource:
+            let data = source.data(using: .utf8)!
+            fileWrapper = FileWrapper(regularFileWithContents: data)
+        case .svg:
+            var svg = ""
+            image.toSVG(context: SVGExportContext(), into: &svg)
+            fileWrapper = FileWrapper(regularFileWithContents: svg.data(using: .utf8)!)
+        default:
+            preconditionFailure()
+        }
     }
     
     func runGRPH() {
