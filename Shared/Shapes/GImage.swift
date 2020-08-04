@@ -47,4 +47,16 @@ class GImage: GGroup, ObservableObject {
         destroyed = true
         destroySemaphore.signal()
     }
+    
+    func toSVG(context: SVGExportContext, into out: inout TextOutputStream) {
+        out.writeln("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
+        out.writeln("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"\(size.x)\" height=\"\(size.y)\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">")
+        
+        out.writeln("<defs>")
+        // TODO background definitions
+        for shape in shapes {
+            shape.collectSVGDefinitions(context: context, into: &out)
+        }
+        out.writeln("</defs>")
+    }
 }

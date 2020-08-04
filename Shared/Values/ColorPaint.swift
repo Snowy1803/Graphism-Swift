@@ -141,4 +141,8 @@ extension ColorPaint {
                                      blue: Float(value & 0xFF) / 255,
                                      alpha: alpha ? Float((value >> 24) & 0xFF) / 255 : 1)
     }
+    
+    var svgColor: String {
+        "rgba(\(grphRed), \(grphGreen), \(grphBlue), \(grphFAlpha))"
+    }
 }

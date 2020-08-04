@@ -25,6 +25,9 @@ protocol GShape: GRPHValue, AnyObject {
     var stateConstructor: String { get }
     
     func translate(by diff: Pos)
+    
+    func collectSVGDefinitions(context: SVGExportContext, into out: inout TextOutputStream)
+    // func toSVG(context: SVGExportContext, into out: inout TextOutputStream)
 }
 
 protocol PositionableShape: GShape {
@@ -72,6 +75,27 @@ extension GShape {
             return self.uuid == shape.uuid
         }
         return false
+    }
+    
+    func collectSVGDefinitions(context: SVGExportContext, into out: inout TextOutputStream) {}
+}
+
+extension PaintedShape {
+    func collectSVGDefinitions(context: SVGExportContext, into out: inout TextOutputStream) {
+        switch paint {
+        case .color(_):
+            break
+        case .linear(let linear):
+            out.writeln("<linearGradient id=\"grad\(uuid)\" x1=\"\(linear.direction.fromPoint.x * 100)%\" y1=\"\(linear.direction.fromPoint.y * 100)%\" x2=\"\(linear.direction.toPoint.x * 100)%\" y2=\"\(linear.direction.toPoint.y * 100)%\">")
+            out.writeln("<stop offset=\"0%\" style=\"stop-color:\(linear.from.svgColor)\" />")
+            out.writeln("<stop offset=\"100%\" style=\"stop-color:\(linear.to.svgColor)\" />")
+            out.writeln("</linearGradient>")
+        case .radial(let radial):
+            out.writeln("<radialGradient id=\"grad\(uuid)\" cx=\"\(radial.center.x * 100)%\" cy=\"\(radial.center.y * 100)%\" r=\"\(radial.radius * 100)%\">")
+            out.writeln("<stop offset=\"0%\" style=\"stop-color:\(radial.centerColor.svgColor)\" />")
+            out.writeln("<stop offset=\"100%\" style=\"stop-color:\(radial.externalColor.svgColor)\" />")
+            out.writeln("</radialGradient>")
+        }
     }
 }
 
