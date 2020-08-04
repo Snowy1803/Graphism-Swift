@@ -7,16 +7,18 @@
 
 import Foundation
 
-class GImage: GGroup, ObservableObject {
-    var size: Pos = Pos(x: 640, y: 480)
-    var background: AnyPaint = AnyPaint.color(ColorPaint.alpha)
+class GImage: GGroup, PaintedShape, ResizableShape, ObservableObject {
+    var size: Pos
+    var paint: AnyPaint
+    
+    var strokeStyle: StrokeWrapper? // unused
     
     var destroySemaphore = DispatchSemaphore(value: 0)
     private(set) var destroyed = false
     
     init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.alpha)) {
         self.size = size
-        self.background = background
+        self.paint = background
         super.init(givenName: nil)
     }
     
@@ -33,7 +35,7 @@ class GImage: GGroup, ObservableObject {
     }
     
     override var stateConstructor: String {
-        "Background(\(size.state) \(background.state))"
+        "Background(\(size.state) \(paint.state))"
     }
     
     func willNeedRepaint() {
@@ -53,7 +55,7 @@ class GImage: GGroup, ObservableObject {
         out.writeln("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"\(size.x)\" height=\"\(size.y)\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">")
         
         out.writeln("<defs>")
-        // TODO background definitions
+        self.collectSVGDefinitions(context: context, into: &out)
         for shape in shapes {
             shape.collectSVGDefinitions(context: context, into: &out)
         }

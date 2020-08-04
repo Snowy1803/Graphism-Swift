@@ -76,7 +76,7 @@ struct StandardNameSpace: NameSpace {
                 return shape.position
             },
             Function(ns: self, name: "getSize", parameters: [Parameter(name: "shape", type: SimpleType.shape)], returnType: SimpleType.pos) { context, params in
-                guard let shape = params[0] as? RectangularShape else {
+                guard let shape = params[0] as? ResizableShape else {
                     throw GRPHRuntimeError(type: .typeMismatch, message: "Shape has no concept of size")
                 }
                 return shape.size
@@ -352,13 +352,13 @@ struct StandardNameSpace: NameSpace {
             },
             // TODO mirror
             Method(ns: self, name: "grow", inType: SimpleType.shape, parameters: [Parameter(name: "extension", type: SimpleType.pos)]) { context, on, params in
-                let on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: ResizableShape.self)
                 on.size = on.size + (params[0] as! Pos)
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void
             },
             Method(ns: self, name: "setSize", inType: SimpleType.shape, parameters: [Parameter(name: "newSize", type: SimpleType.pos)]) { context, on, params in
-                let on = try typeCheck(value: on, as: RectangularShape.self)
+                let on = try typeCheck(value: on, as: ResizableShape.self)
                 on.size = params[0] as! Pos
                 context.runtime?.triggerAutorepaint()
                 return GRPHVoid.void

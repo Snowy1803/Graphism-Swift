@@ -48,7 +48,7 @@ extension VariableExpression: AssignableExpression {
             if v.name == "back" {
                 let new = value as! GImage
                 let old = context.runtime!.image
-                old.background = new.background
+                old.paint = new.paint
                 old.size = new.size
                 old.shapes = new.shapes
             } else {

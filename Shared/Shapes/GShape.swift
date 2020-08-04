@@ -54,9 +54,11 @@ protocol AlignableShape: GShape {
     func setBottomAligned(img: GImage)
 }
 
-protocol RectangularShape: PositionableShape, AlignableShape {
+protocol ResizableShape: GShape {
     var size: Pos { get set }
 }
+
+protocol RectangularShape: PositionableShape, AlignableShape, ResizableShape {}
 
 // Extensions
 

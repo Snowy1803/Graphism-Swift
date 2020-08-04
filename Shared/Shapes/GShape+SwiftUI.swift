@@ -174,7 +174,7 @@ extension GGroup {
 extension GImage {
     var contentGraphics: AnyView {
         ZStack {
-            switch background {
+            switch paint {
             case .color(let color):
                 color.style
             case .linear(let linear):
