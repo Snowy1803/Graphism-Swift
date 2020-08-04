@@ -27,6 +27,8 @@ extension ColorPaint {
             return Color(red: Double(red), green: Double(green), blue: Double(blue), opacity: Double(alpha))
         case .white:
             return .white
+        case .gray:
+            return .gray
         case .black:
             return .black
         case .red:
@@ -43,10 +45,10 @@ extension ColorPaint {
             return .pink
         case .purple:
             return .purple
-        case .aqua:
-            return .init(red: 0, green: 0.85, blue: 0.85)
-        case .alpha:
-            return .clear
+        case .primary:
+            return .primary
+        case .secondary:
+            return .secondary
         }
     }
     

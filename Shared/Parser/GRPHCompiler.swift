@@ -38,17 +38,39 @@ class GRPHCompiler: GRPHParser {
         // TODO change this to file, or a new type
         globalVariables.append(Variable(name: "this", type: SimpleType.rootThisType, content: "currentDocument", final: true))
         globalVariables.append(Variable(name: "back", type: SimpleType.Background, final: false, compileTime: true))
-        globalVariables.append(Variable(name: "WHITE", type: SimpleType.color, content: ColorPaint.white, final: true))
-        globalVariables.append(Variable(name: "BLACK", type: SimpleType.color, content: ColorPaint.black, final: true))
-        globalVariables.append(Variable(name: "RED", type: SimpleType.color, content: ColorPaint.red, final: true))
-        globalVariables.append(Variable(name: "GREEN", type: SimpleType.color, content: ColorPaint.green, final: true))
-        globalVariables.append(Variable(name: "BLUE", type: SimpleType.color, content: ColorPaint.blue, final: true))
-        globalVariables.append(Variable(name: "ORANGE", type: SimpleType.color, content: ColorPaint.orange, final: true))
-        globalVariables.append(Variable(name: "YELLOW", type: SimpleType.color, content: ColorPaint.yellow, final: true))
-        globalVariables.append(Variable(name: "PINK", type: SimpleType.color, content: ColorPaint.pink, final: true))
-        globalVariables.append(Variable(name: "PURPLE", type: SimpleType.color, content: ColorPaint.purple, final: true))
-        globalVariables.append(Variable(name: "AQUA", type: SimpleType.color, content: ColorPaint.aqua, final: true))
-        globalVariables.append(Variable(name: "ALPHA", type: SimpleType.color, content: ColorPaint.alpha, final: true))
+        globalVariables.append(Variable(name: "WHITE", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 1, green: 1, blue: 1),
+                                        final: true))
+        globalVariables.append(Variable(name: "BLACK", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 0, green: 0, blue: 0),
+                                        final: true))
+        globalVariables.append(Variable(name: "RED", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 1, green: 0, blue: 0),
+                                        final: true))
+        globalVariables.append(Variable(name: "GREEN", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 0, green: 1, blue: 0),
+                                        final: true))
+        globalVariables.append(Variable(name: "BLUE", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 0, green: 0, blue: 1),
+                                        final: true))
+        globalVariables.append(Variable(name: "ORANGE", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 1, green: 0.78, blue: 0),
+                                        final: true))
+        globalVariables.append(Variable(name: "YELLOW", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 1, green: 1, blue: 0),
+                                        final: true))
+        globalVariables.append(Variable(name: "PINK", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 1, green: 0.69, blue: 0.69),
+                                        final: true))
+        globalVariables.append(Variable(name: "PURPLE", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 1, green: 0, blue: 1),
+                                        final: true))
+        globalVariables.append(Variable(name: "AQUA", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 0, green: 1, blue: 1),
+                                        final: true))
+        globalVariables.append(Variable(name: "ALPHA", type: SimpleType.color,
+                                        content: ColorPaint.components(red: 0, green: 0, blue: 0, alpha: 0),
+                                        final: true))
     }
     
     func dumpWDIU() {

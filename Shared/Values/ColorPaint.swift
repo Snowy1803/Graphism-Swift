@@ -8,7 +8,8 @@
 import Foundation
 
 enum ColorPaint: Paint, Equatable {
-    case white, black, red, green, blue, orange, yellow, pink, purple, aqua, alpha
+    // sys
+    case white, gray, black, red, green, blue, orange, yellow, pink, purple, primary, secondary
     
     case components(red: Float, green: Float, blue: Float, alpha: Float = 1)
     
@@ -17,27 +18,29 @@ enum ColorPaint: Paint, Equatable {
         case .components(red: _, green: _, blue: _, alpha: let alpha):
             return "color(\(grphRed) \(grphGreen) \(grphBlue) \(alpha))"
         case .white:
-            return "WHITE"
+            return "color.SYS_WHITE"
         case .black:
-            return "BLACK"
+            return "color.SYS_BLACK"
         case .red:
-            return "RED"
+            return "color.SYS_RED"
         case .green:
-            return "GREEN"
+            return "color.SYS_GREEN"
         case .blue:
-            return "BLUE"
+            return "color.SYS_BLUE"
         case .orange:
-            return "ORANGE"
+            return "color.SYS_ORANGE"
         case .yellow:
-            return "YELLOW"
+            return "color.SYS_YELLOW"
         case .pink:
-            return "PINK"
+            return "color.SYS_PINK"
         case .purple:
-            return "PURPLE"
-        case .aqua:
-            return "AQUA"
-        case .alpha:
-            return "ALPHA"
+            return "color.SYS_PURPLE"
+        case .gray:
+            return "color.SYS_GRAY"
+        case .primary:
+            return "color.SYS_PRIMARY"
+        case .secondary:
+            return "color.SYS_SECONDARY"
         }
     }
     
