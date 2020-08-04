@@ -38,4 +38,8 @@ class GClip: GShape {
         shape.translate(by: diff)
         clip.translate(by: diff)
     }
+    
+    func collectSVGDefinitions<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        shape.collectSVGDefinitions(context: context, into: &out)
+    }
 }

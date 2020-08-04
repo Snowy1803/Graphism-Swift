@@ -25,7 +25,20 @@ struct InputOutputNameSpace: NameSpace {
             },
             Function(ns: self, name: "getTimeInMillisSinceLoad", parameters: [], returnType: SimpleType.integer) { ctx, params in
                 return Int(Date().timeIntervalSince(ctx.runtime!.timestamp) * 1000)
+            },
+            Function(ns: self, name: "getSVGFromCurrentImage", parameters: [], returnType: SimpleType.string) { ctx, params in
+                var svg: String = ""
+                ctx.runtime?.image.toSVG(context: SVGExportContext(), into: &svg)
+                return svg
             }
         ]
+    }
+    
+    static var isHeadless: Bool {
+        #if GRAPHICAL
+        return false // Graphical
+        #else
+        return true // CLI --> headless
+        #endif
     }
 }

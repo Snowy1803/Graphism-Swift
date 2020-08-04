@@ -44,4 +44,8 @@ class GGroup: GShape, RotatableShape {
     func translate(by diff: Pos) {
         shapes.forEach { $0.translate(by: diff) }
     }
+    
+    func collectSVGDefinitions<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        shapes.forEach { $0.collectSVGDefinitions(context: context, into: &out) }
+    }
 }

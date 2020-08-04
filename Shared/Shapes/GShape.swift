@@ -26,8 +26,8 @@ protocol GShape: GRPHValue, AnyObject {
     
     func translate(by diff: Pos)
     
-    func collectSVGDefinitions(context: SVGExportContext, into out: inout TextOutputStream)
-    // func toSVG(context: SVGExportContext, into out: inout TextOutputStream)
+    func collectSVGDefinitions<T: TextOutputStream>(context: SVGExportContext, into out: inout T)
+    // func toSVG<T: TextOutputStream>(context: SVGExportContext, into out: inout T)
 }
 
 protocol PositionableShape: GShape {
@@ -79,11 +79,14 @@ extension GShape {
         return false
     }
     
-    func collectSVGDefinitions(context: SVGExportContext, into out: inout TextOutputStream) {}
+    func collectSVGDefinitions<T: TextOutputStream>(context: SVGExportContext, into out: inout T) {}
 }
 
 extension PaintedShape {
-    func collectSVGDefinitions(context: SVGExportContext, into out: inout TextOutputStream) {
+    func collectSVGDefinitions<T: TextOutputStream>(context: SVGExportContext, into out: inout T) {
+        collectSVGPaintDefinitions(context: context, into: &out)
+    }
+    func collectSVGPaintDefinitions<T: TextOutputStream>(context: SVGExportContext, into out: inout T) {
         switch paint {
         case .color(_):
             break
