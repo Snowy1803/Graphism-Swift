@@ -27,6 +27,36 @@ protocol GShape: GRPHValue, AnyObject {
     func translate(by diff: Pos)
 }
 
+protocol PositionableShape: GShape {
+    var position: Pos { get set }
+}
+
+protocol PaintedShape: GShape {
+    var paint: AnyPaint { get set }
+    var strokeStyle: StrokeWrapper? { get set }
+}
+
+protocol RotatableShape: GShape {
+    var rotation: Rotation { get set }
+    var rotationCenter: Pos? { get set }
+}
+
+protocol AlignableShape: GShape {
+    func setHCentered(img: GImage)
+    func setLeftAligned(img: GImage)
+    func setRightAligned(img: GImage)
+    
+    func setVCentered(img: GImage)
+    func setTopAligned(img: GImage)
+    func setBottomAligned(img: GImage)
+}
+
+protocol RectangularShape: PositionableShape, AlignableShape {
+    var size: Pos { get set }
+}
+
+// Extensions
+
 extension GShape {
     var effectiveName: String {
         get {
@@ -43,24 +73,6 @@ extension GShape {
         }
         return false
     }
-}
-
-protocol PositionableShape: GShape {
-    var position: Pos { get set }
-}
-
-protocol PaintedShape: GShape {
-    var paint: AnyPaint { get set }
-    var strokeStyle: StrokeWrapper? { get set }
-}
-
-protocol RotatableShape: GShape {
-    var rotation: Rotation { get set }
-    var rotationCenter: Pos? { get set }
-}
-
-protocol RectangularShape: PositionableShape {
-    var size: Pos { get set }
 }
 
 extension PositionableShape {

@@ -46,3 +46,43 @@ class GPolygon: PaintedShape, RotatableShape {
         points = points.map { $0 + diff }
     }
 }
+
+extension GPolygon: AlignableShape {
+    func setHCentered(img: GImage) {
+        if let min = points.min(by: { $0.x < $1.x }),
+           let max = points.max(by: { $0.x < $1.x }) {
+            translate(by: Pos(x: (img.size.x - max.x - min.x) / 2, y: 0))
+        }
+    }
+    
+    func setLeftAligned(img: GImage) {
+        if let min = points.min(by: { $0.x < $1.x }) {
+            translate(by: Pos(x: -min.x, y: 0))
+        }
+    }
+    
+    func setRightAligned(img: GImage) {
+        if let max = points.max(by: { $0.x < $1.x }) {
+            translate(by: Pos(x: img.size.x - max.x, y: 0))
+        }
+    }
+    
+    func setVCentered(img: GImage) {
+        if let min = points.min(by: { $0.y < $1.y }),
+           let max = points.max(by: { $0.y < $1.y }) {
+            translate(by: Pos(x: 0, y: (img.size.y - max.y - min.y) / 2))
+        }
+    }
+    
+    func setTopAligned(img: GImage) {
+        if let min = points.min(by: { $0.y < $1.y }) {
+            translate(by: Pos(x: 0, y: -min.y))
+        }
+    }
+    
+    func setBottomAligned(img: GImage) {
+        if let max = points.max(by: { $0.y < $1.y }) {
+            translate(by: Pos(x: 0, y: img.size.y - max.y))
+        }
+    }
+}
