@@ -21,7 +21,7 @@ extension Pos {
 }
 
 extension ColorPaint {
-    var style: Color {
+    func style(shape: GShape) -> Color {
         switch self {
         case .components(red: let red, green: let green, blue: let blue, alpha: let alpha):
             return Color(red: Double(red), green: Double(green), blue: Double(blue), opacity: Double(alpha))
@@ -55,14 +55,20 @@ extension ColorPaint {
 }
 
 extension LinearPaint {
-    var style: LinearGradient {
-        LinearGradient(gradient: Gradient(colors: [from.style, to.style]), startPoint: direction.fromPoint, endPoint: direction.toPoint)
+    func style(shape: GShape) -> LinearGradient {
+        LinearGradient(gradient: Gradient(colors: [from.style(shape: shape), to.style(shape: shape)]), startPoint: direction.fromPoint, endPoint: direction.toPoint)
     }
 }
 
 extension RadialPaint {
-    var style: RadialGradient {
-        RadialGradient(gradient: Gradient(colors: [centerColor.style, externalColor.style]), center: .init(x: center.cg.x, y: center.cg.y), startRadius: 0, endRadius: CGFloat(radius))
+    func style(shape: GShape) -> RadialGradient {
+        let r: CGFloat
+        if let shape = shape as? ResizableShape {
+            r = CGFloat(min(shape.size.x, shape.size.y) * radius)
+        } else {
+            r = CGFloat(20 * radius)
+        }
+        return RadialGradient(gradient: Gradient(colors: [centerColor.style(shape: shape), externalColor.style(shape: shape)]), center: .init(x: center.cg.x, y: center.cg.y), startRadius: 0, endRadius: r)
     }
 }
 

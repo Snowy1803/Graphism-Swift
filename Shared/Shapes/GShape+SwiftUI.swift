@@ -19,29 +19,29 @@ extension Shape {
     func applyingFillOrStroke(for def: PaintedShape) -> some View {
         Group {
             if let style = def.strokeStyle {
-                applyingStroke(style.cg, paint: def.paint)
+                applyingStroke(style.cg, for: def, paint: def.paint)
             } else {
                 switch def.paint {
                 case .color(let color):
-                    self.fill(color.style)
+                    self.fill(color.style(shape: def))
                 case .linear(let linear):
-                    self.fill(linear.style)
+                    self.fill(linear.style(shape: def))
                 case .radial(let radial):
-                    self.fill(radial.style)
+                    self.fill(radial.style(shape: def))
                 }
             }
         }
     }
     
-    func applyingStroke(_ stroke: StrokeStyle, paint: AnyPaint) -> some View {
+    func applyingStroke(_ stroke: StrokeStyle, for def: PaintedShape, paint: AnyPaint) -> some View {
         Group {
             switch paint {
             case .color(let color):
-                self.stroke(color.style, style: stroke)
+                self.stroke(color.style(shape: def), style: stroke)
             case .linear(let linear):
-                self.stroke(linear.style, style: stroke)
+                self.stroke(linear.style(shape: def), style: stroke)
             case .radial(let radial):
-                self.stroke(radial.style, style: stroke)
+                self.stroke(radial.style(shape: def), style: stroke)
             }
         }
     }
@@ -100,7 +100,7 @@ extension GLine {
     }
     
     var graphics: AnyView {
-        path.applyingStroke(strokeStyle?.cg ?? StrokeStyle(), paint: paint)
+        path.applyingStroke(strokeStyle?.cg ?? StrokeStyle(), for: self, paint: paint)
             .erased
     }
 }
@@ -176,11 +176,11 @@ extension GImage {
         ZStack {
             switch paint {
             case .color(let color):
-                color.style
+                color.style(shape: self)
             case .linear(let linear):
-                linear.style
+                linear.style(shape: self)
             case .radial(let radial):
-                radial.style
+                radial.style(shape: self)
             }
             super.graphics
         }
@@ -198,11 +198,11 @@ extension GText {
     var modifiedText: AnyView {
         switch paint {
         case .color(let c):
-            return uiText.foregroundColor(c.style).erased
+            return uiText.foregroundColor(c.style(shape: self)).erased
         case .linear(let l):
-            return l.style.mask(uiText).erased
+            return l.style(shape: self).mask(uiText).erased
         case .radial(let r):
-            return r.style.mask(uiText).erased
+            return r.style(shape: self).mask(uiText).erased
         }
     }
     

@@ -14,7 +14,7 @@ protocol Paint: StatefulValue {
     #if GRAPHICAL
     associatedtype Style: ShapeStyle
     
-    var style: Style { get }
+    func style(shape: GShape) -> Style
     #endif
 }
 
