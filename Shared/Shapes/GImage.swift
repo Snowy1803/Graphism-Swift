@@ -16,7 +16,7 @@ class GImage: GGroup, PaintedShape, ResizableShape, ObservableObject {
     var destroySemaphore = DispatchSemaphore(value: 0)
     private(set) var destroyed = false
     
-    init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.alpha)) {
+    init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.components(red: 0, green: 0, blue: 0, alpha: 0))) {
         self.size = size
         self.paint = background
         super.init(givenName: nil)
@@ -55,7 +55,7 @@ class GImage: GGroup, PaintedShape, ResizableShape, ObservableObject {
         super.collectSVGDefinitions(context: context, into: &out)
     }
     
-    func toSVG<T: TextOutputStream>(context: SVGExportContext, into out: inout T) {
+    override func toSVG<T: TextOutputStream>(context: SVGExportContext, into out: inout T) {
         out.writeln("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
         out.writeln("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"\(size.x)\" height=\"\(size.y)\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">")
         
@@ -63,6 +63,9 @@ class GImage: GGroup, PaintedShape, ResizableShape, ObservableObject {
         self.collectSVGDefinitions(context: context, into: &out)
         out.writeln("</defs>")
         
+        out.writeln("<rect x=\"0\" y=\"0\" width=\"\(size.x)\" height=\"\(size.y)\" fill=\"\(svgPaint)\"/>")
+        shapes.sorted { $0.positionZ < $1.positionZ }.forEach { $0.toSVG(context: context, into: &out) }
         
+        out.writeln("</svg>")
     }
 }

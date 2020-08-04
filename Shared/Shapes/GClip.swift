@@ -41,5 +41,14 @@ class GClip: GShape {
     
     func collectSVGDefinitions<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
         shape.collectSVGDefinitions(context: context, into: &out)
+        out.writeln("<clipPath id=\"clip\(uuid)\">")
+        clip.toSVG(context: context, into: &out)
+        out.writeln("</clipPath>")
+    }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<g name="\#(effectiveName)" clip-path="url(#clip\#(uuid))">"#)
+        shape.toSVG(context: context, into: &out)
+        out.writeln("</g>")
     }
 }

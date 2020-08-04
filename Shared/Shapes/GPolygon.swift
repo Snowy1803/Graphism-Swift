@@ -45,6 +45,10 @@ class GPolygon: PaintedShape, RotatableShape {
     func translate(by diff: Pos) {
         points = points.map { $0 + diff }
     }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<polygon name="\#(effectiveName)" points="\#(points.map { $0.state }.joined(separator: " "))" fill="\#(strokeStyle == nil ? svgPaint : "none")" stroke="\#(strokeStyle != nil ? svgPaint : "none")"\#(strokeStyle?.svgStroke ?? "") transform="rotate(\#(rotation) \#(currentRotationCenter.x) \#(currentRotationCenter.y))"/>"#)
+    }
 }
 
 extension GPolygon: AlignableShape {
@@ -84,5 +88,19 @@ extension GPolygon: AlignableShape {
         if let max = points.max(by: { $0.y < $1.y }) {
             translate(by: Pos(x: 0, y: img.size.y - max.y))
         }
+    }
+    
+    var center: Pos {
+        if let minX = points.min(by: { $0.x < $1.x })?.x,
+           let maxX = points.max(by: { $0.x < $1.x })?.x,
+           let minY = points.min(by: { $0.y < $1.y })?.y,
+           let maxY = points.max(by: { $0.y < $1.y })?.y {
+            return Pos(x: (maxX + minX) / 2, y: (maxY + minY) / 2)
+        }
+        return Pos(x: 0, y: 0)
+    }
+    
+    var currentRotationCenter: Pos {
+        rotationCenter ?? center
     }
 }

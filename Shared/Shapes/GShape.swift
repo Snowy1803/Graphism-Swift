@@ -27,7 +27,7 @@ protocol GShape: GRPHValue, AnyObject {
     func translate(by diff: Pos)
     
     func collectSVGDefinitions<T: TextOutputStream>(context: SVGExportContext, into out: inout T)
-    // func toSVG<T: TextOutputStream>(context: SVGExportContext, into out: inout T)
+    func toSVG<T: TextOutputStream>(context: SVGExportContext, into out: inout T)
 }
 
 protocol PositionableShape: GShape {
@@ -102,6 +102,14 @@ extension PaintedShape {
             out.writeln("</radialGradient>")
         }
     }
+    var svgPaint: String {
+        switch paint {
+        case .color(let color):
+            return color.svgColor
+        case .linear(_), .radial(_):
+            return "url(#grad\(uuid))"
+        }
+    }
 }
 
 extension PositionableShape {
@@ -145,3 +153,8 @@ extension RectangularShape {
     }
 }
 
+extension RectangularShape where Self: RotatableShape {
+    var currentRotationCenter: Pos {
+        rotationCenter ?? center
+    }
+}

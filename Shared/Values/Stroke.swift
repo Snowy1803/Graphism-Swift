@@ -13,6 +13,17 @@ enum Stroke: String, StatefulValue {
     var state: String { rawValue }
     
     var type: GRPHType { SimpleType.stroke }
+    
+    var svgLinecap: String {
+        switch self {
+        case .elongated:
+            return "square"
+        case .cut:
+            return "butt"
+        case .rounded:
+            return "round"
+        }
+    }
 }
 
 
@@ -23,5 +34,9 @@ struct StrokeWrapper {
     
     var stateConstructor: String {
         " \(strokeWidth) \(strokeType.rawValue) \(strokeDashArray.state)"
+    }
+    
+    var svgStroke: String {
+        #" stroke-width="\#(strokeWidth)" stroke-dasharray="\#(strokeDashArray.wrapped.map { String(describing: $0 as! Float) }.joined(separator: ","))" stroke-linecap="\#(strokeType.svgLinecap)""#
     }
 }

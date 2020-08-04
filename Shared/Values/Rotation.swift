@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
+struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable, CustomStringConvertible {
     private var _value: Int
     
     var value: Int {
@@ -30,6 +30,8 @@ struct Rotation: StatefulValue, ExpressibleByIntegerLiteral, Equatable {
     var state: String {
         "\(value)°"
     }
+    
+    var description: String { value.description }
     
     init(integerLiteral value: Int) {
         self.init(value: value)

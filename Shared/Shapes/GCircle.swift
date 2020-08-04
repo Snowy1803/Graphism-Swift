@@ -38,4 +38,8 @@ class GCircle: RectangularShape, PaintedShape, RotatableShape {
     }
     
     var type: GRPHType { SimpleType.Circle }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<ellipse name="\#(effectiveName)" cx="\#(center.x)" cy="\#(center.y)" rx="\#(size.x / 2)" ry="\#(size.y / 2)" fill="\#(strokeStyle == nil ? svgPaint : "none")" stroke="\#(strokeStyle != nil ? svgPaint : "none")"\#(strokeStyle?.svgStroke ?? "") transform="rotate(\#(rotation) \#(currentRotationCenter.x) \#(currentRotationCenter.y))"/>"#)
+    }
 }

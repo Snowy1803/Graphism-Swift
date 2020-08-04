@@ -39,4 +39,8 @@ class GRectangle: RectangularShape, PaintedShape, RotatableShape {
     }
     
     var type: GRPHType { SimpleType.Rectangle }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<rect name="\#(effectiveName)" x="\#(position.x)" y="\#(position.y)" width="\#(size.x)" height="\#(size.y)" fill="\#(strokeStyle == nil ? svgPaint : "none")" stroke="\#(strokeStyle != nil ? svgPaint : "none")"\#(strokeStyle?.svgStroke ?? "") transform="rotate(\#(rotation) \#(currentRotationCenter.x) \#(currentRotationCenter.y))"/>"#)
+    }
 }

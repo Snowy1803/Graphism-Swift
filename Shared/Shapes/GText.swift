@@ -40,4 +40,8 @@ class GText: PaintedShape, PositionableShape, RotatableShape {
     }
     
     var type: GRPHType { SimpleType.Text }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<text x="\#(position.x)" y="\#(position.y)" fill="\#(svgPaint)" transform="rotate(\#(rotation) \#(rotationCenter?.x.description ?? "") \#(rotationCenter?.y.description ?? ""))" font-family="\#(font.name ?? "")" font-size="\#(font.size)" font-style="\#(font.italic ? "italic" : "normal") font-weight="\#(font.bold ? "bold" : "normal")">\#(effectiveName)</text>"#)
+    }
 }

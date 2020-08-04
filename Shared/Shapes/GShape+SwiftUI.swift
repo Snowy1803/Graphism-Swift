@@ -100,7 +100,7 @@ extension GLine {
     }
     
     var graphics: AnyView {
-        path.applyingStroke(strokeStyle?.cg ?? StrokeStyle(lineWidth: 5), paint: paint)
+        path.applyingStroke(strokeStyle?.cg ?? StrokeStyle(), paint: paint)
             .erased
     }
 }

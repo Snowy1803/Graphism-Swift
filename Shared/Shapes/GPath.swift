@@ -67,6 +67,34 @@ class GPath: PaintedShape, RotatableShape {
     func translate(by diff: Pos) {
         points = points.map { $0 + diff }
     }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<path name="\#(effectiveName)" fill="\#(strokeStyle == nil ? svgPaint : "none")" stroke="\#(strokeStyle != nil ? svgPaint : "none")"\#(strokeStyle?.svgStroke ?? "") transform="rotate(\#(rotation) \#(rotationCenter?.x.description ?? "") \#(rotationCenter?.y.description ?? ""))" d="\#(svgPath)"/>"#)
+    }
+    
+    var svgPath: String {
+        var str = ""
+        var i = 0
+        for action in actions {
+            switch action {
+            case .moveTo:
+                str += "M \(points[i].x) \(points[i].y) "
+                i += 1
+            case .lineTo:
+                str += "L \(points[i].x) \(points[i].y) "
+                i += 1
+            case .quadTo:
+                str += "Q \(points[i].x) \(points[i].y), \(points[i + 1].x) \(points[i + 1].y) "
+                i += 2
+            case .cubicTo:
+                str += "C \(points[i].x) \(points[i].y), \(points[i + 1].x) \(points[i + 1].y), \(points[i + 2].x) \(points[i + 2].y) "
+                i += 3
+            case .closePath:
+                str += "Z "
+            }
+        }
+        return str
+    }
 }
 
 enum PathActions {

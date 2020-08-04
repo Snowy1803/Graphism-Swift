@@ -40,4 +40,8 @@ class GLine: PaintedShape {
         start += diff
         end += diff
     }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<line name="\#(effectiveName)" x1="\#(start.x)" y1="\#(start.y)" x2="\#(end.x)" y2="\#(end.y)" stroke="\#(svgPaint)"\#((strokeStyle ?? StrokeWrapper()).svgStroke) />"#)
+    }
 }

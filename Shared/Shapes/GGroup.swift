@@ -48,4 +48,10 @@ class GGroup: GShape, RotatableShape {
     func collectSVGDefinitions<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
         shapes.forEach { $0.collectSVGDefinitions(context: context, into: &out) }
     }
+    
+    func toSVG<T>(context: SVGExportContext, into out: inout T) where T : TextOutputStream {
+        out.writeln(#"<g name="\#(effectiveName)" transform="rotate(\#(rotation) \#(rotationCenter?.x.description ?? "") \#(rotationCenter?.y.description ?? ""))">"#)
+        shapes.sorted { $0.positionZ < $1.positionZ }.forEach { $0.toSVG(context: context, into: &out) }
+        out.writeln("</g>")
+    }
 }
