@@ -53,9 +53,9 @@ struct GraphismDocument: FileDocument {
         self.source = source
         runGRPH()
     }
-
-    init(fileWrapper: FileWrapper, contentType: UTType) throws {
-        guard let data = fileWrapper.regularFileContents,
+    
+    init(configuration: ReadConfiguration) throws {
+        guard let data = configuration.file.regularFileContents,
               let string = String(data: data, encoding: .utf8)
         else {
             throw CocoaError(.fileReadCorruptFile)
@@ -65,15 +65,15 @@ struct GraphismDocument: FileDocument {
         runGRPH()
     }
     
-    func write(to fileWrapper: inout FileWrapper, contentType: UTType) throws {
-        switch contentType {
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        switch configuration.contentType {
         case .grphSource:
             let data = source.data(using: .utf8)!
-            fileWrapper = FileWrapper(regularFileWithContents: data)
+            return FileWrapper(regularFileWithContents: data)
         case .svg:
             var svg = ""
             image.toSVG(context: SVGExportContext(), into: &svg)
-            fileWrapper = FileWrapper(regularFileWithContents: svg.data(using: .utf8)!)
+            return FileWrapper(regularFileWithContents: svg.data(using: .utf8)!)
         default:
             preconditionFailure()
         }
