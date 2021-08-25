@@ -98,6 +98,8 @@ enum SimpleType: String, GRPHType, CaseIterable {
                                  value: ColorPaint.red),
                     TypeConstant(name: "SYS_GREEN", type: self,
                                  value: ColorPaint.green),
+                    TypeConstant(name: "SYS_BLUE", type: self,
+                                 value: ColorPaint.blue),
                     TypeConstant(name: "SYS_ORANGE", type: self,
                                  value: ColorPaint.orange),
                     TypeConstant(name: "SYS_YELLOW", type: self,
