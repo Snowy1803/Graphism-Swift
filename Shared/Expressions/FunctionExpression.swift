@@ -8,8 +8,8 @@
 import Foundation
 
 struct FunctionExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^([A-Za-z>]+)\\[(.*)\\]$")
-    static let instructionPattern = try! NSRegularExpression(pattern: "^([A-Za-z>]+)(?: ([^ \\n]+))? *: *(.*)$")
+    static let pattern = try! NSRegularExpression(pattern: "^([A-Za-z_>]+)\\[(.*)\\]$")
+    static let instructionPattern = try! NSRegularExpression(pattern: "^([A-Za-z_>]+)(?: ([^ \\n]+))? *: *(.*)$")
     
     let function: Function
     let values: [Expression?]
