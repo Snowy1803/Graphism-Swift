@@ -10,8 +10,6 @@ import Foundation
 protocol Parametrable {
     var parameters: [Parameter] { get }
     
-    var name: String { get }
-    
     var returnType: GRPHType { get }
     
     var varargs: Bool { get }

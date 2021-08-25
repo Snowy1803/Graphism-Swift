@@ -106,6 +106,13 @@
 		208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
 		208D2FB824B4C89B00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
 		208D2FB924B4C89B00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
+		2093A17826D6912C004D24D8 /* FuncRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093A17726D6912C004D24D8 /* FuncRef.swift */; };
+		2093A17926D6912C004D24D8 /* FuncRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093A17726D6912C004D24D8 /* FuncRef.swift */; };
+		2093A17A26D6C168004D24D8 /* FuncRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093A17726D6912C004D24D8 /* FuncRef.swift */; };
+		2093A17B26D6C168004D24D8 /* FuncRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2093A17726D6912C004D24D8 /* FuncRef.swift */; };
+		2093A17C26D6C192004D24D8 /* NSRegularExpression+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3EDD24D44E12002EAE2B /* NSRegularExpression+Swift.swift */; };
+		2093A17D26D6C1A2004D24D8 /* GRPHValue+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF7424C37D8A000F67FB /* GRPHValue+SwiftUI.swift */; };
+		2093A17E26D6C1D2004D24D8 /* SwitchTransparentBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203A3ED924D0D69F002EAE2B /* SwitchTransparentBlock.swift */; };
 		2098B67B24A970350042D465 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
 		2098B67C24A970350042D465 /* GShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67824A970350042D465 /* GShape.swift */; };
 		2098B67D24A970350042D465 /* GRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2098B67924A970350042D465 /* GRectangle.swift */; };
@@ -387,6 +394,7 @@
 		207FD0122544E5CE00F8B0ED /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		207FD0132544F14D00F8B0ED /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayModificationInstruction.swift; sourceTree = "<group>"; };
+		2093A17726D6912C004D24D8 /* FuncRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuncRef.swift; sourceTree = "<group>"; };
 		2098B67824A970350042D465 /* GShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GShape.swift; sourceTree = "<group>"; };
 		2098B67924A970350042D465 /* GRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GRectangle.swift; sourceTree = "<group>"; };
 		2098B67A24A970350042D465 /* GCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCircle.swift; sourceTree = "<group>"; };
@@ -625,6 +633,7 @@
 				200A5F6924AB6AE60028180B /* Direction.swift */,
 				200A5F7524AB85E10028180B /* Stroke.swift */,
 				20A1EF6024C348E8000F67FB /* JFont.swift */,
+				2093A17726D6912C004D24D8 /* FuncRef.swift */,
 				20A1EF7424C37D8A000F67FB /* GRPHValue+SwiftUI.swift */,
 			);
 			path = Values;
@@ -886,6 +895,8 @@
 				20D1EF3D24B12BB600EB4BEE /* Parametrable.swift in Sources */,
 				20D1EF4124B1393E00EB4BEE /* Parameter.swift in Sources */,
 				20D1EF7224B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
+				2093A17D26D6C1A2004D24D8 /* GRPHValue+SwiftUI.swift in Sources */,
+				2093A17E26D6C1D2004D24D8 /* SwitchTransparentBlock.swift in Sources */,
 				20DE0BDB24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20D1EF6A24B292ED00EB4BEE /* FunctionExpression.swift in Sources */,
 				20DE0BE324AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
@@ -898,6 +909,7 @@
 				200A5F8924ABA5180028180B /* Paint.swift in Sources */,
 				200A5F9024ABA51E0028180B /* GRectangle.swift in Sources */,
 				200A5F8624ABA5180028180B /* Rotation.swift in Sources */,
+				2093A17C26D6C192004D24D8 /* NSRegularExpression+Swift.swift in Sources */,
 				20DE0BDF24AF80C200ABFB6E /* Property.swift in Sources */,
 				20D1EF6224B22B5300EB4BEE /* AssignmentInstruction.swift in Sources */,
 				200A5F8D24ABA5180028180B /* LinearPaint.swift in Sources */,
@@ -921,6 +933,7 @@
 				200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */,
 				20DE0BE724AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
 				20A1EF6D24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
+				2093A17A26D6C168004D24D8 /* FuncRef.swift in Sources */,
 				20D1EF5624B217FB00EB4BEE /* StandardNameSpace.swift in Sources */,
 				20A1EF6824C35376000F67FB /* GText.swift in Sources */,
 				200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */,
@@ -1029,6 +1042,7 @@
 				20DE0BD124AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
 				20B9F70B24D8EC24005FCC40 /* SVGExportContext.swift in Sources */,
+				2093A17826D6912C004D24D8 /* FuncRef.swift in Sources */,
 				2098B67F24A970350042D465 /* GCircle.swift in Sources */,
 				20A1EF6B24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
 			);
@@ -1119,6 +1133,7 @@
 				20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				20B9F70C24D8EC24005FCC40 /* SVGExportContext.swift in Sources */,
+				2093A17926D6912C004D24D8 /* FuncRef.swift in Sources */,
 				2098B68024A970350042D465 /* GCircle.swift in Sources */,
 				20A1EF6C24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
 			);
@@ -1129,6 +1144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20D1EF9524B2AFF600EB4BEE /* Rotation.swift in Sources */,
+				2093A17B26D6C168004D24D8 /* FuncRef.swift in Sources */,
 				20D1EF8D24B2AFF600EB4BEE /* ArrayValueExpression.swift in Sources */,
 				20D1EFAE24B2AFF600EB4BEE /* GPath.swift in Sources */,
 				20D1EFB424B2AFF600EB4BEE /* LinearPaint.swift in Sources */,

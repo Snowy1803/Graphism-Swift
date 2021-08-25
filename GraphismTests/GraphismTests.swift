@@ -33,6 +33,12 @@ class GraphismTests: XCTestCase {
         parseType("{{{farray}}}", expected: "{{{{float}}}}")
         parseType("{string|paint|float}")
         parseType("{string|{paint}|{float}}")
+        parseType("string|paint|float?")
+        parseType("funcref")
+        parseType("funcref<void><>")
+        parseType("funcref<string><string+integer>")
+        parseType("funcref<color><int+int+int>", expected: "funcref<color><integer+integer+integer>")
+        parseType("funcref<void><>|funcref<integer><>|funcref<float><>?")
         XCTAssertNil(GRPHTypes.parse(context: context, literal: "intreger"))
         XCTAssertNil(GRPHTypes.parse(context: context, literal: "<>float"))
         XCTAssertNil(GRPHTypes.parse(context: context, literal: "float{}"))
@@ -40,6 +46,12 @@ class GraphismTests: XCTestCase {
         XCTAssertNil(GRPHTypes.parse(context: context, literal: "{num}|"))
         XCTAssertNil(GRPHTypes.parse(context: context, literal: "|<boolean>"))
         XCTAssertNil(GRPHTypes.parse(context: context, literal: "<>|<boolean>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: ""))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "<>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "funcref<>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "funcref<><string>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "funcref<string+string><string>"))
+        XCTAssertNil(GRPHTypes.parse(context: context, literal: "funcref<string><string><string>"))
     }
     
     func parseType(_ literal: String, expected: String? = nil) {
@@ -76,7 +88,7 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(compiler.internStringLiterals(line: #"string now = "he\"llo\" w\"o\"rld""#), "string now = $_str2$")
         XCTAssertEqual(compiler.internStringLiterals(line: #"string mul = "first " + "second""#), "string mul = $_str3$ + $_str4$")
         
-        XCTAssertEqual(compiler.internStrings.debugDescription, #"["\"hello world", "\"another str", "\"he\"llo\" w\"o\"rld", "\"first ", "\"second"]"#)
+        XCTAssertEqual(compiler.internStrings.debugDescription, #"["hello world", "another str", "he\"llo\" w\"o\"rld", "first ", "second"]"#)
     }
     
     func testExpressionParsing() throws {
@@ -125,7 +137,7 @@ class GraphismTests: XCTestCase {
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32.0/8").string, "32.0F / 8")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32F / 8 * 7 + 42 - 69 % 3").string,
                        "[[[32.0F / 8] * 7] + 42] - [69 % 3]")
-        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32 == 42 || 67 == 69 || [96 != 420 && 2 > 1]").string, "[[32 == 42] || [67 == 69]] || [[96 != 420] && [2 > 1]]")
+        XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.float, literal: "32 == 42 || 67 == 69 || [96 != 420 && 2 > 1]").string, "[32 == 42] || [67 == 69] || [[96 != 420] && [2 > 1]]")
         
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-var + 5").string, "-var + 5")
         XCTAssertEqual(try Expressions.parse(context: context, infer: SimpleType.integer, literal: "-5 + var").string, "-5 + var")
