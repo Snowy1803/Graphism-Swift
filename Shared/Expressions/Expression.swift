@@ -115,6 +115,17 @@ struct Expressions {
                 throw GRPHCompileError(type: .parse, message: "Could not parse position '\(str)'")
             }
         }
+        // funcref
+        if let result = FunctionReferenceExpression.pattern.firstMatch(string: str) {
+            let member = NameSpaces.namespacedMember(from: result[1]!)
+            guard let ns = member.namespace else {
+                throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
+            }
+            guard let function = Function(imports: context.parser.imports, namespace: ns, name: member.member) else {
+                throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
+            }
+            return try FunctionReferenceExpression(function: function, infer: infer)
+        }
         // function call
         if let result = FunctionExpression.pattern.firstMatch(string: str) {
             if result[2]!.isEmpty || checkBalance(literal: result[2]!) {

@@ -15,10 +15,8 @@ struct FuncRef: GRPHValue, Parametrable {
     
     var funcName: String {
         switch storage {
-        case .function(let function):
-            return "function \(function.name)"
-        case .method(let method):
-            return "method \(method.name)"
+        case .function(let function, _):
+            return "function \(function.fullyQualifiedName)"
         case .constant(_):
             return "constant expression"
         }
@@ -45,8 +43,7 @@ struct FuncRef: GRPHValue, Parametrable {
 
 extension FuncRef {
     enum Storage {
-        case function(Function)
-        case method(Method)
+        case function(Function, argumentGrid: [Bool])
 //        case lambda(Lambda)
         case constant(GRPHValue)
     }

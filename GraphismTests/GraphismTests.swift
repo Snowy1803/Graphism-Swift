@@ -179,6 +179,10 @@ class GraphismTests: XCTestCase {
         try cast(literal: "color.RED as?! float", expected: "null")
         try cast(literal: "5.0 as?! float?", expected: "Optional[Optional[5.0]]")
         try cast(literal: "5 as?! float?", expected: "null")
+        compiler.imports.append(TypeAlias(name: "firstFuncType", type: try XCTUnwrap(GRPHTypes.parse(context: context, literal: "funcref<num><integer+num>"))))
+        compiler.imports.append(TypeAlias(name: "secondFuncType", type: try XCTUnwrap(GRPHTypes.parse(context: context, literal: "funcref<mixed><integer+integer>"))))
+        try cast(literal: "firstFuncType(5) is secondFuncType", expected: "true")
+        try cast(literal: "secondFuncType(5) is firstFuncType", expected: "false")
         XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as! float").eval(context: context))
         XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as float").eval(context: context))
     }

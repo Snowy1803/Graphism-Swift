@@ -25,10 +25,16 @@ extension Parametrable {
     }
     
     func parameter(index: Int, context: GRPHContext, exp: Expression) throws -> (param: Parameter, add: Int)? {
+        try parameter(index: index) { infer in
+            try exp.getType(context: context, infer: infer)
+        }
+    }
+    
+    func parameter(index: Int, expressionType: (GRPHType) throws -> GRPHType) rethrows -> (param: Parameter, add: Int)? {
         var param = index
         while param < maximumParameterCount {
             let curr = parameter(index: param)
-            let type = GRPHTypes.autoboxed(type: try exp.getType(context: context, infer: curr.type), expected: curr.type)
+            let type = GRPHTypes.autoboxed(type: try expressionType(curr.type), expected: curr.type)
             if type.isInstance(of: curr.type) {
                 return (param: curr, add: param - index + 1)
             } else if curr.type.isInstance(of: SimpleType.shape) && type as? SimpleType == SimpleType.shape {

@@ -15,12 +15,12 @@ struct FunctionExpression: Expression {
     let values: [Expression?]
     
     init(ctx: GRPHContext, function: Function, values: [Expression], asInstruction: Bool = false) throws {
-        var nextParam = 0
         self.function = function
         var ourvalues: [Expression?] = []
         guard asInstruction || !function.returnType.isTheVoid else {
             throw GRPHCompileError(type: .typeMismatch, message: "Void function can't be used as an expression")
         }
+        var nextParam = 0
         for param in values {
             guard let par = try function.parameter(index: nextParam, context: ctx, exp: param) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Unexpected '\(param.string)' of type '\(try param.getType(context: ctx, infer: function.parameter(index: nextParam).type))' in function '\(function.name)'")
@@ -39,7 +39,7 @@ struct FunctionExpression: Expression {
         do {
             return try function.executable(context, try values.map { try $0?.eval(context: context) })
         } catch var e as GRPHRuntimeError {
-            e.stack.append("\tat \(fullyQualified)")
+            e.stack.append("\tat \(function.fullyQualifiedName)")
             throw e
         }
     }
@@ -48,12 +48,8 @@ struct FunctionExpression: Expression {
         return function.returnType
     }
     
-    var fullyQualified: String {
-        "\(function.ns.name == "standard" || function.ns.name == "none" ? "" : "\(function.ns.name)>")\(function.name)"
-    }
-    
     var string: String {
-        "\(fullyQualified)[\(function.formattedParameterList(values: values.compactMap {$0}))]"
+        "\(function.fullyQualifiedName)[\(function.formattedParameterList(values: values.compactMap {$0}))]"
     }
     
     var needsBrackets: Bool { false }

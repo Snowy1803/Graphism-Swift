@@ -112,6 +112,11 @@ struct FuncRefType: GRPHType {
         if let option = other as? OptionalType {
             return isInstance(of: option.wrapped)
         }
+        if let other = other as? FuncRefType,
+           self.parameters.count == other.parameters.count {
+            // (funcref<num><integer+num>(5) is funcref<mixed><integer+integer>) == true
+            return self.returnType.isInstance(of: other.returnType)
+        }
         if let simple = other as? SimpleType {
             if simple == .funcref || simple == .mixed {
                 return true
@@ -126,7 +131,7 @@ struct FuncRefType: GRPHType {
     
     var constructor: Constructor? {
         Constructor(parameters: [Parameter(name: "constant", type: returnType, optional: returnType.isTheVoid)], type: self) { ctx, values in
-            FuncRef(currentType: self, storage: .constant(values[0] ?? GRPHVoid.void))
+            FuncRef(currentType: self, storage: .constant(values[safe: 0] ?? GRPHVoid.void))
         }
     }
 }
