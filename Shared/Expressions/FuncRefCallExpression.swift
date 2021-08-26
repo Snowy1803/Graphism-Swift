@@ -8,7 +8,7 @@
 import Foundation
 
 struct FuncRefCallExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^([A-Za-z_]+)\\^\\[(.*)\\]$")
+    static let pattern = try! NSRegularExpression(pattern: "^([A-Za-z0-9_$]+)\\^\\[(.*)\\]$")
     
     let varName: String
     let values: [Expression?]
