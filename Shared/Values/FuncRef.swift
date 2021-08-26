@@ -16,6 +16,8 @@ struct FuncRef: GRPHValue {
         switch storage {
         case .function(let function, _):
             return "function \(function.fullyQualifiedName)"
+        case .lambda(let lambda, _):
+            return "lambda at line \(lambda.line)"
         case .constant(_):
             return "constant expression"
         }
@@ -42,6 +44,8 @@ struct FuncRef: GRPHValue {
                 }
             }
             return try function.executable(context, parmap)
+        case .lambda(let lambda, let capture):
+            return try lambda.execute(context: context, params: params, capture: capture)
         case .constant(let const):
             return const
         }
@@ -52,7 +56,7 @@ struct FuncRef: GRPHValue {
 extension FuncRef {
     enum Storage {
         case function(Function, argumentGrid: [Bool])
-//        case lambda(Lambda)
+        case lambda(Lambda, capture: [Variable])
         case constant(GRPHValue)
     }
 }

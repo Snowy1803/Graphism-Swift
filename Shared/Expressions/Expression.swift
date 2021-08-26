@@ -47,6 +47,13 @@ struct Expressions {
             //       ^~~~~~~~~~~~~~~~~~~~~~~~~~~^
         }
         
+        if str.hasPrefix("^[") && str.hasSuffix("]") {
+            let clipped = str.dropFirst(2).dropLast()
+            if clipped.isEmpty || checkBalance(literal: clipped) {
+                return try LambdaExpression(context: context, literal: clipped.trimmingCharacters(in: .whitespaces), infer: infer)
+            }
+        }
+        
         if let direction = Direction(rawValue: str) {
             return ConstantExpression(direction: direction)
         } else if let stroke = Stroke(rawValue: str) {
