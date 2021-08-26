@@ -91,7 +91,7 @@ extension PaintedShape {
         case .color(_):
             break
         case .linear(let linear):
-            out.writeln("<linearGradient id=\"grad\(uuid)\" x1=\"\(linear.direction.fromPoint.x * 100)%\" y1=\"\(linear.direction.fromPoint.y * 100)%\" x2=\"\(linear.direction.toPoint.x * 100)%\" y2=\"\(linear.direction.toPoint.y * 100)%\">")
+            out.writeln("<linearGradient id=\"grad\(uuid)\" x1=\"\(linear.direction.reverse.pointingTowards.x * 100)%\" y1=\"\(linear.direction.reverse.pointingTowards.y * 100)%\" x2=\"\(linear.direction.pointingTowards.x * 100)%\" y2=\"\(linear.direction.pointingTowards.y * 100)%\">")
             out.writeln("<stop offset=\"0%\" style=\"stop-color:\(linear.from.svgColor)\" />")
             out.writeln("<stop offset=\"100%\" style=\"stop-color:\(linear.to.svgColor)\" />")
             out.writeln("</linearGradient>")
