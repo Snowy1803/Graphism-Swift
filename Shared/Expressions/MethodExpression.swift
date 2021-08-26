@@ -8,7 +8,7 @@
 import Foundation
 
 struct MethodExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^(.*?)\\.([A-Za-z>]+)\\[(.*)\\]$")
+    static let pattern = try! NSRegularExpression(pattern: "^(.*?)\\.([A-Za-z_>]+)\\[(.*)\\]$")
     //static let instructionPattern = try! NSRegularExpression(pattern: "^([A-Za-z>]+)(?: ([^ \\n]+))? *: *(.*)$")
     
     let method: Method
@@ -33,6 +33,12 @@ struct MethodExpression: Expression {
             }
             ourvalues.append(try GRPHTypes.autobox(context: ctx, expression: param, expected: par.param.type))
             // at pars[nextParam - 1] aka current param
+        }
+        while nextParam < method.parameters.count {
+            guard method.parameters[nextParam].optional else {
+                throw GRPHCompileError(type: .invalidArguments, message: "No argument passed to parameter '\(method.parameters[nextParam].name)' in method '\(method.name)'")
+            }
+            nextParam += 1
         }
         self.values = ourvalues
     }

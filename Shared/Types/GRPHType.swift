@@ -70,6 +70,7 @@ func != (lhs: GRPHType, rhs: GRPHType) -> Bool {
 }
 
 struct GRPHTypes {
+    static let funcrefPattern = try! NSRegularExpression(pattern: "funcref<>")
     
     private init() {}
     
@@ -82,6 +83,27 @@ struct GRPHTypes {
         }
         if literal.hasSuffix("?") && String(literal.dropLast()).isSurrounded(left: "<", right: ">") {
             return parse(context: context, literal: String(literal.dropLast(2).dropFirst()))?.optional
+        }
+        if literal.hasPrefix("funcref<") && literal.hasSuffix(">"),
+           let generics = parseTopLevelGenerics(in: String(literal.dropFirst(7))),
+           generics.count == 2 {
+            let returnType = generics[0]
+            let params = generics[1]
+            if returnType.count == 1,
+               let rtype = parse(context: context, literal: returnType[0]) {
+                do {
+                    let ptypes: [GRPHType] = try params.map {
+                        if let type = parse(context: context, literal: $0) {
+                            return type
+                        } else {
+                            throw GRPHCompileError(type: .parse, message: "error does not propagate")
+                        }
+                    }
+                    return FuncRefType(returnType: rtype, parameterTypes: ptypes)
+                } catch {
+                    return nil
+                }
+            }
         }
         if literal.contains("|") {
             let components = literal.split(separator: "|", maxSplits: 1)
@@ -226,5 +248,74 @@ extension String {
             }
         }
         return false
+    }
+}
+
+extension GRPHTypes {
+    
+    /// Parses generics in the format `<a11+a12><a21+a22>`
+    /// The input string must start and end with `<` and `>` respectively.
+    static func parseTopLevelGenerics(in str: String) -> [[String]]? {
+        var generics: [[String]] = []
+        var chevrons = 0
+        var last: String.Index?
+        for (i, c) in zip(str.indices, str) {
+            if c == "<" {
+                if chevrons == 0 {
+                    if let lastEnd = last {
+                        generics.append(splitGeneric(in: String(str[lastEnd..<i].dropFirst().dropLast())))
+                    }
+                    last = i
+                }
+                chevrons += 1
+            } else if c == ">" {
+                chevrons -= 1
+                if chevrons < 0 {
+                    return nil
+                }
+            }
+        }
+        if let lastEnd = last {
+            generics.append(splitGeneric(in: String(str[lastEnd...].dropFirst().dropLast())))
+        }
+        guard chevrons == 0 else {
+            return nil
+        }
+        return generics
+    }
+    
+    static func splitGeneric(in string: String, delimiter: NSRegularExpression = Expressions.plus) -> [String] {
+        var result: [String] = []
+        var last = string.startIndex
+        delimiter.allMatches(in: string) { range in
+            let exp = string[last..<range.lowerBound]
+            if checkBalanceGeneric(literal: exp) {
+                result.append(String(exp))
+                last = range.upperBound
+            }
+        }
+        let exp = string[last...]
+        if checkBalanceGeneric(literal: exp) {
+            result.append(String(exp))
+        }
+        return result
+    }
+    
+    static func checkBalanceGeneric<S: StringProtocol>(literal str: S) -> Bool {
+        if str.isEmpty {
+            return false // Empty, most probably an error
+        }
+        var chevrons = 0
+        for c in str {
+            if c == "<" {
+                chevrons += 1
+            } else if c == ">" {
+                chevrons -= 1
+                if chevrons < 0 {
+                    return false
+                }
+            }
+        }
+        return chevrons == 0
     }
 }

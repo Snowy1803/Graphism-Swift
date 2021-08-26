@@ -42,4 +42,8 @@ extension Function {
         }
         return nil
     }
+    
+    var fullyQualifiedName: String {
+        "\(ns.name == "standard" || ns.name == "none" ? "" : "\(ns.name)>")\(name)"
+    }
 }

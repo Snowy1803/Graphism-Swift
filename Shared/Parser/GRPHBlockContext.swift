@@ -7,12 +7,10 @@
 
 import Foundation
 
-class GRPHBlockContext: GRPHContext {
+class GRPHBlockContext: GRPHVariableOwningContext {
     
-    let parent: GRPHContext
     let block: BlockInstruction
     
-    var variables: [Variable] = []
     /// true if the next else can run, false otherwise
     var canNextRun: Bool = true
     /// true if #break or #continue was called in this block
@@ -23,51 +21,8 @@ class GRPHBlockContext: GRPHContext {
     var mustNextRun: Bool = false
     
     init(parent: GRPHContext, block: BlockInstruction) {
-        self.parent = parent
         self.block = block
-        super.init(parser: parent.parser)
-    }
-    
-    deinit {
-        if runtime?.debugging ?? false {
-            for variable in variables {
-                printout("[DEBUG -VAR \(variable.name)]")
-            }
-        }
-    }
-    
-    override var allVariables: [Variable] {
-        var vars = parser.globalVariables
-        vars.append(contentsOf: variables)
-        if let parent = parent as? GRPHBlockContext {
-            vars.append(contentsOf: parent.variables)
-        }
-        return vars
-    }
-    
-    /// Returns in the correct priority. Current scope first, then next scope etc. until global scope
-    /// Java version doesn't support multiple variables with the same name even in a different scope. We support it here.
-    override func findVariable(named name: String) -> Variable? {
-        if let found = variables.first(where: { $0.name == name }) {
-            return found
-        }
-        return parent.findVariable(named: name)
-    }
-    
-    /// Used in Variable Declaration Instruction to know if defining the variable is allowed
-    override func findVariableInScope(named name: String) -> Variable? {
-        if let found = variables.first(where: { $0.name == name }) {
-            return found
-        }
-        return nil
-    }
-    
-    override func addVariable(_ variable: Variable, global: Bool) {
-        if global {
-            parser.globalVariables.append(variable)
-        } else {
-            variables.append(variable)
-        }
+        super.init(parent: parent)
     }
     
     func continueBlock() {

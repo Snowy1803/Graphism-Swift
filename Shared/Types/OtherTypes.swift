@@ -92,3 +92,56 @@ struct ArrayType: GRPHType {
         ]
     }
 }
+
+struct FuncRefType: GRPHType {
+    let returnType: GRPHType
+    let parameterTypes: [GRPHType]
+    
+    var string: String {
+        "funcref<\(returnType.string)><\(parameterTypes.map{ $0.string }.joined(separator: "+"))>"
+    }
+    
+    var supertype: GRPHType {
+        if returnType.isTheMixed {
+            return SimpleType.funcref
+        }
+        return FuncRefType(returnType: returnType.supertype, parameterTypes: parameterTypes)
+    }
+    
+    func isInstance(of other: GRPHType) -> Bool {
+        if let option = other as? OptionalType {
+            return isInstance(of: option.wrapped)
+        }
+        if let other = other as? FuncRefType,
+           self.parameterTypes.count == other.parameterTypes.count {
+            // (funcref<num><integer+num>(5) is funcref<mixed><integer+integer>) == true
+            return self.returnType.isInstance(of: other.returnType)
+        }
+        if let simple = other as? SimpleType {
+            if simple == .funcref || simple == .mixed {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var fields: [Field] {
+        return [VirtualField<FuncRef>(name: "_funcName", type: SimpleType.string, getter: { $0.funcName })]
+    }
+    
+    var constructor: Constructor? {
+        Constructor(parameters: [Parameter(name: "constant", type: returnType, optional: returnType.isTheVoid)], type: self) { ctx, values in
+            FuncRef(currentType: self, storage: .constant(values[safe: 0] ?? GRPHVoid.void))
+        }
+    }
+}
+
+extension FuncRefType: Parametrable {
+    var parameters: [Parameter] {
+        parameterTypes.enumerated().map { index, type in
+            Parameter(name: "$\(index)", type: type)
+        }
+    }
+    
+    var varargs: Bool { false }
+}

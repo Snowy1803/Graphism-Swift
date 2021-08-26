@@ -9,7 +9,7 @@ import Foundation
 
 enum SimpleType: String, GRPHType, CaseIterable {
     
-    case num, integer, float, rotation, pos, boolean, string, paint, color, linear, radial, shape, direction, stroke, /*file, image,*/ font, mixed, void
+    case num, integer, float, rotation, pos, boolean, string, paint, color, linear, radial, shape, direction, stroke, /*file, image,*/ font, mixed, void, funcref
     
     case Rectangle, Circle, Line, Polygon, /*Image,*/ Text, Path, Group, Background
     
@@ -40,7 +40,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
         switch self {
         case .integer, .float, .color, .linear, .radial, .boolean, .string, .rotation, .pos, .direction, .stroke, .font, .void:
             return true
-        case .Rectangle, .Circle, .Line, .Polygon, .Text, .Path, .Group, .Background, .num, .paint, .shape, .mixed:
+        case .Rectangle, .Circle, .Line, .Polygon, .Text, .Path, .Group, .Background, .num, .paint, .shape, .mixed, .funcref:
             return false
         }
     }
@@ -276,7 +276,7 @@ enum SimpleType: String, GRPHType, CaseIterable {
     
     var constructor: Constructor? {
         switch self {
-        case .mixed, .num, .integer, .float, .boolean, .string, .paint, .shape, .direction, .stroke:
+        case .mixed, .num, .integer, .float, .boolean, .string, .paint, .shape, .direction, .stroke, .funcref:
             return nil
         case .void:
             return Constructor(parameters: [], type: self) { _, _ in GRPHVoid.void }
