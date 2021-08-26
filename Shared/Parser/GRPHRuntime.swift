@@ -79,7 +79,7 @@ class GRPHRuntime: GRPHParser {
         } catch let e as GRPHRuntimeError {
             printerr("GRPH exited because of an unhandled exception")
             printerr("\(e.type.rawValue)Exception: \(e.message)")
-            e.stack.forEach { print($0) }
+            e.stack.forEach { printerr($0) }
         } catch is GRPHExecutionTerminated {
             context = nil // break circular reference
             return true // Returning normally, execution terminated from an "end:" instruction or by the user when closing the file
