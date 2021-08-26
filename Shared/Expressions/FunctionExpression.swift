@@ -32,6 +32,12 @@ struct FunctionExpression: Expression {
             ourvalues.append(try GRPHTypes.autobox(context: ctx, expression: param, expected: par.param.type))
             // at pars[nextParam - 1] aka current param
         }
+        while nextParam < function.parameters.count {
+            guard function.parameters[nextParam].optional else {
+                throw GRPHCompileError(type: .invalidArguments, message: "No argument passed to parameter '\(function.parameters[nextParam].name)' in function '\(function.name)'")
+            }
+            nextParam += 1
+        }
         self.values = ourvalues
     }
     
