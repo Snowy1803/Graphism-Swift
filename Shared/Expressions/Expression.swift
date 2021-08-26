@@ -139,6 +139,12 @@ struct Expressions {
                 return try FunctionExpression(ctx: context, function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
             }
         }
+        // funcref call
+        if let result = FuncRefCallExpression.pattern.firstMatch(string: str) {
+            if result[2]!.isEmpty || checkBalance(literal: result[2]!) {
+                return try FuncRefCallExpression(ctx: context, varName: result[1]!, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
+            }
+        }
         if let result = MethodExpression.pattern.firstMatch(string: str) {
             if checkBalance(literal: result[1]!) && (result[3]!.isEmpty || checkBalance(literal: result[3]!)) {
                 let member = NameSpaces.namespacedMember(from: result[2]!)

@@ -99,7 +99,7 @@ struct GRPHTypes {
                             throw GRPHCompileError(type: .parse, message: "error does not propagate")
                         }
                     }
-                    return FuncRefType(returnType: rtype, parameters: ptypes)
+                    return FuncRefType(returnType: rtype, parameterTypes: ptypes)
                 } catch {
                     return nil
                 }

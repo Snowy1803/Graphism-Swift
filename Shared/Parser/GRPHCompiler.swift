@@ -555,6 +555,9 @@ class GRPHCompiler: GRPHParser {
                         throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                     }
                     try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: FunctionExpression(ctx: context, function: function, values: Expressions.splitParameters(context: context, in: result[2]!, delimiter: Expressions.space), asInstruction: true)))
+                } else if let result = FuncRefCallExpression.pattern.firstMatch(string: tline) {
+                    // funcref call: `log^["test"]` with `auto log = ^log`
+                    try addInstruction(ExpressionInstruction(lineNumber: lineNumber, expression: FuncRefCallExpression(ctx: context, varName: result[1]!, values: Expressions.splitParameters(context: context, in: result[2]!, delimiter: Expressions.space), asInstruction: true)))
                 } else if let result = ArrayValueExpression.pattern.firstMatch(string: tline),
                           result[2]!.hasSuffix("-") {
                     let index = result[2]!.dropLast().trimmingCharacters(in: .whitespaces)

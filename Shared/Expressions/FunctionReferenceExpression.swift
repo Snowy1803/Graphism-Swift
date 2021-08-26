@@ -25,7 +25,7 @@ struct FunctionReferenceExpression: Expression {
             // type check params
             var nextParam = 0
             var grid: [Bool] = []
-            for param in infer.parameters {
+            for param in infer.parameterTypes {
                 guard let par = function.parameter(index: nextParam, expressionType: { _ in param }) else {
                     if nextParam >= function.parameters.count && !function.varargs {
                         throw GRPHCompileError(type: .typeMismatch, message: "Unexpected argument type '\(param.string)' for out of bounds parameter in funcref to '\(function.name)'")
@@ -48,7 +48,7 @@ struct FunctionReferenceExpression: Expression {
             // we include optional parameters. this choice is arbitrary. if there are optional arguments, you should always specify an explicit type
             // not inferring the type of a funcref to a function with optional arguments should be a warning
             self.argumentGrid = [Bool](repeating: true, count: function.parameters.count)
-            self.inferredType = FuncRefType(returnType: function.returnType, parameters: function.parameters.map { $0.type })
+            self.inferredType = FuncRefType(returnType: function.returnType, parameterTypes: function.parameters.map { $0.type })
         }
     }
     

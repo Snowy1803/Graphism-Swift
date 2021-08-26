@@ -95,17 +95,17 @@ struct ArrayType: GRPHType {
 
 struct FuncRefType: GRPHType {
     let returnType: GRPHType
-    let parameters: [GRPHType]
+    let parameterTypes: [GRPHType]
     
     var string: String {
-        "funcref<\(returnType.string)><\(parameters.map{ $0.string }.joined(separator: "+"))>"
+        "funcref<\(returnType.string)><\(parameterTypes.map{ $0.string }.joined(separator: "+"))>"
     }
     
     var supertype: GRPHType {
         if returnType.isTheMixed {
             return SimpleType.funcref
         }
-        return FuncRefType(returnType: returnType.supertype, parameters: parameters)
+        return FuncRefType(returnType: returnType.supertype, parameterTypes: parameterTypes)
     }
     
     func isInstance(of other: GRPHType) -> Bool {
@@ -113,7 +113,7 @@ struct FuncRefType: GRPHType {
             return isInstance(of: option.wrapped)
         }
         if let other = other as? FuncRefType,
-           self.parameters.count == other.parameters.count {
+           self.parameterTypes.count == other.parameterTypes.count {
             // (funcref<num><integer+num>(5) is funcref<mixed><integer+integer>) == true
             return self.returnType.isInstance(of: other.returnType)
         }
@@ -134,4 +134,14 @@ struct FuncRefType: GRPHType {
             FuncRef(currentType: self, storage: .constant(values[safe: 0] ?? GRPHVoid.void))
         }
     }
+}
+
+extension FuncRefType: Parametrable {
+    var parameters: [Parameter] {
+        parameterTypes.enumerated().map { index, type in
+            Parameter(name: "$\(index)", type: type)
+        }
+    }
+    
+    var varargs: Bool { false }
 }

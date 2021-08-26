@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct FuncRef: GRPHValue, Parametrable {
-    
+struct FuncRef: GRPHValue {
     
     var currentType: FuncRefType
     var storage: Storage
@@ -22,23 +21,32 @@ struct FuncRef: GRPHValue, Parametrable {
         }
     }
     
-    var parameters: [Parameter] {
-        currentType.parameters.enumerated().map { index, type in
-            Parameter(name: "$\(index)", type: type)
-        }
-    }
-    
-    var returnType: GRPHType {
-        currentType.returnType
-    }
-    
-    var varargs: Bool { false }
-    
     var type: GRPHType { currentType }
     
     func isEqual(to other: GRPHValue) -> Bool {
         false // not even equal to itself, it makes no sense to compare function references
     }
+    
+    func execute(context: GRPHContext, params: [GRPHValue?]) throws -> GRPHValue {
+        switch storage {
+        case .function(let function, let argumentGrid):
+            var i = 0
+            let parmap: [GRPHValue?] = argumentGrid.map {
+                if $0 {
+                    defer {
+                        i += 1
+                    }
+                    return params[i]
+                } else {
+                    return nil
+                }
+            }
+            return try function.executable(context, parmap)
+        case .constant(let const):
+            return const
+        }
+    }
+    
 }
 
 extension FuncRef {
