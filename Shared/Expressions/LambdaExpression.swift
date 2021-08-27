@@ -50,7 +50,7 @@ struct LambdaExpression: Expression {
             }
             lambda = Lambda(currentType: type, instruction: ExpressionInstruction(lineNumber: compiler.lineNumber, expression: expr))
         }
-        capturedVarNames = lambdaContext.capturedVarNames
+        capturedVarNames = Array(lambdaContext.capturedVarNames)
     }
     
     func eval(context: GRPHContext) throws -> GRPHValue {

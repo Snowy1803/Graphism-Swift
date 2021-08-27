@@ -184,6 +184,47 @@ struct ReflectNameSpace: NameSpace {
                 try v.setContent(value)
                 return GRPHVoid.void
             },
+            Function(ns: self, name: "getLambdaCaptureList", parameters: [
+                Parameter(name: "lambda", type: SimpleType.funcref)
+            ], returnType: SimpleType.string.inArray) { context, params in
+                let funcref = params[0] as! FuncRef
+                switch funcref.storage {
+                case .function(_, argumentGrid: _), .constant(_):
+                    return GRPHArray(of: SimpleType.string)
+                case .lambda(_, capture: let capture):
+                    return GRPHArray(capture.map { $0.name }, of: SimpleType.string)
+                }
+            },
+            Function(ns: self, name: "getLambdaCapturedVar", parameters: [
+                Parameter(name: "lambda", type: SimpleType.funcref),
+                Parameter(name: "name", type: SimpleType.string),
+                Parameter(name: "replaceContentWith", type: SimpleType.mixed, optional: true),
+            ], returnType: SimpleType.mixed) { context, params in
+                let funcref = params[0] as! FuncRef
+                switch funcref.storage {
+                case .function(_, argumentGrid: _):
+                    throw GRPHRuntimeError(type: .reflection, message: "Funcref is a function reference, not a lambda")
+                case .constant(_):
+                    throw GRPHRuntimeError(type: .reflection, message: "Funcref is a constant expression, not a lambda")
+                case .lambda(let lambda, capture: let capture):
+                    guard let v = capture.first(where: { $0.name == params[1] as! String }) else {
+                        throw GRPHRuntimeError(type: .reflection, message: "Variable '\(params[1]!)' was not captured in lambda from line '\(lambda.line)'")
+                    }
+                    guard !v.final else {
+                        throw GRPHRuntimeError(type: .reflection, message: "Variable is final")
+                    }
+                    let value = v.content!
+                    if let modify = params[safe: 2] {
+                        let value = try GRPHTypes.autobox(value: modify, expected: v.type)
+                        let assigned = GRPHTypes.type(of: value, expected: v.type)
+                        guard assigned.isInstance(of: v.type) else {
+                            throw GRPHRuntimeError(type: .reflection, message: "Incompatible types, cannot assign a '\(assigned)' to a variable of type '\(v.type)'")
+                        }
+                        try v.setContent(value)
+                    }
+                    return value
+                }
+            },
         ]
     }
 }

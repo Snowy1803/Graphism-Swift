@@ -10,7 +10,7 @@ import Foundation
 /// This 'lambda' context is used for parsing lambdas. It captures used variables when they are looked up
 class GRPHLambdaContext: GRPHVariableOwningContext {
     
-    var capturedVarNames: [String] = []
+    var capturedVarNames: Set<String> = []
     
     override func accepts(instruction: Instruction) throws {
         switch instruction {
@@ -33,7 +33,7 @@ class GRPHLambdaContext: GRPHVariableOwningContext {
             return found
         }
         // captured
-        capturedVarNames.append(name)
+        capturedVarNames.insert(name)
         return parent.findVariable(named: name)
     }
 }
