@@ -29,16 +29,29 @@ struct ReflectNameSpace: NameSpace {
                 // ["name" "param1" value1] -- 3 -- drop 1
                 return try f.executable(context, f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! }))
             },
-            Function(ns: self, name: "callFunctionAsync", parameters: [Parameter(name: "funcName", type: SimpleType.string), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.void, varargs: true) { context, params in
-                guard let f = Function(imports: context.parser.imports, namespace: NameSpaces.none, name: params[0] as! String) else {
-                    throw GRPHRuntimeError(type: .reflection, message: "Local function '\(params[0]!)' not found")
+            Function(ns: self, name: "callFunctionAsync", parameters: [Parameter(name: "funcName", type: MultiOrType(type1: SimpleType.string, type2: SimpleType.funcref)), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.void, varargs: true) { context, params in
+                let f: Parametrable
+                if let name = params[0] as? String {
+                    guard let fn = Function(imports: context.parser.imports, namespace: NameSpaces.none, name: name) else {
+                        throw GRPHRuntimeError(type: .reflection, message: "Local function '\(name)' not found")
+                    }
+                    f = fn
+                } else if let funcref = params[0] as? FuncRef {
+                    f = funcref.currentType
+                } else {
+                    throw GRPHRuntimeError(type: .invalidArgument, message: "First argument must be a string or a funcref")
                 }
+                
                 let params = try f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! })
                 
                 let queue = DispatchQueue(label: "GRPH-Async")
                 queue.async {
                     do {
-                        _ = try f.executable(context, params)
+                        if let funcref = params[0] as? FuncRef {
+                            _ = try funcref.execute(context: context, params: params)
+                        } else {
+                            _ = try (f as! Function).executable(context, params)
+                        }
                     } catch let e as GRPHRuntimeError {
                         context.runtime?.image.destroy()
                         printerr("GRPH exited because of an unhandled exception in an async function")
@@ -52,6 +65,13 @@ struct ReflectNameSpace: NameSpace {
                     }
                 }
                 return GRPHVoid.void
+            },
+            Function(ns: self, name: "callFuncref", parameters: [Parameter(name: "function", type: SimpleType.funcref), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.mixed, varargs: true) { context, params in
+                let funcref = params[0] as! FuncRef
+                guard funcref.currentType.parameterTypes.count == params.count - 1 else {
+                    throw GRPHRuntimeError(type: .reflection, message: "Funcref '\(funcref.funcName)' of type '\(funcref.currentType.string)' expected \(funcref.currentType.parameterTypes.count) arguments; \(params.count - 1) were given")
+                }
+                return try funcref.execute(context: context, params: Array(params.dropFirst()))
             },
             Function(ns: self, name: "callMethod", parameters: [Parameter(name: "methodName", type: SimpleType.string), Parameter(name: "namespace", type: SimpleType.string), Parameter(name: "on", type: SimpleType.mixed), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.mixed, varargs: true) { context, params in
                 guard let ns = NameSpaces.namespace(named: params[1] as! String) else {
