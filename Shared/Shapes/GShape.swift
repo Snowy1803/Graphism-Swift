@@ -6,9 +6,6 @@
 //
 
 import Foundation
-#if GRAPHICAL
-import SwiftUI
-#endif
 
 protocol GShape: GRPHValue, AnyObject {
     var uuid: UUID { get }
@@ -16,10 +13,6 @@ protocol GShape: GRPHValue, AnyObject {
     var positionZ: Int { get set }
     var givenName: String? { get set }
     var typeKey: String { get }
-    
-    #if GRAPHICAL
-    var graphics: AnyView { get }
-    #endif
     
     var stateDefinitions: String { get }
     var stateConstructor: String { get }

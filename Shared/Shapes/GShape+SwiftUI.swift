@@ -8,6 +8,9 @@
 import Foundation
 import SwiftUI
 
+protocol GGraphicalShape: GShape {
+    var graphics: AnyView { get }
+}
 
 extension View {
     var erased: AnyView {
@@ -69,7 +72,7 @@ extension RotatableShape {
     }
 }
 
-extension GRectangle {
+extension GRectangle: GGraphicalShape {
     var graphics: AnyView {
         rotatedView(
             Rectangle()
@@ -80,7 +83,7 @@ extension GRectangle {
     }
 }
 
-extension GCircle {
+extension GCircle: GGraphicalShape {
     var graphics: AnyView {
         rotatedView(
             Ellipse()
@@ -91,7 +94,7 @@ extension GCircle {
     }
 }
 
-extension GLine {
+extension GLine: GGraphicalShape {
     var path: Path {
         Path { path in
             path.move(to: start.cg)
@@ -105,7 +108,7 @@ extension GLine {
     }
 }
 
-extension GPath {
+extension GPath: GGraphicalShape {
     var path: Path {
         Path { path in
             var i = 0
@@ -136,7 +139,7 @@ extension GPath {
     }
 }
 
-extension GPolygon {
+extension GPolygon: GGraphicalShape {
     var path: Path {
         Path { path in
             guard points.count >= 2 else {
@@ -155,17 +158,21 @@ extension GPolygon {
     }
 }
 
-extension GClip {
+extension GClip: GGraphicalShape {
     var graphics: AnyView {
-        AnyView(shape.graphics.mask(clip.graphics))
+        guard let shapeGraphics = (shape as? GGraphicalShape)?.graphics,
+              let clipGraphics = (clip as? GGraphicalShape)?.graphics else {
+            return EmptyView().erased
+        }
+        return AnyView(shapeGraphics.mask(clipGraphics))
     }
 }
 
-extension GGroup {
+extension GGroup: GGraphicalShape {
     var graphics: AnyView {
         ZStack(alignment: .topLeading) {
             ForEach(shapes.sorted(by: { $0.positionZ < $1.positionZ }), id: \.uuid) { shape in
-                self.rotatedView(shape.graphics)
+                self.rotatedView((shape as? GGraphicalShape)?.graphics ?? EmptyView().erased)
             }
         }.erased
     }
@@ -190,7 +197,7 @@ extension GImage {
     }
 }
 
-extension GText {
+extension GText: GGraphicalShape {
     var uiText: Text {
         font.apply(Text(effectiveName))
     }
