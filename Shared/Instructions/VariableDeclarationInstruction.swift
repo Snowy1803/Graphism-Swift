@@ -27,7 +27,7 @@ struct VariableDeclarationInstruction: Instruction {
         self.value = value
     }
     
-    init(lineNumber: Int, groups: [String?], context: GRPHContext) throws {
+    init(lineNumber: Int, groups: [String?], context: CompilingContext) throws {
         guard groups[5] != nil else {
             throw GRPHCompileError(type: .parse, message: "A variable must have a value when it is defined")
         }
@@ -58,11 +58,11 @@ struct VariableDeclarationInstruction: Instruction {
         self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: value)
     }
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         let content = try value.eval(context: context)
         let v = Variable(name: name, type: type, content: content, final: constant)
         context.addVariable(v, global: global)
-        if context.runtime?.debugging ?? false {
+        if context.runtime.debugging {
             printout("[DEBUG VAR \(v.name)=\(v.content ?? "<@#no content#>")]")
         }
     }

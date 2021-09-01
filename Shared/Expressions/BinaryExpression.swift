@@ -20,7 +20,7 @@ struct BinaryExpression: Expression {
     var operands: SimpleType
     let unbox: Bool
     
-    init(context: GRPHContext, left: Expression, op: String, right: Expression) throws {
+    init(context: CompilingContext, left: Expression, op: String, right: Expression) throws {
         self.left = left
         self.right = right
         self.op = BinaryOperator(string: op)!
@@ -100,7 +100,7 @@ struct BinaryExpression: Expression {
         self.unbox = try left.getType(context: context, infer: operands) is OptionalType ? true : right.getType(context: context, infer: operands) is OptionalType
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         let left = unbox ? try GRPHTypes.unbox(value: try self.left.eval(context: context)) : try self.left.eval(context: context)
         switch op {
         case .logicalAnd:
@@ -254,7 +254,7 @@ struct BinaryExpression: Expression {
         }
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         switch op {
         case .logicalAnd, .logicalOr, .greaterThan, .greaterOrEqualTo, .lessThan, .lessOrEqualTo, .equal, .notEqual:
             return SimpleType.boolean

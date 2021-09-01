@@ -11,15 +11,15 @@ struct LambdaExpression: Expression {
     let lambda: Lambda
     let capturedVarNames: [String]
     
-    init(context: GRPHContext, literal: String, infer: GRPHType?) throws {
+    init(context: CompilingContext, literal: String, infer: GRPHType?) throws {
         guard let type = infer as? FuncRefType else {
             // TODO could determine the type from the expression
             throw GRPHCompileError(type: .typeMismatch, message: "Could not determine the type of the lambda, try inserting 'as funcref<returnType><>'")
         }
         
         // new capturing context
-        let compiler = context.compiler!
-        let lambdaContext = GRPHLambdaContext(parent: context)
+        let compiler = context.compiler
+        let lambdaContext = LambdaCompilingContext(compiler: compiler, parent: context)
         
         for param in type.parameters {
             lambdaContext.addVariable(Variable(name: param.name, type: param.type, final: true, compileTime: true), global: false)
@@ -53,7 +53,7 @@ struct LambdaExpression: Expression {
         capturedVarNames = Array(lambdaContext.capturedVarNames)
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         FuncRef(currentType: lambda.currentType, storage: .lambda(lambda, capture: try capturedVarNames.map { capture in
             if let variable = context.findVariable(named: capture) {
                 return variable
@@ -62,7 +62,7 @@ struct LambdaExpression: Expression {
         }))
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         lambda.currentType
     }
     

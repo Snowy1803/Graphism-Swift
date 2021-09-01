@@ -15,7 +15,7 @@ struct MethodExpression: Expression {
     let on: Expression
     let values: [Expression?]
     
-    init(ctx: GRPHContext, method: Method, on: Expression, values: [Expression], asInstruction: Bool = false) throws {
+    init(ctx: CompilingContext, method: Method, on: Expression, values: [Expression], asInstruction: Bool = false) throws {
         var nextParam = 0
         self.method = method
         self.on = on
@@ -43,12 +43,12 @@ struct MethodExpression: Expression {
         self.values = ourvalues
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         let onValue = try on.eval(context: context)
         var m = method
         if !m.effectivelyFinal { // check for overrides
             let real = GRPHTypes.type(of: onValue, expected: m.inType)
-            m = Method(imports: context.parser.imports, namespace: NameSpaces.none, name: m.name, inType: real) ?? m
+            m = Method(imports: context.imports, namespace: NameSpaces.none, name: m.name, inType: real) ?? m
         }
         do {
             return try m.executable(context, onValue, try values.map { try $0?.eval(context: context) })
@@ -58,7 +58,7 @@ struct MethodExpression: Expression {
         }
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         return method.returnType
     }
     

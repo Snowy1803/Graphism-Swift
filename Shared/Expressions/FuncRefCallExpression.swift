@@ -13,7 +13,7 @@ struct FuncRefCallExpression: Expression {
     let varName: String
     let values: [Expression?]
     
-    init(ctx: GRPHContext, varName: String, values: [Expression], asInstruction: Bool = false) throws {
+    init(ctx: CompilingContext, varName: String, values: [Expression], asInstruction: Bool = false) throws {
         self.varName = varName
         
         guard let variable = ctx.findVariable(named: varName) else {
@@ -57,7 +57,7 @@ struct FuncRefCallExpression: Expression {
         self.values = ourvalues
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         guard let variable = context.findVariable(named: varName) else {
             throw GRPHRuntimeError(type: .invalidArgument, message: "Unknown variable '\(varName)'")
         }
@@ -74,7 +74,7 @@ struct FuncRefCallExpression: Expression {
         }
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         guard let variable = context.findVariable(named: varName),
               let funcref = variable.type as? FuncRefType else {
             throw GRPHCompileError(type: .undeclared, message: "Unknown funcref '\(varName)'")

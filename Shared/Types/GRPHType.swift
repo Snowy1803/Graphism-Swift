@@ -38,7 +38,7 @@ extension GRPHType {
         OptionalType(wrapped: self)
     }
     
-    func isInstance(context: GRPHContext, expression: Expression) throws -> Bool {
+    func isInstance(context: CompilingContext, expression: Expression) throws -> Bool {
         return GRPHTypes.autoboxed(type: try expression.getType(context: context, infer: self), expected: self).isInstance(of: self)
     }
     
@@ -74,7 +74,7 @@ struct GRPHTypes {
     
     private init() {}
     
-    static func parse(context: GRPHContext, literal: String) -> GRPHType? { // needs some GRPHContext
+    static func parse(context: GRPHContextProtocol, literal: String) -> GRPHType? {
         if literal.isSurrounded(left: "<", right: ">") {
             return parse(context: context, literal: "\(literal.dropLast().dropFirst())")
         }
@@ -119,10 +119,10 @@ struct GRPHTypes {
         if literal.hasSuffix("?") {
             return parse(context: context, literal: String(literal.dropLast()))?.optional
         }
-        if let found = context.parser.imports.flatMap({ $0.exportedTypes }).first(where: { $0.string == literal }) {
+        if let found = context.imports.flatMap({ $0.exportedTypes }).first(where: { $0.string == literal }) {
             return found
         }
-        return context.parser.imports.flatMap({ $0.exportedTypeAliases }).first(where: { $0.name == literal })?.type
+        return context.imports.flatMap({ $0.exportedTypeAliases }).first(where: { $0.name == literal })?.type
     }
     
     /// Type of a value is calculated HERE
@@ -145,11 +145,11 @@ struct GRPHTypes {
         return type
     }
     
-    static func autobox(context: GRPHContext, expression: Expression, expected: GRPHType) throws -> Expression {
+    static func autobox(context: CompilingContext, expression: Expression, expected: GRPHType) throws -> Expression {
         let type = try expression.getType(context: context, infer: expected)
         if !(type is OptionalType),
            let expected = expected as? OptionalType { // Boxing
-            if context.compiler?.compilerSettings.contains(.strictBoxing) ?? false {
+            if context.compiler.compilerSettings.contains(.strictBoxing) {
                 throw GRPHCompileError(type: .typeMismatch, message: "Strict boxing is enabled. Please box the \(type) into a \(expected) with the '\(expected)' constructor")
             }
             return try ConstructorExpression(ctx: context, boxing: autobox(context: context, expression: expression, expected: expected.wrapped), infer: expected)
@@ -159,7 +159,7 @@ struct GRPHTypes {
                 return try ConstructorExpression(ctx: context, boxing: autobox(context: context, expression: expression.values[0]!, expected: expected.wrapped), infer: expected)
             }
         } else if type is OptionalType { // Unboxing
-            if context.compiler?.compilerSettings.contains(.strictUnboxing) ?? false {
+            if context.compiler.compilerSettings.contains(.strictUnboxing) {
                 if expected.isTheMixed {
                     return expression // valid
                 }

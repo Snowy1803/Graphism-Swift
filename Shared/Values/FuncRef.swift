@@ -29,7 +29,7 @@ struct FuncRef: GRPHValue {
         false // not even equal to itself, it makes no sense to compare function references
     }
     
-    func execute(context: GRPHContext, params: [GRPHValue?]) throws -> GRPHValue {
+    func execute(context: RuntimeContext, params: [GRPHValue?]) throws -> GRPHValue {
         switch storage {
         case .function(let function, let argumentGrid):
             var i = 0

@@ -12,13 +12,15 @@ protocol BlockInstruction: Instruction {
     var children: [Instruction] { get set }
     var label: String? { get set }
     
-    @discardableResult func createContext(_ context: inout GRPHContext) -> GRPHBlockContext
+    @discardableResult func createContext(_ context: inout RuntimeContext) -> BlockRuntimeContext
     
-    func run(context: inout GRPHContext) throws
+    @discardableResult func createContext(_ context: inout CompilingContext) -> BlockCompilingContext
     
-    func mustRun(context: GRPHBlockContext) -> Bool
+    func run(context: inout RuntimeContext) throws
     
-    func canRun(context: GRPHBlockContext) throws -> Bool
+    func mustRun(context: BlockRuntimeContext) -> Bool
+    
+    func canRun(context: BlockRuntimeContext) throws -> Bool
     
     var name: String { get }
 }
@@ -35,13 +37,19 @@ extension BlockInstruction {
         return builder
     }
     
-    @discardableResult func createContext(_ context: inout GRPHContext) -> GRPHBlockContext {
-        let ctx = GRPHBlockContext(parent: context, block: self)
+    @discardableResult func createContext(_ context: inout RuntimeContext) -> BlockRuntimeContext {
+        let ctx = BlockRuntimeContext(parent: context, block: self)
         context = ctx
         return ctx
     }
     
-    func run(context: inout GRPHContext) throws {
+    @discardableResult func createContext(_ context: inout CompilingContext) -> BlockCompilingContext {
+        let ctx = BlockCompilingContext(compiler: context.compiler, parent: context)
+        context = ctx
+        return ctx
+    }
+    
+    func run(context: inout RuntimeContext) throws {
         let ctx = createContext(&context)
         if try mustRun(context: ctx) || canRun(context: ctx) {
             ctx.variables.removeAll()
@@ -49,8 +57,8 @@ extension BlockInstruction {
         }
     }
     
-    func mustRun(context: GRPHBlockContext) -> Bool {
-        if let last = context.parent.last as? GRPHBlockContext,
+    func mustRun(context: BlockRuntimeContext) -> Bool {
+        if let last = context.parent?.previous as? BlockRuntimeContext,
            last.mustNextRun {
             last.mustNextRun = false
             return true
@@ -58,24 +66,24 @@ extension BlockInstruction {
         return false
     }
     
-    func runChildren(context: GRPHBlockContext) throws {
+    func runChildren(context: BlockRuntimeContext) throws {
         context.canNextRun = false
-        var last: GRPHContext?
+        var last: RuntimeContext?
         var i = 0
         while i < children.count && !context.broken && !Thread.current.isCancelled {
             let child = children[i]
-            context.last = last
+            context.previous = last
             let runtime = context.runtime
-            if runtime?.debugging ?? false {
+            if runtime.debugging {
                 printout("[DEBUG LOC \(child.line)]")
             }
-            if runtime?.image.destroyed ?? false {
+            if runtime.image.destroyed {
                 throw GRPHExecutionTerminated()
             }
-            if runtime?.debugStep ?? 0 > 0 {
-                _ = runtime?.debugSemaphore.wait(timeout: .now() + (runtime?.debugStep ?? 0))
+            if runtime.debugStep > 0 {
+                _ = runtime.debugSemaphore.wait(timeout: .now() + runtime.debugStep)
             }
-            var inner: GRPHContext = context
+            var inner: RuntimeContext = context
             try child.safeRun(context: &inner)
             if inner !== context {
                 last = inner
@@ -96,12 +104,12 @@ struct SimpleBlockInstruction: BlockInstruction {
     var children: [Instruction] = []
     var label: String?
     
-    init(context: inout GRPHContext, lineNumber: Int) {
+    init(context: inout CompilingContext, lineNumber: Int) {
         self.lineNumber = lineNumber
         createContext(&context)
     }
     
     var name: String { "block" }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool { true }
+    func canRun(context: BlockRuntimeContext) throws -> Bool { true }
 }

@@ -1,5 +1,5 @@
 //
-//  GRPHVariableOwningContext.swift
+//  VariableOwningRuntimeContext.swift
 //  Graphism
 //
 //  Created by Emil Pedersen on 26/08/2021.
@@ -7,19 +7,12 @@
 
 import Foundation
 
-class GRPHVariableOwningContext: GRPHContext {
-    
-    let parent: GRPHContext
+class VariableOwningRuntimeContext: RuntimeContext {
     
     var variables: [Variable] = []
     
-    init(parent: GRPHContext) {
-        self.parent = parent
-        super.init(parser: parent.parser)
-    }
-    
     deinit {
-        if runtime?.debugging ?? false {
+        if runtime.debugging {
             for variable in variables {
                 printout("[DEBUG -VAR \(variable.name)]")
             }
@@ -27,7 +20,7 @@ class GRPHVariableOwningContext: GRPHContext {
     }
     
     override var allVariables: [Variable] {
-        var vars = parent.allVariables
+        var vars = super.allVariables
         vars.append(contentsOf: variables)
         return vars
     }
@@ -38,7 +31,7 @@ class GRPHVariableOwningContext: GRPHContext {
         if let found = variables.first(where: { $0.name == name }) {
             return found
         }
-        return parent.findVariable(named: name)
+        return super.findVariable(named: name)
     }
     
     /// Used in Variable Declaration Instruction to know if defining the variable is allowed
@@ -51,9 +44,11 @@ class GRPHVariableOwningContext: GRPHContext {
     
     override func addVariable(_ variable: Variable, global: Bool) {
         if global {
-            parser.globalVariables.append(variable)
+            super.addVariable(variable, global: global)
         } else {
             variables.append(variable)
         }
     }
 }
+
+typealias LambdaRuntimeContext = VariableOwningRuntimeContext

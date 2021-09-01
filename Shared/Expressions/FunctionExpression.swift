@@ -14,7 +14,7 @@ struct FunctionExpression: Expression {
     let function: Function
     let values: [Expression?]
     
-    init(ctx: GRPHContext, function: Function, values: [Expression], asInstruction: Bool = false) throws {
+    init(ctx: CompilingContext, function: Function, values: [Expression], asInstruction: Bool = false) throws {
         self.function = function
         var ourvalues: [Expression?] = []
         guard asInstruction || !function.returnType.isTheVoid else {
@@ -41,7 +41,7 @@ struct FunctionExpression: Expression {
         self.values = ourvalues
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         do {
             return try function.executable(context, try values.map { try $0?.eval(context: context) })
         } catch var e as GRPHRuntimeError {
@@ -50,7 +50,7 @@ struct FunctionExpression: Expression {
         }
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         return function.returnType
     }
     

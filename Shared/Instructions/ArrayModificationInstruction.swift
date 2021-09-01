@@ -33,7 +33,7 @@ struct ArrayModificationInstruction: Instruction {
         }
     }
     
-    init(lineNumber: Int, context: GRPHContext, groups: [String?]) throws {
+    init(lineNumber: Int, context: CompilingContext, groups: [String?]) throws {
         var inside = groups[2]!
         var op: ArrayModificationOperation = .set
         if inside.hasSuffix("+") {
@@ -70,7 +70,7 @@ struct ArrayModificationInstruction: Instruction {
         try self.init(lineNumber: lineNumber, name: v.name, op: op, index: index, value: exp)
     }
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         guard let v = context.findVariable(named: name) else {
             throw GRPHRuntimeError(type: .unexpected, message: "Undeclared variable '\(name)'")
         }
@@ -111,7 +111,7 @@ struct ArrayModificationInstruction: Instruction {
                 arr.wrapped.remove(at: index)
             }
         }
-        if context.runtime?.debugging ?? false {
+        if context.runtime.debugging {
             printout("[DEBUG VAR \(v.name)=\(v.content!)]")
         }
     }

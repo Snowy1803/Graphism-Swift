@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GRPHRuntime: GRPHParser {
+class GRPHRuntime {
     
     // Debugging
     var debugging: Bool = false {
@@ -22,10 +22,10 @@ class GRPHRuntime: GRPHParser {
     var debugStep: TimeInterval = 0
     var debugSemaphore = DispatchSemaphore(value: 0)
     
-    var globalVariables: [Variable]
+    var initialGlobalVariables: [Variable]
     var instructions: [Instruction]
     var timestamp: Date!
-    var context: GRPHContext!
+    var context: RuntimeContext!
     
     var localFunctions: [Function] = []
     
@@ -33,28 +33,28 @@ class GRPHRuntime: GRPHParser {
     
     var settings: [RuntimeSetting: Bool] = [:]
     
-    init(instructions: [Instruction], globalVariables: [Variable] = [], image: GImage) {
+    init(instructions: [Instruction], globalVariables: [Variable], image: GImage) {
         self.instructions = instructions
-        self.globalVariables = globalVariables
+        self.initialGlobalVariables = globalVariables
         self.image = image
-        self.globalVariables.append(Variable(name: "back", type: SimpleType.Background, content: image, final: false))
+        self.initialGlobalVariables.append(Variable(name: "back", type: SimpleType.Background, content: image, final: false))
     }
     
     convenience init(compiler: GRPHCompiler, image: GImage) {
-        self.init(instructions: compiler.instructions, globalVariables: compiler.globalVariables.filter { !$0.compileTime }, image: image)
+        self.init(instructions: compiler.instructions, globalVariables: GRPHCompiler.defaultVariables.filter { !$0.compileTime } + compiler.internStrings.enumerated().map({ i, s in Variable(name: "$_str\(i)$", type: SimpleType.string, content: s, final: true)}), image: image)
         self.settings = compiler.settings
         self.localFunctions = compiler.imports.compactMap { $0 as? Function }.filter { $0.ns.isEqual(to: NameSpaces.none) }
     }
     
     func run() -> Bool {
         timestamp = Date()
-        context = GRPHContext(parser: self)
+        context = TopLevelRuntimeContext(runtime: self)
         do {
-            var last: GRPHContext?
+            var last: RuntimeContext?
             var i = 0
             while i < instructions.count && !Thread.current.isCancelled {
                 let line = instructions[i]
-                context.last = last
+                context.previous = last
                 if debugging {
                     printout("[DEBUG LOC \(line.line)]")
                 }

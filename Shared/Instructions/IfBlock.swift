@@ -13,7 +13,7 @@ struct IfBlock: BlockInstruction {
     var label: String?
     let condition: Expression
     
-    init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
+    init(lineNumber: Int, context: inout CompilingContext, condition: Expression) throws {
         self.lineNumber = lineNumber
         self.condition = try GRPHTypes.autobox(context: context, expression: condition, expected: SimpleType.boolean)
         createContext(&context)
@@ -22,7 +22,7 @@ struct IfBlock: BlockInstruction {
         }
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool {
+    func canRun(context: BlockRuntimeContext) throws -> Bool {
         try condition.eval(context: context) as! Bool
     }
     
@@ -35,7 +35,7 @@ struct ElseIfBlock: BlockInstruction {
     var label: String?
     let condition: Expression
     
-    init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
+    init(lineNumber: Int, context: inout CompilingContext, condition: Expression) throws {
         self.lineNumber = lineNumber
         self.condition = try GRPHTypes.autobox(context: context, expression: condition, expected: SimpleType.boolean)
         createContext(&context)
@@ -44,8 +44,8 @@ struct ElseIfBlock: BlockInstruction {
         }
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool {
-        if let last = context.parent.last as? GRPHBlockContext {
+    func canRun(context: BlockRuntimeContext) throws -> Bool {
+        if let last = context.parent?.previous as? BlockRuntimeContext {
             context.canNextRun = last.canNextRun
             return try context.canNextRun && condition.eval(context: context) as! Bool
         } else {
@@ -61,13 +61,13 @@ struct ElseBlock: BlockInstruction {
     var children: [Instruction] = []
     var label: String?
     
-    init(context: inout GRPHContext, lineNumber: Int) {
+    init(context: inout CompilingContext, lineNumber: Int) {
         self.lineNumber = lineNumber
         createContext(&context)
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool {
-        if let last = context.parent.last as? GRPHBlockContext {
+    func canRun(context: BlockRuntimeContext) throws -> Bool {
+        if let last = context.parent?.previous as? BlockRuntimeContext {
             return last.canNextRun
         } else {
             throw GRPHRuntimeError(type: .unexpected, message: "#else must follow another block instruction")

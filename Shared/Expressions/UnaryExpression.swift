@@ -12,7 +12,7 @@ struct UnaryExpression: Expression {
     let exp: Expression
     let op: UnaryOperator
     
-    init(context: GRPHContext, op: String, exp: Expression) throws {
+    init(context: CompilingContext, op: String, exp: Expression) throws {
         self.op = UnaryOperator(rawValue: op)!
         self.exp = exp
         switch self.op {
@@ -31,7 +31,7 @@ struct UnaryExpression: Expression {
         }
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         let evaluated = try GRPHTypes.unbox(value: exp.eval(context: context))
         switch op {
         case .bitwiseComplement:
@@ -46,7 +46,7 @@ struct UnaryExpression: Expression {
         }
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         switch op {
         case .bitwiseComplement:
             return SimpleType.integer
@@ -71,7 +71,7 @@ enum UnaryOperator: String {
 struct UnboxExpression: Expression {
     let exp: Expression
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         let value = try exp.eval(context: context)
         guard let opt = value as? GRPHOptional else {
             throw GRPHRuntimeError(type: .unexpected, message: "Cannot unbox non optional")
@@ -84,7 +84,7 @@ struct UnboxExpression: Expression {
         }
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         guard let type = try exp.getType(context: context, infer: infer.optional) as? OptionalType else {
             throw GRPHCompileError(type: .typeMismatch, message: "Cannot unbox non optional")
         }

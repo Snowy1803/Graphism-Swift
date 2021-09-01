@@ -42,11 +42,11 @@ struct ConstantExpression: Expression {
         self.value = rot
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         value.type // The value is always known at compile time, so this is fine
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         value
     }
     

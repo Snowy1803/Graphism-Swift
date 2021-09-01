@@ -28,7 +28,7 @@ struct GraphismCLI: ParsableCommand {
     var input: String
     
     // That way, the compiler will be deallocated when not needed anymore
-    func createRuntime() throws -> GRPHRuntime {
+    func createRuntime() throws -> (GRPHCompiler, GRPHRuntime) {
         let compiler = GRPHCompiler(entireContent: try String(contentsOfFile: input, encoding: .utf8))
         guard compiler.compile() else {
             throw ExitCode.failure
@@ -40,26 +40,26 @@ struct GraphismCLI: ParsableCommand {
             printout("Code compiled successfully")
             throw ExitCode.success
         }
-        return GRPHRuntime(compiler: compiler, image: GImage())
+        return (compiler, GRPHRuntime(compiler: compiler, image: GImage()))
     }
     
     func run() throws {
         setbuf(stdout, nil)
         
-        let runtime = try createRuntime()
+        let (compiler, runtime) = try createRuntime()
         
         runtime.debugging = debug
         runtime.debugStep = step ?? (debug ? Double.infinity : 0)
         
         let listener = DispatchQueue(label: "bbtce-listener", qos: .background)
-        listener.async { listenForBBTCE(runtime: runtime) }
+        listener.async { listenForBBTCE(compiler: compiler, runtime: runtime) }
         
         guard runtime.run() else {
             throw ExitCode.failure
         }
     }
     
-    func listenForBBTCE(runtime: GRPHRuntime) {
+    func listenForBBTCE(compiler: GRPHCompiler, runtime: GRPHRuntime) {
         while let line = readLine() {
             let cmd = line.components(separatedBy: " ")[0]
             switch cmd {
@@ -82,7 +82,7 @@ struct GraphismCLI: ParsableCommand {
                         printout("[EVAL ERR No context]")
                         break
                     }
-                    let e = try Expressions.parse(context: context, infer: nil, literal: String(line.dropFirst(5)))
+                    let e = try Expressions.parse(context: DebuggingCompilingContext(adapting: context, compiler: compiler), infer: nil, literal: String(line.dropFirst(5)))
                     printout("[EVAL OUT \(try e.eval(context: context))]")
                 } catch let e as GRPHCompileError {
                     printout("[EVAL ERR \(e.message)]")

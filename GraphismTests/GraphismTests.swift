@@ -9,13 +9,14 @@ import XCTest
 
 class GraphismTests: XCTestCase {
     
-    var context: GRPHContext!
+    var context: CompilingContext!
     var compiler: GRPHCompiler!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         compiler = GRPHCompiler(entireContent: "")
-        context = GRPHContext(parser: compiler)
+        context = TopLevelCompilingContext(compiler: compiler)
+        compiler.context = context
     }
 
     override func tearDownWithError() throws {
@@ -92,7 +93,7 @@ class GraphismTests: XCTestCase {
     }
     
     func testExpressionParsing() throws {
-        compiler.globalVariables.append(Variable(name: "var", type: SimpleType.integer, final: false, compileTime: true))
+        context.addVariable(Variable(name: "var", type: SimpleType.integer, final: false, compileTime: true), global: true)
         
         // ENUMS
         
@@ -183,13 +184,22 @@ class GraphismTests: XCTestCase {
         compiler.imports.append(TypeAlias(name: "secondFuncType", type: try XCTUnwrap(GRPHTypes.parse(context: context, literal: "funcref<mixed><integer+integer>"))))
         try cast(literal: "firstFuncType(5) is secondFuncType", expected: "true")
         try cast(literal: "secondFuncType(5) is firstFuncType", expected: "false")
-        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as! float").eval(context: context))
-        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as float").eval(context: context))
+        
+        let runtime = GRPHRuntime(compiler: compiler, image: GImage())
+        let ctx = TopLevelRuntimeContext(runtime: runtime)
+        
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as! float").eval(context: ctx))
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as float").eval(context: ctx))
     }
     
     func cast(literal: String, expected: String) throws {
         let exp = try Expressions.parse(context: context, infer: SimpleType.mixed, literal: literal)
-        XCTAssertEqual("\(try exp.eval(context: context))", expected)
+        
+        let runtime = GRPHRuntime(compiler: compiler, image: GImage())
+        runtime.initialGlobalVariables = context.allVariables
+        let ctx = TopLevelRuntimeContext(runtime: runtime)
+        
+        XCTAssertEqual("\(try exp.eval(context: ctx))", expected)
     }
     
     func testSampleProgram() {

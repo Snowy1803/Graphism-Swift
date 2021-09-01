@@ -13,9 +13,9 @@ struct Function: Parametrable, Importable {
     let parameters: [Parameter]
     let returnType: GRPHType
     let varargs: Bool
-    let executable: (GRPHContext, [GRPHValue?]) throws -> GRPHValue
+    let executable: (RuntimeContext, [GRPHValue?]) throws -> GRPHValue
     
-    init(ns: NameSpace, name: String, parameters: [Parameter], returnType: GRPHType = SimpleType.void, varargs: Bool = false, executable: @escaping (GRPHContext, [GRPHValue?]) throws -> GRPHValue) {
+    init(ns: NameSpace, name: String, parameters: [Parameter], returnType: GRPHType = SimpleType.void, varargs: Bool = false, executable: @escaping (RuntimeContext, [GRPHValue?]) throws -> GRPHValue) {
         self.ns = ns
         self.name = name
         self.parameters = parameters

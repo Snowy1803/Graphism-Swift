@@ -52,11 +52,11 @@ struct FunctionReferenceExpression: Expression {
         }
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         FuncRef(currentType: inferredType, storage: .function(function, argumentGrid: argumentGrid))
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         inferredType
     }
     

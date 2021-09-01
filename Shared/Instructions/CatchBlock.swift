@@ -16,7 +16,7 @@ class CatchBlock: BlockInstruction {
     let varName: String
     var def: String = ""
     
-    init(lineNumber: Int, context: inout GRPHContext, varName: String) throws {
+    init(lineNumber: Int, context: inout CompilingContext, varName: String) throws {
         self.varName = varName
         self.lineNumber = lineNumber
         let ctx = createContext(&context)
@@ -28,12 +28,12 @@ class CatchBlock: BlockInstruction {
         ctx.variables.append(Variable(name: varName, type: SimpleType.string, final: true, compileTime: true))
     }
     
-    func exceptionCatched(context: inout GRPHContext, exception: GRPHRuntimeError) throws {
+    func exceptionCatched(context: inout RuntimeContext, exception: GRPHRuntimeError) throws {
         do {
             let ctx = createContext(&context)
             let v = Variable(name: varName, type: SimpleType.string, content: exception.message, final: true)
             ctx.variables.append(v)
-            if context.runtime?.debugging ?? false {
+            if context.runtime.debugging {
                 printout("[DEBUG VAR \(v.name)=\(v.content!)]")
             }
             try self.runChildren(context: ctx)
@@ -51,7 +51,7 @@ class CatchBlock: BlockInstruction {
         }
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool { false }
+    func canRun(context: BlockRuntimeContext) throws -> Bool { false }
     
     var name: String { "catch \(varName) : \(def)" }
 }

@@ -12,7 +12,7 @@ struct ConstructorExpression: Expression {
     let constructor: Constructor
     let values: [Expression?]
     
-    init(ctx: GRPHContext, type: GRPHType, values: [Expression]) throws {
+    init(ctx: CompilingContext, type: GRPHType, values: [Expression]) throws {
         guard let constructor = type.constructor else {
             throw GRPHCompileError(type: .typeMismatch, message: "No constructor found in '\(type)'");
         }
@@ -40,16 +40,16 @@ struct ConstructorExpression: Expression {
         self.values = ourvalues
     }
     
-    init(ctx: GRPHContext, boxing: Expression, infer: GRPHType) throws {
+    init(ctx: CompilingContext, boxing: Expression, infer: GRPHType) throws {
         self.constructor = try boxing.getType(context: ctx, infer: infer).optional.constructor!
         self.values = [boxing]
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         return constructor.executable(context, try values.map { try $0?.eval(context: context) })
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         constructor.type
     }
     

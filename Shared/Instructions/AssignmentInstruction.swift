@@ -15,7 +15,7 @@ struct AssignmentInstruction: Instruction {
     let value: Expression
     let virtualized: Bool
     
-    init(lineNumber: Int, context: GRPHContext, assigned: AssignableExpression, op: String?, value: Expression) throws {
+    init(lineNumber: Int, context: CompilingContext, assigned: AssignableExpression, op: String?, value: Expression) throws {
         self.lineNumber = lineNumber
         self.assigned = assigned
         
@@ -36,16 +36,16 @@ struct AssignmentInstruction: Instruction {
         try assigned.checkCanAssign(context: context)
     }
     
-    init(lineNumber: Int, context: GRPHContext, groups: [String?]) throws {
+    init(lineNumber: Int, context: CompilingContext, groups: [String?]) throws {
         guard let exp = try Expressions.parse(context: context, infer: nil, literal: groups[1]!) as? AssignableExpression else {
             throw GRPHCompileError(type: .parse, message: "The left-hand side of an assignment must be a variable or a field")
         }
         try self.init(lineNumber: lineNumber, context: context, assigned: exp, op: groups[2], value: Expressions.parse(context: context, infer: exp.getType(context: context, infer: SimpleType.mixed), literal: groups[3]!))
     }
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         var cache = [GRPHValue]()
-        context = GRPHVirtualAssignmentContext(parent: context, virtualValue: try assigned.eval(context: context, cache: &cache))
+        context = VirtualAssignmentRuntimeContext(parent: context, virtualValue: try assigned.eval(context: context, cache: &cache))
         let val = try value.eval(context: context)
         try assigned.assign(context: context, value: val, cache: &cache)
     }
@@ -64,11 +64,11 @@ struct AssignmentInstruction: Instruction {
 fileprivate struct VirtualExpression: Expression {
     let type: GRPHType
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
-        (context as! GRPHVirtualAssignmentContext).virtualValue
+    func eval(context: RuntimeContext) throws -> GRPHValue {
+        (context as! VirtualAssignmentRuntimeContext).virtualValue
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         type
     }
     
@@ -78,7 +78,7 @@ fileprivate struct VirtualExpression: Expression {
 }
 
 protocol AssignableExpression: Expression {
-    func checkCanAssign(context: GRPHContext) throws
-    func eval(context: GRPHContext, cache: inout [GRPHValue]) throws -> GRPHValue
-    func assign(context: GRPHContext, value: GRPHValue, cache: inout [GRPHValue]) throws
+    func checkCanAssign(context: CompilingContext) throws
+    func eval(context: RuntimeContext, cache: inout [GRPHValue]) throws -> GRPHValue
+    func assign(context: RuntimeContext, value: GRPHValue, cache: inout [GRPHValue]) throws
 }

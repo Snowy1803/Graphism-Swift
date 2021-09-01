@@ -20,8 +20,8 @@ struct Lambda: Parametrable {
     
     var line: Int { instruction.line }
     
-    func execute(context: GRPHContext, params: [GRPHValue?], capture: [Variable]) throws -> GRPHValue {
-        var ctx: GRPHContext = GRPHVariableOwningContext(parent: context)
+    func execute(context: RuntimeContext, params: [GRPHValue?], capture: [Variable]) throws -> GRPHValue {
+        var ctx: RuntimeContext = LambdaRuntimeContext(runtime: context.runtime, parent: context)
         for (param, arg) in zip(parameters, params) {
             ctx.addVariable(Variable(name: param.name, type: param.type, content: arg, final: true), global: false)
         }

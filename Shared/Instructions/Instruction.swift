@@ -10,14 +10,14 @@ import Foundation
 protocol Instruction {
     var lineNumber: Int { get }
     
-    func run(context: inout GRPHContext) throws
+    func run(context: inout RuntimeContext) throws
     
     /// Must end with a newline
     func toString(indent: String) -> String
 }
 
 extension Instruction {
-    func safeRun(context: inout GRPHContext) throws {
+    func safeRun(context: inout RuntimeContext) throws {
         do {
             try self.run(context: &context)
         } catch var exception as GRPHRuntimeError {

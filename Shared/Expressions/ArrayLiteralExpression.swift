@@ -13,7 +13,7 @@ struct ArrayLiteralExpression: Expression {
     let wrapped: GRPHType
     let values: [Expression]
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         let array = GRPHArray(of: wrapped)
         for val in values {
             var res = try val.eval(context: context)
@@ -29,7 +29,7 @@ struct ArrayLiteralExpression: Expression {
         return array
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         ArrayType(content: wrapped)
     }
     

@@ -15,7 +15,7 @@ struct SwitchTransparentBlock: BlockInstruction {
     // must remain nil
     var label: String?
     
-    func canRun(context: GRPHBlockContext) throws -> Bool {
+    func canRun(context: BlockRuntimeContext) throws -> Bool {
         true
     }
     

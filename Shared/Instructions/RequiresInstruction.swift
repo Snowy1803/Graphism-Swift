@@ -19,7 +19,11 @@ struct RequiresInstruction: Instruction {
     }
     
     /// This is the only instruction run at compile time
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
+        try run(context: context)
+    }
+    
+    func run(context: GRPHContextProtocol) throws {
         guard let current = RequiresInstruction.currentVersion(plugin: plugin) else {
             try throwUnsupported(context: context, message: "This script requires '\(plugin)'")
         }
@@ -28,8 +32,8 @@ struct RequiresInstruction: Instruction {
         }
     }
     
-    func throwUnsupported(context: GRPHContext, message: String) throws -> Never {
-        if context.runtime != nil {
+    func throwUnsupported(context: GRPHContextProtocol, message: String) throws -> Never {
+        if context is RuntimeContext {
             throw GRPHRuntimeError(type: .reflection, message: message)
         } else {
             throw GRPHCompileError(type: .unsupported, message: message)

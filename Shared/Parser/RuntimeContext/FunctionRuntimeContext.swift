@@ -1,5 +1,5 @@
 //
-//  GRPHFunctionContext.swift
+//  FunctionRuntimeContext.swift
 //  Graphism
 //
 //  Created by Emil Pedersen on 14/07/2020.
@@ -7,15 +7,15 @@
 
 import Foundation
 
-class GRPHFunctionContext: GRPHBlockContext {
+class FunctionRuntimeContext: BlockRuntimeContext {
     var currentReturnValue: GRPHValue?
     
-    init(parent: GRPHContext, function: FunctionDeclarationBlock) {
+    init(parent: RuntimeContext, function: FunctionDeclarationBlock) {
         super.init(parent: parent, block: function)
     }
     
     override var allVariables: [Variable] {
-        var vars = parser.globalVariables.filter { $0.final }
+        var vars = parent!.allVariables.filter { $0.final }
         vars.append(contentsOf: variables)
         return vars
     }
@@ -24,12 +24,13 @@ class GRPHFunctionContext: GRPHBlockContext {
         if let found = variables.first(where: { $0.name == name }) {
             return found
         }
-        return parser.globalVariables.first(where: { $0.name == name && $0.final })
+        if let outer = parent?.findVariable(named: name), outer.final {
+            return outer
+        }
+        return nil
     }
     
     func setReturnValue(returnValue: GRPHValue?) throws {
         currentReturnValue = returnValue // type checked at compile time
     }
-    
-    override var inFunction: FunctionDeclarationBlock? { (block as! FunctionDeclarationBlock) }
 }

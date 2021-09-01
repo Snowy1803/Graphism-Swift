@@ -19,7 +19,7 @@ class FunctionDeclarationBlock: BlockInstruction {
     var defaults: [Expression?] = []
     var returnDefault: Expression?
     
-    init(lineNumber: Int, context: inout GRPHContext, returnType autoableReturnType: GRPHType?, name: String, def: String) throws {
+    init(lineNumber: Int, context: inout CompilingContext, returnType autoableReturnType: GRPHType?, name: String, def: String) throws {
         self.lineNumber = lineNumber
         let context = createContext(&context)
         // finding returnDefault
@@ -137,10 +137,10 @@ class FunctionDeclarationBlock: BlockInstruction {
         }
         
         generated = Function(ns: NameSpaces.none, name: name, parameters: pars, returnType: returnType, varargs: varargs, executable: executeFunction(context:params:))
-        context.compiler!.imports.append(generated)
+        context.compiler.imports.append(generated)
     }
     
-    convenience init(lineNumber: Int, context: inout GRPHContext, def: String) throws {
+    convenience init(lineNumber: Int, context: inout CompilingContext, def: String) throws {
         if let bracket = def.firstIndex(of: "["),
            let space = def.firstIndex(of: " "),
            space < bracket {
@@ -163,8 +163,14 @@ class FunctionDeclarationBlock: BlockInstruction {
         throw GRPHCompileError(type: .parse, message: "Invalid #function declaration")
     }
     
-    func createContext(_ context: inout GRPHContext) -> GRPHBlockContext {
-        let ctx = GRPHFunctionContext(parent: context, function: self)
+    func createContext(_ context: inout RuntimeContext) -> BlockRuntimeContext {
+        let ctx = FunctionRuntimeContext(parent: context, function: self)
+        context = ctx
+        return ctx
+    }
+    
+    func createContext(_ context: inout CompilingContext) -> BlockCompilingContext {
+        let ctx = FunctionCompilingContext(parent: context, function: self)
         context = ctx
         return ctx
     }
@@ -187,9 +193,9 @@ class FunctionDeclarationBlock: BlockInstruction {
         return result
     }
     
-    func executeFunction(context: GRPHContext, params: [GRPHValue?]) throws -> GRPHValue {
+    func executeFunction(context: RuntimeContext, params: [GRPHValue?]) throws -> GRPHValue {
         do {
-            let ctx = GRPHFunctionContext(parent: context, function: self)
+            let ctx = FunctionRuntimeContext(parent: context, function: self)
             try parseParameters(context: ctx, params: params)
             try runChildren(context: ctx)
             if let returning = ctx.currentReturnValue {
@@ -207,7 +213,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         }
     }
     
-    func parseParameters(context: GRPHFunctionContext, params: [GRPHValue?]) throws {
+    func parseParameters(context: FunctionRuntimeContext, params: [GRPHValue?]) throws {
         var varargs: GRPHArray? = nil
         for i in 0..<params.count {
             let val = params[i]
@@ -245,7 +251,7 @@ class FunctionDeclarationBlock: BlockInstruction {
         }
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool { false }
+    func canRun(context: BlockRuntimeContext) throws -> Bool { false }
     
     var name: String {
         var str = "function \(generated.returnType.string) \(generated.name)["

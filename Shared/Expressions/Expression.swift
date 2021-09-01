@@ -9,9 +9,9 @@ import Foundation
 
 protocol Expression: CustomStringConvertible {
     
-    func eval(context: GRPHContext) throws -> GRPHValue
+    func eval(context: RuntimeContext) throws -> GRPHValue
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType
     
     var string: String { get }
     
@@ -37,7 +37,7 @@ struct Expressions {
     
     private init() {}
     
-    static func parse(context: GRPHContext, infer: GRPHType?, literal str: String) throws -> Expression {
+    static func parse(context: CompilingContext, infer: GRPHType?, literal str: String) throws -> Expression {
         if str.hasPrefix("[") && str.hasSuffix("]") {
             let clipped = str.dropFirst().dropLast()
             if checkBalance(literal: clipped) {
@@ -128,7 +128,7 @@ struct Expressions {
             guard let ns = member.namespace else {
                 throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
             }
-            guard let function = Function(imports: context.parser.imports, namespace: ns, name: member.member) else {
+            guard let function = Function(imports: context.imports, namespace: ns, name: member.member) else {
                 throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
             }
             return try FunctionReferenceExpression(function: function, infer: infer)
@@ -140,7 +140,7 @@ struct Expressions {
                 guard let ns = member.namespace else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
                 }
-                guard let function = Function(imports: context.parser.imports, namespace: ns, name: member.member) else {
+                guard let function = Function(imports: context.imports, namespace: ns, name: member.member) else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
                 }
                 return try FunctionExpression(ctx: context, function: function, values: try splitParameters(context: context, in: result[2]!, delimiter: space))
@@ -159,7 +159,7 @@ struct Expressions {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[2]!)'")
                 }
                 let on = try Expressions.parse(context: context, infer: nil, literal: result[1]!)
-                guard let method = Method(imports: context.parser.imports, namespace: ns, name: member.member, inType: try on.getType(context: context, infer: SimpleType.mixed)) else {
+                guard let method = Method(imports: context.imports, namespace: ns, name: member.member, inType: try on.getType(context: context, infer: SimpleType.mixed)) else {
                     throw GRPHCompileError(type: .undeclared, message: "Undeclared method '\(try on.getType(context: context, infer: SimpleType.mixed)).\(result[2]!)'")
                 }
                 return try MethodExpression(ctx: context, method: method, on: on, values: try splitParameters(context: context, in: result[3]!, delimiter: space))
@@ -239,7 +239,7 @@ struct Expressions {
         throw GRPHCompileError(type: .parse, message: "Could not parse expression '\(str)'")
     }
     
-    static func splitParameters(context: GRPHContext, in string: String, delimiter: NSRegularExpression, infer: GRPHType? = nil) throws -> [Expression] {
+    static func splitParameters(context: CompilingContext, in string: String, delimiter: NSRegularExpression, infer: GRPHType? = nil) throws -> [Expression] {
         var result = [Expression]()
         let trimmed = string.trimmingCharacters(in: .whitespaces)
         var last = trimmed.startIndex
@@ -257,7 +257,7 @@ struct Expressions {
         return result
     }
     
-    private static func findBinary(context: GRPHContext, str: String, regex: NSRegularExpression) throws -> BinaryExpression? {
+    private static func findBinary(context: CompilingContext, str: String, regex: NSRegularExpression) throws -> BinaryExpression? {
         var exp1 = "",
             exp2 = "",
             op = ""

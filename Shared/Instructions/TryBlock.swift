@@ -13,14 +13,14 @@ struct TryBlock: BlockInstruction {
     var label: String?
     var catches: [GRPHRuntimeError.RuntimeExceptionType?: CatchBlock] = [:]
     
-    init(context: inout GRPHContext, lineNumber: Int) {
+    init(context: inout CompilingContext, lineNumber: Int) {
         self.lineNumber = lineNumber
         createContext(&context)
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool { true }
+    func canRun(context: BlockRuntimeContext) throws -> Bool { true }
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         do {
             let ctx = createContext(&context)
             try runChildren(context: ctx)

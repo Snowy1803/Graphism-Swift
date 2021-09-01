@@ -13,11 +13,11 @@ struct FieldExpression: Expression {
     let on: Expression
     let field: Field
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         field.getValue(on: try on.eval(context: context))
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         field.type
     }
     
@@ -29,13 +29,13 @@ struct FieldExpression: Expression {
 }
 
 extension FieldExpression: AssignableExpression {
-    func checkCanAssign(context: GRPHContext) throws {
+    func checkCanAssign(context: CompilingContext) throws {
         guard field.writeable else {
             throw GRPHCompileError(type: .typeMismatch, message: "Cannot assign to final field '\(field.type).\(field.name)'")
         }
     }
     
-    func eval(context: GRPHContext, cache: inout [GRPHValue]) throws -> GRPHValue {
+    func eval(context: RuntimeContext, cache: inout [GRPHValue]) throws -> GRPHValue {
         if let on = on as? AssignableExpression {
             cache.append(try on.eval(context: context, cache: &cache))
         } else {
@@ -44,13 +44,13 @@ extension FieldExpression: AssignableExpression {
         return field.getValue(on: cache.last!)
     }
     
-    func assign(context: GRPHContext, value: GRPHValue, cache: inout [GRPHValue]) throws {
+    func assign(context: RuntimeContext, value: GRPHValue, cache: inout [GRPHValue]) throws {
         var modified = cache.last!
         try field.setValue(on: &modified, value: value)
         // if 'modified' is a reference type, it is already updated
         if type(of: modified) is AnyClass {
             if modified is GShape {
-                context.runtime?.triggerAutorepaint()
+                context.runtime.triggerAutorepaint()
             }
             return
         }
@@ -67,11 +67,11 @@ struct ConstantPropertyExpression: Expression {
     let property: TypeConstant
     let inType: GRPHType
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         property.value
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         property.type
     }
     
@@ -87,11 +87,11 @@ struct ConstantPropertyExpression: Expression {
 struct ValueTypeExpression: Expression {
     let on: Expression
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         try GRPHTypes.realType(of: on.eval(context: context), expected: nil).string
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         SimpleType.string
     }
     
@@ -105,11 +105,11 @@ struct ValueTypeExpression: Expression {
 struct TypeValueExpression: Expression {
     let type: GRPHType
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         type.string
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         SimpleType.string
     }
     

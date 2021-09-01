@@ -14,7 +14,7 @@ struct CastExpression: Expression {
     let cast: CastType
     let to: GRPHType
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         let raw = try from.eval(context: context)
         if case .typeCheck = cast {
             return GRPHTypes.type(of: raw).isInstance(of: to) // no autoboxing in is
@@ -45,7 +45,7 @@ struct CastExpression: Expression {
         cast.optional ? GRPHOptional(value) : value
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         if case .typeCheck = cast {
             return SimpleType.boolean
         } else if cast.optional {

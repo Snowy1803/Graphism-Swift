@@ -14,13 +14,13 @@ struct ArrayValueExpression: Expression {
     let index: Expression?
     let removing: Bool
     
-    internal init(context: GRPHContext, varName: String, index: Expression?, removing: Bool) throws {
+    internal init(context: CompilingContext, varName: String, index: Expression?, removing: Bool) throws {
         self.varName = varName
         self.index = index == nil ? nil : try GRPHTypes.autobox(context: context, expression: index!, expected: SimpleType.integer)
         self.removing = removing
     }
     
-    func eval(context: GRPHContext) throws -> GRPHValue {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
         guard let val = context.findVariable(named: varName)?.content as? GRPHArray else {
             throw GRPHRuntimeError(type: .invalidArgument, message: "Array expression with non-array")
         }
@@ -45,7 +45,7 @@ struct ArrayValueExpression: Expression {
         }
     }
     
-    func getType(context: GRPHContext, infer: GRPHType) throws -> GRPHType {
+    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         guard let v = context.findVariable(named: varName) else {
             throw GRPHCompileError(type: .undeclared, message: "Unknown variable '\(varName)'")
         }

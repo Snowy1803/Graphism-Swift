@@ -1,5 +1,5 @@
 //
-//  GRPHBlockContext.swift
+//  BlockRuntimeContext.swift
 //  Graphism
 //
 //  Created by Emil Pedersen on 25/07/2020.
@@ -7,8 +7,7 @@
 
 import Foundation
 
-class GRPHBlockContext: GRPHVariableOwningContext {
-    
+class BlockRuntimeContext: VariableOwningRuntimeContext {
     let block: BlockInstruction
     
     /// true if the next else can run, false otherwise
@@ -20,9 +19,9 @@ class GRPHBlockContext: GRPHVariableOwningContext {
     /// true if #fallthrough was called in this block
     var mustNextRun: Bool = false
     
-    init(parent: GRPHContext, block: BlockInstruction) {
+    init(parent: RuntimeContext, block: BlockInstruction) {
         self.block = block
-        super.init(parent: parent)
+        super.init(runtime: parent.runtime, parent: parent)
     }
     
     func continueBlock() {
@@ -37,7 +36,7 @@ class GRPHBlockContext: GRPHVariableOwningContext {
         mustNextRun = true
     }
     
-    @discardableResult override func breakNearestBlock<T: GRPHBlockContext>(_ type: T.Type, scope: BreakInstruction.BreakScope = .scopes(1)) throws -> T {
+    @discardableResult override func breakNearestBlock<T: BlockRuntimeContext>(_ type: T.Type, scope: BreakInstruction.BreakScope = .scopes(1)) throws -> T {
         broken = true
         if let value = self as? T {
             switch scope {
@@ -49,12 +48,10 @@ class GRPHBlockContext: GRPHVariableOwningContext {
                 if n == 1 {
                     return value
                 } else {
-                    return try parent.breakNearestBlock(type, scope: .scopes(n - 1))
+                    return try parent!.breakNearestBlock(type, scope: .scopes(n - 1))
                 }
             }
         }
-        return try parent.breakNearestBlock(type, scope: scope)
+        return try parent!.breakNearestBlock(type, scope: scope)
     }
-    
-    override var inFunction: FunctionDeclarationBlock? { parent.inFunction }
 }

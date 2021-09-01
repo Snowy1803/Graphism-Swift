@@ -1,6 +1,6 @@
 //
-//  GRPHLambdaContext.swift
-//  GRPHLambdaContext
+//  LambdaCompilingContext.swift
+//  Graphism
 //
 //  Created by Emil Pedersen on 26/08/2021.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 /// This 'lambda' context is used for parsing lambdas. It captures used variables when they are looked up
-class GRPHLambdaContext: GRPHVariableOwningContext {
+class LambdaCompilingContext: VariableOwningCompilingContext {
     
     var capturedVarNames: Set<String> = []
     
@@ -34,6 +34,6 @@ class GRPHLambdaContext: GRPHVariableOwningContext {
         }
         // captured
         capturedVarNames.insert(name)
-        return parent.findVariable(named: name)
+        return parent!.findVariable(named: name)
     }
 }

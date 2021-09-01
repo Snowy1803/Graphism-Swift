@@ -24,7 +24,7 @@ extension Parametrable {
         return parameters[index]
     }
     
-    func parameter(index: Int, context: GRPHContext, exp: Expression) throws -> (param: Parameter, add: Int)? {
+    func parameter(index: Int, context: CompilingContext, exp: Expression) throws -> (param: Parameter, add: Int)? {
         try parameter(index: index) { infer in
             try exp.getType(context: context, infer: infer)
         }

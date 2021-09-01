@@ -12,7 +12,7 @@ struct BreakInstruction: Instruction {
     let type: BreakType
     let scope: BreakScope
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         switch type {
         case .break:
             try context.breakBlock(scope: scope)
@@ -67,7 +67,7 @@ struct ReturnInstruction: Instruction {
     let lineNumber: Int
     var value: Expression? = nil
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         try context.returnFunction(returnValue: value?.eval(context: context))
     }
     

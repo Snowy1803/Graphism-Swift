@@ -16,7 +16,7 @@ struct ForEachBlock: BlockInstruction {
     let array: Expression
     let inOut: Bool
     
-    init(lineNumber: Int, context: inout GRPHContext, varName: String, array: Expression) throws {
+    init(lineNumber: Int, context: inout CompilingContext, varName: String, array: Expression) throws {
         self.inOut = varName.hasPrefix("&") // new in Swift Edition
         self.varName = inOut ? String(varName.dropFirst()) : varName
         self.array = try GRPHTypes.autobox(context: context, expression: array, expected: SimpleType.mixed.inArray)
@@ -35,9 +35,9 @@ struct ForEachBlock: BlockInstruction {
         ctx.variables.append(Variable(name: self.varName, type: arrtype.content, final: !inOut, compileTime: true))
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool { true } // not called
+    func canRun(context: BlockRuntimeContext) throws -> Bool { true } // not called
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         let ctx = createContext(&context)
         var i = 0
         let arr = try array.eval(context: context) as! GRPHArray
@@ -48,7 +48,7 @@ struct ForEachBlock: BlockInstruction {
             ctx.variables.removeAll()
             let v = Variable(name: varName, type: arr.content, content: arr.wrapped[i], final: !inOut)
             ctx.variables.append(v)
-            if context.runtime?.debugging ?? false {
+            if context.runtime.debugging {
                 printout("[DEBUG VAR \(v.name)=\(v.content!)]")
             }
             try runChildren(context: ctx)

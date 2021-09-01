@@ -7,71 +7,73 @@
 
 import Foundation
 
-class GRPHCompiler: GRPHParser {
+class GRPHCompiler {
     static let grphVersion = "1.11"
     static let label = try! NSRegularExpression(pattern: "^[A-Za-z][A-Za-z0-9_]*$")
     static let varNameRequirement = try! NSRegularExpression(pattern: "^[$A-Za-z_][A-Za-z0-9_]*$")
     
     static let allBrackets = try! NSRegularExpression(pattern: "[({\\[\\]})]")
     
+    static var defaultVariables: [Variable] {
+        [
+            Variable(name: "this", type: SimpleType.rootThisType, content: "currentDocument", final: true),
+            Variable(name: "back", type: SimpleType.Background, final: false, compileTime: true),
+            Variable(name: "WHITE", type: SimpleType.color,
+                     content: ColorPaint.components(red: 1, green: 1, blue: 1),
+                     final: true),
+            Variable(name: "BLACK", type: SimpleType.color,
+                     content: ColorPaint.components(red: 0, green: 0, blue: 0),
+                     final: true),
+            Variable(name: "RED", type: SimpleType.color,
+                     content: ColorPaint.components(red: 1, green: 0, blue: 0),
+                     final: true),
+            Variable(name: "GREEN", type: SimpleType.color,
+                     content: ColorPaint.components(red: 0, green: 1, blue: 0),
+                     final: true),
+            Variable(name: "BLUE", type: SimpleType.color,
+                     content: ColorPaint.components(red: 0, green: 0, blue: 1),
+                     final: true),
+            Variable(name: "ORANGE", type: SimpleType.color,
+                     content: ColorPaint.components(red: 1, green: 0.78, blue: 0),
+                     final: true),
+            Variable(name: "YELLOW", type: SimpleType.color,
+                     content: ColorPaint.components(red: 1, green: 1, blue: 0),
+                     final: true),
+            Variable(name: "PINK", type: SimpleType.color,
+                     content: ColorPaint.components(red: 1, green: 0.69, blue: 0.69),
+                     final: true),
+            Variable(name: "PURPLE", type: SimpleType.color,
+                     content: ColorPaint.components(red: 1, green: 0, blue: 1),
+                     final: true),
+            Variable(name: "AQUA", type: SimpleType.color,
+                     content: ColorPaint.components(red: 0, green: 1, blue: 1),
+                     final: true),
+            Variable(name: "ALPHA", type: SimpleType.color,
+                     content: ColorPaint.components(red: 0, green: 0, blue: 0, alpha: 0),
+                     final: true),
+        ]
+    }
+    
     var line0: String = ""
     var blockCount = 0
     var lineNumber: Int = 0
     
     var internStrings: [String] = []
-    var globalVariables: [Variable] = []
     var imports: [Importable] = [NameSpaces.namespace(named: "standard")!]
     var instructions: [Instruction] = []
     var nextLabel: String?
     
     var entireContent: String
     var lines: [String] = []
-    var context: GRPHContext!
+    var context: CompilingContext!
     
     var settings: [RuntimeSetting: Bool] = [:]
-    
     
     var indent = "\t"
     var compilerSettings: Set<CompilerSetting> = []
     
     init(entireContent: String) {
         self.entireContent = entireContent
-        // TODO change this to file, or a new type
-        globalVariables.append(Variable(name: "this", type: SimpleType.rootThisType, content: "currentDocument", final: true))
-        globalVariables.append(Variable(name: "back", type: SimpleType.Background, final: false, compileTime: true))
-        globalVariables.append(Variable(name: "WHITE", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 1, green: 1, blue: 1),
-                                        final: true))
-        globalVariables.append(Variable(name: "BLACK", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 0, green: 0, blue: 0),
-                                        final: true))
-        globalVariables.append(Variable(name: "RED", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 1, green: 0, blue: 0),
-                                        final: true))
-        globalVariables.append(Variable(name: "GREEN", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 0, green: 1, blue: 0),
-                                        final: true))
-        globalVariables.append(Variable(name: "BLUE", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 0, green: 0, blue: 1),
-                                        final: true))
-        globalVariables.append(Variable(name: "ORANGE", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 1, green: 0.78, blue: 0),
-                                        final: true))
-        globalVariables.append(Variable(name: "YELLOW", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 1, green: 1, blue: 0),
-                                        final: true))
-        globalVariables.append(Variable(name: "PINK", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 1, green: 0.69, blue: 0.69),
-                                        final: true))
-        globalVariables.append(Variable(name: "PURPLE", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 1, green: 0, blue: 1),
-                                        final: true))
-        globalVariables.append(Variable(name: "AQUA", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 0, green: 1, blue: 1),
-                                        final: true))
-        globalVariables.append(Variable(name: "ALPHA", type: SimpleType.color,
-                                        content: ColorPaint.components(red: 0, green: 0, blue: 0, alpha: 0),
-                                        final: true))
     }
     
     func dumpWDIU() {
@@ -88,7 +90,7 @@ class GRPHCompiler: GRPHParser {
     /// Please execute on a secondary thread, as the program
     func compile() -> Bool {
         lines = entireContent.components(separatedBy: "\n")
-        context = GRPHContext(parser: self)
+        context = TopLevelCompilingContext(compiler: self)
         for lineNumber in 0..<lines.count {
             self.lineNumber = lineNumber
             // Real line
@@ -219,12 +221,12 @@ class GRPHCompiler: GRPHParser {
                 imports.append(TypeAlias(name: newname, type: type))
                 return nil
             case "#if":
-                if context is SwitchContext {
+                if context is SwitchCompilingContext {
                     throw GRPHCompileError(type: .parse, message: "Expected #case or #default in #switch block")
                 }
                 return (try IfBlock(lineNumber: lineNumber, context: &context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)), false)
             case "#elseif", "#elif":
-                if let ctx = context as? SwitchContext {
+                if let ctx = context as? SwitchCompilingContext {
                     guard ctx.state == .next else {
                         throw GRPHCompileError(type: .parse, message: "Expected #case or #default in #switch block")
                     }
@@ -232,7 +234,7 @@ class GRPHCompiler: GRPHParser {
                 }
                 return (try ElseIfBlock(lineNumber: lineNumber, context: &context, condition: Expressions.parse(context: context, infer: SimpleType.boolean, literal: params)), false)
             case "#else":
-                if context is SwitchContext {
+                if context is SwitchCompilingContext {
                     throw GRPHCompileError(type: .parse, message: "Expected #case or #default in #switch block")
                 }
                 guard params.isEmpty else {
@@ -305,8 +307,7 @@ class GRPHCompiler: GRPHParser {
                 return (try FunctionDeclarationBlock(lineNumber: lineNumber, context: &context, def: params), false)
             case "#return":
                 let exp = params.isEmpty ? nil : try Expressions.parse(context: context, infer: nil, literal: params)
-                guard let ctx = context as? GRPHFunctionContext,
-                      let block = ctx.inFunction else {
+                guard let block = context.inFunction else {
                     throw GRPHCompileError(type: .parse, message: "Cannot use #return outside of a #function block")
                 }
                 let expected = block.generated.returnType
@@ -349,7 +350,7 @@ class GRPHCompiler: GRPHParser {
                 }
                 let requires = RequiresInstruction(lineNumber: lineNumber, plugin: p[0], version: version)
                 if blockCount == 0 {
-                    try requires.run(context: &context)
+                    try requires.run(context: context)
                 } else {
                     return (requires, false)
                 }
@@ -369,12 +370,12 @@ class GRPHCompiler: GRPHParser {
                 try addInstruction(VariableDeclarationInstruction(lineNumber: lineNumber, global: false, constant: true, type: type, name: name, value: exp))
                 try addInstruction(SwitchTransparentBlock(lineNumber: lineNumber))
                 // We create our context, denying non-#case/#default and advertising our var name
-                context = SwitchContext(parent: context, compare: VariableExpression(name: name))
+                context = SwitchCompilingContext(parent: context, compare: VariableExpression(name: name))
                 // We advertise our var with it's type, so type checks in #case works
                 context.addVariable(Variable(name: name, type: type, final: true, compileTime: true), global: false)
                 return nil // handled
             case "#case": // uwu
-                guard let ctx = context as? SwitchContext else {
+                guard let ctx = context as? SwitchCompilingContext else {
                     throw GRPHCompileError(type: .parse, message: "#case cannot be used outside of a #switch")
                 }
                 let type = try ctx.compare.getType(context: context, infer: SimpleType.mixed)
@@ -403,7 +404,7 @@ class GRPHCompiler: GRPHParser {
                 }
                 return nil // handled
             case "#default":
-                guard let ctx = context as? SwitchContext else {
+                guard let ctx = context as? SwitchCompilingContext else {
                     throw GRPHCompileError(type: .parse, message: "#default cannot be used outside of a #switch")
                 }
                 switch ctx.state {
@@ -473,7 +474,7 @@ class GRPHCompiler: GRPHParser {
                     case "uwus":
                         indent = String(repeating: "uwu ", count: multiplier ?? 1)
                     default:
-                        if let v = globalVariables.first(where: { $0.name == value }),
+                        if let v = context.findVariable(named: value),
                            let content = v.content as? String {
                             indent = String(repeating: content, count: multiplier ?? 1)
                         } else {
@@ -592,7 +593,7 @@ class GRPHCompiler: GRPHParser {
             guard let ns = member.namespace else {
                 throw GRPHCompileError(type: .undeclared, message: "Undeclared namespace in namespaced member '\(result[1]!)'")
             }
-            guard let function = Function(imports: context.parser.imports, namespace: ns, name: member.member) else {
+            guard let function = Function(imports: imports, namespace: ns, name: member.member) else {
                 throw GRPHCompileError(type: .undeclared, message: "Undeclared function '\(result[1]!)'")
             }
             return (try ExpressionInstruction(lineNumber: lineNumber, expression: FunctionExpression(ctx: context, function: function, values: Expressions.splitParameters(context: context, in: result[2]!, delimiter: Expressions.space), asInstruction: true)), false)
@@ -646,10 +647,10 @@ class GRPHCompiler: GRPHParser {
                     instructions.removeLast()
                     instructions.append(contentsOf: swi.children)
                 }
-                context = (context as! SwitchContext).parent
+                context = (context as! SwitchCompilingContext).parent
             } else {
                 blockCount -= 1
-                context = (context as! GRPHBlockContext).parent
+                context = (context as! BlockCompilingContext).parent
             }
         }
     }
@@ -718,7 +719,7 @@ class GRPHCompiler: GRPHParser {
         if index == nil {
             index = internStrings.count
             internStrings.append(string)
-            globalVariables.append(Variable(name: "$_str\(index!)$", type: SimpleType.string, content: string, final: true))
+            context.addVariable(Variable(name: "$_str\(index!)$", type: SimpleType.string, content: string, final: true), global: true)
         }
         return "$_str\(index!)$"
     }

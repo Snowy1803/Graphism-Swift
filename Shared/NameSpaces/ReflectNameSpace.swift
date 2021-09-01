@@ -16,7 +16,7 @@ struct ReflectNameSpace: NameSpace {
                 guard let ns = params.count == 1 || params[1] == nil || (params.count & 1) == 1 ? NameSpaces.none : NameSpaces.namespace(named: params[1] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Namespace '\(params[1]!)' not found")
                 }
-                guard let f = Function(imports: context.parser.imports, namespace: ns, name: params[0] as! String) else {
+                guard let f = Function(imports: context.runtime.imports, namespace: ns, name: params[0] as! String) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Function '\(params[0]!)' not found in namespace '\(ns.name)'")
                 }
                 if params.count <= 2 {
@@ -32,7 +32,7 @@ struct ReflectNameSpace: NameSpace {
             Function(ns: self, name: "callFunctionAsync", parameters: [Parameter(name: "funcName", type: MultiOrType(type1: SimpleType.string, type2: SimpleType.funcref)), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.void, varargs: true) { context, params in
                 let f: Parametrable
                 if let name = params[0] as? String {
-                    guard let fn = Function(imports: context.parser.imports, namespace: NameSpaces.none, name: name) else {
+                    guard let fn = Function(imports: context.runtime.imports, namespace: NameSpaces.none, name: name) else {
                         throw GRPHRuntimeError(type: .reflection, message: "Local function '\(name)' not found")
                     }
                     f = fn
@@ -53,7 +53,7 @@ struct ReflectNameSpace: NameSpace {
                             _ = try (f as! Function).executable(context, params)
                         }
                     } catch let e as GRPHRuntimeError {
-                        context.runtime?.image.destroy()
+                        context.runtime.image.destroy()
                         printerr("GRPH exited because of an unhandled exception in an async function")
                         printerr("\(e.type.rawValue)Exception: \(e.message)")
                         e.stack.forEach { printerr($0) }
@@ -79,7 +79,7 @@ struct ReflectNameSpace: NameSpace {
                 }
                 let value = params[2]!
                 let valueType = GRPHTypes.type(of: value)
-                guard let f = Method(imports: context.parser.imports, namespace: ns, name: params[0] as! String, inType: valueType) else {
+                guard let f = Method(imports: context.imports, namespace: ns, name: params[0] as! String, inType: valueType) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Function '\(params[0]!)' not found in namespace '\(ns.name)'")
                 }
                 return try f.executable(context, value, f.labelled(values: params.dropFirst(3).map { $0! }))

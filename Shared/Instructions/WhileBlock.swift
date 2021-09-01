@@ -13,7 +13,7 @@ struct WhileBlock: BlockInstruction {
     var label: String?
     let condition: Expression
     
-    init(lineNumber: Int, context: inout GRPHContext, condition: Expression) throws {
+    init(lineNumber: Int, context: inout CompilingContext, condition: Expression) throws {
         self.lineNumber = lineNumber
         self.condition = try GRPHTypes.autobox(context: context, expression: condition, expected: SimpleType.boolean)
         createContext(&context)
@@ -22,11 +22,11 @@ struct WhileBlock: BlockInstruction {
         }
     }
     
-    func canRun(context: GRPHBlockContext) throws -> Bool {
+    func canRun(context: BlockRuntimeContext) throws -> Bool {
         try condition.eval(context: context) as! Bool
     }
     
-    func run(context: inout GRPHContext) throws {
+    func run(context: inout RuntimeContext) throws {
         let ctx = createContext(&context)
         while try mustRun(context: ctx) || (!ctx.broken && canRun(context: ctx)) {
             ctx.variables.removeAll()
