@@ -18,11 +18,6 @@ struct RequiresInstruction: Instruction {
         self.version = version
     }
     
-    /// This is the only instruction run at compile time
-    func run(context: inout RuntimeContext) throws {
-        try run(context: context)
-    }
-    
     func run(context: GRPHContextProtocol) throws {
         guard let current = RequiresInstruction.currentVersion(plugin: plugin) else {
             try throwUnsupported(context: context, message: "This script requires '\(plugin)'")

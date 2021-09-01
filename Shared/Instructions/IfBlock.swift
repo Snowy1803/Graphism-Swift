@@ -22,10 +22,6 @@ struct IfBlock: BlockInstruction {
         }
     }
     
-    func canRun(context: BlockRuntimeContext) throws -> Bool {
-        try condition.eval(context: context) as! Bool
-    }
-    
     var name: String { "if \(condition.string)" }
 }
 
@@ -44,15 +40,6 @@ struct ElseIfBlock: BlockInstruction {
         }
     }
     
-    func canRun(context: BlockRuntimeContext) throws -> Bool {
-        if let last = context.parent?.previous as? BlockRuntimeContext {
-            context.canNextRun = last.canNextRun
-            return try context.canNextRun && condition.eval(context: context) as! Bool
-        } else {
-            throw GRPHRuntimeError(type: .unexpected, message: "#elseif must follow another block instruction")
-        }
-    }
-    
     var name: String { "elseif \(condition.string)" }
 }
 
@@ -64,14 +51,6 @@ struct ElseBlock: BlockInstruction {
     init(context: inout CompilingContext, lineNumber: Int) {
         self.lineNumber = lineNumber
         createContext(&context)
-    }
-    
-    func canRun(context: BlockRuntimeContext) throws -> Bool {
-        if let last = context.parent?.previous as? BlockRuntimeContext {
-            return last.canNextRun
-        } else {
-            throw GRPHRuntimeError(type: .unexpected, message: "#else must follow another block instruction")
-        }
     }
     
     var name: String { "else" }

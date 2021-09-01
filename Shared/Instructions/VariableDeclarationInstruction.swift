@@ -58,15 +58,6 @@ struct VariableDeclarationInstruction: Instruction {
         self.init(lineNumber: lineNumber, global: groups[1] != nil, constant: groups[2] != nil, type: type, name: groups[4]!, value: value)
     }
     
-    func run(context: inout RuntimeContext) throws {
-        let content = try value.eval(context: context)
-        let v = Variable(name: name, type: type, content: content, final: constant)
-        context.addVariable(v, global: global)
-        if context.runtime.debugging {
-            printout("[DEBUG VAR \(v.name)=\(v.content ?? "<@#no content#>")]")
-        }
-    }
-    
     func toString(indent: String) -> String {
         "\(line):\(indent)\(global ? "global " : "")\(constant ? "final " : "")\(type.string) \(name) = \(value.string)\n"
     }

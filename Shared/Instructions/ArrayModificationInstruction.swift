@@ -70,52 +70,6 @@ struct ArrayModificationInstruction: Instruction {
         try self.init(lineNumber: lineNumber, name: v.name, op: op, index: index, value: exp)
     }
     
-    func run(context: inout RuntimeContext) throws {
-        guard let v = context.findVariable(named: name) else {
-            throw GRPHRuntimeError(type: .unexpected, message: "Undeclared variable '\(name)'")
-        }
-        let val = try value?.eval(context: context)
-        guard let arr = v.content! as? GRPHArray else { // No autoboxing here (consistency with Java version)
-            throw GRPHRuntimeError(type: .typeMismatch, message: "Expected an array in array modification, got a \(GRPHTypes.realType(of: v.content!, expected: nil))")
-        }
-        switch op {
-        case .set:
-            guard let index = try index?.eval(context: context) as? Int,
-                  index < arr.count else {
-                throw GRPHRuntimeError(type: .unexpected, message: "Invalid index")
-            }
-            arr.wrapped[index] = val!
-        case .add:
-            if let index = try index?.eval(context: context) as? Int {
-                guard index <= arr.count else {
-                    throw GRPHRuntimeError(type: .unexpected, message: "Invalid index \(index) in insertion for array of length \(arr.count)")
-                }
-                arr.wrapped.insert(val!, at: index)
-            } else {
-                arr.wrapped.append(val!)
-            }
-        case .remove:
-            if let index = try index?.eval(context: context) as? Int {
-                guard index < arr.count else {
-                    throw GRPHRuntimeError(type: .unexpected, message: "Invalid index \(index) in insertion for array of length \(arr.count)")
-                }
-                if let val = val {
-                    if arr.wrapped[index].isEqual(to: val) {
-                        arr.wrapped.remove(at: index)
-                    }
-                } else {
-                    arr.wrapped.remove(at: index)
-                }
-            } else if let val = val,
-                      let index = arr.wrapped.firstIndex(where: { $0.isEqual(to: val) }) {
-                arr.wrapped.remove(at: index)
-            }
-        }
-        if context.runtime.debugging {
-            printout("[DEBUG VAR \(v.name)=\(v.content!)]")
-        }
-    }
-    
     func toString(indent: String) -> String {
         "\(line):\(indent)\(name){\(index?.string ?? "")\(op.rawValue)} = \(value?.string ?? "")\n"
     }

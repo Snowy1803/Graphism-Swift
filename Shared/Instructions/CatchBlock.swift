@@ -28,21 +28,6 @@ class CatchBlock: BlockInstruction {
         ctx.variables.append(Variable(name: varName, type: SimpleType.string, final: true, compileTime: true))
     }
     
-    func exceptionCatched(context: inout RuntimeContext, exception: GRPHRuntimeError) throws {
-        do {
-            let ctx = createContext(&context)
-            let v = Variable(name: varName, type: SimpleType.string, content: exception.message, final: true)
-            ctx.variables.append(v)
-            if context.runtime.debugging {
-                printout("[DEBUG VAR \(v.name)=\(v.content!)]")
-            }
-            try self.runChildren(context: ctx)
-        } catch var exception as GRPHRuntimeError {
-            exception.stack.append("\tat \(type(of: self)); line \(line)")
-            throw exception
-        }
-    }
-    
     func addError(type: String) {
         if def.isEmpty {
             def = type
@@ -50,8 +35,6 @@ class CatchBlock: BlockInstruction {
             def += " | \(type)"
         }
     }
-    
-    func canRun(context: BlockRuntimeContext) throws -> Bool { false }
     
     var name: String { "catch \(varName) : \(def)" }
 }

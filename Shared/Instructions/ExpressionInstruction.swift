@@ -11,10 +11,6 @@ struct ExpressionInstruction: Instruction {
     let lineNumber: Int
     let expression: Expression
     
-    func run(context: inout RuntimeContext) throws {
-        _ = try expression.eval(context: context)
-    }
-    
     func toString(indent: String) -> String {
         "\(line):\(indent)\(expression)\n"
     }

@@ -43,13 +43,6 @@ struct AssignmentInstruction: Instruction {
         try self.init(lineNumber: lineNumber, context: context, assigned: exp, op: groups[2], value: Expressions.parse(context: context, infer: exp.getType(context: context, infer: SimpleType.mixed), literal: groups[3]!))
     }
     
-    func run(context: inout RuntimeContext) throws {
-        var cache = [GRPHValue]()
-        context = VirtualAssignmentRuntimeContext(parent: context, virtualValue: try assigned.eval(context: context, cache: &cache))
-        let val = try value.eval(context: context)
-        try assigned.assign(context: context, value: val, cache: &cache)
-    }
-    
     func toString(indent: String) -> String {
         var op = ""
         var right = value
@@ -59,26 +52,25 @@ struct AssignmentInstruction: Instruction {
         }
         return "\(line):\(indent)\(assigned) \(op)= \(right)\n"
     }
-}
-
-fileprivate struct VirtualExpression: Expression {
-    let type: GRPHType
     
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        (context as! VirtualAssignmentRuntimeContext).virtualValue
+    struct VirtualExpression: Expression {
+        let type: GRPHType
+        
+        #warning("expr")
+        func eval(context: RuntimeContext) throws -> GRPHValue {
+            (context as! VirtualAssignmentRuntimeContext).virtualValue
+        }
+        
+        func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
+            type
+        }
+        
+        var string: String { "[VIRTUAL::]" } // never called
+        
+        var needsBrackets: Bool { false } // never called
     }
-    
-    func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
-        type
-    }
-    
-    var string: String { "[VIRTUAL::]" } // never called
-    
-    var needsBrackets: Bool { false } // never called
 }
 
 protocol AssignableExpression: Expression {
     func checkCanAssign(context: CompilingContext) throws
-    func eval(context: RuntimeContext, cache: inout [GRPHValue]) throws -> GRPHValue
-    func assign(context: RuntimeContext, value: GRPHValue, cache: inout [GRPHValue]) throws
 }

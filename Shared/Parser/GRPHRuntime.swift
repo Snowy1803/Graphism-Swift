@@ -53,7 +53,9 @@ class GRPHRuntime {
             var last: RuntimeContext?
             var i = 0
             while i < instructions.count && !Thread.current.isCancelled {
-                let line = instructions[i]
+                guard let line = instructions[i] as? RunnableInstruction else {
+                    throw GRPHRuntimeError(type: .unexpected, message: "Instruction of type \(type(of: instructions[i])) (line \(instructions[i].line)) has no runnable implementation")
+                }
                 context.previous = last
                 if debugging {
                     printout("[DEBUG LOC \(line.line)]")

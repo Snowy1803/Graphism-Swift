@@ -177,6 +177,66 @@
 		209CD00E26E010D0005F34CE /* DebuggingCompilingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD00C26E010D0005F34CE /* DebuggingCompilingContext.swift */; };
 		209CD00F26E010D0005F34CE /* DebuggingCompilingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD00C26E010D0005F34CE /* DebuggingCompilingContext.swift */; };
 		209CD01026E010D0005F34CE /* DebuggingCompilingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD00C26E010D0005F34CE /* DebuggingCompilingContext.swift */; };
+		209CD01326E03768005F34CE /* RunnableInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01226E03767005F34CE /* RunnableInstruction.swift */; };
+		209CD01426E03768005F34CE /* RunnableInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01226E03767005F34CE /* RunnableInstruction.swift */; };
+		209CD01526E03768005F34CE /* RunnableInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01226E03767005F34CE /* RunnableInstruction.swift */; };
+		209CD01626E03768005F34CE /* RunnableInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01226E03767005F34CE /* RunnableInstruction.swift */; };
+		209CD01826E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01726E037C5005F34CE /* BlockInstruction+Runnable.swift */; };
+		209CD01926E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01726E037C5005F34CE /* BlockInstruction+Runnable.swift */; };
+		209CD01A26E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01726E037C5005F34CE /* BlockInstruction+Runnable.swift */; };
+		209CD01B26E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01726E037C5005F34CE /* BlockInstruction+Runnable.swift */; };
+		209CD01D26E038E7005F34CE /* IfBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01C26E038E7005F34CE /* IfBlock+Runnable.swift */; };
+		209CD01E26E038E7005F34CE /* IfBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01C26E038E7005F34CE /* IfBlock+Runnable.swift */; };
+		209CD01F26E038E7005F34CE /* IfBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01C26E038E7005F34CE /* IfBlock+Runnable.swift */; };
+		209CD02026E038E7005F34CE /* IfBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD01C26E038E7005F34CE /* IfBlock+Runnable.swift */; };
+		209CD02226E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02126E03930005F34CE /* ForEachBlock+Runnable.swift */; };
+		209CD02326E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02126E03930005F34CE /* ForEachBlock+Runnable.swift */; };
+		209CD02426E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02126E03930005F34CE /* ForEachBlock+Runnable.swift */; };
+		209CD02526E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02126E03930005F34CE /* ForEachBlock+Runnable.swift */; };
+		209CD02726E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02626E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift */; };
+		209CD02826E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02626E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift */; };
+		209CD02926E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02626E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift */; };
+		209CD02A26E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02626E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift */; };
+		209CD02C26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02B26E039C0005F34CE /* WhileBlock+Runnable.swift */; };
+		209CD02D26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02B26E039C0005F34CE /* WhileBlock+Runnable.swift */; };
+		209CD02E26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02B26E039C0005F34CE /* WhileBlock+Runnable.swift */; };
+		209CD02F26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD02B26E039C0005F34CE /* WhileBlock+Runnable.swift */; };
+		209CD03126E039F4005F34CE /* TryBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03026E039F4005F34CE /* TryBlock+Runnable.swift */; };
+		209CD03226E039F4005F34CE /* TryBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03026E039F4005F34CE /* TryBlock+Runnable.swift */; };
+		209CD03326E039F4005F34CE /* TryBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03026E039F4005F34CE /* TryBlock+Runnable.swift */; };
+		209CD03426E039F4005F34CE /* TryBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03026E039F4005F34CE /* TryBlock+Runnable.swift */; };
+		209CD03626E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03526E03A18005F34CE /* CatchBlock+Runnable.swift */; };
+		209CD03726E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03526E03A18005F34CE /* CatchBlock+Runnable.swift */; };
+		209CD03826E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03526E03A18005F34CE /* CatchBlock+Runnable.swift */; };
+		209CD03926E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03526E03A18005F34CE /* CatchBlock+Runnable.swift */; };
+		209CD03B26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03A26E03A60005F34CE /* BreakInstruction+Runnable.swift */; };
+		209CD03C26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03A26E03A60005F34CE /* BreakInstruction+Runnable.swift */; };
+		209CD03D26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03A26E03A60005F34CE /* BreakInstruction+Runnable.swift */; };
+		209CD03E26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03A26E03A60005F34CE /* BreakInstruction+Runnable.swift */; };
+		209CD04026E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03F26E03AA8005F34CE /* ThrowInstruction+Runnable.swift */; };
+		209CD04126E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03F26E03AA8005F34CE /* ThrowInstruction+Runnable.swift */; };
+		209CD04226E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03F26E03AA8005F34CE /* ThrowInstruction+Runnable.swift */; };
+		209CD04326E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD03F26E03AA8005F34CE /* ThrowInstruction+Runnable.swift */; };
+		209CD04526E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04426E03ACA005F34CE /* AssignmentInstruction+Runnable.swift */; };
+		209CD04626E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04426E03ACA005F34CE /* AssignmentInstruction+Runnable.swift */; };
+		209CD04726E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04426E03ACA005F34CE /* AssignmentInstruction+Runnable.swift */; };
+		209CD04826E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04426E03ACA005F34CE /* AssignmentInstruction+Runnable.swift */; };
+		209CD04A26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04926E03BA2005F34CE /* ExpressionInstruction+Runnable.swift */; };
+		209CD04B26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04926E03BA2005F34CE /* ExpressionInstruction+Runnable.swift */; };
+		209CD04C26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04926E03BA2005F34CE /* ExpressionInstruction+Runnable.swift */; };
+		209CD04D26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04926E03BA2005F34CE /* ExpressionInstruction+Runnable.swift */; };
+		209CD04F26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04E26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift */; };
+		209CD05026E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04E26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift */; };
+		209CD05126E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04E26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift */; };
+		209CD05226E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD04E26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift */; };
+		209CD05426E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05326E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift */; };
+		209CD05526E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05326E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift */; };
+		209CD05626E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05326E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift */; };
+		209CD05726E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05326E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift */; };
+		209CD05926E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05826E03C4D005F34CE /* RequiresInstruction+Runnable.swift */; };
+		209CD05A26E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05826E03C4D005F34CE /* RequiresInstruction+Runnable.swift */; };
+		209CD05B26E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05826E03C4D005F34CE /* RequiresInstruction+Runnable.swift */; };
+		209CD05C26E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209CD05826E03C4D005F34CE /* RequiresInstruction+Runnable.swift */; };
 		20A1EF6124C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
 		20A1EF6224C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
 		20A1EF6324C348E8000F67FB /* JFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1EF6024C348E8000F67FB /* JFont.swift */; };
@@ -473,6 +533,21 @@
 		209CD00226DFEC4E005F34CE /* TopLevelRuntimeContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopLevelRuntimeContext.swift; sourceTree = "<group>"; };
 		209CD00726DFF588005F34CE /* GRPHContextProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRPHContextProtocol.swift; sourceTree = "<group>"; };
 		209CD00C26E010D0005F34CE /* DebuggingCompilingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebuggingCompilingContext.swift; sourceTree = "<group>"; };
+		209CD01226E03767005F34CE /* RunnableInstruction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunnableInstruction.swift; sourceTree = "<group>"; };
+		209CD01726E037C5005F34CE /* BlockInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlockInstruction+Runnable.swift"; sourceTree = "<group>"; };
+		209CD01C26E038E7005F34CE /* IfBlock+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IfBlock+Runnable.swift"; sourceTree = "<group>"; };
+		209CD02126E03930005F34CE /* ForEachBlock+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ForEachBlock+Runnable.swift"; sourceTree = "<group>"; };
+		209CD02626E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VariableDeclarationInstruction+Runnable.swift"; sourceTree = "<group>"; };
+		209CD02B26E039C0005F34CE /* WhileBlock+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WhileBlock+Runnable.swift"; sourceTree = "<group>"; };
+		209CD03026E039F4005F34CE /* TryBlock+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TryBlock+Runnable.swift"; sourceTree = "<group>"; };
+		209CD03526E03A18005F34CE /* CatchBlock+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CatchBlock+Runnable.swift"; sourceTree = "<group>"; };
+		209CD03A26E03A60005F34CE /* BreakInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BreakInstruction+Runnable.swift"; sourceTree = "<group>"; };
+		209CD03F26E03AA8005F34CE /* ThrowInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThrowInstruction+Runnable.swift"; sourceTree = "<group>"; };
+		209CD04426E03ACA005F34CE /* AssignmentInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AssignmentInstruction+Runnable.swift"; sourceTree = "<group>"; };
+		209CD04926E03BA2005F34CE /* ExpressionInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExpressionInstruction+Runnable.swift"; sourceTree = "<group>"; };
+		209CD04E26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ArrayModificationInstruction+Runnable.swift"; sourceTree = "<group>"; };
+		209CD05326E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FunctionDeclarationBlock+Runnable.swift"; sourceTree = "<group>"; };
+		209CD05826E03C4D005F34CE /* RequiresInstruction+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RequiresInstruction+Runnable.swift"; sourceTree = "<group>"; };
 		20A1EF6024C348E8000F67FB /* JFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JFont.swift; sourceTree = "<group>"; };
 		20A1EF6524C35376000F67FB /* GText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GText.swift; sourceTree = "<group>"; };
 		20A1EF6A24C364CF000F67FB /* ReflectNameSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectNameSpace.swift; sourceTree = "<group>"; };
@@ -705,6 +780,28 @@
 			path = RuntimeContext;
 			sourceTree = "<group>";
 		};
+		209CD01126E03750005F34CE /* RunnableInstruction */ = {
+			isa = PBXGroup;
+			children = (
+				209CD01226E03767005F34CE /* RunnableInstruction.swift */,
+				209CD02626E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift */,
+				209CD01726E037C5005F34CE /* BlockInstruction+Runnable.swift */,
+				209CD01C26E038E7005F34CE /* IfBlock+Runnable.swift */,
+				209CD02B26E039C0005F34CE /* WhileBlock+Runnable.swift */,
+				209CD02126E03930005F34CE /* ForEachBlock+Runnable.swift */,
+				209CD03026E039F4005F34CE /* TryBlock+Runnable.swift */,
+				209CD03526E03A18005F34CE /* CatchBlock+Runnable.swift */,
+				209CD03A26E03A60005F34CE /* BreakInstruction+Runnable.swift */,
+				209CD03F26E03AA8005F34CE /* ThrowInstruction+Runnable.swift */,
+				209CD04426E03ACA005F34CE /* AssignmentInstruction+Runnable.swift */,
+				209CD04926E03BA2005F34CE /* ExpressionInstruction+Runnable.swift */,
+				209CD04E26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift */,
+				209CD05326E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift */,
+				209CD05826E03C4D005F34CE /* RequiresInstruction+Runnable.swift */,
+			);
+			path = RunnableInstruction;
+			sourceTree = "<group>";
+		};
 		20B9F70924D8EBCB005FCC40 /* SVG */ = {
 			isa = PBXGroup;
 			children = (
@@ -790,6 +887,7 @@
 				201E1F8E24BD1D5B005A2BBE /* FunctionDeclarationBlock.swift */,
 				201E1FA624BE7E57005A2BBE /* RequiresInstruction.swift */,
 				203A3ED924D0D69F002EAE2B /* SwitchTransparentBlock.swift */,
+				209CD01126E03750005F34CE /* RunnableInstruction */,
 			);
 			path = Instructions;
 			sourceTree = "<group>";
@@ -999,6 +1097,8 @@
 				20DE0BA724AD449A00ABFB6E /* Instruction.swift in Sources */,
 				20DE0BEB24B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BBB24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
+				209CD01A26E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */,
+				209CD05126E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */,
 				20D1EF3D24B12BB600EB4BEE /* Parametrable.swift in Sources */,
 				20D1EF4124B1393E00EB4BEE /* Parameter.swift in Sources */,
 				20D1EF7224B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
@@ -1010,15 +1110,22 @@
 				200A5F8724ABA5180028180B /* RadialPaint.swift in Sources */,
 				200A5F8424ABA5180028180B /* GRPHValue.swift in Sources */,
 				200A5F9A24ABF6020028180B /* GRPHCompiler.swift in Sources */,
+				209CD04C26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
+				209CD05626E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				20DE0BC324AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				2093A18226D6EBA6004D24D8 /* FunctionReferenceExpression.swift in Sources */,
+				209CD02926E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */,
 				20D1EF6624B28DDF00EB4BEE /* Function.swift in Sources */,
 				201E1F6924B630B0005A2BBE /* GGroup.swift in Sources */,
 				209CCFFF26DFDBBF005F34CE /* SwitchCompilingContext.swift in Sources */,
 				200A5F8924ABA5180028180B /* Paint.swift in Sources */,
 				200A5F9024ABA51E0028180B /* GRectangle.swift in Sources */,
+				209CD02426E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */,
 				200A5F8624ABA5180028180B /* Rotation.swift in Sources */,
+				209CD01526E03768005F34CE /* RunnableInstruction.swift in Sources */,
 				2093A17C26D6C192004D24D8 /* NSRegularExpression+Swift.swift in Sources */,
+				209CD03826E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */,
+				209CD03326E039F4005F34CE /* TryBlock+Runnable.swift in Sources */,
 				20DE0BDF24AF80C200ABFB6E /* Property.swift in Sources */,
 				20D1EF6224B22B5300EB4BEE /* AssignmentInstruction.swift in Sources */,
 				200A5F8D24ABA5180028180B /* LinearPaint.swift in Sources */,
@@ -1030,6 +1137,7 @@
 				20D1EF4924B141E300EB4BEE /* ConstructorExpression.swift in Sources */,
 				201E1FA924BE7E66005A2BBE /* RequiresInstruction.swift in Sources */,
 				20DE0BB724AE0F7A00ABFB6E /* Expression.swift in Sources */,
+				209CD04226E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */,
 				20B43DD826D7DCB4009076E2 /* LambdaExpression.swift in Sources */,
 				200A5F9324ABA51E0028180B /* GPath.swift in Sources */,
 				20DE0BF324B0B35600ABFB6E /* TryBlock.swift in Sources */,
@@ -1044,9 +1152,11 @@
 				200A5F8E24ABA5180028180B /* Pos.swift in Sources */,
 				200A5F8524ABA5180028180B /* GRPHArray.swift in Sources */,
 				20DE0BE724AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
+				209CD01F26E038E7005F34CE /* IfBlock+Runnable.swift in Sources */,
 				20A1EF6D24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
 				2093A17A26D6C168004D24D8 /* FuncRef.swift in Sources */,
 				20D1EF5624B217FB00EB4BEE /* StandardNameSpace.swift in Sources */,
+				209CD04726E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */,
 				20A1EF6824C35376000F67FB /* GText.swift in Sources */,
 				200A5F7F24ABA4E60028180B /* GraphismTests.swift in Sources */,
 				200A5F8A24ABA5180028180B /* ColorPaint.swift in Sources */,
@@ -1056,7 +1166,10 @@
 				20DE0BF724B0B48500ABFB6E /* CatchBlock.swift in Sources */,
 				20DE0BCF24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
 				209CCFFA26DFD6B6005F34CE /* LambdaCompilingContext.swift in Sources */,
+				209CD05B26E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */,
 				201E1F6424B62B5E005A2BBE /* GImage.swift in Sources */,
+				209CD03D26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */,
+				209CD02E26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */,
 				200A5F8824ABA5180028180B /* Direction.swift in Sources */,
 				20A1EF6324C348E8000F67FB /* JFont.swift in Sources */,
 				201E1F8224BC9FA3005A2BBE /* Method.swift in Sources */,
@@ -1081,6 +1194,7 @@
 				20DE0BDD24AF80C200ABFB6E /* Property.swift in Sources */,
 				201E1F6224B62B5E005A2BBE /* GImage.swift in Sources */,
 				200A5F6D24AB6FB60028180B /* RadialPaint.swift in Sources */,
+				209CD04526E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */,
 				20D1EF3624B12AEE00EB4BEE /* SimpleType.swift in Sources */,
 				203A3EDE24D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */,
 				20A1EF6624C35376000F67FB /* GText.swift in Sources */,
@@ -1092,6 +1206,7 @@
 				20A1EF7524C37D8A000F67FB /* GRPHValue+SwiftUI.swift in Sources */,
 				2098B69824AB61350042D465 /* Paint.swift in Sources */,
 				209CCFFD26DFDBBF005F34CE /* SwitchCompilingContext.swift in Sources */,
+				209CD03B26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */,
 				200A5F6724AB69DB0028180B /* LinearPaint.swift in Sources */,
 				20E4158A24CE2E6500EFB590 /* VirtualAssignmentRuntimeContext.swift in Sources */,
 				201E1F8A24BD1B8A005A2BBE /* FunctionRuntimeContext.swift in Sources */,
@@ -1116,14 +1231,17 @@
 				209CCFEE26DFD2B5005F34CE /* TopLevelCompilingContext.swift in Sources */,
 				20DE0BBD24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				209CCFE326DFC72F005F34CE /* CompilingContext.swift in Sources */,
+				209CD05426E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				209CD00D26E010D0005F34CE /* DebuggingCompilingContext.swift in Sources */,
 				20D1EF4724B141E300EB4BEE /* ConstructorExpression.swift in Sources */,
 				20DE0BE924B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BF124B0B35600ABFB6E /* TryBlock.swift in Sources */,
+				209CD02226E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */,
 				20DE0BB924AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				201E1F7B24BBCE86005A2BBE /* MathNameSpace.swift in Sources */,
 				201E1F8F24BD1D5B005A2BBE /* FunctionDeclarationBlock.swift in Sources */,
 				200A5F7324AB82DA0028180B /* GRPHArray.swift in Sources */,
+				209CD03626E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */,
 				20D1EF2D24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */,
 				20DE0BCD24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
 				2098B68824AA26740042D465 /* GClip.swift in Sources */,
@@ -1132,12 +1250,16 @@
 				201E1F7624BBBF25005A2BBE /* StringUtilsNameSpace.swift in Sources */,
 				2098B68224A971B10042D465 /* GLine.swift in Sources */,
 				20B43DE026D7F70B009076E2 /* VariableOwningRuntimeContext.swift in Sources */,
+				209CD02C26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */,
+				209CD01826E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */,
 				2098B69224AAB0AC0042D465 /* Pos.swift in Sources */,
 				20DE0BC124AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				20D1EF3B24B12BB600EB4BEE /* Parametrable.swift in Sources */,
 				20B43DD126D7DA80009076E2 /* Lambda.swift in Sources */,
+				209CD04026E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */,
 				2098B68F24AAB06A0042D465 /* GRPHValue.swift in Sources */,
 				201E1F7124BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
+				209CD01326E03768005F34CE /* RunnableInstruction.swift in Sources */,
 				20B43DCC26D7093F009076E2 /* FuncRefCallExpression.swift in Sources */,
 				200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				208D2FB624B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
@@ -1148,6 +1270,7 @@
 				20DE0BB524AE0F7A00ABFB6E /* Expression.swift in Sources */,
 				20DE0BAD24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				2098B69B24AB62B60042D465 /* ColorPaint.swift in Sources */,
+				209CD04F26E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */,
 				20DE0BF524B0B48500ABFB6E /* CatchBlock.swift in Sources */,
 				2098B69524AB5EDA0042D465 /* Rotation.swift in Sources */,
 				20D1EF5424B217FB00EB4BEE /* StandardNameSpace.swift in Sources */,
@@ -1156,8 +1279,10 @@
 				2098B67D24A970350042D465 /* GRectangle.swift in Sources */,
 				20D1EF6C24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20DE0BD524AEA88100ABFB6E /* CastExpression.swift in Sources */,
+				209CD01D26E038E7005F34CE /* IfBlock+Runnable.swift in Sources */,
 				20E4158524CC8C9600EFB590 /* BlockRuntimeContext.swift in Sources */,
 				20DE0BE524AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
+				209CD02726E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */,
 				201E1F6C24BBB199005A2BBE /* InputOutputNameSpace.swift in Sources */,
 				200A5F7024AB76560028180B /* GRPHType.swift in Sources */,
 				20A1EF6124C348E8000F67FB /* JFont.swift in Sources */,
@@ -1166,13 +1291,16 @@
 				201E1F6724B630B0005A2BBE /* GGroup.swift in Sources */,
 				20D1EF7024B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				20DE0BD124AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
+				209CD05926E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */,
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
 				20B9F70B24D8EC24005FCC40 /* SVGExportContext.swift in Sources */,
+				209CD04A26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
 				209CD00826DFF588005F34CE /* GRPHContextProtocol.swift in Sources */,
 				2093A17826D6912C004D24D8 /* FuncRef.swift in Sources */,
 				2093A18026D6EBA6004D24D8 /* FunctionReferenceExpression.swift in Sources */,
 				2098B67F24A970350042D465 /* GCircle.swift in Sources */,
 				20A1EF6B24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
+				209CD03126E039F4005F34CE /* TryBlock+Runnable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1186,6 +1314,7 @@
 				20DE0BDE24AF80C200ABFB6E /* Property.swift in Sources */,
 				201E1F6324B62B5E005A2BBE /* GImage.swift in Sources */,
 				200A5F6E24AB6FB60028180B /* RadialPaint.swift in Sources */,
+				209CD04626E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */,
 				20D1EF3724B12AEE00EB4BEE /* SimpleType.swift in Sources */,
 				203A3EDF24D44E12002EAE2B /* NSRegularExpression+Swift.swift in Sources */,
 				20A1EF6724C35376000F67FB /* GText.swift in Sources */,
@@ -1197,6 +1326,7 @@
 				20A1EF7624C37D8A000F67FB /* GRPHValue+SwiftUI.swift in Sources */,
 				2098B69924AB61350042D465 /* Paint.swift in Sources */,
 				209CCFFE26DFDBBF005F34CE /* SwitchCompilingContext.swift in Sources */,
+				209CD03C26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */,
 				200A5F6824AB69DB0028180B /* LinearPaint.swift in Sources */,
 				20E4158B24CE2E6500EFB590 /* VirtualAssignmentRuntimeContext.swift in Sources */,
 				201E1F8B24BD1B8A005A2BBE /* FunctionRuntimeContext.swift in Sources */,
@@ -1221,14 +1351,17 @@
 				209CCFEF26DFD2B5005F34CE /* TopLevelCompilingContext.swift in Sources */,
 				20DE0BBE24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				209CCFE426DFC72F005F34CE /* CompilingContext.swift in Sources */,
+				209CD05526E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				209CD00E26E010D0005F34CE /* DebuggingCompilingContext.swift in Sources */,
 				20D1EF4824B141E300EB4BEE /* ConstructorExpression.swift in Sources */,
 				20DE0BEA24B0AC0600ABFB6E /* WhileBlock.swift in Sources */,
 				20DE0BF224B0B35600ABFB6E /* TryBlock.swift in Sources */,
+				209CD02326E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */,
 				20DE0BBA24AE2FC100ABFB6E /* ConstantExpression.swift in Sources */,
 				201E1F7C24BBCE86005A2BBE /* MathNameSpace.swift in Sources */,
 				201E1F9024BD1D5B005A2BBE /* FunctionDeclarationBlock.swift in Sources */,
 				200A5F7424AB82DA0028180B /* GRPHArray.swift in Sources */,
+				209CD03726E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */,
 				20D1EF2E24B0C2CF00EB4BEE /* BreakInstruction.swift in Sources */,
 				20DE0BCE24AEA48B00ABFB6E /* NullExpression.swift in Sources */,
 				2098B68924AA26740042D465 /* GClip.swift in Sources */,
@@ -1237,12 +1370,16 @@
 				201E1F7724BBBF25005A2BBE /* StringUtilsNameSpace.swift in Sources */,
 				2098B68324A971B10042D465 /* GLine.swift in Sources */,
 				20B43DE126D7F70B009076E2 /* VariableOwningRuntimeContext.swift in Sources */,
+				209CD02D26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */,
+				209CD01926E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */,
 				2098B69324AAB0AC0042D465 /* Pos.swift in Sources */,
 				20DE0BC224AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
 				20D1EF3C24B12BB600EB4BEE /* Parametrable.swift in Sources */,
 				20B43DD226D7DA80009076E2 /* Lambda.swift in Sources */,
+				209CD04126E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */,
 				2098B69024AAB06A0042D465 /* GRPHValue.swift in Sources */,
 				201E1F7224BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
+				209CD01426E03768005F34CE /* RunnableInstruction.swift in Sources */,
 				20B43DCD26D7093F009076E2 /* FuncRefCallExpression.swift in Sources */,
 				200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
@@ -1253,6 +1390,7 @@
 				20DE0BB624AE0F7A00ABFB6E /* Expression.swift in Sources */,
 				20DE0BAE24AD4C2400ABFB6E /* BlockInstruction.swift in Sources */,
 				2098B69C24AB62B60042D465 /* ColorPaint.swift in Sources */,
+				209CD05026E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */,
 				20DE0BF624B0B48500ABFB6E /* CatchBlock.swift in Sources */,
 				2098B69624AB5EDA0042D465 /* Rotation.swift in Sources */,
 				20D1EF5524B217FB00EB4BEE /* StandardNameSpace.swift in Sources */,
@@ -1261,8 +1399,10 @@
 				2098B67E24A970350042D465 /* GRectangle.swift in Sources */,
 				20D1EF6D24B29D8A00EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20DE0BD624AEA88100ABFB6E /* CastExpression.swift in Sources */,
+				209CD01E26E038E7005F34CE /* IfBlock+Runnable.swift in Sources */,
 				20E4158624CC8C9600EFB590 /* BlockRuntimeContext.swift in Sources */,
 				20DE0BE624AFDEBA00ABFB6E /* IfBlock.swift in Sources */,
+				209CD02826E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */,
 				201E1F6D24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
 				200A5F7124AB76560028180B /* GRPHType.swift in Sources */,
 				20A1EF6224C348E8000F67FB /* JFont.swift in Sources */,
@@ -1271,13 +1411,16 @@
 				201E1F6824B630B0005A2BBE /* GGroup.swift in Sources */,
 				20D1EF7124B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				20DE0BD224AEA5AE00ABFB6E /* GRPHOptional.swift in Sources */,
+				209CD05A26E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */,
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				20B9F70C24D8EC24005FCC40 /* SVGExportContext.swift in Sources */,
+				209CD04B26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
 				209CD00926DFF588005F34CE /* GRPHContextProtocol.swift in Sources */,
 				2093A17926D6912C004D24D8 /* FuncRef.swift in Sources */,
 				2093A18126D6EBA6004D24D8 /* FunctionReferenceExpression.swift in Sources */,
 				2098B68024A970350042D465 /* GCircle.swift in Sources */,
 				20A1EF6C24C364CF000F67FB /* ReflectNameSpace.swift in Sources */,
+				209CD03226E039F4005F34CE /* TryBlock+Runnable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1288,6 +1431,7 @@
 				20D1EF9524B2AFF600EB4BEE /* Rotation.swift in Sources */,
 				2093A17B26D6C168004D24D8 /* FuncRef.swift in Sources */,
 				20D1EF8D24B2AFF600EB4BEE /* ArrayValueExpression.swift in Sources */,
+				209CD05726E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				20D1EFAE24B2AFF600EB4BEE /* GPath.swift in Sources */,
 				209CD00026DFDBBF005F34CE /* SwitchCompilingContext.swift in Sources */,
 				20D1EFB424B2AFF600EB4BEE /* LinearPaint.swift in Sources */,
@@ -1295,8 +1439,11 @@
 				20D1EFB124B2AFF600EB4BEE /* GRPHArray.swift in Sources */,
 				20D1EF8624B2AFF600EB4BEE /* Pos.swift in Sources */,
 				20D1EFA924B2AFF600EB4BEE /* ForEachBlock.swift in Sources */,
+				209CD02026E038E7005F34CE /* IfBlock+Runnable.swift in Sources */,
 				20D1EF8E24B2AFF600EB4BEE /* IfBlock.swift in Sources */,
 				20D1EF9B24B2AFF600EB4BEE /* AssignmentInstruction.swift in Sources */,
+				209CD02A26E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */,
+				209CD03426E039F4005F34CE /* TryBlock+Runnable.swift in Sources */,
 				20D1EF9024B2AFF600EB4BEE /* GRectangle.swift in Sources */,
 				20D1EFB024B2AFF600EB4BEE /* GRPHType.swift in Sources */,
 				201E1F7924BBBF25005A2BBE /* StringUtilsNameSpace.swift in Sources */,
@@ -1309,6 +1456,7 @@
 				20D1EF9F24B2AFF600EB4BEE /* TryBlock.swift in Sources */,
 				20D1EF8324B2AFF600EB4BEE /* Property.swift in Sources */,
 				20D1EFB324B2AFF600EB4BEE /* Constructor.swift in Sources */,
+				209CD02F26E039C0005F34CE /* WhileBlock+Runnable.swift in Sources */,
 				209CCFF126DFD2B5005F34CE /* TopLevelCompilingContext.swift in Sources */,
 				20D1EF8924B2AFF600EB4BEE /* GRPHValue.swift in Sources */,
 				20D1EFB624B2AFF600EB4BEE /* GPolygon.swift in Sources */,
@@ -1326,6 +1474,7 @@
 				20D1EF8A24B2AFF600EB4BEE /* GCircle.swift in Sources */,
 				20B43DCF26D7093F009076E2 /* FuncRefCallExpression.swift in Sources */,
 				20D1EF8124B2AFF600EB4BEE /* StandardNameSpace.swift in Sources */,
+				209CD01B26E037C5005F34CE /* BlockInstruction+Runnable.swift in Sources */,
 				20D1EFA324B2AFF600EB4BEE /* SimpleType.swift in Sources */,
 				20D1EF8724B2AFF600EB4BEE /* Instruction.swift in Sources */,
 				20E4158824CC8C9600EFB590 /* BlockRuntimeContext.swift in Sources */,
@@ -1338,9 +1487,13 @@
 				20D1EF8224B2AFF600EB4BEE /* Variable.swift in Sources */,
 				20B43DE326D7F70B009076E2 /* VariableOwningRuntimeContext.swift in Sources */,
 				209CD00626DFEC4E005F34CE /* TopLevelRuntimeContext.swift in Sources */,
+				209CD03926E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */,
+				209CD04D26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
 				20D1EFA024B2AFF600EB4BEE /* VariableExpression.swift in Sources */,
 				20B43DD926D7DCB4009076E2 /* LambdaExpression.swift in Sources */,
 				20D1EFAF24B2AFF600EB4BEE /* GRPHOptional.swift in Sources */,
+				209CD01626E03768005F34CE /* RunnableInstruction.swift in Sources */,
+				209CD05C26E03C4D005F34CE /* RequiresInstruction+Runnable.swift in Sources */,
 				20E4158D24CE2E6500EFB590 /* VirtualAssignmentRuntimeContext.swift in Sources */,
 				20D1EF8024B2AFF600EB4BEE /* ExpressionInstruction.swift in Sources */,
 				20D1EF8F24B2AFF600EB4BEE /* WhileBlock.swift in Sources */,
@@ -1373,10 +1526,15 @@
 				201E1F8324BC9FA3005A2BBE /* Method.swift in Sources */,
 				20D1EF9A24B2AFF600EB4BEE /* GRPHCompiler.swift in Sources */,
 				20D1EF9324B2AFF600EB4BEE /* BinaryExpression.swift in Sources */,
+				209CD04826E03ACA005F34CE /* AssignmentInstruction+Runnable.swift in Sources */,
 				20D1EF9924B2AFF600EB4BEE /* Parametrable.swift in Sources */,
 				20D1EF8424B2AFF600EB4BEE /* BlockInstruction.swift in Sources */,
 				20D1EF7E24B2AFF600EB4BEE /* ConstantExpression.swift in Sources */,
+				209CD04326E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */,
 				201E1F7424BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
+				209CD03E26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */,
+				209CD02526E03930005F34CE /* ForEachBlock+Runnable.swift in Sources */,
+				209CD05226E03BBC005F34CE /* ArrayModificationInstruction+Runnable.swift in Sources */,
 				209CCFEC26DFD1D6005F34CE /* VariableOwningCompilingContext.swift in Sources */,
 				201E1F6F24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
 			);

@@ -36,7 +36,7 @@ extension FieldExpression: AssignableExpression {
     }
     
     func eval(context: RuntimeContext, cache: inout [GRPHValue]) throws -> GRPHValue {
-        if let on = on as? AssignableExpression {
+        if let on = on as? RunnableAssignableExpression {
             cache.append(try on.eval(context: context, cache: &cache))
         } else {
             cache.append(try on.eval(context: context))
@@ -55,7 +55,7 @@ extension FieldExpression: AssignableExpression {
             return
         }
         cache.removeLast()
-        if let on = on as? AssignableExpression {
+        if let on = on as? RunnableAssignableExpression {
             try on.assign(context: context, value: modified, cache: &cache)
         } else {
             throw GRPHRuntimeError(type: .unexpected, message: "Value type couldn't be modified back")

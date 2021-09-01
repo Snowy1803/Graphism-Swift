@@ -32,6 +32,9 @@ struct Lambda: Parametrable {
            let expr = instruction as? ExpressionInstruction {
             return try expr.expression.eval(context: ctx)
         } else {
+            guard let instruction = instruction as? RunnableInstruction else {
+                throw GRPHRuntimeError(type: .unexpected, message: "Instruction of type \(type(of: instruction)) (in lambda) has no runnable implementation")
+            }
             try instruction.safeRun(context: &ctx)
             return GRPHVoid.void
         }

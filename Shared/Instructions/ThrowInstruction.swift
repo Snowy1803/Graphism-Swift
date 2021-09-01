@@ -12,10 +12,6 @@ struct ThrowInstruction: Instruction {
     let type: GRPHRuntimeError.RuntimeExceptionType
     let message: Expression
     
-    func run(context: inout RuntimeContext) throws {
-        throw GRPHRuntimeError(type: type, message: try message.eval(context: context) as! String)
-    }
-    
     func toString(indent: String) -> String {
         "\(line):\(indent)#throw \(type.rawValue)Exception(\(message))\n"
     }

@@ -205,6 +205,7 @@ class GraphismTests: XCTestCase {
     func testSampleProgram() {
         compiler = GRPHCompiler(entireContent: """
 #typealias Colors {color}
+
 #if 0 == 0
 \t// ok
 \t#break

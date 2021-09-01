@@ -12,19 +12,6 @@ struct BreakInstruction: Instruction {
     let type: BreakType
     let scope: BreakScope
     
-    func run(context: inout RuntimeContext) throws {
-        switch type {
-        case .break:
-            try context.breakBlock(scope: scope)
-        case .continue:
-            try context.continueBlock(scope: scope)
-        case .fall:
-            try context.fallFromBlock(scope: scope)
-        case .fallthrough:
-            try context.fallthroughNextBlock(scope: scope)
-        }
-    }
-    
     func toString(indent: String) -> String {
         return "\(line):\(indent)#\(type.rawValue) \(scope)\n"
     }
@@ -66,10 +53,6 @@ struct BreakInstruction: Instruction {
 struct ReturnInstruction: Instruction {
     let lineNumber: Int
     var value: Expression? = nil
-    
-    func run(context: inout RuntimeContext) throws {
-        try context.returnFunction(returnValue: value?.eval(context: context))
-    }
     
     func toString(indent: String) -> String {
         return "\(line):\(indent)#return \(value?.string ?? "")\n"
