@@ -9,6 +9,6 @@ import Foundation
 
 extension ThrowInstruction: RunnableInstruction {
     func run(context: inout RuntimeContext) throws {
-        throw GRPHRuntimeError(type: type, message: try message.eval(context: context) as! String)
+        throw GRPHRuntimeError(type: type, message: try message.evalIfRunnable(context: context) as! String)
     }
 }

@@ -46,10 +46,6 @@ struct ConstantExpression: Expression {
         value.type // The value is always known at compile time, so this is fine
     }
     
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        value
-    }
-    
     var string: String { value.state }
     
     var needsBrackets: Bool { false }

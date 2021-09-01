@@ -83,7 +83,7 @@ struct GraphismCLI: ParsableCommand {
                         break
                     }
                     let e = try Expressions.parse(context: DebuggingCompilingContext(adapting: context, compiler: compiler), infer: nil, literal: String(line.dropFirst(5)))
-                    printout("[EVAL OUT \(try e.eval(context: context))]")
+                    printout("[EVAL OUT \(try e.evalIfRunnable(context: context))]")
                 } catch let e as GRPHCompileError {
                     printout("[EVAL ERR \(e.message)]")
                 } catch let e as GRPHRuntimeError {

@@ -56,11 +56,6 @@ struct AssignmentInstruction: Instruction {
     struct VirtualExpression: Expression {
         let type: GRPHType
         
-        #warning("expr")
-        func eval(context: RuntimeContext) throws -> GRPHValue {
-            (context as! VirtualAssignmentRuntimeContext).virtualValue
-        }
-        
         func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
             type
         }

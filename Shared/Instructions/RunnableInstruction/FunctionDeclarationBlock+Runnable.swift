@@ -22,7 +22,7 @@ extension FunctionDeclarationBlock: RunnableBlockInstruction {
             if let returning = ctx.currentReturnValue {
                 return returning
             } else if let returning = returnDefault {
-                return try returning.eval(context: ctx)
+                return try returning.evalIfRunnable(context: ctx)
             } else if generated.returnType.isTheVoid {
                 return GRPHVoid.void
             } else {
@@ -48,7 +48,7 @@ extension FunctionDeclarationBlock: RunnableBlockInstruction {
             } else if p.optional {
                 if let def = defaults[i] {
                     if val == nil {
-                        context.variables.append(Variable(name: p.name, type: p.type, content: try def.eval(context: context), final: false))
+                        context.variables.append(Variable(name: p.name, type: p.type, content: try def.evalIfRunnable(context: context), final: false))
                     } else {
                         context.variables.append(Variable(name: p.name, type: p.type, content: val, final: false))
                     }
@@ -64,7 +64,7 @@ extension FunctionDeclarationBlock: RunnableBlockInstruction {
             for i in params.count..<generated.parameters.count {
                 let p = generated.parameter(index: i)
                 if let def = defaults[i] {
-                    context.variables.append(Variable(name: p.name, type: p.type, content: try def.eval(context: context), final: false))
+                    context.variables.append(Variable(name: p.name, type: p.type, content: try def.evalIfRunnable(context: context), final: false))
                 } else {
                     context.variables.append(Variable(name: p.name, type: p.type.optional, content: GRPHOptional.null, final: false))
                 }

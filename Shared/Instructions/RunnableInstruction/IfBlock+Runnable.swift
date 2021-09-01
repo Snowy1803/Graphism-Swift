@@ -9,7 +9,7 @@ import Foundation
 
 extension IfBlock: RunnableBlockInstruction {
     func canRun(context: BlockRuntimeContext) throws -> Bool {
-        try condition.eval(context: context) as! Bool
+        try condition.evalIfRunnable(context: context) as! Bool
     }
 }
 
@@ -17,7 +17,7 @@ extension ElseIfBlock: RunnableBlockInstruction {
     func canRun(context: BlockRuntimeContext) throws -> Bool {
         if let last = context.parent?.previous as? BlockRuntimeContext {
             context.canNextRun = last.canNextRun
-            return try context.canNextRun && condition.eval(context: context) as! Bool
+            return try context.canNextRun && condition.evalIfRunnable(context: context) as! Bool
         } else {
             throw GRPHRuntimeError(type: .unexpected, message: "#elseif must follow another block instruction")
         }

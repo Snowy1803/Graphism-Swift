@@ -31,21 +31,6 @@ struct UnaryExpression: Expression {
         }
     }
     
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        let evaluated = try GRPHTypes.unbox(value: exp.eval(context: context))
-        switch op {
-        case .bitwiseComplement:
-            return ~(evaluated as! Int)
-        case .opposite:
-            if let value = evaluated as? Int {
-                return -value
-            }
-            return -(evaluated as! Float)
-        case .not:
-            return !(evaluated as! Bool)
-        }
-    }
-    
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         switch op {
         case .bitwiseComplement:
@@ -70,19 +55,6 @@ enum UnaryOperator: String {
 
 struct UnboxExpression: Expression {
     let exp: Expression
-    
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        let value = try exp.eval(context: context)
-        guard let opt = value as? GRPHOptional else {
-            throw GRPHRuntimeError(type: .unexpected, message: "Cannot unbox non optional")
-        }
-        switch opt {
-        case .null:
-            throw GRPHRuntimeError(type: .cast, message: "Tried to unbox a 'null' value")
-        case .some(let wrapped):
-            return wrapped
-        }
-    }
     
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         guard let type = try exp.getType(context: context, infer: infer.optional) as? OptionalType else {

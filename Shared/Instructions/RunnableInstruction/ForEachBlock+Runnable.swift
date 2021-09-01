@@ -13,7 +13,7 @@ extension ForEachBlock: RunnableBlockInstruction {
     func run(context: inout RuntimeContext) throws {
         let ctx = createContext(&context)
         var i = 0
-        let arr = try array.eval(context: context) as! GRPHArray
+        let arr = try array.evalIfRunnable(context: context) as! GRPHArray
         if mustRun(context: ctx) {
             throw GRPHRuntimeError(type: .unexpected, message: "Cannot fallthrough a #foreach block")
         }

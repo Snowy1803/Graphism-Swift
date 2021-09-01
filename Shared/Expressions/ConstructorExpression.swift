@@ -45,10 +45,6 @@ struct ConstructorExpression: Expression {
         self.values = [boxing]
     }
     
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        return constructor.executable(context, try values.map { try $0?.eval(context: context) })
-    }
-    
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         constructor.type
     }

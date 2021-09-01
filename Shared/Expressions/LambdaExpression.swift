@@ -53,20 +53,15 @@ struct LambdaExpression: Expression {
         capturedVarNames = Array(lambdaContext.capturedVarNames)
     }
     
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        FuncRef(currentType: lambda.currentType, storage: .lambda(lambda, capture: try capturedVarNames.map { capture in
-            if let variable = context.findVariable(named: capture) {
-                return variable
-            }
-            throw GRPHRuntimeError(type: .unexpected, message: "Expected captured variable '\(capture)' to exist at runtime")
-        }))
-    }
-    
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         lambda.currentType
     }
     
-    var string: String { "^[\(lambda.instruction.toString(indent: "").dropLast())]" }
+    var string: String {
+        let instr = lambda.instruction.toString(indent: "").dropLast()
+        let colon = instr.firstIndex(of: ":")!
+        return "^[\(instr[instr.index(after: colon)...])]"
+    }
     
     var needsBrackets: Bool { false }
 }

@@ -14,16 +14,16 @@ extension AssignmentInstruction: RunnableInstruction {
             throw GRPHRuntimeError(type: .unexpected, message: "Expression of type \(type(of: assigned)) (line \(line)) has no assignable runnable implementation")
         }
         context = VirtualAssignmentRuntimeContext(parent: context, virtualValue: try assigned.eval(context: context, cache: &cache))
-        let val = try value.eval(context: context)
+        let val = try value.evalIfRunnable(context: context)
         try assigned.assign(context: context, value: val, cache: &cache)
     }
 }
-#warning("todo")
-//extension AssignmentInstruction.VirtualExpression: RunnableExpression {
-//    func eval(context: RuntimeContext) throws -> GRPHValue {
-//        (context as! VirtualAssignmentRuntimeContext).virtualValue
-//    }
-//}
+
+extension AssignmentInstruction.VirtualExpression: RunnableExpression {
+    func eval(context: RuntimeContext) throws -> GRPHValue {
+        (context as! VirtualAssignmentRuntimeContext).virtualValue
+    }
+}
 
 protocol RunnableAssignableExpression: Expression {
     func eval(context: RuntimeContext, cache: inout [GRPHValue]) throws -> GRPHValue

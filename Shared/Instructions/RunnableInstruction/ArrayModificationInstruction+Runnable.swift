@@ -12,19 +12,19 @@ extension ArrayModificationInstruction: RunnableInstruction {
         guard let v = context.findVariable(named: name) else {
             throw GRPHRuntimeError(type: .unexpected, message: "Undeclared variable '\(name)'")
         }
-        let val = try value?.eval(context: context)
+        let val = try value?.evalIfRunnable(context: context)
         guard let arr = v.content! as? GRPHArray else { // No autoboxing here (consistency with Java version)
             throw GRPHRuntimeError(type: .typeMismatch, message: "Expected an array in array modification, got a \(GRPHTypes.realType(of: v.content!, expected: nil))")
         }
         switch op {
         case .set:
-            guard let index = try index?.eval(context: context) as? Int,
+            guard let index = try index?.evalIfRunnable(context: context) as? Int,
                   index < arr.count else {
                 throw GRPHRuntimeError(type: .unexpected, message: "Invalid index")
             }
             arr.wrapped[index] = val!
         case .add:
-            if let index = try index?.eval(context: context) as? Int {
+            if let index = try index?.evalIfRunnable(context: context) as? Int {
                 guard index <= arr.count else {
                     throw GRPHRuntimeError(type: .unexpected, message: "Invalid index \(index) in insertion for array of length \(arr.count)")
                 }
@@ -33,7 +33,7 @@ extension ArrayModificationInstruction: RunnableInstruction {
                 arr.wrapped.append(val!)
             }
         case .remove:
-            if let index = try index?.eval(context: context) as? Int {
+            if let index = try index?.evalIfRunnable(context: context) as? Int {
                 guard index < arr.count else {
                     throw GRPHRuntimeError(type: .unexpected, message: "Invalid index \(index) in insertion for array of length \(arr.count)")
                 }

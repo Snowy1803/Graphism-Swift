@@ -8,10 +8,6 @@
 import Foundation
 
 struct NullExpression: Expression {
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        GRPHOptional.null
-    }
-    
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         if infer is OptionalType {
             return infer

@@ -43,21 +43,6 @@ struct MethodExpression: Expression {
         self.values = ourvalues
     }
     
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        let onValue = try on.eval(context: context)
-        var m = method
-        if !m.effectivelyFinal { // check for overrides
-            let real = GRPHTypes.type(of: onValue, expected: m.inType)
-            m = Method(imports: context.imports, namespace: NameSpaces.none, name: m.name, inType: real) ?? m
-        }
-        do {
-            return try m.executable(context, onValue, try values.map { try $0?.eval(context: context) })
-        } catch var e as GRPHRuntimeError {
-            e.stack.append("\tat \(fullyQualified)")
-            throw e
-        }
-    }
-    
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         return method.returnType
     }

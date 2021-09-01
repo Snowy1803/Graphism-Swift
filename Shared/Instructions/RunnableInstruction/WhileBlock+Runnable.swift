@@ -9,7 +9,7 @@ import Foundation
 
 extension WhileBlock: RunnableBlockInstruction {
     func canRun(context: BlockRuntimeContext) throws -> Bool {
-        try condition.eval(context: context) as! Bool
+        try condition.evalIfRunnable(context: context) as! Bool
     }
     
     func run(context: inout RuntimeContext) throws {

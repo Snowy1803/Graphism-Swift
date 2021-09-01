@@ -24,6 +24,6 @@ extension BreakInstruction: RunnableInstruction {
 
 extension ReturnInstruction: RunnableInstruction {
     func run(context: inout RuntimeContext) throws {
-        try context.returnFunction(returnValue: value?.eval(context: context))
+        try context.returnFunction(returnValue: value?.evalIfRunnable(context: context))
     }
 }

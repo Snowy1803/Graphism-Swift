@@ -9,7 +9,7 @@ import Foundation
 
 extension VariableDeclarationInstruction: RunnableInstruction {
     func run(context: inout RuntimeContext) throws {
-        let content = try value.eval(context: context)
+        let content = try value.evalIfRunnable(context: context)
         let v = Variable(name: name, type: type, content: content, final: constant)
         context.addVariable(v, global: global)
         if context.runtime.debugging {

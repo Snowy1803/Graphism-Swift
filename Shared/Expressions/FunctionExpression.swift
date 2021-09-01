@@ -41,15 +41,6 @@ struct FunctionExpression: Expression {
         self.values = ourvalues
     }
     
-    func eval(context: RuntimeContext) throws -> GRPHValue {
-        do {
-            return try function.executable(context, try values.map { try $0?.eval(context: context) })
-        } catch var e as GRPHRuntimeError {
-            e.stack.append("\tat \(function.fullyQualifiedName)")
-            throw e
-        }
-    }
-    
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {
         return function.returnType
     }

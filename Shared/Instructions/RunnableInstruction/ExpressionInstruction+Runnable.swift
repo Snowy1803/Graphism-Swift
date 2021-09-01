@@ -9,6 +9,6 @@ import Foundation
 
 extension ExpressionInstruction: RunnableInstruction {
     func run(context: inout RuntimeContext) throws {
-        _ = try expression.eval(context: context)
+        _ = try expression.evalIfRunnable(context: context)
     }
 }

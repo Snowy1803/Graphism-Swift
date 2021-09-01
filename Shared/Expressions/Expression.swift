@@ -9,8 +9,6 @@ import Foundation
 
 protocol Expression: CustomStringConvertible {
     
-    func eval(context: RuntimeContext) throws -> GRPHValue
-    
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType
     
     var string: String { get }

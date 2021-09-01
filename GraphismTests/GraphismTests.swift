@@ -188,8 +188,8 @@ class GraphismTests: XCTestCase {
         let runtime = GRPHRuntime(compiler: compiler, image: GImage())
         let ctx = TopLevelRuntimeContext(runtime: runtime)
         
-        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as! float").eval(context: ctx))
-        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as float").eval(context: ctx))
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as! float").evalIfRunnable(context: ctx))
+        XCTAssertThrowsError(try Expressions.parse(context: context, infer: SimpleType.mixed, literal: "color.RED as float").evalIfRunnable(context: ctx))
     }
     
     func cast(literal: String, expected: String) throws {
@@ -199,7 +199,7 @@ class GraphismTests: XCTestCase {
         runtime.initialGlobalVariables = context.allVariables
         let ctx = TopLevelRuntimeContext(runtime: runtime)
         
-        XCTAssertEqual("\(try exp.eval(context: ctx))", expected)
+        XCTAssertEqual("\(try exp.evalIfRunnable(context: ctx))", expected)
     }
     
     func testSampleProgram() {
