@@ -8,13 +8,6 @@
 import Foundation
 
 extension Function {
-    @available(*, deprecated)
-    init(ns: NameSpace, name: String, parameters: [Parameter], returnType: GRPHType = SimpleType.void, varargs: Bool = false, executable: @escaping (RuntimeContext, [GRPHValue?]) throws -> GRPHValue) {
-        
-        self.init(ns: ns, name: name, parameters: parameters, returnType: returnType, varargs: varargs, storage: .native)
-        NativeFunctionRegistry.shared.implement(function: self, with: executable)
-    }
-    
     func execute(context: RuntimeContext, arguments: [GRPHValue?]) throws -> GRPHValue {
         switch storage {
         case .native:

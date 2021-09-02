@@ -14,12 +14,6 @@ class RuntimeContext: GRPHContextProtocol {
     var parent: RuntimeContext?
     var previous: RuntimeContext?
     
-    @available(*, deprecated, renamed: "previous")
-    var last: RuntimeContext? {
-        get { previous }
-        set { previous = newValue }
-    }
-    
     init(runtime: GRPHRuntime, parent: RuntimeContext?) {
         self.runtime = runtime
         self.parent = parent
