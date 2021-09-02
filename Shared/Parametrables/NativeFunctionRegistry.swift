@@ -10,25 +10,23 @@ import Foundation
 class NativeFunctionRegistry {
     static let shared = NativeFunctionRegistry()
     
-    var registered = false
+    private init() {
+        do {
+            try NameSpaces.registerAllImplementations(reg: self)
+        } catch {
+            printerr("Registering native implementations failed")
+            printerr("\(error)")
+        }
+    }
     
     /// Note: We could use an actor, but this is only a workaround: Normally, everything should be added on the same thread, before anything is run.
     let queue = DispatchQueue(label: "NativeFunctionRegistry")
     
-    private var constructors: [String: (RuntimeContext, [GRPHValue?]) -> GRPHValue] = [:]
+    private var constructors: [String: (GRPHType, RuntimeContext, [GRPHValue?]) -> GRPHValue] = [:]
     private var functions: [String: (RuntimeContext, [GRPHValue?]) throws -> GRPHValue] = [:]
     private var methods: [String: (RuntimeContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue] = [:]
     
     func ensureRegistered() {
-        if !registered {
-            registered = true
-            do {
-                try NameSpaces.registerAllImplementations()
-            } catch {
-                printerr("Registering native implementations failed")
-                printerr("\(error)")
-            }
-        }
     }
     
     func implementation(for function: Function) throws -> ((RuntimeContext, [GRPHValue?]) throws -> GRPHValue) {
@@ -77,18 +75,29 @@ class NativeFunctionRegistry {
         }
     }
     
-    func implementation(for constructor: Constructor) -> ((RuntimeContext, [GRPHValue?]) -> GRPHValue) {
+    func implementation(for constructor: Constructor) -> ((GRPHType, RuntimeContext, [GRPHValue?]) -> GRPHValue) {
         ensureRegistered()
-        guard let imp = constructors[constructor.name] else {
-            fatalError("No implementation found for constructor '\(constructor.name)'")
+        let signature: String
+        switch constructor.storage {
+        case .native:
+            signature = constructor.signature
+        case .generic(signature: let sig):
+            signature = sig
+        }
+        guard let imp = constructors[signature] else {
+            fatalError("No implementation found for constructor '\(signature)'")
         }
         return imp
     }
     
-    func implement(constructor: Constructor, with imp: @escaping (RuntimeContext, [GRPHValue?]) -> GRPHValue) {
-//        assert(constructors[constructor.name] == nil, "replacing native implementation for the already defined constructor '\(constructor.name)'")
+    func implement(constructor: Constructor, with imp: @escaping (GRPHType, RuntimeContext, [GRPHValue?]) -> GRPHValue) {
+        implement(constructorWithSignature: constructor.signature, with: imp)
+    }
+    
+    func implement(constructorWithSignature signature: String, with imp: @escaping (GRPHType, RuntimeContext, [GRPHValue?]) -> GRPHValue) {
+//        assert(constructors[signature] == nil, "replacing native implementation for the already defined constructor '\(signature)'")
         queue.sync {
-            constructors[constructor.name] = imp
+            constructors[signature] = imp
         }
     }
 }

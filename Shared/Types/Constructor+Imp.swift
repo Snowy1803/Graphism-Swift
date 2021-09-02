@@ -9,8 +9,7 @@ import Foundation
 
 extension Constructor {
     /// These are the first implementations to be registered
-    static func registerImplementations() throws {
-//        let reg = NativeFunctionRegistry.shared
+    static func registerImplementations(reg: NativeFunctionRegistry) throws {
         
     }
 }

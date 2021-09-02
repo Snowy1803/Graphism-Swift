@@ -9,9 +9,7 @@ import Foundation
 
 extension StringUtilsNameSpace: ImplementedNameSpace {
     
-    func registerImplementations() throws {
-        let reg = NativeFunctionRegistry.shared
-        
+    func registerImplementations(reg: NativeFunctionRegistry) throws {
         reg.implement(function: exportedFunctions[named: "getStringLength"]) { ctx, params in
             return (params[0] as! String).count
         }

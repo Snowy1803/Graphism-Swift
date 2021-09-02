@@ -8,9 +8,7 @@
 import Foundation
 
 extension MathNameSpace: ImplementedNameSpace {
-    func registerImplementations() throws {
-        let reg = NativeFunctionRegistry.shared
-        
+    func registerImplementations(reg: NativeFunctionRegistry) throws {
         reg.implement(function: exportedFunctions[named: "sum"]) { ctx, params in
             return params.map { $0 as? Float ?? Float($0 as! Int) }.reduce(into: 0 as Float) { $0 += $1 }
         }

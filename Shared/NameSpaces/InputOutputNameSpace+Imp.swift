@@ -9,9 +9,7 @@ import Foundation
 
 extension InputOutputNameSpace: ImplementedNameSpace {
     
-    func registerImplementations() throws {
-        let reg = NativeFunctionRegistry.shared
-        
+    func registerImplementations(reg: NativeFunctionRegistry) throws {
         reg.implement(function: exportedFunctions[named: "getLineInString"]) { ctx, params in
             let line = params[1] as! Int
             return String((params[0] as! String).split(separator: "\n", maxSplits: line + 1)[line])

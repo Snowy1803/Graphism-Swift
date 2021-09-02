@@ -9,15 +9,15 @@ import Foundation
 
 protocol ImplementedNameSpace: NameSpace {
     
-    func registerImplementations() throws
+    func registerImplementations(reg: NativeFunctionRegistry) throws
     
 }
 extension NameSpaces {
-    static func registerAllImplementations() throws {
-        try Constructor.registerImplementations()
+    static func registerAllImplementations(reg: NativeFunctionRegistry) throws {
+        try Constructor.registerImplementations(reg: reg)
         for ns in instances {
             if let ns = ns as? ImplementedNameSpace {
-                try ns.registerImplementations()
+                try ns.registerImplementations(reg: reg)
             }
         }
     }

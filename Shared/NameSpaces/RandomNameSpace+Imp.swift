@@ -9,8 +9,7 @@ import Foundation
 
 extension RandomNameSpace: ImplementedNameSpace {
     
-    func registerImplementations() throws {
-        let reg = NativeFunctionRegistry.shared
+    func registerImplementations(reg: NativeFunctionRegistry) throws {
         reg.implement(function: exportedFunctions[named: "randomInteger"]) { ctx, params in
             return Int.random(in: 0..<(params[0] as! Int))
         }

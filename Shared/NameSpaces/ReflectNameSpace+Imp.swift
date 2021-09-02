@@ -9,9 +9,7 @@ import Foundation
 
 extension ReflectNameSpace: ImplementedNameSpace {
     
-    func registerImplementations() throws {
-        let reg = NativeFunctionRegistry.shared
-    
+    func registerImplementations(reg: NativeFunctionRegistry) throws {
         reg.implement(function: exportedFunctions[named: "callFunction"]) { context, params in
             guard let ns = params.count == 1 || params[1] == nil || (params.count & 1) == 1 ? NameSpaces.none : NameSpaces.namespace(named: params[1] as! String) else {
                 throw GRPHRuntimeError(type: .reflection, message: "Namespace '\(params[1]!)' not found")
