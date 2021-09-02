@@ -10,6 +10,8 @@ import Foundation
 class NativeFunctionRegistry {
     static let shared = NativeFunctionRegistry()
     
+    var registered = false
+    
     /// Note: We could use an actor, but this is only a workaround: Normally, everything should be added on the same thread, before anything is run.
     let queue = DispatchQueue(label: "NativeFunctionRegistry")
     
@@ -17,7 +19,20 @@ class NativeFunctionRegistry {
     private var functions: [String: (RuntimeContext, [GRPHValue?]) throws -> GRPHValue] = [:]
     private var methods: [String: (RuntimeContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue] = [:]
     
+    func ensureRegistered() {
+        if !registered {
+            registered = true
+            do {
+                try NameSpaces.registerAllImplementations()
+            } catch {
+                printerr("Registering native implementations failed")
+                printerr("\(error)")
+            }
+        }
+    }
+    
     func implementation(for function: Function) throws -> ((RuntimeContext, [GRPHValue?]) throws -> GRPHValue) {
+        ensureRegistered()
         guard let imp = functions[function.signature] else {
             throw GRPHRuntimeError(type: .unexpected, message: "No implementation found for native function '\(function.signature)'")
         }
@@ -36,6 +51,7 @@ class NativeFunctionRegistry {
     }
     
     func implementation(for method: Method) throws -> ((RuntimeContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue) {
+        ensureRegistered()
         guard let imp = methods[method.signature] else {
             throw GRPHRuntimeError(type: .unexpected, message: "No implementation found for native method '\(method.signature)'")
         }
@@ -54,6 +70,7 @@ class NativeFunctionRegistry {
     }
     
     func implementation(for constructor: Constructor) -> ((RuntimeContext, [GRPHValue?]) -> GRPHValue) {
+        ensureRegistered()
         guard let imp = constructors[constructor.name] else {
             fatalError("No implementation found for constructor '\(constructor.name)'")
         }

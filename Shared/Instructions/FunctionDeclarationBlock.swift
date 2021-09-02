@@ -136,7 +136,7 @@ class FunctionDeclarationBlock: BlockInstruction {
             }
         }
         
-        generated = Function(ns: NameSpaces.none, name: name, parameters: pars, returnType: returnType, varargs: varargs, executable: executeFunction(context:params:))
+        generated = Function(ns: NameSpaces.none, name: name, parameters: pars, returnType: returnType, varargs: varargs, storage: .block(self))
         context.compiler.imports.append(generated)
     }
     
