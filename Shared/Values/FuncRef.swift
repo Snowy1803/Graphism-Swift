@@ -28,29 +28,6 @@ struct FuncRef: GRPHValue {
     func isEqual(to other: GRPHValue) -> Bool {
         false // not even equal to itself, it makes no sense to compare function references
     }
-    
-    func execute(context: RuntimeContext, params: [GRPHValue?]) throws -> GRPHValue {
-        switch storage {
-        case .function(let function, let argumentGrid):
-            var i = 0
-            let parmap: [GRPHValue?] = argumentGrid.map {
-                if $0 {
-                    defer {
-                        i += 1
-                    }
-                    return params[i]
-                } else {
-                    return nil
-                }
-            }
-            return try function.executable(context, parmap)
-        case .lambda(let lambda, let capture):
-            return try lambda.execute(context: context, params: params, capture: capture)
-        case .constant(let const):
-            return const
-        }
-    }
-    
 }
 
 extension FuncRef {

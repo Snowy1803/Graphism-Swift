@@ -9,14 +9,14 @@ import Foundation
 
 extension ConstructorExpression: RunnableExpression {
     func eval(context: RuntimeContext) throws -> GRPHValue {
-        return constructor.executable(context, try values.map { try $0?.evalIfRunnable(context: context) })
+        return constructor.execute(context: context, arguments: try values.map { try $0?.evalIfRunnable(context: context) })
     }
 }
 
 extension FunctionExpression: RunnableExpression {
     func eval(context: RuntimeContext) throws -> GRPHValue {
         do {
-            return try function.executable(context, try values.map { try $0?.evalIfRunnable(context: context) })
+            return try function.execute(context: context, arguments: try values.map { try $0?.evalIfRunnable(context: context) })
         } catch var e as GRPHRuntimeError {
             e.stack.append("\tat \(function.fullyQualifiedName)")
             throw e
@@ -33,7 +33,7 @@ extension MethodExpression: RunnableExpression {
             m = Method(imports: context.imports, namespace: NameSpaces.none, name: m.name, inType: real) ?? m
         }
         do {
-            return try m.executable(context, onValue, try values.map { try $0?.evalIfRunnable(context: context) })
+            return try m.execute(context: context, on: onValue, arguments: try values.map { try $0?.evalIfRunnable(context: context) })
         } catch var e as GRPHRuntimeError {
             e.stack.append("\tat \(fullyQualified)")
             throw e

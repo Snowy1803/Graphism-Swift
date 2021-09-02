@@ -23,11 +23,11 @@ struct ReflectNameSpace: NameSpace {
                     guard f.parameters.allSatisfy({ $0.optional }) else {
                         throw GRPHRuntimeError(type: .reflection, message: "Function '\(f.name)' requires arguments")
                     }
-                    return try f.executable(context, [])
+                    return try f.execute(context: context, arguments: [])
                 }
                 // ["name" "ns" "param1" value1] -- params.count == 4 -- drop 2
                 // ["name" "param1" value1] -- 3 -- drop 1
-                return try f.executable(context, f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! }))
+                return try f.execute(context: context, arguments: f.labelled(values: params.dropFirst(2 - (params.count & 1)).map { $0! }))
             },
             Function(ns: self, name: "callFunctionAsync", parameters: [Parameter(name: "funcName", type: MultiOrType(type1: SimpleType.string, type2: SimpleType.funcref)), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.void, varargs: true) { context, params in
                 let f: Parametrable
@@ -50,7 +50,7 @@ struct ReflectNameSpace: NameSpace {
                         if let funcref = params[0] as? FuncRef {
                             _ = try funcref.execute(context: context, params: params)
                         } else {
-                            _ = try (f as! Function).executable(context, params)
+                            _ = try (f as! Function).execute(context: context, arguments: params)
                         }
                     } catch let e as GRPHRuntimeError {
                         context.runtime.image.destroy()
@@ -82,7 +82,7 @@ struct ReflectNameSpace: NameSpace {
                 guard let f = Method(imports: context.imports, namespace: ns, name: params[0] as! String, inType: valueType) else {
                     throw GRPHRuntimeError(type: .reflection, message: "Function '\(params[0]!)' not found in namespace '\(ns.name)'")
                 }
-                return try f.executable(context, value, f.labelled(values: params.dropFirst(3).map { $0! }))
+                return try f.execute(context: context, on: value, arguments: f.labelled(values: params.dropFirst(3).map { $0! }))
             },
             Function(ns: self, name: "callConstructor", parameters: [Parameter(name: "type", type: SimpleType.string), Parameter(name: "params...", type: SimpleType.mixed)], returnType: SimpleType.mixed, varargs: true) { context, params in
                 guard let type = GRPHTypes.parse(context: context, literal: params[0] as! String) else {
@@ -91,7 +91,7 @@ struct ReflectNameSpace: NameSpace {
                 guard let f = type.constructor else {
                     throw GRPHRuntimeError(type: .reflection, message: "Type '\(type.string)' has no constructor")
                 }
-                return try f.executable(context, f.labelled(values: params.dropFirst(1).map { $0! }))
+                return try f.execute(context: context, arguments: f.labelled(values: params.dropFirst(1).map { $0! }))
             },
             Function(ns: self, name: "castTo", parameters: [Parameter(name: "type", type: SimpleType.string), Parameter(name: "param", type: SimpleType.mixed)], returnType: SimpleType.mixed) { context, params in
                 guard let type = GRPHTypes.parse(context: context, literal: params[0] as! String) else {

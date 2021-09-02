@@ -488,7 +488,10 @@ struct StandardNameSpace: NameSpace {
     
     func constructorLegacyFunction(type: GRPHType) -> Function {
         let base = type.constructor!
-        return Function(ns: self, name: type.string, parameters: base.parameters, returnType: type, varargs: base.varargs, executable: base.executable)
+        let imp = NativeFunctionRegistry.shared.implementation(for: base)
+        let f = Function(ns: self, name: type.string, parameters: base.parameters, returnType: type, varargs: base.varargs)
+        NativeFunctionRegistry.shared.implement(function: f, with: imp)
+        return f
     }
     
     func stringRepresentation(val: GRPHValue) -> String {

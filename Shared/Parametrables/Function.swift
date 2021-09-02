@@ -13,18 +13,25 @@ struct Function: Parametrable, Importable {
     let parameters: [Parameter]
     let returnType: GRPHType
     let varargs: Bool
-    let executable: (RuntimeContext, [GRPHValue?]) throws -> GRPHValue
+    let storage: Storage
     
-    init(ns: NameSpace, name: String, parameters: [Parameter], returnType: GRPHType = SimpleType.void, varargs: Bool = false, executable: @escaping (RuntimeContext, [GRPHValue?]) throws -> GRPHValue) {
+    init(ns: NameSpace, name: String, parameters: [Parameter], returnType: GRPHType = SimpleType.void, varargs: Bool = false, storage: Storage = .native) {
         self.ns = ns
         self.name = name
         self.parameters = parameters
         self.returnType = returnType
         self.varargs = varargs
-        self.executable = executable
+        self.storage = storage
     }
     
     var exportedFunctions: [Function] { [self] }
+}
+
+extension Function {
+    enum Storage {
+        case native
+        case block(FunctionDeclarationBlock)
+    }
 }
 
 extension Function {
@@ -45,5 +52,9 @@ extension Function {
     
     var fullyQualifiedName: String {
         "\(ns.name == "standard" || ns.name == "none" ? "" : "\(ns.name)>")\(name)"
+    }
+    
+    var signature: String {
+        "\(returnType) \(fullyQualifiedName)[\(parameters.map { $0.string }.joined(separator: ", "))\(varargs ? "..." : "")]"
     }
 }
