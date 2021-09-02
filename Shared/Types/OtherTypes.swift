@@ -22,13 +22,7 @@ struct OptionalType: GRPHType {
     }
     
     var constructor: Constructor? {
-        Constructor(parameters: [Parameter(name: "wrapped", type: wrapped, optional: true)], type: self) { ctx, values in
-            if values.count == 1 {
-                return GRPHOptional.some(values[0]!)
-            } else {
-                return GRPHOptional.null
-            }
-        }
+        Constructor(parameters: [Parameter(name: "wrapped", type: wrapped, optional: true)], type: self, storage: .generic(signature: "T?(T wrapped?)"))
     }
 }
 
@@ -76,9 +70,7 @@ struct ArrayType: GRPHType {
     }
     
     var constructor: Constructor? {
-        Constructor(parameters: [Parameter(name: "element", type: content, optional: true)], type: self, varargs: true) { ctx, values in
-            GRPHArray(values.compactMap { $0 }, of: content)
-        }
+        Constructor(parameters: [Parameter(name: "element", type: content, optional: true)], type: self, varargs: true, storage: .generic(signature: "{T}(T wrapped...)"))
     }
     
     var includedMethods: [Method] {
@@ -126,9 +118,7 @@ struct FuncRefType: GRPHType {
     }
     
     var constructor: Constructor? {
-        Constructor(parameters: [Parameter(name: "constant", type: returnType, optional: returnType.isTheVoid)], type: self) { ctx, values in
-            FuncRef(currentType: self, storage: .constant(values[safe: 0] ?? GRPHVoid.void))
-        }
+        Constructor(parameters: [Parameter(name: "constant", type: returnType, optional: returnType.isTheVoid)], type: self, storage: .generic(signature: "funcref<T><>(T wrapped)"))
     }
 }
 

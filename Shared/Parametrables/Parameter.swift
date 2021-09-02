@@ -32,6 +32,6 @@ struct Parameter {
     }
     
     var string: String {
-        "\(type.string) \(name)"
+        "\(type.string) \(name)\(optional ? "?" : "")"
     }
 }

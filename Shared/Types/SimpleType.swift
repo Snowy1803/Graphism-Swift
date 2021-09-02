@@ -279,98 +279,37 @@ enum SimpleType: String, GRPHType, CaseIterable {
         case .mixed, .num, .integer, .float, .boolean, .string, .paint, .shape, .direction, .stroke, .funcref:
             return nil
         case .void:
-            return Constructor(parameters: [], type: self) { _, _ in GRPHVoid.void }
+            return Constructor(parameters: [], type: self, storage: .native)
         case .rotation:
-            return Constructor(parameters: [Parameter(name: "degrees", type: SimpleType.integer)], type: self) { context, values in
-                return Rotation(value: values[0] as! Int)
-            }
+            return Constructor(parameters: [Parameter(name: "degrees", type: SimpleType.integer)], type: self, storage: .native)
         case .pos:
-            return Constructor(parameters: [Parameter(name: "x", type: SimpleType.num), Parameter(name: "y", type: SimpleType.num)], type: self) { context, values in
-                return Pos(x: values[0] as? Float ?? Float(values[0] as! Int), y: values[1] as? Float ?? Float(values[1] as! Int))
-            }
+            return Constructor(parameters: [Parameter(name: "x", type: SimpleType.num), Parameter(name: "y", type: SimpleType.num)], type: self, storage: .native)
         case .color:
-            return Constructor(parameters: [Parameter(name: "red", type: SimpleType.integer), Parameter(name: "green", type: SimpleType.integer), Parameter(name: "blue", type: SimpleType.integer), Parameter(name: "alpha", type: SimpleType.float, optional: true)], type: self) { context, values in
-                return ColorPaint.components(red: Float(values[0] as! Int) / 255, green: Float(values[1] as! Int) / 255, blue: Float(values[2] as! Int) / 255, alpha: values.count == 4 ? values[3] as! Float : 1)
-            }
+            return Constructor(parameters: [Parameter(name: "red", type: SimpleType.integer), Parameter(name: "green", type: SimpleType.integer), Parameter(name: "blue", type: SimpleType.integer), Parameter(name: "alpha", type: SimpleType.float, optional: true)], type: self, storage: .native)
         case .linear:
-            return Constructor(parameters: [Parameter(name: "from", type: SimpleType.color), Parameter(name: "direction", type: SimpleType.direction), Parameter(name: "to", type: SimpleType.color)], type: self) { context, values in
-                return LinearPaint(from: values[0] as! ColorPaint, direction: values[1] as! Direction, to: values[2] as! ColorPaint)
-            }
+            return Constructor(parameters: [Parameter(name: "from", type: SimpleType.color), Parameter(name: "direction", type: SimpleType.direction), Parameter(name: "to", type: SimpleType.color)], type: self, storage: .native)
         case .radial:
-            return Constructor(parameters: [Parameter(name: "centerColor", type: SimpleType.color), Parameter(name: "center", type: SimpleType.pos, optional: true), Parameter(name: "externalColor", type: SimpleType.color), Parameter(name: "radius", type: SimpleType.float)], type: self) { context, values in
-                return RadialPaint(centerColor: values[0] as! ColorPaint, center: values[1] as? Pos ?? Pos(x: 0.5, y: 0.5), externalColor: values[2] as! ColorPaint, radius: values[3] as! Float)
-            }
+            return Constructor(parameters: [Parameter(name: "centerColor", type: SimpleType.color), Parameter(name: "center", type: SimpleType.pos, optional: true), Parameter(name: "externalColor", type: SimpleType.color), Parameter(name: "radius", type: SimpleType.float)], type: self, storage: .native)
         case .font:
             return Constructor(parameters: [Parameter(name: "name", type: SimpleType.string, optional: true),
                                             Parameter(name: "size", type: SimpleType.integer),
-                                            Parameter(name: "style", type: SimpleType.integer, optional: true)], type: self) { context, values in
-                return JFont(name: values[0] as? String, size: values[1] as! Int, weight: values.count == 3 ? values[2] as! Int : JFont.plain)
-            }
+                                            Parameter(name: "style", type: SimpleType.integer, optional: true)], type: self, storage: .native)
         case .Rectangle:
-            return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
-                return GRectangle(givenName: values[0] as? String,
-                                  position: values[1] as! Pos,
-                                  positionZ: values[2] as? Int ?? 0,
-                                  size: values[3] as! Pos,
-                                  rotation: values[4] as? Rotation ?? 0,
-                                  paint: AnyPaint.auto(values[5]!),
-                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[safe: 7] as? Stroke ?? .elongated, strokeDashArray: values[safe: 8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
-            }
+            return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self, storage: .native)
         case .Circle:
-            return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
-                return GCircle(givenName: values[0] as? String,
-                                  position: values[1] as! Pos,
-                                  positionZ: values[2] as? Int ?? 0,
-                                  size: values[3] as! Pos,
-                                  rotation: values[4] as? Rotation ?? 0,
-                                  paint: AnyPaint.auto(values[5]!),
-                                  strokeStyle: values.count == 6 ? nil : StrokeWrapper(strokeWidth: values[6] as? Float ?? 5, strokeType: values[safe: 7] as? Stroke ?? .elongated, strokeDashArray: values[safe: 8] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
-            }
+            return Constructor(parameters: [.shapeName, .pos, .zpos, .size, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self, storage: .native)
         case .Line:
-            return Constructor(parameters: [.shapeName, .pos1, .pos2, .zpos, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
-                return GLine(givenName: values[0] as? String,
-                                  start: values[1] as! Pos,
-                                  end: values[2] as! Pos,
-                                  positionZ: values[3] as? Int ?? 0,
-                                  paint: AnyPaint.auto(values[4]!),
-                                  strokeStyle: StrokeWrapper(strokeWidth: values[safe: 5] as? Float ?? 5, strokeType: values[safe: 6] as? Stroke ?? .elongated, strokeDashArray: values[safe: 7] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
-            }
+            return Constructor(parameters: [.shapeName, .pos1, .pos2, .zpos, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self, storage: .native)
         case .Polygon:
-            return Constructor(parameters: [.shapeName, .zpos, .paint, .strokeWidth, .strokeType, .strokeDashArray, Parameter(name: "points...", type: SimpleType.pos, optional: true)], type: self, varargs: true) { context, values in
-                return GPolygon(givenName: values[0] as? String,
-                                points: values.count > 6 ? values[6...].map { $0 as! Pos } : [],
-                                  positionZ: values[1] as? Int ?? 0,
-                                  paint: AnyPaint.auto(values[2]!),
-                                  strokeStyle: (values[safe: 3] == nil && values[safe: 4] == nil && values[safe: 5] == nil) ? nil : StrokeWrapper(strokeWidth: values[safe: 3] as? Float ?? 5, strokeType: values[safe: 4] as? Stroke ?? .elongated, strokeDashArray: values[safe: 5] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
-            }
+            return Constructor(parameters: [.shapeName, .zpos, .paint, .strokeWidth, .strokeType, .strokeDashArray, Parameter(name: "points...", type: SimpleType.pos, optional: true)], type: self, varargs: true, storage: .native)
         case .Text:
-            return Constructor(parameters: [Parameter(name: "text", type: SimpleType.string), .pos, .zpos, Parameter(name: "font", type: SimpleType.font | SimpleType.integer), .rotation, .paint], type: self, varargs: true) { context, values in
-                return GText(givenName: (values[0] as! String),
-                             position: values[1] as! Pos,
-                             positionZ: values[2] as? Int ?? 0,
-                             font: values[3] as? JFont ?? JFont(size: values[3] as! Int),
-                             rotation: values[4] as? Rotation ?? 0,
-                             paint: AnyPaint.auto(values[5]!))
-            }
+            return Constructor(parameters: [Parameter(name: "text", type: SimpleType.string), .pos, .zpos, Parameter(name: "font", type: SimpleType.font | SimpleType.integer), .rotation, .paint], type: self, varargs: true, storage: .native)
         case .Path:
-            return Constructor(parameters: [.shapeName, .zpos, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self) { context, values in
-                return GPath(givenName: values[0] as? String,
-                                  positionZ: values[1] as? Int ?? 0,
-                                  rotation: values[2] as? Rotation ?? 0,
-                                  paint: AnyPaint.auto(values[3]!),
-                                  strokeStyle: values.count == 4 ? nil : StrokeWrapper(strokeWidth: values[4] as? Float ?? 5, strokeType: values[safe: 5] as? Stroke ?? .elongated, strokeDashArray: values[safe: 6] as? GRPHArray ?? GRPHArray([], of: SimpleType.float)))
-            }
+            return Constructor(parameters: [.shapeName, .zpos, .rotation, .paint, .strokeWidth, .strokeType, .strokeDashArray], type: self, storage: .native)
         case .Group:
-            return Constructor(parameters: [.shapeName, .zpos, .rotation, Parameter(name: "shapes...", type: SimpleType.shape, optional: true)], type: self, varargs: true) { context, values in
-                return GGroup(givenName: values[0] as? String,
-                              positionZ: values[1] as? Int ?? 0,
-                              rotation: values[2] as? Rotation ?? 0,
-                              shapes: values.count > 3 ? values[3...].map { $0 as! GShape } : [])
-            }
+            return Constructor(parameters: [.shapeName, .zpos, .rotation, Parameter(name: "shapes...", type: SimpleType.shape, optional: true)], type: self, varargs: true, storage: .native)
         case .Background:
-            return Constructor(parameters: [.size, .paint], type: self) { context, values in
-                return GImage(size: values[0] as! Pos, background: AnyPaint.auto(values[1]!))
-            }
+            return Constructor(parameters: [.size, .paint], type: self, storage: .native)
         }
     }
 }

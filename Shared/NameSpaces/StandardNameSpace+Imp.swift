@@ -460,12 +460,11 @@ extension StandardNameSpace: ImplementedNameSpace {
     }
     
     func registerConstructorLegacyFunction(reg: NativeFunctionRegistry, type: GRPHType) {
-        // TODO: constructors aren't registered yet, so they are unsafe to access
-//        let base = type.constructor!
-//        let imp = reg.implementation(for: base)
-//        reg.implement(function: constructorLegacyFunction(type: type)) { ctx, args in
-//            imp(type, ctx, args)
-//        }
+        let base = type.constructor!
+        let imp = reg.implementation(for: base)
+        reg.implement(function: constructorLegacyFunction(type: type)) { ctx, args in
+            imp(type, ctx, args)
+        }
     }
     
     func stringRepresentation(val: GRPHValue) -> String {

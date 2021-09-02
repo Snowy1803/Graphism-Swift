@@ -35,12 +35,11 @@ struct StandardNameSpace: NameSpace {
     }
     
     var exportedFunctions: [Function] {
-        #warning("TODO")
         return [
-//            constructorLegacyFunction(type: SimpleType.color),
-//            constructorLegacyFunction(type: SimpleType.linear),
-//            constructorLegacyFunction(type: SimpleType.radial),
-//            constructorLegacyFunction(type: SimpleType.font),
+            constructorLegacyFunction(type: SimpleType.color),
+            constructorLegacyFunction(type: SimpleType.linear),
+            constructorLegacyFunction(type: SimpleType.radial),
+            constructorLegacyFunction(type: SimpleType.font),
             Function(ns: self, name: "colorFromInt", parameters: [Parameter(name: "value", type: SimpleType.integer)], returnType: SimpleType.color),
             // file manipulation functions removed
             Function(ns: self, name: "stringToInteger", parameters: [Parameter(name: "string", type: SimpleType.string)], returnType: SimpleType.integer.optional),
