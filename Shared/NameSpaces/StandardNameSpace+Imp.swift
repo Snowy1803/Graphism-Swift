@@ -443,6 +443,12 @@ extension StandardNameSpace: ImplementedNameSpace {
             context.runtime.triggerAutorepaint()
             return GRPHVoid.void
         }
+        
+        // This one is generic, defined in the type
+        NativeFunctionRegistry.shared.implement(methodWithSignature: "{T} {T}.copy[]") { context, array, params in
+            let array = array as! GRPHArray
+            return GRPHArray(array.wrapped, of: array.content)
+        }
     }
     
     func typeCheck<T>(value: GRPHValue?, as: T.Type) throws -> T {

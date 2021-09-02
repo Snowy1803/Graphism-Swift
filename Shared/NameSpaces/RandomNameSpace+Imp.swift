@@ -44,5 +44,11 @@ extension RandomNameSpace: ImplementedNameSpace {
             on.wrapped.shuffle()
             return GRPHVoid.void
         }
+        
+        // This one is generic, defined in the type
+        reg.implement(methodWithSignature: "{T} {T}.random>shuffled[]") { ctx, array, values in
+            let array = array as! GRPHArray
+            return GRPHArray(array.wrapped.shuffled(), of: array.content)
+        }
     }
 }

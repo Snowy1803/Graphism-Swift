@@ -121,6 +121,10 @@
 		205C81A026E1184900659FC7 /* ReflectNameSpace+Imp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205C819E26E1184900659FC7 /* ReflectNameSpace+Imp.swift */; };
 		205C81A126E1184900659FC7 /* ReflectNameSpace+Imp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205C819E26E1184900659FC7 /* ReflectNameSpace+Imp.swift */; };
 		205C81A226E1184900659FC7 /* ReflectNameSpace+Imp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205C819E26E1184900659FC7 /* ReflectNameSpace+Imp.swift */; };
+		205C81A426E134A500659FC7 /* Constructor+Imp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205C81A326E134A500659FC7 /* Constructor+Imp.swift */; };
+		205C81A526E134A500659FC7 /* Constructor+Imp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205C81A326E134A500659FC7 /* Constructor+Imp.swift */; };
+		205C81A626E134A500659FC7 /* Constructor+Imp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205C81A326E134A500659FC7 /* Constructor+Imp.swift */; };
+		205C81A726E134A500659FC7 /* Constructor+Imp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205C81A326E134A500659FC7 /* Constructor+Imp.swift */; };
 		2063128024A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128124A8C38D0095911B /* GraphismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126C24A8C3790095911B /* GraphismApp.swift */; };
 		2063128224A8C38D0095911B /* GraphismDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126D24A8C3790095911B /* GraphismDocument.swift */; };
@@ -597,6 +601,7 @@
 		205C819426E114DF00659FC7 /* StringUtilsNameSpace+Imp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StringUtilsNameSpace+Imp.swift"; sourceTree = "<group>"; };
 		205C819926E1158300659FC7 /* MathNameSpace+Imp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MathNameSpace+Imp.swift"; sourceTree = "<group>"; };
 		205C819E26E1184900659FC7 /* ReflectNameSpace+Imp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReflectNameSpace+Imp.swift"; sourceTree = "<group>"; };
+		205C81A326E134A500659FC7 /* Constructor+Imp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constructor+Imp.swift"; sourceTree = "<group>"; };
 		2063126C24A8C3790095911B /* GraphismApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismApp.swift; sourceTree = "<group>"; };
 		2063126D24A8C3790095911B /* GraphismDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphismDocument.swift; sourceTree = "<group>"; };
 		2063126E24A8C3790095911B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -865,6 +870,7 @@
 				20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */,
 				20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */,
 				20D1EF5724B21AF800EB4BEE /* TypeAlias.swift */,
+				205C81A326E134A500659FC7 /* Constructor+Imp.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -1348,6 +1354,7 @@
 				20DE0BCB24AE976800ABFB6E /* UnaryExpression.swift in Sources */,
 				20DE0BB324AD503F00ABFB6E /* Variable.swift in Sources */,
 				209CD07A26E04179005F34CE /* CastExpression+Runnable.swift in Sources */,
+				205C81A626E134A500659FC7 /* Constructor+Imp.swift in Sources */,
 				201E1F7324BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
 				201E1F6E24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
 			);
@@ -1485,6 +1492,7 @@
 				2098B68B24AA98070042D465 /* GPolygon.swift in Sources */,
 				20B9F70B24D8EC24005FCC40 /* SVGExportContext.swift in Sources */,
 				209CD04A26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
+				205C81A426E134A500659FC7 /* Constructor+Imp.swift in Sources */,
 				209CD00826DFF588005F34CE /* GRPHContextProtocol.swift in Sources */,
 				2093A17826D6912C004D24D8 /* FuncRef.swift in Sources */,
 				209CD0A026E062DE005F34CE /* NativeFunctionRegistry.swift in Sources */,
@@ -1628,6 +1636,7 @@
 				2098B68C24AA98070042D465 /* GPolygon.swift in Sources */,
 				20B9F70C24D8EC24005FCC40 /* SVGExportContext.swift in Sources */,
 				209CD04B26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
+				205C81A526E134A500659FC7 /* Constructor+Imp.swift in Sources */,
 				209CD00926DFF588005F34CE /* GRPHContextProtocol.swift in Sources */,
 				2093A17926D6912C004D24D8 /* FuncRef.swift in Sources */,
 				209CD0A126E062DE005F34CE /* NativeFunctionRegistry.swift in Sources */,
@@ -1691,6 +1700,7 @@
 				20D1EFAC24B2AFF600EB4BEE /* Function.swift in Sources */,
 				20D1EF8824B2AFF600EB4BEE /* NameSpace.swift in Sources */,
 				20D1EF9C24B2AFF600EB4BEE /* Parameter.swift in Sources */,
+				205C81A726E134A500659FC7 /* Constructor+Imp.swift in Sources */,
 				20D1EF9724B2AFF600EB4BEE /* GLine.swift in Sources */,
 				209CD09426E04A58005F34CE /* FuncRef+Runnable.swift in Sources */,
 				201E1F6A24B630B0005A2BBE /* GGroup.swift in Sources */,

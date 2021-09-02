@@ -58,6 +58,14 @@ class NativeFunctionRegistry {
         return imp
     }
     
+    func implementation(forMethodWithGenericSignature signature: String) throws -> ((RuntimeContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue) {
+        ensureRegistered()
+        guard let imp = methods[signature] else {
+            throw GRPHRuntimeError(type: .unexpected, message: "No implementation found for native generic method '\(signature)'")
+        }
+        return imp
+    }
+    
     func implement(method: Method, with imp: @escaping (RuntimeContext, GRPHValue, [GRPHValue?]) throws -> GRPHValue) {
         implement(methodWithSignature: method.signature, with: imp)
     }

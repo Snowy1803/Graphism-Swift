@@ -14,6 +14,7 @@ protocol ImplementedNameSpace: NameSpace {
 }
 extension NameSpaces {
     static func registerAllImplementations() throws {
+        try Constructor.registerImplementations()
         for ns in instances {
             if let ns = ns as? ImplementedNameSpace {
                 try ns.registerImplementations()

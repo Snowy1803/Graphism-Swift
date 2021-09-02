@@ -19,6 +19,8 @@ extension Method {
         switch storage {
         case .native:
             return try NativeFunctionRegistry.shared.implementation(for: self)(context, on, arguments)
+        case .generic(signature: let signature):
+            return try NativeFunctionRegistry.shared.implementation(forMethodWithGenericSignature: signature)(context, on, arguments)
         }
     }
 }

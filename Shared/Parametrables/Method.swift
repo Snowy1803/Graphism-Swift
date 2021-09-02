@@ -40,6 +40,7 @@ struct Method: Parametrable, Importable {
 extension Method {
     enum Storage {
         case native
+        case generic(signature: String)
     }
 }
 
