@@ -33,7 +33,7 @@ struct LambdaExpression: Expression {
             let instruction: Instruction
             if literal.isEmpty {
                 instruction = ExpressionInstruction(lineNumber: compiler.lineNumber, expression: try Expressions.parse(context: context, infer: SimpleType.void, literal: "void.VOID"))
-            } else if let resolved = try compiler.resolveInstruction(literal: literal)?.instruction {
+            } else if let resolved = try (compiler as! GRPHCompiler).resolveInstruction(literal: literal)?.instruction {
                 instruction = resolved
             } else {
                 throw GRPHCompileError(type: .parse, message: "Invalid instruction in void lambda")

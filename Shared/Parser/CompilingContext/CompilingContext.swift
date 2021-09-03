@@ -10,10 +10,10 @@ import Foundation
 /// By default, this class is transparent, delegating everything to its parent. VariableOwningCompilingContext overrides that behaviour.
 class CompilingContext: GRPHContextProtocol {
     // Strong reference. Makes it a circular reference. As long as the script is running, this is not a problem. When the script is terminated, context is always deallocated, so the circular reference is broken.
-    let compiler: GRPHCompiler
+    let compiler: GRPHCompilerProtocol
     let parent: CompilingContext?
     
-    init(compiler: GRPHCompiler, parent: CompilingContext?) {
+    init(compiler: GRPHCompilerProtocol, parent: CompilingContext?) {
         self.compiler = compiler
         self.parent = parent
     }
@@ -47,5 +47,12 @@ class CompilingContext: GRPHContextProtocol {
         parent?.inFunction
     }
     
-    var imports: [Importable] { compiler.imports }
+    var imports: [Importable] {
+        get {
+            compiler.imports
+        }
+        set {
+            compiler.imports = newValue
+        }
+    }
 }

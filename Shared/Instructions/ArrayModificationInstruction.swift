@@ -8,7 +8,6 @@
 import Foundation
 
 struct ArrayModificationInstruction: Instruction {
-    static let pattern = try! NSRegularExpression(pattern: "([^ ]+)\\{(.+)\\} *= *(.*)")
     let lineNumber: Int
     let name: String
     let op: ArrayModificationOperation
@@ -33,50 +32,35 @@ struct ArrayModificationInstruction: Instruction {
         }
     }
     
-    init(lineNumber: Int, context: CompilingContext, groups: [String?]) throws {
-        var inside = groups[2]!
-        var op: ArrayModificationOperation = .set
-        if inside.hasSuffix("+") {
-            op = .add
-            inside.removeLast()
-        } else if inside.hasSuffix("-") {
-            op = .remove
-            inside.removeLast()
-        } else if inside.hasSuffix("=") {
-            inside.removeLast()
-        }
-        let index: Expression?
-        if inside.isEmpty {
-            index = nil
-        } else {
-            index = try GRPHTypes.autobox(context: context, expression: Expressions.parse(context: context, infer: SimpleType.integer, literal: inside), expected: SimpleType.integer)
-            guard try SimpleType.integer.isInstance(context: context, expression: index!) else {
+    init(lineNumber: Int, context: CompilingContext, name: String, op: ArrayModificationOperation, index: Expression?, value: Expression?) throws {
+        
+        if let index = index {
+            guard try SimpleType.integer.isInstance(context: context, expression: index) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Expected integer in array modification index")
             }
         }
-        guard let v = context.findVariable(named: groups[1]!) else {
-            throw GRPHCompileError(type: .undeclared, message: "Undeclared variable '\(groups[1]!)'")
+        guard let v = context.findVariable(named: name) else {
+            throw GRPHCompileError(type: .undeclared, message: "Undeclared variable '\(name)'")
         }
         guard let arr = v.type as? ArrayType else {
             throw GRPHCompileError(type: .typeMismatch, message: "Expected an array in array modification, got a \(v.type)")
         }
-        let value = groups[3]!.trimmingCharacters(in: .whitespaces)
-        let exp = value.isEmpty ? nil : try GRPHTypes.autobox(context: context, expression: Expressions.parse(context: context, infer: arr.content, literal: value), expected: arr.content)
-        if let exp = exp {
+        if let exp = value {
             guard try arr.content.isInstance(context: context, expression: exp) else {
                 throw GRPHCompileError(type: .typeMismatch, message: "Expected \(arr.content) as array content, got \(try exp.getType(context: context, infer: arr.content))")
             }
         }
-        try self.init(lineNumber: lineNumber, name: v.name, op: op, index: index, value: exp)
+        
+        try self.init(lineNumber: lineNumber, name: name, op: op, index: index, value: value)
     }
     
     func toString(indent: String) -> String {
         "\(line):\(indent)\(name){\(index?.string ?? "")\(op.rawValue)} = \(value?.string ?? "")\n"
     }
-}
-
-enum ArrayModificationOperation: String {
-    case set = ""
-    case add = "+"
-    case remove = "-"
+    
+    enum ArrayModificationOperation: String {
+        case set = ""
+        case add = "+"
+        case remove = "-"
+    }
 }

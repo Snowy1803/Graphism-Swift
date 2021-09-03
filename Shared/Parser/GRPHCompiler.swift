@@ -14,46 +14,6 @@ class GRPHCompiler {
     
     static let allBrackets = try! NSRegularExpression(pattern: "[({\\[\\]})]")
     
-    static var defaultVariables: [Variable] {
-        [
-            Variable(name: "this", type: SimpleType.rootThisType, content: "currentDocument", final: true),
-            Variable(name: "back", type: SimpleType.Background, final: false, compileTime: true),
-            Variable(name: "WHITE", type: SimpleType.color,
-                     content: ColorPaint.components(red: 1, green: 1, blue: 1),
-                     final: true),
-            Variable(name: "BLACK", type: SimpleType.color,
-                     content: ColorPaint.components(red: 0, green: 0, blue: 0),
-                     final: true),
-            Variable(name: "RED", type: SimpleType.color,
-                     content: ColorPaint.components(red: 1, green: 0, blue: 0),
-                     final: true),
-            Variable(name: "GREEN", type: SimpleType.color,
-                     content: ColorPaint.components(red: 0, green: 1, blue: 0),
-                     final: true),
-            Variable(name: "BLUE", type: SimpleType.color,
-                     content: ColorPaint.components(red: 0, green: 0, blue: 1),
-                     final: true),
-            Variable(name: "ORANGE", type: SimpleType.color,
-                     content: ColorPaint.components(red: 1, green: 0.78, blue: 0),
-                     final: true),
-            Variable(name: "YELLOW", type: SimpleType.color,
-                     content: ColorPaint.components(red: 1, green: 1, blue: 0),
-                     final: true),
-            Variable(name: "PINK", type: SimpleType.color,
-                     content: ColorPaint.components(red: 1, green: 0.69, blue: 0.69),
-                     final: true),
-            Variable(name: "PURPLE", type: SimpleType.color,
-                     content: ColorPaint.components(red: 1, green: 0, blue: 1),
-                     final: true),
-            Variable(name: "AQUA", type: SimpleType.color,
-                     content: ColorPaint.components(red: 0, green: 1, blue: 1),
-                     final: true),
-            Variable(name: "ALPHA", type: SimpleType.color,
-                     content: ColorPaint.components(red: 0, green: 0, blue: 0, alpha: 0),
-                     final: true),
-        ]
-    }
-    
     var line0: String = ""
     var blockCount = 0
     var lineNumber: Int = 0
@@ -790,6 +750,16 @@ class GRPHCompiler {
         } else {
             return false
         }
+    }
+}
+
+extension GRPHCompiler: GRPHCompilerProtocol {
+    var hasStrictUnboxing: Bool {
+        compilerSettings.contains(.strictUnboxing)
+    }
+    
+    var hasStrictBoxing: Bool {
+        compilerSettings.contains(.strictBoxing)
     }
 }
 

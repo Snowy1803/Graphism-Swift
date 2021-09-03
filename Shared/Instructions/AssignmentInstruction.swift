@@ -8,8 +8,6 @@
 import Foundation
 
 struct AssignmentInstruction: Instruction {
-    static let pattern = try! NSRegularExpression(pattern: "^([^ \\n]+) *(\\+|-|\\*|\\/|%|&|\\||\\^|<<|>>>|>>)?= *(.*)$")
-    
     let lineNumber: Int
     let assigned: AssignableExpression
     let value: Expression
@@ -36,13 +34,6 @@ struct AssignmentInstruction: Instruction {
         try assigned.checkCanAssign(context: context)
     }
     
-    init(lineNumber: Int, context: CompilingContext, groups: [String?]) throws {
-        guard let exp = try Expressions.parse(context: context, infer: nil, literal: groups[1]!) as? AssignableExpression else {
-            throw GRPHCompileError(type: .parse, message: "The left-hand side of an assignment must be a variable or a field")
-        }
-        try self.init(lineNumber: lineNumber, context: context, assigned: exp, op: groups[2], value: Expressions.parse(context: context, infer: exp.getType(context: context, infer: SimpleType.mixed), literal: groups[3]!))
-    }
-    
     func toString(indent: String) -> String {
         var op = ""
         var right = value
@@ -60,7 +51,7 @@ struct AssignmentInstruction: Instruction {
             type
         }
         
-        var string: String { "[VIRTUAL::]" } // never called
+        var string: String { "$_virtual$" } // never called
         
         var needsBrackets: Bool { false } // never called
     }

@@ -41,7 +41,7 @@ class GRPHRuntime {
     }
     
     convenience init(compiler: GRPHCompiler, image: GImage) {
-        self.init(instructions: compiler.instructions, globalVariables: GRPHCompiler.defaultVariables.filter { !$0.compileTime } + compiler.internStrings.enumerated().map({ i, s in Variable(name: "$_str\(i)$", type: SimpleType.string, content: s, final: true)}), image: image)
+        self.init(instructions: compiler.instructions, globalVariables: TopLevelCompilingContext.defaultVariables.filter { !$0.compileTime } + compiler.internStrings.enumerated().map({ i, s in Variable(name: "$_str\(i)$", type: SimpleType.string, content: s, final: true)}), image: image)
         self.settings = compiler.settings
         self.localFunctions = compiler.imports.compactMap { $0 as? Function }.filter { $0.ns.isEqual(to: NameSpaces.none) }
     }

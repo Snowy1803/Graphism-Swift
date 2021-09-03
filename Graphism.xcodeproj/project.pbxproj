@@ -133,6 +133,14 @@
 		2063128524A8C38D0095911B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2063126E24A8C3790095911B /* ContentView.swift */; };
 		2063128624A8C38D0095911B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2063126F24A8C38D0095911B /* Assets.xcassets */; };
 		2063128724A8C38D0095911B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2063126F24A8C38D0095911B /* Assets.xcassets */; };
+		207E242726E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242626E173E00039725C /* Instruction+GRPHCompiler.swift */; };
+		207E242826E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242626E173E00039725C /* Instruction+GRPHCompiler.swift */; };
+		207E242926E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242626E173E00039725C /* Instruction+GRPHCompiler.swift */; };
+		207E242A26E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242626E173E00039725C /* Instruction+GRPHCompiler.swift */; };
+		207E242C26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242B26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift */; };
+		207E242D26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242B26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift */; };
+		207E242E26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242B26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift */; };
+		207E242F26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E242B26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift */; };
 		208D2FB424B3D6EB00CE66D7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 208D2FB324B3D6EB00CE66D7 /* ArgumentParser */; };
 		208D2FB624B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
 		208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
@@ -611,6 +619,8 @@
 		2063127C24A8C38D0095911B /* Graphism.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphism.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2063127E24A8C38D0095911B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2063127F24A8C38D0095911B /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		207E242626E173E00039725C /* Instruction+GRPHCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instruction+GRPHCompiler.swift"; sourceTree = "<group>"; };
+		207E242B26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FunctionDeclarationBlock+GRPHCompiler.swift"; sourceTree = "<group>"; };
 		207FD0122544E5CE00F8B0ED /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		207FD0132544F14D00F8B0ED /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayModificationInstruction.swift; sourceTree = "<group>"; };
@@ -1038,6 +1048,8 @@
 				201E1F8E24BD1D5B005A2BBE /* FunctionDeclarationBlock.swift */,
 				201E1FA624BE7E57005A2BBE /* RequiresInstruction.swift */,
 				203A3ED924D0D69F002EAE2B /* SwitchTransparentBlock.swift */,
+				207E242626E173E00039725C /* Instruction+GRPHCompiler.swift */,
+				207E242B26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift */,
 				209CD01126E03750005F34CE /* RunnableInstruction */,
 			);
 			path = Instructions;
@@ -1274,6 +1286,7 @@
 				209CD04C26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
 				209CD05626E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				20DE0BC324AE478300ABFB6E /* ArrayValueExpression.swift in Sources */,
+				207E242926E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */,
 				2093A18226D6EBA6004D24D8 /* FunctionReferenceExpression.swift in Sources */,
 				209CD02926E03986005F34CE /* VariableDeclarationInstruction+Runnable.swift in Sources */,
 				20D1EF6624B28DDF00EB4BEE /* Function.swift in Sources */,
@@ -1354,6 +1367,7 @@
 				20DE0BCB24AE976800ABFB6E /* UnaryExpression.swift in Sources */,
 				20DE0BB324AD503F00ABFB6E /* Variable.swift in Sources */,
 				209CD07A26E04179005F34CE /* CastExpression+Runnable.swift in Sources */,
+				207E242E26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */,
 				205C81A626E134A500659FC7 /* Constructor+Imp.swift in Sources */,
 				201E1F7324BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
 				201E1F6E24BBB19A005A2BBE /* InputOutputNameSpace.swift in Sources */,
@@ -1411,6 +1425,7 @@
 				20DE0BD924AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				209CD08226E0421C005F34CE /* FieldExpression+Runnable.swift in Sources */,
 				20DE0BA524AD449A00ABFB6E /* Instruction.swift in Sources */,
+				207E242C26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */,
 				205C819526E114DF00659FC7 /* StringUtilsNameSpace+Imp.swift in Sources */,
 				209CCFEE26DFD2B5005F34CE /* TopLevelCompilingContext.swift in Sources */,
 				20DE0BBD24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
@@ -1454,6 +1469,7 @@
 				209CD08C26E0432E005F34CE /* LambdaExpression+Runnable.swift in Sources */,
 				200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				208D2FB624B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
+				207E242726E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */,
 				200A5F7624AB85E10028180B /* Stroke.swift in Sources */,
 				209CD08726E04282005F34CE /* FunctionExpression+Runnable.swift in Sources */,
 				20D1EF5C24B224F000EB4BEE /* ThrowInstruction.swift in Sources */,
@@ -1555,6 +1571,7 @@
 				20DE0BDA24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				209CD08326E0421C005F34CE /* FieldExpression+Runnable.swift in Sources */,
 				20DE0BA624AD449A00ABFB6E /* Instruction.swift in Sources */,
+				207E242D26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */,
 				205C819626E114DF00659FC7 /* StringUtilsNameSpace+Imp.swift in Sources */,
 				209CCFEF26DFD2B5005F34CE /* TopLevelCompilingContext.swift in Sources */,
 				20DE0BBE24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
@@ -1598,6 +1615,7 @@
 				209CD08D26E0432E005F34CE /* LambdaExpression+Runnable.swift in Sources */,
 				200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */,
 				208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
+				207E242826E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */,
 				200A5F7724AB85E10028180B /* Stroke.swift in Sources */,
 				209CD08826E04282005F34CE /* FunctionExpression+Runnable.swift in Sources */,
 				20D1EF5D24B224F000EB4BEE /* ThrowInstruction.swift in Sources */,
@@ -1729,6 +1747,7 @@
 				209CD03926E03A18005F34CE /* CatchBlock+Runnable.swift in Sources */,
 				209CD04D26E03BA2005F34CE /* ExpressionInstruction+Runnable.swift in Sources */,
 				20D1EFA024B2AFF600EB4BEE /* VariableExpression.swift in Sources */,
+				207E242F26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift in Sources */,
 				20B43DD926D7DCB4009076E2 /* LambdaExpression.swift in Sources */,
 				20D1EFAF24B2AFF600EB4BEE /* GRPHOptional.swift in Sources */,
 				209CD01626E03768005F34CE /* RunnableInstruction.swift in Sources */,
@@ -1778,6 +1797,7 @@
 				20D1EF8424B2AFF600EB4BEE /* BlockInstruction.swift in Sources */,
 				20D1EF7E24B2AFF600EB4BEE /* ConstantExpression.swift in Sources */,
 				209CD04326E03AA8005F34CE /* ThrowInstruction+Runnable.swift in Sources */,
+				207E242A26E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */,
 				209CD0A326E062DE005F34CE /* NativeFunctionRegistry.swift in Sources */,
 				201E1F7424BBB927005A2BBE /* RandomNameSpace.swift in Sources */,
 				209CD03E26E03A60005F34CE /* BreakInstruction+Runnable.swift in Sources */,
