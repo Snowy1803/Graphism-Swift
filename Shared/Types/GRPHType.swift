@@ -71,6 +71,7 @@ func != (lhs: GRPHType, rhs: GRPHType) -> Bool {
 
 struct GRPHTypes {
     static let funcrefPattern = try! NSRegularExpression(pattern: "funcref<>")
+    static let plus = try! NSRegularExpression(pattern: "\\+")
     
     private init() {}
     
@@ -125,13 +126,6 @@ struct GRPHTypes {
         return context.imports.flatMap({ $0.exportedTypeAliases }).first(where: { $0.name == literal })?.type
     }
     
-    /// Type of a value is calculated HERE
-    /// It uses GRPHValue.type but takes into account AUTOBOXING and AUTOUNBOXING, based on expected.
-    /// Also, type of null is inferred here
-    static func type(of value: GRPHValue, expected: GRPHType? = nil) -> GRPHType {
-        return autoboxed(type: realType(of: value, expected: expected), expected: expected)
-    }
-    
     static func autoboxed(type: GRPHType, expected: GRPHType?) -> GRPHType {
         if !(type is OptionalType),
            let expected = expected as? OptionalType { // Boxing
@@ -168,53 +162,6 @@ struct GRPHTypes {
             return try autobox(context: context, expression: UnboxExpression(exp: expression), expected: expected)
         }
         return expression
-    }
-    
-    static func autobox(value: GRPHValue, expected: GRPHType) throws -> GRPHValue {
-        if let value = value as? GRPHOptional {
-            if let expected = expected as? OptionalType { // recursive
-                switch value {
-                case .null:
-                    return value
-                case .some(let wrapped):
-                    return GRPHOptional.some(try autobox(value: wrapped, expected: expected.wrapped))
-                }
-            } else { // Unboxing
-                switch value {
-                case .null:
-                    throw GRPHRuntimeError(type: .cast, message: "Tried to auto-unbox a 'null' value")
-                case .some(let wrapped):
-                    return try autobox(value: wrapped, expected: expected) // Unboxing
-                }
-            }
-        } else if let expected = expected as? OptionalType { // Boxing
-            return GRPHOptional.some(try autobox(value: value, expected: expected.wrapped))
-        } else {
-            return value
-        }
-    }
-    
-    /// Use this instead of autobox if you always expect an unwrapped value, as it's faster
-    static func unbox(value: GRPHValue) throws -> GRPHValue {
-        if let value = value as? GRPHOptional {
-            switch value {
-            case .null:
-                throw GRPHRuntimeError(type: .typeMismatch, message: "Tried to auto-unbox a 'null' value")
-            case .some(let wrapped):
-                return try unbox(value: wrapped) // Unboxing
-            }
-        } else {
-            return value
-        }
-    }
-    
-    static func realType(of value: GRPHValue, expected: GRPHType?) -> GRPHType {
-        if let value = value as? GRPHOptional,
-           value.isEmpty,
-           expected is OptionalType {
-            return expected ?? OptionalType(wrapped: SimpleType.mixed)
-        }
-        return value.type
     }
     
     static func field(named name: String, in type: GRPHType) -> Field? {
@@ -284,7 +231,7 @@ extension GRPHTypes {
         return generics
     }
     
-    static func splitGeneric(in string: String, delimiter: NSRegularExpression = Expressions.plus) -> [String] {
+    static func splitGeneric(in string: String, delimiter: NSRegularExpression = GRPHTypes.plus) -> [String] {
         var result: [String] = []
         var last = string.startIndex
         delimiter.allMatches(in: string) { range in

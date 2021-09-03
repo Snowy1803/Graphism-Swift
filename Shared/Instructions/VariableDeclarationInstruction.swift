@@ -8,6 +8,8 @@
 import Foundation
 
 struct VariableDeclarationInstruction: Instruction {
+    static let varNameRequirement = try! NSRegularExpression(pattern: "^[$A-Za-z_][A-Za-z0-9_]*$")
+    
     let global, constant: Bool
     
     let type: GRPHType
@@ -29,7 +31,7 @@ struct VariableDeclarationInstruction: Instruction {
         guard context.findVariableInScope(named: name) == nil else {
             throw GRPHCompileError(type: .redeclaration, message: "Invalid redeclaration of variable '\(name)'")
         }
-        guard GRPHCompiler.varNameRequirement.firstMatch(string: name) != nil else {
+        guard VariableDeclarationInstruction.varNameRequirement.firstMatch(string: name) != nil else {
             throw GRPHCompileError(type: .parse, message: "Invalid variable name '\(name)'")
         }
         let value: Expression

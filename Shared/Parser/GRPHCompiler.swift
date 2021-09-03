@@ -10,7 +10,6 @@ import Foundation
 class GRPHCompiler {
     static let grphVersion = "1.11"
     static let label = try! NSRegularExpression(pattern: "^[A-Za-z][A-Za-z0-9_]*$")
-    static let varNameRequirement = try! NSRegularExpression(pattern: "^[$A-Za-z_][A-Za-z0-9_]*$")
     
     static let allBrackets = try! NSRegularExpression(pattern: "[({\\[\\]})]")
     
@@ -170,7 +169,7 @@ class GRPHCompiler {
                      "final", "global", "static", "public", "private", "protected",
                      "dict", "set", "tuple":
                     throw GRPHCompileError(type: .redeclaration, message: "Type name '\(newname)' is reserved and can't be used as a typealias name")
-                case GRPHCompiler.varNameRequirement:
+                case VariableDeclarationInstruction.varNameRequirement:
                     break
                 default:
                     throw GRPHCompileError(type: .parse, message: "Type name '\(newname)' is not a valid type name")
@@ -760,36 +759,6 @@ extension GRPHCompiler: GRPHCompilerProtocol {
     
     var hasStrictBoxing: Bool {
         compilerSettings.contains(.strictBoxing)
-    }
-}
-
-struct GRPHCompileError: Error {
-    var type: CompileErrorType
-    var message: String
-    
-    enum CompileErrorType: String {
-        case parse = "Parse"
-        case typeMismatch = "Type"
-        case undeclared = "Undeclared"
-        case redeclaration = "Redeclaration"
-        case invalidArguments = "InvalidArguments"
-        case unsupported = "Unsupported"
-    }
-}
-
-struct GRPHRuntimeError: Error {
-    var type: RuntimeExceptionType
-    var message: String
-    var stack: [String] = []
-    
-    enum RuntimeExceptionType: String {
-        case typeMismatch = "InvalidType"
-        case cast = "Cast"
-        case inputOutput = "IO"
-        case unexpected = "Unexpected"
-        case reflection = "Reflection"
-        case invalidArgument = "InvalidArgument"
-        case permission = "NoPermission"
     }
 }
 

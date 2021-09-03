@@ -98,7 +98,7 @@ extension FunctionDeclarationBlock {
                 }
                 context.variables.append(Variable(name: pname, type: ptype, final: false, compileTime: true))
             }
-            guard GRPHCompiler.varNameRequirement.firstMatch(string: pname) != nil else {
+            guard VariableDeclarationInstruction.varNameRequirement.firstMatch(string: pname) != nil else {
                 throw GRPHCompileError(type: .parse, message: "Illegal var name '\(pname)'")
             }
             i += 1

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GImage: GGroup, PaintedShape, ResizableShape, ObservableObject {
+class GImage: GGroup, PaintedShape, ResizableShape {
     var size: Pos
     var paint: AnyPaint
     
@@ -16,9 +16,14 @@ class GImage: GGroup, PaintedShape, ResizableShape, ObservableObject {
     var destroySemaphore = DispatchSemaphore(value: 0)
     private(set) var destroyed = false
     
-    init(size: Pos = Pos(x: 640, y: 480), background: AnyPaint = AnyPaint.color(ColorPaint.components(red: 0, green: 0, blue: 0, alpha: 0))) {
+    var delegate: () -> Void
+    
+    init(size: Pos = Pos(x: 640, y: 480),
+         background: AnyPaint = AnyPaint.color(ColorPaint.components(red: 0, green: 0, blue: 0, alpha: 0)),
+         delegate: @escaping () -> Void) {
         self.size = size
         self.paint = background
+        self.delegate = delegate
         super.init(givenName: nil)
     }
     
@@ -39,9 +44,7 @@ class GImage: GGroup, PaintedShape, ResizableShape, ObservableObject {
     }
     
     func willNeedRepaint() {
-        DispatchQueue.main.async {
-            self.objectWillChange.send()
-        }
+        delegate()
     }
     
     /// Called by the view when the document is closed

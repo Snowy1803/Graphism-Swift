@@ -9,12 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     @Binding var document: GraphismDocument
-    @ObservedObject var image: GImage
+    var image: GImage
+    @ObservedObject var delegate: GraphismDocument.ImageChangeDelegate
     @State var destroyOnChange: GImage? = nil
     
     init(document: Binding<GraphismDocument>) {
         self._document = document
         self.image = document.wrappedValue.image
+        self.delegate = document.wrappedValue.delegate
         print("Created ContentView")
     }
 

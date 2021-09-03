@@ -29,7 +29,7 @@ struct ForEachBlock: BlockInstruction {
             throw GRPHCompileError(type: .typeMismatch, message: "#foreach needs an array, a \(type) was given")
         }
         
-        guard GRPHCompiler.varNameRequirement.firstMatch(string: self.varName) != nil else {
+        guard VariableDeclarationInstruction.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
         ctx.variables.append(Variable(name: self.varName, type: arrtype.content, final: !inOut, compileTime: true))

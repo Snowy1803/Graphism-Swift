@@ -149,6 +149,10 @@
 		207E243726E277890039725C /* LambdaExpression+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243526E277890039725C /* LambdaExpression+GRPHCompiler.swift */; };
 		207E243826E277890039725C /* LambdaExpression+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243526E277890039725C /* LambdaExpression+GRPHCompiler.swift */; };
 		207E243926E277890039725C /* LambdaExpression+GRPHCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243526E277890039725C /* LambdaExpression+GRPHCompiler.swift */; };
+		207E243B26E2989D0039725C /* GRPHType+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243A26E2989D0039725C /* GRPHType+Runnable.swift */; };
+		207E243C26E2989D0039725C /* GRPHType+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243A26E2989D0039725C /* GRPHType+Runnable.swift */; };
+		207E243D26E2989D0039725C /* GRPHType+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243A26E2989D0039725C /* GRPHType+Runnable.swift */; };
+		207E243E26E2989D0039725C /* GRPHType+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243A26E2989D0039725C /* GRPHType+Runnable.swift */; };
 		208D2FB424B3D6EB00CE66D7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 208D2FB324B3D6EB00CE66D7 /* ArgumentParser */; };
 		208D2FB624B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
 		208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
@@ -631,6 +635,7 @@
 		207E242B26E1ABCA0039725C /* FunctionDeclarationBlock+GRPHCompiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FunctionDeclarationBlock+GRPHCompiler.swift"; sourceTree = "<group>"; };
 		207E243026E272560039725C /* Expressions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expressions.swift; sourceTree = "<group>"; };
 		207E243526E277890039725C /* LambdaExpression+GRPHCompiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LambdaExpression+GRPHCompiler.swift"; sourceTree = "<group>"; };
+		207E243A26E2989D0039725C /* GRPHType+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GRPHType+Runnable.swift"; sourceTree = "<group>"; };
 		207FD0122544E5CE00F8B0ED /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		207FD0132544F14D00F8B0ED /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayModificationInstruction.swift; sourceTree = "<group>"; };
@@ -890,6 +895,7 @@
 				20D1EF3524B12AEE00EB4BEE /* SimpleType.swift */,
 				20D1EF3124B12AA500EB4BEE /* OtherTypes.swift */,
 				20D1EF5724B21AF800EB4BEE /* TypeAlias.swift */,
+				207E243A26E2989D0039725C /* GRPHType+Runnable.swift */,
 				205C81A326E134A500659FC7 /* Constructor+Imp.swift */,
 			);
 			path = Types;
@@ -1289,6 +1295,7 @@
 				20D1EF7224B29F8500EB4BEE /* GRPHRuntime.swift in Sources */,
 				2093A17D26D6C1A2004D24D8 /* GRPHValue+SwiftUI.swift in Sources */,
 				2093A17E26D6C1D2004D24D8 /* SwitchTransparentBlock.swift in Sources */,
+				207E243D26E2989D0039725C /* GRPHType+Runnable.swift in Sources */,
 				20DE0BDB24AF677500ABFB6E /* ArrayLiteralExpression.swift in Sources */,
 				20D1EF6A24B292ED00EB4BEE /* FunctionExpression.swift in Sources */,
 				20DE0BE324AF8EAA00ABFB6E /* FieldExpression.swift in Sources */,
@@ -1483,6 +1490,7 @@
 				20B43DCC26D7093F009076E2 /* FuncRefCallExpression.swift in Sources */,
 				209CD08C26E0432E005F34CE /* LambdaExpression+Runnable.swift in Sources */,
 				200A5F9824ABF6020028180B /* GRPHCompiler.swift in Sources */,
+				207E243B26E2989D0039725C /* GRPHType+Runnable.swift in Sources */,
 				208D2FB624B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
 				207E242726E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */,
 				200A5F7624AB85E10028180B /* Stroke.swift in Sources */,
@@ -1631,6 +1639,7 @@
 				20B43DCD26D7093F009076E2 /* FuncRefCallExpression.swift in Sources */,
 				209CD08D26E0432E005F34CE /* LambdaExpression+Runnable.swift in Sources */,
 				200A5F9924ABF6020028180B /* GRPHCompiler.swift in Sources */,
+				207E243C26E2989D0039725C /* GRPHType+Runnable.swift in Sources */,
 				208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */,
 				207E242826E173E00039725C /* Instruction+GRPHCompiler.swift in Sources */,
 				200A5F7724AB85E10028180B /* Stroke.swift in Sources */,
@@ -1755,6 +1764,7 @@
 				20D1EFAA24B2AFF600EB4BEE /* BreakInstruction.swift in Sources */,
 				201E1FAA24BE7E67005A2BBE /* RequiresInstruction.swift in Sources */,
 				205C819326E1140F00659FC7 /* InputOutputNameSpace+Imp.swift in Sources */,
+				207E243E26E2989D0039725C /* GRPHType+Runnable.swift in Sources */,
 				20D1EF9624B2AFF600EB4BEE /* Stroke.swift in Sources */,
 				20D1EF9124B2AFF600EB4BEE /* Importable.swift in Sources */,
 				2093A18326D6EBA6004D24D8 /* FunctionReferenceExpression.swift in Sources */,

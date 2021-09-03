@@ -12,7 +12,6 @@ struct Expressions {
     
     static let comma = try! NSRegularExpression(pattern: ",")
     static let space = try! NSRegularExpression(pattern: " ")
-    static let plus = try! NSRegularExpression(pattern: "\\+")
     
     private init() {}
     

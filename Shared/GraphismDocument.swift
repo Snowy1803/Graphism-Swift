@@ -17,6 +17,7 @@ struct GraphismDocument: FileDocument {
     var source: String
     
     var image: GImage
+    var delegate = ImageChangeDelegate()
     
     static var readableContentTypes: [UTType] { [.grphSource] }
     static var writableContentTypes: [UTType] { [.grphSource, .svg] }
@@ -43,13 +44,13 @@ struct GraphismDocument: FileDocument {
             source += shape.stateDefinitions
             source += "validate: \(shape.stateConstructor)\n"
         }
-        self.image = GImage()
+        self.image = GImage(delegate: delegate.imageDidChange)
         self.source = source
         runGRPH()
     }
     
     init(source: String) {
-        self.image = GImage()
+        self.image = GImage(delegate: delegate.imageDidChange)
         self.source = source
         runGRPH()
     }
@@ -60,7 +61,7 @@ struct GraphismDocument: FileDocument {
         else {
             throw CocoaError(.fileReadCorruptFile)
         }
-        self.image = GImage()
+        self.image = GImage(delegate: delegate.imageDidChange)
         self.source = string
         runGRPH()
     }
@@ -93,6 +94,14 @@ struct GraphismDocument: FileDocument {
                 return
             }
             _ = runtime.run()
+        }
+    }
+    
+    class ImageChangeDelegate: ObservableObject {
+        func imageDidChange() {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
         }
     }
 }

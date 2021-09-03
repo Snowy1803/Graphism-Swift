@@ -21,7 +21,7 @@ class CatchBlock: BlockInstruction {
         self.lineNumber = lineNumber
         let ctx = createContext(&context)
         
-        guard GRPHCompiler.varNameRequirement.firstMatch(string: self.varName) != nil else {
+        guard VariableDeclarationInstruction.varNameRequirement.firstMatch(string: self.varName) != nil else {
             throw GRPHCompileError(type: .parse, message: "Illegal variable name \(self.varName)")
         }
         

@@ -28,10 +28,10 @@ struct RequiresInstruction: Instruction {
     }
     
     func throwUnsupported(context: GRPHContextProtocol, message: String) throws -> Never {
-        if context is RuntimeContext {
-            throw GRPHRuntimeError(type: .reflection, message: message)
-        } else {
+        if context is CompilingContext {
             throw GRPHCompileError(type: .unsupported, message: message)
+        } else {
+            throw GRPHRuntimeError(type: .reflection, message: message)
         }
     }
     

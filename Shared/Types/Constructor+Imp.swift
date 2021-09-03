@@ -89,7 +89,8 @@ extension Constructor {
                           shapes: values.count > 3 ? values[3...].map { $0 as! GShape } : [])
         }
         reg.implement(constructor: SimpleType.Background.constructor!) { type, context, values in
-            return GImage(size: values[0] as! Pos, background: AnyPaint.auto(values[1]!))
+            // if affected to `back`, its content will be copied to the original. this instance will never be used.
+            return GImage(size: values[0] as! Pos, background: AnyPaint.auto(values[1]!), delegate: {})
         }
         
         // Generic Types
