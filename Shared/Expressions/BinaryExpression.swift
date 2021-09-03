@@ -8,13 +8,6 @@
 import Foundation
 
 struct BinaryExpression: Expression {
-    static let signs1 = try! NSRegularExpression(pattern: "&&|\\|\\|")
-    static let signs2 = try! NSRegularExpression(pattern: ">=|<=|>|<|≥|≤")
-    static let signs3 = try! NSRegularExpression(pattern: "&|\\||\\^|<<|>>|>>>")
-    static let signs4 = try! NSRegularExpression(pattern: "==|!=|≠")
-    static let signs5 = try! NSRegularExpression(pattern: "\\+|\\-")
-    static let signs6 = try! NSRegularExpression(pattern: "\\*|\\/|\\%")
-    
     let left, right: Expression
     var op: BinaryOperator
     var operands: SimpleType

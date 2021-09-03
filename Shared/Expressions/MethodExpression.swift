@@ -8,9 +8,6 @@
 import Foundation
 
 struct MethodExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^(.*?)\\.([A-Za-z_>]+)\\[(.*)\\]$")
-    //static let instructionPattern = try! NSRegularExpression(pattern: "^([A-Za-z>]+)(?: ([^ \\n]+))? *: *(.*)$")
-    
     let method: Method
     let on: Expression
     let values: [Expression?]

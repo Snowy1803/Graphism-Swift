@@ -8,8 +8,6 @@
 import Foundation
 
 struct CastExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^(.+) (is|as\\??!?) (\(Expressions.typePattern))$")
-    
     let from: Expression
     let cast: CastType
     let to: GRPHType

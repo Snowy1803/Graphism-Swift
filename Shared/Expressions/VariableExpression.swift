@@ -8,8 +8,6 @@
 import Foundation
 
 struct VariableExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^[A-Za-z0-9_$]+$")
-    
     let name: String
     
     func getType(context: CompilingContext, infer: GRPHType) throws -> GRPHType {

@@ -8,8 +8,6 @@
 import Foundation
 
 struct ArrayValueExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^([$A-Za-z_][A-Za-z0-9_]*)\\{(.*)\\}$")
-    
     let varName: String
     let index: Expression?
     let removing: Bool

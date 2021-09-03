@@ -8,7 +8,6 @@
 import Foundation
 
 struct UnaryExpression: Expression {
-    
     let exp: Expression
     let op: UnaryOperator
     

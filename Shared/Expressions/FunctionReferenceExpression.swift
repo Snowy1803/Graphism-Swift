@@ -8,8 +8,6 @@
 import Foundation
 
 struct FunctionReferenceExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^\\^([A-Za-z_>]+)$")
-    
     var function: Function
     var argumentGrid: [Bool]
     var inferredType: FuncRefType

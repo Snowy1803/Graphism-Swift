@@ -8,8 +8,6 @@
 import Foundation
 
 struct FieldExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^(.+)\\.([A-Za-z0-9_]+)$")
-    
     let on: Expression
     let field: Field
     

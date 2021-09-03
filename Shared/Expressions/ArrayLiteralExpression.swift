@@ -8,8 +8,6 @@
 import Foundation
 
 struct ArrayLiteralExpression: Expression {
-    static let pattern = try! NSRegularExpression(pattern: "^(\(Expressions.typePattern))? *\\{(.*)\\}$")
-    
     let wrapped: GRPHType
     let values: [Expression]
     

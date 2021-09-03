@@ -8,10 +8,6 @@
 import Foundation
 
 struct ConstantExpression: Expression {
-    static let posPattern = try! NSRegularExpression(pattern: "^(-?[0-9.]+),(-?[0-9.]+)$")
-    static let intPattern = try! NSRegularExpression(pattern: "^-?[0-9]+$")
-    static let floatPattern = try! NSRegularExpression(pattern: "^-?[0-9]+(?:\\.[0-9]+[Ff]?|[Ff])$")
-    
     let value: StatefulValue
     
     init(boolean: Bool) {
