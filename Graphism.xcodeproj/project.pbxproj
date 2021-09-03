@@ -153,6 +153,10 @@
 		207E243C26E2989D0039725C /* GRPHType+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243A26E2989D0039725C /* GRPHType+Runnable.swift */; };
 		207E243D26E2989D0039725C /* GRPHType+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243A26E2989D0039725C /* GRPHType+Runnable.swift */; };
 		207E243E26E2989D0039725C /* GRPHType+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243A26E2989D0039725C /* GRPHType+Runnable.swift */; };
+		207E244026E2D3C10039725C /* Parametrable+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243F26E2D3C10039725C /* Parametrable+Runnable.swift */; };
+		207E244126E2D3C10039725C /* Parametrable+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243F26E2D3C10039725C /* Parametrable+Runnable.swift */; };
+		207E244226E2D3C10039725C /* Parametrable+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243F26E2D3C10039725C /* Parametrable+Runnable.swift */; };
+		207E244326E2D3C10039725C /* Parametrable+Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207E243F26E2D3C10039725C /* Parametrable+Runnable.swift */; };
 		208D2FB424B3D6EB00CE66D7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 208D2FB324B3D6EB00CE66D7 /* ArgumentParser */; };
 		208D2FB624B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
 		208D2FB724B4C89A00CE66D7 /* ArrayModificationInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */; };
@@ -636,6 +640,7 @@
 		207E243026E272560039725C /* Expressions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expressions.swift; sourceTree = "<group>"; };
 		207E243526E277890039725C /* LambdaExpression+GRPHCompiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LambdaExpression+GRPHCompiler.swift"; sourceTree = "<group>"; };
 		207E243A26E2989D0039725C /* GRPHType+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GRPHType+Runnable.swift"; sourceTree = "<group>"; };
+		207E243F26E2D3C10039725C /* Parametrable+Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parametrable+Runnable.swift"; sourceTree = "<group>"; };
 		207FD0122544E5CE00F8B0ED /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		207FD0132544F14D00F8B0ED /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		208D2FB524B4C89900CE66D7 /* ArrayModificationInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayModificationInstruction.swift; sourceTree = "<group>"; };
@@ -1000,6 +1005,7 @@
 			isa = PBXGroup;
 			children = (
 				20D1EF3A24B12BB600EB4BEE /* Parametrable.swift */,
+				207E243F26E2D3C10039725C /* Parametrable+Runnable.swift */,
 				20D1EF3E24B1393E00EB4BEE /* Parameter.swift */,
 				20D1EF4224B1401700EB4BEE /* Constructor.swift */,
 				20D1EF6324B28DDF00EB4BEE /* Function.swift */,
@@ -1337,6 +1343,7 @@
 				20B43DD826D7DCB4009076E2 /* LambdaExpression.swift in Sources */,
 				209CD09326E04A58005F34CE /* FuncRef+Runnable.swift in Sources */,
 				200A5F9324ABA51E0028180B /* GPath.swift in Sources */,
+				207E244226E2D3C10039725C /* Parametrable+Runnable.swift in Sources */,
 				209CD07F26E041E3005F34CE /* ArrayLiteralExpression+Runnable.swift in Sources */,
 				20DE0BF324B0B35600ABFB6E /* TryBlock.swift in Sources */,
 				205C818D26E10E2B00659FC7 /* StandardNameSpace+Imp.swift in Sources */,
@@ -1452,6 +1459,7 @@
 				20DE0BBD24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				209CCFE326DFC72F005F34CE /* CompilingContext.swift in Sources */,
 				205C819A26E1158300659FC7 /* MathNameSpace+Imp.swift in Sources */,
+				207E244026E2D3C10039725C /* Parametrable+Runnable.swift in Sources */,
 				209CD05426E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				209CD00D26E010D0005F34CE /* DebuggingCompilingContext.swift in Sources */,
 				207E243126E272570039725C /* Expressions.swift in Sources */,
@@ -1601,6 +1609,7 @@
 				20DE0BBE24AE3C6200ABFB6E /* VariableExpression.swift in Sources */,
 				209CCFE426DFC72F005F34CE /* CompilingContext.swift in Sources */,
 				205C819B26E1158300659FC7 /* MathNameSpace+Imp.swift in Sources */,
+				207E244126E2D3C10039725C /* Parametrable+Runnable.swift in Sources */,
 				209CD05526E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				209CD00E26E010D0005F34CE /* DebuggingCompilingContext.swift in Sources */,
 				207E243226E272570039725C /* Expressions.swift in Sources */,
@@ -1701,6 +1710,7 @@
 				20D1EF9524B2AFF600EB4BEE /* Rotation.swift in Sources */,
 				2093A17B26D6C168004D24D8 /* FuncRef.swift in Sources */,
 				20D1EF8D24B2AFF600EB4BEE /* ArrayValueExpression.swift in Sources */,
+				207E244326E2D3C10039725C /* Parametrable+Runnable.swift in Sources */,
 				209CD05726E03BE6005F34CE /* FunctionDeclarationBlock+Runnable.swift in Sources */,
 				20D1EFAE24B2AFF600EB4BEE /* GPath.swift in Sources */,
 				209CD00026DFDBBF005F34CE /* SwitchCompilingContext.swift in Sources */,
