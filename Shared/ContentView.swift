@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GRPHValues
 
 struct ContentView: View {
     @Binding var document: GraphismDocument

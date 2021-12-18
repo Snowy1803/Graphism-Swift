@@ -7,6 +7,10 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import GRPHValues
+import GRPHRuntime
+import GRPHGenerator
+import GRPHLexer
 
 extension UTType {
     static let grphSource =
@@ -84,12 +88,13 @@ struct GraphismDocument: FileDocument {
         let queue = DispatchQueue(label: "GRPH")
         queue.async {
             guard let runtime = { [source, image] () -> GRPHRuntime? in
-                let compiler = GRPHCompiler(entireContent: source)
+                let lexer = GRPHLexer()
+                let compiler = GRPHGenerator(lines: lexer.parseDocument(content: source))
                 
                 guard compiler.compile() else {
                     return nil // TODO show error
                 }
-                return GRPHRuntime(compiler: compiler, image: image)
+                return GRPHRuntime(instructions: compiler.instructions, globalVariables: TopLevelCompilingContext.defaultVariables.filter { !$0.compileTime }, image: image, argv: [])
             }() else {
                 return
             }

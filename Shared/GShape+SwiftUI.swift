@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import GRPHValues
 
 protocol GGraphicalShape: GShape {
     var graphics: AnyView { get }
